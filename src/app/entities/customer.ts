@@ -12,6 +12,7 @@ export class Customer {
   cusPhoneNbr: string;
   cusAddress: string;
   cusIden: string;
+  wallet?: Wallet;
 
   constructor(
     cusCode: number,
