@@ -15,14 +15,14 @@ import { firstValueFrom } from 'rxjs';
 
 export class LoginComponent {
   username: string = '';
-  password: string = '';
+  cusMotDePasse: string = '';
   errorMessage: string = '';
   walletService: any;
 
   constructor(private authService: AuthService, private router: Router) {}
 
   onSubmit(): void {
-    this.authService.login(this.username, this.password).subscribe({
+    this.authService.login(this.username, this.cusMotDePasse).subscribe({
       next: async (response) => {
         console.log('Full login response:', response);
         console.log('Role array:', response.role);
@@ -35,9 +35,9 @@ export class LoginComponent {
           return;
         }
   
-        localStorage.setItem('userId', response.userId);
+        localStorage.setItem('cusCode', response.cusCode);
         localStorage.setItem('role', role);
-        localStorage.setItem('username', response.username || response.user?.username || 'User');
+        localStorage.setItem('username', response.username || response.user?.username || 'CUSTOMER');
 
   
         console.log('Stored Role:', localStorage.getItem('role')); // After setting the role in localStorage
@@ -48,9 +48,9 @@ export class LoginComponent {
           await this.router.navigate(['/account/dashboard']);
         } else {
           console.log('Redirecting to wallet or welcome');
-          const status = await firstValueFrom(this.walletService.getWalletStatus());
-          console.log('Wallet Status:', status); // Log the wallet status
-          if (status === 'ACTIVE') {
+          const walletStatus = await firstValueFrom(this.walletService.getWalletStatus());
+          console.log('Wallet Status:', walletStatus); // Log the wallet status
+          if (walletStatus === 'ACTIVE') {
             await this.router.navigate(['/wallet']);
           } else {
             await this.router.navigate(['/pending']);

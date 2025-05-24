@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators';
 import { interval } from 'rxjs';
 
-type WalletStatus = 'PENDING' | 'ACTIVE' | 'REJECTED';
+type walletStatus = 'PENDING' | 'ACTIVE' | 'REJECTED';
 
 @Injectable({
   providedIn: 'root'
@@ -12,19 +12,19 @@ type WalletStatus = 'PENDING' | 'ACTIVE' | 'REJECTED';
 export class WalletService {
   constructor(private http: HttpClient) {}
 
-  getWalletStatus(): Observable<WalletStatus> {
-    return this.http.get('http://localhost:8080/api/wallet/status')
+  getWalletStatus(): Observable<walletStatus> {
+    return this.http.get('http://localhost:8081//api/wallet-status/{id}')
     .pipe(
       tap((response: any) => {
-        if (!['PENDING', 'ACTIVE', 'REJECTED'].includes(response.status)) {
-          console.warn('Invalid wallet status received:', response.status);
+        if (!['PENDING', 'ACTIVE', 'REJECTED'].includes(response.walletStatus)) {
+          console.warn('Invalid wallet status received:', response.walletStatus);
         }
       }),
       map((response: any) => {
         // Ensure the status is one of the allowed values
-        const status = response.status?.toUpperCase();
-        return (status === 'PENDING' || status === 'ACTIVE' || status === 'REJECTED') 
-          ? status 
+        const walletStatus = response.walletStatus?.toUpperCase();
+        return (walletStatus === 'PENDING' || walletStatus === 'ACTIVE' || walletStatus === 'REJECTED') 
+          ? walletStatus 
           : 'PENDING';
       })
     );
