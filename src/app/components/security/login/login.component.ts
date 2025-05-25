@@ -37,7 +37,7 @@ export class LoginComponent {
   
         localStorage.setItem('cusCode', response.cusCode);
         localStorage.setItem('role', role);
-        localStorage.setItem('username', response.username || response.user?.username || 'CUSTOMER');
+        localStorage.setItem('username', response.username || response.CUSTOMER?.username || 'CUSTOMER');
 
   
         console.log('Stored Role:', localStorage.getItem('role')); // After setting the role in localStorage

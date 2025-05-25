@@ -4,7 +4,7 @@ import { User } from '../../../../entities/user';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { WalletStatus } from '../../../../entities/WALLET';
+import { WalletStatus } from '../../../../entities/wallet';
 
 @Component({
   selector: 'app-users',
