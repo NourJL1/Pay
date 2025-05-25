@@ -4,51 +4,52 @@ import { Observable, tap, catchError, throwError } from 'rxjs';
 import { UserService } from './user.service';
 import { environment } from '../../environments/environment';
 import { Router } from '@angular/router';
+// Update the import path below if the Customer model is located elsewhere
+import { Customer } from '../entities/customer';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
+  private apiUrl = `${environment.apiUrl}`;
+
   constructor(
-    private http: HttpClient, 
+    private http: HttpClient,
     private userService: UserService,
     private router: Router
   ) {}
 
-  private apiUrl = `${environment.apiUrl}`;
-
-  register(user: any, files: File[]): Observable<any> {
+  register(customer: Customer, files: File[]): Observable<any> {
     const formData = new FormData();
-    formData.append('user', JSON.stringify(user));
-    
+    formData.append('customer', JSON.stringify(customer));
+
     if (files?.length) {
       files.forEach(file => formData.append('files', file, file.name));
     }
 
-    return this.http.post(`${this.apiUrl}/users/register`, formData).pipe(
-      tap((response) => console.log('Registration successful:', response)),
+    return this.http.post(`${this.apiUrl}/customers/register`, formData).pipe(
+      tap(response => console.log('Customer registration successful:', response)),
       catchError(this.handleError)
     );
   }
 
   login(username: string, password: string): Observable<any> {
     const loginPayload = { username, password };
-    return this.http.post<any>(`${this.apiUrl}/users/login`, loginPayload).pipe(
+
+    return this.http.post<any>(`${this.apiUrl}/customers/login`, loginPayload).pipe(
       tap({
         next: (response) => {
-          // Store all necessary user data
-          localStorage.setItem('authToken', response.token); // Make sure your backend returns a token
-          localStorage.setItem('roles', JSON.stringify(response.role));
+          // Store all relevant customer data
+          localStorage.setItem('authToken', response.token);
+          localStorage.setItem('roles', JSON.stringify(response.roles));
           localStorage.setItem('username', response.username);
-          localStorage.setItem('userId', response.userId);
-          localStorage.setItem('fullname', response.fullname);
-          
-          this.userService.setLoggedInUserId(response.userId);
-          
-          // Navigate based on user role or status
-          this.router.navigate(['/wallet']); // Or your default route
+          localStorage.setItem('customerId', response.cusCode.toString());
+          localStorage.setItem('fullname', `${response.cusFirstName} ${response.cusMidName} ${response.cusLastName}`);
+
+          this.userService.setLoggedInUserId(response.cusCode);
+          this.router.navigate(['/wallet']); // Update as needed
         },
-        error: (err) => console.error('Login failed:', err)
+        error: (err) => console.error('Customer login failed:', err)
       }),
       catchError(this.handleError)
     );
@@ -61,8 +62,7 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    // Check both token and userId for more robust authentication
-    return !!localStorage.getItem('authToken') && !!localStorage.getItem('userId');
+    return !!localStorage.getItem('authToken') && !!localStorage.getItem('customerId');
   }
 
   getAuthToken(): string | null {
@@ -70,7 +70,7 @@ export class AuthService {
   }
 
   private handleError(error: HttpErrorResponse) {
-    let errorMessage = error.error?.message || error.message || 'An unknown error occurred!';
+    const errorMessage = error.error?.message || error.message || 'An unknown error occurred!';
     console.error(errorMessage);
     return throwError(() => new Error(errorMessage));
   }

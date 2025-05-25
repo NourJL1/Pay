@@ -7,15 +7,15 @@ import { User } from '../entities/user';
   providedIn: 'root'
 })
 export class AdminService {
-  private apiUrl = 'http://localhost:8080/api'; // Your existing API base URL
+  private apiUrl = 'http://localhost:8081/api'; // Your existing API base URL
 
   constructor(private http: HttpClient) { }
 
   getAllUsers(): Observable<User[]> {
-    return this.http.get<User[]>(`${this.apiUrl}/users/admin/all`);
+    return this.http.get<User[]>(`${this.apiUrl}/customers/admin/all`);
   }
 
   updateWalletStatus(userId: number, status: string): Observable<User> {
-    return this.http.patch<User>(`${this.apiUrl}/users/${userId}/wallet-status`, { status });
+    return this.http.patch<User>(`${this.apiUrl}/customers/${userId}/wallet-status`, { status });
   }
 }
