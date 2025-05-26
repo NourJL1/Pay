@@ -27,7 +27,7 @@ export class AuthService {
       files.forEach(file => formData.append('files', file, file.name));
     }
 
-    return this.http.post(`${this.apiUrl}/customers/register`, formData).pipe(
+    return this.http.post(`${this.apiUrl}/api/customers/register`, formData).pipe(
       tap(response => console.log('Customer registration successful:', response)),
       catchError(this.handleError)
     );
@@ -36,20 +36,21 @@ export class AuthService {
   login(username: string, password: string): Observable<any> {
     const loginPayload = { username, password };
 
-    return this.http.post<any>(`${this.apiUrl}/customers/login`, loginPayload).pipe(
+    return this.http.post<any>(`${this.apiUrl}/api/customers/login`, loginPayload).pipe(
       tap({
         next: (response) => {
+          console.log(response)
           // Store all relevant customer data
           localStorage.setItem('authToken', response.token);
-          localStorage.setItem('roles', JSON.stringify(response.roles));
+          localStorage.setItem('role', JSON.stringify(response.role));
           localStorage.setItem('username', response.username);
           localStorage.setItem('customerId', response.cusCode.toString());
-          localStorage.setItem('fullname', `${response.cusFirstName} ${response.cusMidName} ${response.cusLastName}`);
+          localStorage.setItem('fullname', response.fullname);
 
           this.userService.setLoggedInUserId(response.cusCode);
           this.router.navigate(['/wallet']); // Update as needed
         },
-        error: (err) => console.error('Customer login failed:', err)
+        error: (err) => {console.error('Customer login failed:', err); }
       }),
       catchError(this.handleError)
     );

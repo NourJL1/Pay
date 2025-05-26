@@ -11,6 +11,7 @@ import { AdminDashboardComponent } from '../admin-dashboard.component';
 })
 export class SideNavComponent implements OnInit{
 
+
   constructor(private router: Router) {}
 
   ngOnInit(): void {}
@@ -28,6 +29,11 @@ export class SideNavComponent implements OnInit{
       mainContent.classList.toggle('expanded');
       (mainContent as HTMLElement).style.marginLeft = this.isCollapsed ? '80px' : '260px';
     }
+  }
+
+  logout() {
+    localStorage.clear();
+    this.router.navigate(['/home']);
   }
 
 }

@@ -28,7 +28,7 @@ export class LoginComponent {
         console.log('Role array:', response.role);
         console.log('First role:', response.role?.[0]);
   
-        const role = response.role?.[0]?.name?.toLowerCase();
+        const role = response.role?.name?.toLowerCase();
   
         if (!role) {
           this.errorMessage = 'No role found in response.';
