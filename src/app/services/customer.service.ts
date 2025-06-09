@@ -9,9 +9,9 @@ import { Customer } from '../entities/customer';
 export interface LocalCustomer {
   cusCode?: number;
   username: string;
-  password: string;
+  cusMotDePasse: string;
   fullname: string;
-  email: string;
+  cusMailAdress: string;
 }
 
 @Injectable({

@@ -28,7 +28,7 @@
         }
         .card-stats:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 10px 15px -3px rgba(236, 234, 234, 0.1), 0 4px 6px -2px rgba(233, 231, 231, 0.05);
         }
         input[type="checkbox"] {
             display: none;

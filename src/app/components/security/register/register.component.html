@@ -29,85 +29,85 @@
 <div *ngIf="currentStep === 1" class="step">
   <div class="wallet-selection">
     <h3>Choose Wallet Type:</h3>
-  
     <div class="wallet-options">
   
       <!-- Customer -->
       <div 
         class="wallet-card" 
-        [class.selected]="user.walletType === 'CUSTOMER'"
-        (click)="user.walletType = 'CUSTOMER'"
+        [class.selected]="CUSTOMER.walletType === 'CUSTOMER'"
+        (click)="CUSTOMER.walletType = 'CUSTOMER'"
       >
         <input 
           type="radio" 
           name="walletType" 
           value="CUSTOMER" 
-          [(ngModel)]="user.walletType"
+          [(ngModel)]="CUSTOMER.walletType"
           hidden
         >
         <h4>👤 Customer</h4>
         <p>Use your wallet to buy, pay and manage your funds.</p>
       </div>
-  
+
       <!-- Interne -->
       <div 
         class="wallet-card" 
-        [class.selected]="user.walletType === 'INTERNE'"
-        (click)="user.walletType = 'INTERNE'"
+        [class.selected]="CUSTOMER.walletType === 'INTERNE'"
+        (click)="CUSTOMER.walletType = 'INTERNE'"
       >
         <input 
           type="radio" 
           name="walletType" 
           value="INTERNE" 
-          [(ngModel)]="user.walletType"
+          [(ngModel)]="CUSTOMER.walletType"
           hidden
         >
         <h4>🧑‍💼 Interne</h4>
         <p>Internal use wallet. Track, test, and operate securely.</p>
-      </div>
-  
+        </div>
+
       <!-- Merchant -->
       <div 
         class="wallet-card" 
-        [class.selected]="user.walletType === 'MERCHANT'"
-        (click)="user.walletType = 'MERCHANT'"
+        [class.selected]="CUSTOMER.walletType === 'MERCHANT'"
+        (click)="CUSTOMER.walletType = 'MERCHANT'"
       >
         <input 
           type="radio" 
           name="walletType" 
           value="MERCHANT" 
-          [(ngModel)]="user.walletType"
+          [(ngModel)]="CUSTOMER.walletType"
           hidden
         >
         <h4>🏬 Merchant</h4>
         <p>Receive payments, manage sales and grow your business.</p>
       </div>
-  
     </div>
   </div>
-  
-</div>
-
-  <!-- Step 2 -->
-  <div *ngIf="currentStep === 2" class="step">
-    <label for="fullname">Full Name:</label>
-    <input [(ngModel)]="user.fullname" type="text" />
-
-    <label for="username">Username:</label>
-    <input [(ngModel)]="user.username" type="text" />
   </div>
+
+<!-- step 2-->
+  <div *ngIf="currentStep === 2" class="step">
+  <label for="cusFirstName">First Name:</label>
+  <input [(ngModel)]="CUSTOMER.cusFirstName" type="text" required />
+  <label for="cusMidName">Middle Name (Optional):</label>
+  <input [(ngModel)]="CUSTOMER.cusMidName" type="text" />
+  <label for="cusLastName">Last Name:</label>
+  <input [(ngModel)]="CUSTOMER.cusLastName" type="text" required />
+  <label for="username">Username:</label>
+  <input [(ngModel)]="CUSTOMER.username" type="text" required />
+</div>
 
    <!-- Step 3 - Country and City Selection -->
    <div *ngIf="currentStep === 3" class="step">
     <h3>Select Your Country and City</h3>
 
     <label for="country">Country:</label>
-    <select [(ngModel)]="user.country" (change)="onCountryChange()" class="form-control">
+    <select [(ngModel)]="CUSTOMER.country" (change)="onCountryChange()" class="form-control">
       <option *ngFor="let country of countries" [value]="country">{{ country }}</option>
     </select>
 
     <label for="city">City:</label>
-    <select [(ngModel)]="user.city" class="form-control">
+    <select [(ngModel)]="CUSTOMER.city" class="form-control">
       <option *ngFor="let city of cities" [value]="city">{{ city }}</option>
     </select>
   </div>
@@ -133,7 +133,7 @@
     <form #form="ngForm">
       <label>Email:</label>
       <input 
-        [(ngModel)]="user.email" 
+        [(ngModel)]="CUSTOMER.cusMailAdress" 
         type="email" 
         name="email"
         required 
@@ -147,7 +147,7 @@
   
       <label>Password:</label>
       <input 
-        [(ngModel)]="user.password" 
+        [(ngModel)]="CUSTOMER.cusMotDePasse" 
         type="password" 
         name="password"
         required 
@@ -169,7 +169,7 @@
 <!-- Step 6 - KYC -->
 <div *ngIf="currentStep === 6" class="step">
   <label for="idType">Identification Type:</label>
-  <select [(ngModel)]="user.identificationType" name="idType">
+  <select [(ngModel)]="CUSTOMER.identificationType" name="idType">
     <option value="CIN">ID Card</option>
     <option value="PASSPORT">Passport</option>
     <option value="CARTE_SEJOUR">Carte Séjour</option>

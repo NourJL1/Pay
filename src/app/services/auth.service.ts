@@ -27,6 +27,8 @@ export class AuthService {
       files.forEach(file => formData.append('files', file, file.name));
     }
 
+    console.log(FormData)
+
     return this.http.post(`${this.apiUrl}/api/customers/register`, formData).pipe(
       tap(response => console.log('Customer registration successful:', response)),
       catchError(this.handleError)

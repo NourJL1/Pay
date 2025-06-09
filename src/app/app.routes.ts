@@ -15,6 +15,9 @@ import { DashboardComponent } from './components/security/admin-dashboard/dashbo
 import { PendingComponent } from './components/security/wallet/pending/pending.component';
 import { WelcomeComponent } from './components/security/wallet/welcome/welcome.component';
 import { SettingsComponent } from './components/security/wallet/settings/settings.component';
+import { AccountingComponent } from './components/security/admin-dashboard/accounting/accounting.component';
+import { WalletMngComponent } from './components/security/admin-dashboard/wallet-mng/wallet-mng.component';
+import { ProductsComponent } from './components/security/admin-dashboard/products/products.component';
 
 export const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -63,6 +66,9 @@ export const routes: Routes = [
     [
       {path: 'dashboard', component: DashboardComponent},
       {path: 'users', component: UsersComponent},
+      {path: 'accounting', component: AccountingComponent},
+      {path: 'wallets', component: WalletMngComponent},
+      {path: 'products', component: ProductsComponent},
       //{path: 'transactions', component: },
     ]
 },

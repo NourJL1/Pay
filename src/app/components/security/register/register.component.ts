@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators, A
 import { CommonModule } from '@angular/common';
 import { NgxIntlTelInputModule, CountryISO, SearchCountryField } from 'ngx-intl-tel-input';
 import { HttpClient } from '@angular/common/http';
+import { CustomerService } from '../../../services/customer.service';
 
 
 interface City {
@@ -60,7 +61,7 @@ export class RegisterComponent {
     SearchCountryField.Name
   ];
 
-  user = {
+   user = {
     username: '',
     password: '',
     fullname: '',
@@ -71,12 +72,27 @@ export class RegisterComponent {
     country: '',
     city: ''
   };
+  CUSTOMER ={
+    username:'',
+    cusMotDePasse:'',
+    cusFirstName: '',
+    cusMidName: '',
+    cusLastName: '',
+    fullname:'',
+    cusPhoneNbr:'',
+    cusMailAdress:'',
+    identificationType:'',
+    walletType:'',
+    country:'',
+    city:'',
+    cusAdress:''
+  }
   
   
   errorMessage: string = '';
   successMessage: string = '';
 
-  constructor(private userService: UserService, private router: Router, private http: HttpClient) {}
+  constructor(private customerService: CustomerService, private router: Router, private http: HttpClient) {}
 
   // Custom phone number validator
   private validatePhoneNumber(control: AbstractControl) {
@@ -102,7 +118,7 @@ export class RegisterComponent {
 
     // Step 1: Choosing a wallet type
     if (this.currentStep === 1) {
-      if (!this.user.walletType) {
+      if (!this.CUSTOMER.walletType) {
         this.errorMessage = 'Please choose a wallet type.';
         return;
       }
@@ -110,7 +126,7 @@ export class RegisterComponent {
 
     // Step 2: Validate Full Name and Username
     if (this.currentStep === 2) {
-      if (!this.user.fullname?.trim() || !this.user.username?.trim()) {
+      if (!this.CUSTOMER.cusFirstName?.trim()/*  || !this.CUSTOMER.cusMidName?.trim() */ || !this.CUSTOMER.cusLastName?.trim() ||!this.CUSTOMER.username?.trim()) {
         this.errorMessage = 'Please fill in both Full Name and Username.';
         return;
       }
@@ -132,12 +148,12 @@ if (this.currentStep === 4) {
   }
 
   const phoneValue = phoneControl.value as PhoneNumber;
-  this.user.phoneNbr = phoneValue.e164Number;
+  this.CUSTOMER.cusPhoneNbr = phoneValue.e164Number;
 }
   
     // Step 5: Validate Email and Password
     if (this.currentStep === 5) {
-      if (!this.user.email?.trim() || !this.user.password?.trim()) {
+      if (!this.CUSTOMER.cusMailAdress?.trim() || !this.CUSTOMER.cusMotDePasse?.trim()) {
         this.errorMessage = 'Please enter your email and password.';
         return;
       }
@@ -160,7 +176,7 @@ if (this.currentStep === 4) {
   }
   
   onCountryChange(): void {
-    const countryName = this.user.country;
+    const countryName = this.CUSTOMER.country;
     if (countryName) {
       this.getCities(countryName);
     }
@@ -188,11 +204,17 @@ if (this.currentStep === 4) {
   onSubmit(): void {
     // First validate the current step (step 6)
     if (this.currentStep === 6) {
-      if (!this.user.identificationType) {
+      if (!this.CUSTOMER.identificationType) {
         this.errorMessage = 'Please select an identification type.';
         return;
       }
     }
+
+    // Split fullname into first, middle, and last names
+  const nameParts = this.CUSTOMER.fullname.trim().split(' ');
+  this.CUSTOMER.cusFirstName = nameParts[0] || '';
+  this.CUSTOMER.cusMidName = nameParts.length > 2 ? nameParts.slice(1, -1).join(' ') : '';
+  this.CUSTOMER.cusLastName = nameParts.length > 1 ? nameParts[nameParts.length - 1] : '';
   
     // Then handle phone number validation if we're coming from step 4
     if (this.phoneForm.invalid) {
@@ -201,9 +223,12 @@ if (this.currentStep === 4) {
     }
   
     const phoneValue = this.phoneForm.get('phone')?.value as PhoneNumber;
-    this.user.phoneNbr = phoneValue.e164Number;
+    this.CUSTOMER.cusPhoneNbr = phoneValue.e164Number;
     
-    this.userService.register(this.user).subscribe({
+    console.log(this.CUSTOMER)
+
+
+    this.customerService.register(this.CUSTOMER).subscribe({
       next: () => {
         this.successMessage = 'Registration successful!';
         this.errorMessage = '';

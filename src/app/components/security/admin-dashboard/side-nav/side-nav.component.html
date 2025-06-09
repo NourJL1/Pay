@@ -1,11 +1,18 @@
 <div class="flex min-h-screen">
   <!-- Sidebar -->
   <aside id="sidebar" class="sidebar bg-secondary text-white flex flex-col h-screen fixed left-0 z-10">
-      <!-- Logo -->
-      <div class="p-6 flex items-center">
-          <!-- <img src="assets/Picture1.png"> -->
-          <h1 class="font-['Pacifico'] text-2xl text-white logo-text">logo</h1>
-      </div>
+        <div class="h-16 p-4 border-b border-gray-200 flex items-center">
+                <div class="flex items-center">
+                    <div class="flex items-center justify-center w-8 h-8 bg-primary text-white rounded">
+                        <!-- <span class="font-['Pacifico'] text-xl">UIB</span> -->
+                         <img src="../../../../../assets/logo.png">
+                    </div>
+                    <div class="ml-3" [class.hidden]="isCollapsed">
+                        <div class="text-lg font-semibold text-gray-800">UIB Bank</div>
+                        <div class="text-xs text-gray-500">Payment Gateway</div>
+                    </div>
+                </div>
+            </div>
       
       <!-- Navigation -->
       <nav class="flex-1 px-4 py-6">
@@ -25,34 +32,35 @@
                       <div class="w-6 h-6 flex items-center justify-center">
                           <i class="ri-user-line ri-lg"></i>
                       </div>
-                      <span class="ml-3">Users</span>
+                      <span class="ml-3">Customer Management</span>
                   </a>
               </li>
+              
               <li>
-                  <a routerLink="/account/analytics" routerLinkActive="bg-primary bg-opacity-90 text-white" [routerLinkActiveOptions]="{ exact: true }"
-                  class="nav-item flex items-center p-3 text-gray-300 hover:bg-white hover:bg-opacity-10 rounded transition-all">
-                      <div class="w-6 h-6 flex items-center justify-center">
-                          <i class="ri-bar-chart-line ri-lg"></i>
-                      </div>
-                      <span class="ml-3">Analytics</span>
-                  </a>
-              </li>
-              <li>
-                  <a routerLink="/account/" routerLinkActive="bg-primary bg-opacity-90 text-white" [routerLinkActiveOptions]="{ exact: true }"
+                  <a routerLink="/account/wallets" routerLinkActive="bg-primary bg-opacity-90 text-white" [routerLinkActiveOptions]="{ exact: true }"
                   class="nav-item flex items-center p-3 text-gray-300 hover:bg-white hover:bg-opacity-10 rounded transition-all">
                       <div class="w-6 h-6 flex items-center justify-center">
                           <i class="ri-file-list-line ri-lg"></i>
                       </div>
-                      <span class="ml-3">Reports</span>
+                      <span class="ml-3">Wallet Management</span>
                   </a>
               </li>
               <li>
-                  <a routerLink="/account/" routerLinkActive="bg-primary bg-opacity-90 text-white" [routerLinkActiveOptions]="{ exact: true }"
+                  <a routerLink="/account/accounting" routerLinkActive="bg-primary bg-opacity-90 text-white" [routerLinkActiveOptions]="{ exact: true }"
                   class="nav-item flex items-center p-3 text-gray-300 hover:bg-white hover:bg-opacity-10 rounded transition-all">
                       <div class="w-6 h-6 flex items-center justify-center">
-                          <i class="ri-settings-line ri-lg"></i>
+                          <i class="ri-calculator-line"></i>
                       </div>
-                      <span class="ml-3">Settings</span>
+                      <span class="ml-3">Accounting Schema</span>
+                  </a>
+              </li>
+              <li>
+                  <a routerLink="/account/products" routerLinkActive="bg-primary bg-opacity-90 text-white" [routerLinkActiveOptions]="{ exact: true }"
+                  class="nav-item flex items-center p-3 text-gray-300 hover:bg-white hover:bg-opacity-10 rounded transition-all">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                          <i class="ri-product-hunt-line"></i>
+                      </div>
+                      <span class="ml-3">Products</span>
                   </a>
               </li>
           </ul>
