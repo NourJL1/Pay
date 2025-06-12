@@ -12,82 +12,6 @@
     <!-- Main Content Area -->
     <main class="flex-1 overflow-y-auto p-6">
       <div id="tab-schemas" class="space-y-6 tab-content">
-        <!-- Analytics Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-          <div class="bg-white rounded-lg shadow p-5">
-            <div class="flex justify-between items-start mb-4">
-              <div>
-                <h3 class="text-sm font-medium text-gray-500">Fee Distribution</h3>
-                <p class="text-xl font-semibold mt-1">$24,895.32</p>
-              </div>
-              <div class="w-8 h-8 flex items-center justify-center rounded-full bg-primary bg-opacity-10 text-primary">
-                <i class="ri-pie-chart-line"></i>
-              </div>
-            </div>
-            <div id="feeDistributionChart" class="h-48"></div>
-          </div>
-          <div class="bg-white rounded-lg shadow p-5">
-            <div class="flex justify-between items-start mb-4">
-              <div>
-                <h3 class="text-sm font-medium text-gray-500">Operation Trends</h3>
-                <p class="text-xl font-semibold mt-1">1,432 operations</p>
-              </div>
-              <div class="w-8 h-8 flex items-center justify-center rounded-full bg-primary bg-opacity-10 text-primary">
-                <i class="ri-line-chart-line"></i>
-              </div>
-            </div>
-            <div id="operationTrendsChart" class="h-48"></div>
-          </div>
-          <div class="bg-white rounded-lg shadow p-5">
-            <div class="flex justify-between items-start mb-4">
-              <div>
-                <h3 class="text-sm font-medium text-gray-500">Schema Usage</h3>
-                <p class="text-xl font-semibold mt-1">8 active schemas</p>
-              </div>
-              <div class="w-8 h-8 flex items-center justify-center rounded-full bg-primary bg-opacity-10 text-primary">
-                <i class="ri-bar-chart-grouped-line"></i>
-              </div>
-            </div>
-            <div id="schemaUsageChart" class="h-48"></div>
-          </div>
-        </div>
-        <!-- Charts Section -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-          <div class="bg-white rounded-lg shadow p-5">
-            <div class="flex justify-between items-start mb-4">
-              <div>
-                <h3 class="text-sm font-medium text-gray-500">Schema Performance</h3>
-                <p class="text-xl font-semibold mt-1">Daily Monitoring</p>
-              </div>
-              <div class="flex items-center space-x-2">
-                <button class="p-1 text-gray-500 hover:text-primary">
-                  <i class="ri-download-2-line"></i>
-                </button>
-                <button class="p-1 text-gray-500 hover:text-primary">
-                  <i class="ri-more-2-fill"></i>
-                </button>
-              </div>
-            </div>
-            <div id="schemaPerformanceChart" class="h-64"></div>
-          </div>
-          <div class="bg-white rounded-lg shadow p-5">
-            <div class="flex justify-between items-start mb-4">
-              <div>
-                <h3 class="text-sm font-medium text-gray-500">Operation Distribution</h3>
-                <p class="text-xl font-semibold mt-1">By Type</p>
-              </div>
-              <div class="flex items-center space-x-2">
-                <button class="p-1 text-gray-500 hover:text-primary">
-                  <i class="ri-download-2-line"></i>
-                </button>
-                <button class="p-1 text-gray-500 hover:text-primary">
-                  <i class="ri-more-2-fill"></i>
-                </button>
-              </div>
-            </div>
-            <div id="operationDistributionChart" class="h-64"></div>
-          </div>
-        </div>
         <!-- Schemas Table -->
         <div class="bg-white rounded-lg shadow overflow-hidden">
           <div class="p-4 border-b flex justify-between items-center">
@@ -1227,24 +1151,15 @@
         <div id="tab-operationTypes" class="p-6">
           <div class="space-y-4">
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Operation Code</label>
-              <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary" placeholder="Enter operation code">
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Identifier</label>
-              <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary" placeholder="Enter identifier">
-            </div>
-            <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Label</label>
               <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary" placeholder="Enter label">
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Fee Schema</label>
               <select class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary">
-                <option value="">Select category</option>
-                <option value="cash">Cash Operations</option>
-                <option value="card">Card Operations</option>
-                <option value="transfer">Transfer Operations</option>
+                <option value="">Select schema</option>
+                <option value="cash">wallet to wallet</option>
+                <option value="card">commercial payment</option>
               </select>
             </div>
           </div>
