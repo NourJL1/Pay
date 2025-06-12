@@ -30,12 +30,10 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Responsive Styling */
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
   .app-main-content {
     padding: 15px;
     margin: 10px;
-    width: 95%; /* Slightly wider content on smaller screens */
-  }
-
-  
-}
+    width: 95%;
+  }  
+} */

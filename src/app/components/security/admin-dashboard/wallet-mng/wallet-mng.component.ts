@@ -87,7 +87,7 @@ export class WalletMngComponent {
     tabContents.forEach(content => content.classList.add('hidden'));
 
     // Activate the clicked button and show its tab content
-    const activeButton = document.getElementById(tabId);
+    const activeButton = tabType ? document.getElementById(tabType+'-'+tabId) : document.getElementById(tabId);
     activeButton?.classList.add('active', 'text-primary', 'font-medium');
     activeButton?.classList.remove('text-gray-500');
 

@@ -23,28 +23,19 @@
 .nav-item span,
 .logo-text,
 .sidebar-footer .profile {
-    opacity: 1;
-    width: auto;
-    height: auto;
-    overflow: visible;
     transition: 
-        opacity 0.3s ease 0.1s,
-        width 0s ease,
-        height 0s ease;
+        opacity 0.3s ease 0.2s, /* Delayed appearance */
+        display 0s ease 0.5s; /* Keeps element hidden until fully expanded */
 }
 
 .sidebar.collapsed .nav-item span,
 .sidebar.collapsed .logo-text,
 .sidebar.collapsed .sidebar-footer .profile {
     opacity: 0;
-    width: 0;
-    height: 0;
-    overflow: hidden;
+    display: none;
     transition: 
-        opacity 0.3s ease,
-        width 0s ease 0.3s,
-        height 0s ease 0.3s;
-
+        opacity 0.1s ease, /* Faster fade out */
+        display 0s ease 0.1s; /* Immediate hide after fade */
 }
 
 .card-stats {

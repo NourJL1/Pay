@@ -1,4 +1,4 @@
-<div class="rounded-lg">
+<div class="">
   <div class="flex items-center justify-between px-6 py-3 bg-white">
     <div class="flex items-center">
       <h1 class="text-xl font-semibold text-gray-800">Wallet Management</h1>
@@ -163,26 +163,25 @@
     </div>
   </div>
   <!-- Wallet Management Section -->
-  <div id="tab-wallets" class="tab-content hidden bg-white rounded shadow mb-6">
-    <div class="bg-white rounded-lg shadow overflow-hidden">
-      <div class="p-4 border-b flex justify-between items-center">
-        <h2 class="text-lg font-medium">Wallet Management</h2>
-        <div class="flex items-center space-x-3">
-          <button
-            class="flex items-center px-3 py-2 border border-gray-300 rounded-button text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">
-            <div class="w-4 h-4 mr-2 flex items-center justify-center">
-              <i class="ri-download-2-line"></i>
-            </div> Export Data
-          </button>
-          <button (click)="toggleForm('create-wallet')" id="newSchemaBtn"
-            class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
-            <div class="w-4 h-4 mr-2 flex items-center justify-center">
-              <i class="ri-add-line"></i>
-            </div> New Wallet
-          </button>
-        </div>
+  <div id="tab-wallets" class="tab-content hidden bg-white rounded shadow mb-6  rounded-lg">
+    <div class="p-4 flex justify-between items-center">
+      <h2 class="text-lg font-medium">Wallet Management</h2>
+      <div class="flex items-center space-x-3">
+        <button
+          class="flex items-center px-3 py-2 border border-gray-300 rounded-button text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">
+          <div class="w-4 h-4 mr-2 flex items-center justify-center">
+            <i class="ri-download-2-line"></i>
+          </div> Export Data
+        </button>
+        <button (click)="toggleForm('create-wallet')" id="newSchemaBtn"
+          class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+          <div class="w-4 h-4 mr-2 flex items-center justify-center">
+            <i class="ri-add-line"></i>
+          </div> New Wallet
+        </button>
       </div>
-      <!-- <div class="flex flex-wrap items-center justify-between">
+    </div>
+    <!-- <div class="flex flex-wrap items-center justify-between">
         <h3 class="text-lg font-semibold text-gray-800">Wallet Management</h3>
         <div class="flex space-x-3">
           <button (click)="toggleForm('create-wallet')"
@@ -227,57 +226,68 @@
           </div>
         </div>
       </div> -->
-    </div>
     <!-- Filters -->
-    <!-- Top Header -->
-    <header class="bg-white shadow-sm z-10 mx-6">
+    <header class="bg-white shadow-sm z-10">
       <div class="px-6 py-3 bg-white border-t border-b flex flex-wrap items-center gap-3">
-        <div class="relative">
-          <select
-            class="appearance-none pl-3 pr-8 py-2 border border-gray-300 rounded-button text-sm focus:border-primary">
-            <option value="">All Operation Types</option>
-            <option value="deposit">Deposit</option>
-            <option value="withdrawal">Withdrawal</option>
-            <option value="transfer">Transfer</option>
-            <option value="payment">Payment</option>
-            <option value="vat">VAT</option>
-          </select>
-          <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-            <i class="ri-arrow-down-s-line text-gray-400"></i>
+        <div class="flex flex-wrap gap-4">
+                <div class="w-full sm:w-auto">
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                  <div class="relative">
+                    <select class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary rounded-lg sm:text-sm">
+                      <option value="">All Statuses</option>
+                      <option value="active">Active</option>
+                      <option value="inactive">Inactive</option>
+                      <option value="suspended">Suspended</option>
+                      <option value="closed">Closed</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="w-full sm:w-auto">
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Type</label>
+                  <div class="relative">
+                    <select class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary rounded-lg sm:text-sm">
+                      <option value="">All Types</option>
+                      <option value="personal">Personal</option>
+                      <option value="business">Business</option>
+                      <option value="premium">Premium</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="w-full sm:w-auto">
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                  <div class="relative">
+                    <select class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary rounded-lg sm:text-sm">
+                      <option value="">All Categories</option>
+                      <option value="standard">Standard</option>
+                      <option value="savings">Savings</option>
+                      <option value="investment">Investment</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="w-full sm:w-auto">
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Balance Range</label>
+                  <div class="flex items-center space-x-2">
+                    <input type="number" placeholder="Min" class="w-24 pl-3 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary text-sm">
+                    <span class="text-gray-500">-</span>
+                    <input type="number" placeholder="Max" class="w-24 pl-3 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary text-sm">
+                  </div>
+                </div>
+                <div class="w-full sm:w-auto">
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Date Range</label>
+                  <div class="flex items-center space-x-2">
+                    <input type="date" placeholder="Min" class="w-24 pl-3 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary text-sm">
+                    <span class="text-gray-500">-</span>
+                    <input type="date" placeholder="Max" class="w-24 pl-3 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary text-sm">
+                  </div>
+                </div>
+                <div class="relative flex-grow max-w-md">
+            <input type="text" placeholder="Search schemas, operations, or codes..."
+              class="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-button text-sm">
+            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+              <i class="ri-search-line text-gray-400"></i>
+            </div>
           </div>
-        </div>
-        <div class="relative">
-          <select
-            class="appearance-none pl-3 pr-8 py-2 border border-gray-300 rounded-button text-sm focus:border-primary">
-            <option value="">All Statuses</option>
-            <option value="active">Active</option>
-            <option value="inactive">Inactive</option>
-            <option value="draft">Draft</option>
-          </select>
-          <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-            <i class="ri-arrow-down-s-line text-gray-400"></i>
-          </div>
-        </div>
-        <div class="relative">
-          <select
-            class="appearance-none pl-3 pr-8 py-2 border border-gray-300 rounded-button text-sm focus:border-primary">
-            <option value="">Last 30 Days</option>
-            <option value="7days">Last 7 Days</option>
-            <option value="60days">Last 60 Days</option>
-            <option value="90days">Last 90 Days</option>
-            <option value="custom">Custom Range</option>
-          </select>
-          <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-            <i class="ri-arrow-down-s-line text-gray-400"></i>
-          </div>
-        </div>
-        <div class="relative flex-grow max-w-md">
-          <input type="text" placeholder="Search schemas, operations, or codes..."
-            class="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-button text-sm">
-          <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-            <i class="ri-search-line text-gray-400"></i>
-          </div>
-        </div>
+              </div>
       </div>
     </header>
     <!-- <div class="bg-white rounded-lg shadow p-4">
@@ -686,13 +696,13 @@
     <div class="bg-white rounded-lg shadow">
       <div class="border-b border-gray-200">
         <nav class="flex -mb-px">
-          <button id="status" (click)="showTab('status', 'settings')"
+          <button id="settings-status" (click)="showTab('status', 'settings')"
             class="settings-tab-button relative px-4 py-3 text-sm active font-medium text-primary">Wallet
             Status</button>
-          <button id="type" (click)="showTab('type', 'settings')"
+          <button id="settings-type" (click)="showTab('type', 'settings')"
             class="settings-tab-button relative px-4 py-3 text-sm text-gray-500">Wallet
             Type</button>
-          <button id="category" (click)="showTab('category', 'settings')"
+          <button id="settings-category" (click)="showTab('category', 'settings')"
             class="settings-tab-button relative px-4 py-3 text-sm text-gray-500">Wallet
             Category</button>
         </nav>
@@ -702,7 +712,7 @@
         <div class="flex justify-between items-center mb-6">
           <h3 class="text-lg font-medium text-gray-900">Wallet Status Management</h3>
           <button id="btn-add-status" (click)="toggleForm('wallet-status')"
-            class="px-4 py-2 bg-primary text-white rounded-button flex items-center whitespace-nowrap">
+            class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
             <i class="ri-add-line mr-1"></i> Add Status </button>
         </div>
         <div class="overflow-x-auto">
@@ -817,7 +827,7 @@
         <div class="flex justify-between items-center mb-6">
           <h3 class="text-lg font-medium text-gray-900">Wallet Type Management</h3>
           <button id="btn-add-type" (click)="toggleForm('wallet-type')"
-            class="px-4 py-2 bg-primary text-white rounded-button flex items-center whitespace-nowrap">
+            class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
             <i class="ri-add-line mr-1"></i> Add Type </button>
         </div>
         <div class="overflow-x-auto">
@@ -914,7 +924,7 @@
         <div class="flex justify-between items-center mb-6">
           <h3 class="text-lg font-medium text-gray-900">Wallet Category Management</h3>
           <button id="btn-add-category" (click)="toggleForm('wallet-category')"
-            class="px-4 py-2 bg-primary text-white rounded-button flex items-center whitespace-nowrap">
+            class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
             <i class="ri-add-line mr-1"></i> Add Category </button>
         </div>
         <div class="overflow-x-auto">
@@ -1014,11 +1024,11 @@
     <div class="bg-white rounded-lg shadow">
       <div class="border-b border-gray-200">
         <nav class="flex -mb-px">
-          <button id="status" (click)="showTab('cards', 'cards')"
-            class="cards-tab-button relative px-4 py-3 text-sm active font-medium text-primary">Cards</button>
-          <button id="type" (click)="showTab('type', 'cards')"
+          <button id="cards-cards" (click)="showTab('cards', 'cards')"
+            class="cards-tab-button px-4 py-3 text-sm active font-medium text-primary">Cards</button>
+          <button id="cards-type" (click)="showTab('type', 'cards')"
             class="cards-tab-button relative px-4 py-3 text-sm text-gray-500">Card Type</button>
-          <button id="category" (click)="showTab('list', 'cards')"
+          <button id="cards-list" (click)="showTab('list', 'cards')"
             class="cards-tab-button relative px-4 py-3 text-sm text-gray-500">Card List</button>
         </nav>
       </div>
@@ -1027,7 +1037,7 @@
         <div class="flex justify-between items-center mb-6">
           <h3 class="text-lg font-medium text-gray-900">Cards Management</h3>
           <button id="btn-add-card" (click)="toggleForm('create-card')"
-            class="px-4 py-2 bg-primary text-white rounded-button flex items-center whitespace-nowrap">
+            class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
             <i class="ri-add-line mr-1"></i> Add Card </button>
         </div>
         <div class="overflow-x-auto">
@@ -1163,7 +1173,7 @@
         <div class="flex justify-between items-center mb-6">
           <h3 class="text-lg font-medium text-gray-900">Card Type Management</h3>
           <button id="btn-add-card" (click)="toggleForm('card-type')"
-            class="px-4 py-2 bg-primary text-white rounded-button flex items-center whitespace-nowrap">
+            class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
             <i class="ri-add-line mr-1"></i> Add Card Type </button>
         </div>
         <div class="overflow-x-auto">
@@ -1224,7 +1234,7 @@
         <div class="flex justify-between items-center mb-6">
           <h3 class="text-lg font-medium text-gray-900">Card List Management</h3>
           <button id="btn-add-card" (click)="toggleForm('card-list')"
-            class="px-4 py-2 bg-primary text-white rounded-button flex items-center whitespace-nowrap">
+            class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
             <i class="ri-add-line mr-1"></i> Add Card List </button>
         </div>
         <div class="overflow-x-auto">
@@ -1289,11 +1299,11 @@
     <div class="bg-white rounded-lg shadow">
       <div class="border-b border-gray-200">
         <nav class="flex -mb-px">
-          <button id="status" (click)="showTab('accounts', 'accounts')"
-            class="accounts-tab-button relative px-4 py-3 text-sm active font-medium text-primary">Accounts</button>
-          <button id="type" (click)="showTab('type', 'accounts')"
+          <button id="accounts-accounts" (click)="showTab('accounts', 'accounts')"
+            class="accounts-tab-button px-4 py-3 text-sm active font-medium text-primary">Accounts</button>
+          <button id="accounts-type" (click)="showTab('type', 'accounts')"
             class="accounts-tab-button relative px-4 py-3 text-sm text-gray-500">Account Type</button>
-          <button id="category" (click)="showTab('list', 'accounts')"
+          <button id="accounts-list" (click)="showTab('list', 'accounts')"
             class="accounts-tab-button relative px-4 py-3 text-sm text-gray-500">Account List</button>
         </nav>
       </div>
@@ -1302,7 +1312,7 @@
         <div class="flex justify-between items-center mb-6">
           <h3 class="text-lg font-medium text-gray-900">Accounts Management</h3>
           <button id="btn-add-account" (click)="toggleForm('create-account')"
-            class="px-4 py-2 bg-primary text-white rounded-button flex items-center whitespace-nowrap">
+            class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
             <i class="ri-add-line mr-1"></i> Add Account </button>
         </div>
         <div class="overflow-x-auto">
@@ -1431,7 +1441,7 @@
         <div class="flex justify-between items-center mb-6">
           <h3 class="text-lg font-medium text-gray-900">Account Type Management</h3>
           <button id="btn-add-account" (click)="toggleForm('account-type')"
-            class="px-4 py-2 bg-primary text-white rounded-button flex items-center whitespace-nowrap">
+            class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
             <i class="ri-add-line mr-1"></i> Add Account Type </button>
         </div>
         <div class="overflow-x-auto">
@@ -1492,7 +1502,7 @@
         <div class="flex justify-between items-center mb-6">
           <h3 class="text-lg font-medium text-gray-900">Account List Management</h3>
           <button id="btn-add-account" (click)="toggleForm('account-list')"
-            class="px-4 py-2 bg-primary text-white rounded-button flex items-center whitespace-nowrap">
+            class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
             <i class="ri-add-line mr-1"></i> Add Account List </button>
         </div>
         <div class="overflow-x-auto">
@@ -1686,7 +1696,7 @@
         <button (click)="closeForm('create-wallet')" id="cancel-create-wallet"
           class="px-4 py-2 border border-gray-300 text-gray-700 rounded-button hover:bg-gray-50 transition text-sm whitespace-nowrap">Cancel</button>
         <button id="submit-create-wallet"
-          class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 transition text-sm whitespace-nowrap">Create
+          class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">Create
           Wallet</button>
       </div>
     </div>
@@ -1748,14 +1758,14 @@
           <div class="md:w-2/3">
             <div class="mb-6">
               <div class="flex border-b border-gray-200">
-                <button class="details-tab-button  px-4 py-3 text-sm active font-medium text-primary" id="basic-info"
-                  (click)="showTab('basic-info','details')"> Basic Info </button>
-                <button class="details-tab-button  px-4 py-3 text-sm text-gray-500" id="balance"
+                <button class="details-tab-button  px-4 py-3 text-sm active font-medium text-primary"
+                  id="deatils-basic-info" (click)="showTab('basic-info','details')"> Basic Info </button>
+                <button class="details-tab-button  px-4 py-3 text-sm text-gray-500" id="deatils-balance"
                   (click)="showTab('balance','details')"> Balance
                 </button>
-                <button class="details-tab-button px-4 py-3 text-sm text-gray-500" id="relationships"
+                <button class="details-tab-button px-4 py-3 text-sm text-gray-500" id="deatils-relationships"
                   (click)="showTab('relationships','details')"> Relationships </button>
-                <button class="details-tab-button px-4 py-3 text-sm text-gray-500" id="operations"
+                <button class="details-tab-button px-4 py-3 text-sm text-gray-500" id="deatils-operations"
                   (click)="showTab('operations','details')">
                   Operations </button>
               </div>
