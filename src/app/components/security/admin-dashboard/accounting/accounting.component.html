@@ -1,1313 +1,1419 @@
-    <div class="bg-white border-b mx-6">
-      <div class="px-6 flex">
-        <button class="tab-button px-4 py-3 text-sm active font-medium text-primary" (click)="showTab('schemas')" id="schemas">Schemas</button>
-        <button class="tab-button px-4 py-3 text-sm text-gray-500" (click)="showTab('operationTypes')" id="operationTypes">Operation Types</button>
-        <button class="tab-button px-4 py-3 text-sm text-gray-500" (click)="showTab('feesCommissions')" id="feesCommissions">Fees & Commissions</button>
-        <button class="tab-button px-4 py-3 text-sm text-gray-500" (click)="showTab('categoryMappings')" id="categoryMappings">Category Mappings</button>
-        <button class="tab-button px-4 py-3 text-sm text-gray-500" (click)="showTab('balanceHistory')" id="balanceHistory">Balance History</button>
-        <button class="tab-button px-4 py-3 text-sm text-gray-500" (click)="showTab('vatRates')" id="vatRates">VAT Rates</button>
-        <button class="tab-button px-4 py-3 text-sm text-gray-500" (click)="showTab('profileManagement')" id="profileManagement">Profile Management</button>
+<div class="flex items-center justify-between px-6 py-3 bg-white">
+  <div class="flex items-center">
+    <h1 class="text-xl font-semibold text-gray-800">Accounting Management</h1>
+  </div>
+</div>
+<div class="bg-white border-b">
+  <div class="px-6 flex">
+    <button class="tab-button px-4 py-3 text-sm active font-medium text-primary" (click)="showTab('schemas')"
+      id="schemas">Schemas</button>
+    <button class="tab-button px-4 py-3 text-sm text-gray-500" (click)="showTab('operationTypes')"
+      id="operationTypes">Operation Types</button>
+    <button class="tab-button px-4 py-3 text-sm text-gray-500" (click)="showTab('feesCommissions')"
+      id="feesCommissions">Fees & Commissions</button>
+    <button class="tab-button px-4 py-3 text-sm text-gray-500" (click)="showTab('categoryMappings')"
+      id="categoryMappings">Category Mappings</button>
+    <button class="tab-button px-4 py-3 text-sm text-gray-500" (click)="showTab('balanceHistory')"
+      id="balanceHistory">Balance History</button>
+    <button class="tab-button px-4 py-3 text-sm text-gray-500" (click)="showTab('vatRates')" id="vatRates">VAT
+      Rates</button>
+    <button class="tab-button px-4 py-3 text-sm text-gray-500" (click)="showTab('profileManagement')"
+      id="profileManagement">Profile Management</button>
+  </div>
+</div>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto p-6 bg-gray-50">
+  <div id="tab-schemas" class="space-y-6 tab-content">
+    <!-- Schemas Table -->
+    <div class="bg-white rounded-lg shadow overflow-hidden">
+      <div class="p-4 border-b flex justify-between items-center">
+        <h2 class="text-lg font-medium">Accounting Schemas</h2>
+        <div class="flex items-center space-x-3">
+          <button
+            class="flex items-center px-3 py-2 border border-gray-300 rounded-button text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">
+            <div class="w-4 h-4 mr-2 flex items-center justify-center">
+              <i class="ri-download-2-line"></i>
+            </div> Export Data
+          </button>
+          <button (click)="toggleForm('schema')" id="newSchemaBtn"
+            class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+            <div class="w-4 h-4 mr-2 flex items-center justify-center">
+              <i class="ri-add-line"></i>
+            </div> New Schema
+          </button>
+        </div>
+      </div>
+      <!-- Top Header -->
+      <header class="bg-white shadow-sm z-10 mx-6">
+        <div class="px-6 py-3 bg-white border-t border-b flex flex-wrap items-center gap-3">
+          <div class="relative">
+            <select
+              class="appearance-none pl-3 pr-8 py-2 border border-gray-300 rounded-button text-sm focus:border-primary">
+              <option value="">All Operation Types</option>
+              <option value="deposit">Deposit</option>
+              <option value="withdrawal">Withdrawal</option>
+              <option value="transfer">Transfer</option>
+              <option value="payment">Payment</option>
+              <option value="vat">VAT</option>
+            </select>
+            <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+              <i class="ri-arrow-down-s-line text-gray-400"></i>
+            </div>
+          </div>
+          <div class="relative">
+            <select
+              class="appearance-none pl-3 pr-8 py-2 border border-gray-300 rounded-button text-sm focus:border-primary">
+              <option value="">All Statuses</option>
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+              <option value="draft">Draft</option>
+            </select>
+            <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+              <i class="ri-arrow-down-s-line text-gray-400"></i>
+            </div>
+          </div>
+          <div class="relative">
+            <select
+              class="appearance-none pl-3 pr-8 py-2 border border-gray-300 rounded-button text-sm focus:border-primary">
+              <option value="">Last 30 Days</option>
+              <option value="7days">Last 7 Days</option>
+              <option value="60days">Last 60 Days</option>
+              <option value="90days">Last 90 Days</option>
+              <option value="custom">Custom Range</option>
+            </select>
+            <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+              <i class="ri-arrow-down-s-line text-gray-400"></i>
+            </div>
+          </div>
+          <div class="relative flex-grow max-w-md">
+            <input type="text" placeholder="Search schemas, operations, or codes..."
+              class="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-button text-sm">
+            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+              <i class="ri-search-line text-gray-400"></i>
+            </div>
+          </div>
+        </div>
+      </header>
+      <div class="overflow-x-auto">
+        <table class="w-full">
+          <thead>
+            <tr class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th class="px-6 py-3">
+                <div class="flex items-center">
+                  <input type="checkbox" class="custom-checkbox mr-3">
+                  <span>Schema ID</span>
+                  <div class="w-4 h-4 ml-1 flex items-center justify-center">
+                    <i class="ri-arrow-up-s-line"></i>
+                  </div>
+                </div>
+              </th>
+              <th class="px-6 py-3">Schema Name</th>
+              <th class="px-6 py-3">Associated Operations</th>
+              <th class="px-6 py-3">Status</th>
+              <th class="px-6 py-3">Created Date</th>
+              <th class="px-6 py-3">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr class="hover:bg-gray-50">
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="flex items-center">
+                  <input type="checkbox" class="custom-checkbox mr-3">
+                  <span class="text-sm font-medium text-gray-900">SCH-001</span>
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900">Standard Deposit Schema</div>
+                <div class="text-xs text-gray-500">Default for deposits</div>
+              </td>
+              <td class="px-6 py-4">
+                <div class="flex flex-wrap gap-1">
+                  <span class="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800">Deposit</span>
+                  <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">Cash-in</span>
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">Active</span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"> May 12, 2025 </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                <div class="flex space-x-2">
+                  <button class="text-gray-500 hover:text-primary">
+                    <div class="w-5 h-5 flex items-center justify-center">
+                      <i class="ri-pencil-line"></i>
+                    </div>
+                  </button>
+                  <button class="text-gray-500 hover:text-primary">
+                    <div class="w-5 h-5 flex items-center justify-center">
+                      <i class="ri-file-copy-line"></i>
+                    </div>
+                  </button>
+                  <button class="text-gray-500 hover:text-red-600">
+                    <div class="w-5 h-5 flex items-center justify-center">
+                      <i class="ri-delete-bin-6-line"></i>
+                    </div>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="flex items-center">
+                  <input type="checkbox" class="custom-checkbox mr-3">
+                  <span class="text-sm font-medium text-gray-900">SCH-002</span>
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900">Premium Withdrawal Schema</div>
+                <div class="text-xs text-gray-500">For VIP clients</div>
+              </td>
+              <td class="px-6 py-4">
+                <div class="flex flex-wrap gap-1">
+                  <span class="px-2 py-1 text-xs rounded-full bg-purple-100 text-purple-800">Withdrawal</span>
+                  <span class="px-2 py-1 text-xs rounded-full bg-red-100 text-red-800">Cash-out</span>
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">Active</span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"> May 15, 2025 </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                <div class="flex space-x-2">
+                  <button class="text-gray-500 hover:text-primary">
+                    <div class="w-5 h-5 flex items-center justify-center">
+                      <i class="ri-pencil-line"></i>
+                    </div>
+                  </button>
+                  <button class="text-gray-500 hover:text-primary">
+                    <div class="w-5 h-5 flex items-center justify-center">
+                      <i class="ri-file-copy-line"></i>
+                    </div>
+                  </button>
+                  <button class="text-gray-500 hover:text-red-600">
+                    <div class="w-5 h-5 flex items-center justify-center">
+                      <i class="ri-delete-bin-6-line"></i>
+                    </div>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="flex items-center">
+                  <input type="checkbox" class="custom-checkbox mr-3">
+                  <span class="text-sm font-medium text-gray-900">SCH-003</span>
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900">International Transfer Schema</div>
+                <div class="text-xs text-gray-500">Cross-border transfers</div>
+              </td>
+              <td class="px-6 py-4">
+                <div class="flex flex-wrap gap-1">
+                  <span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800">Transfer</span>
+                  <span class="px-2 py-1 text-xs rounded-full bg-indigo-100 text-indigo-800">International</span>
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">Active</span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"> May 18, 2025 </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                <div class="flex space-x-2">
+                  <button class="text-gray-500 hover:text-primary">
+                    <div class="w-5 h-5 flex items-center justify-center">
+                      <i class="ri-pencil-line"></i>
+                    </div>
+                  </button>
+                  <button class="text-gray-500 hover:text-primary">
+                    <div class="w-5 h-5 flex items-center justify-center">
+                      <i class="ri-file-copy-line"></i>
+                    </div>
+                  </button>
+                  <button class="text-gray-500 hover:text-red-600">
+                    <div class="w-5 h-5 flex items-center justify-center">
+                      <i class="ri-delete-bin-6-line"></i>
+                    </div>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="flex items-center">
+                  <input type="checkbox" class="custom-checkbox mr-3">
+                  <span class="text-sm font-medium text-gray-900">SCH-004</span>
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900">Domestic Transfer Schema</div>
+                <div class="text-xs text-gray-500">In-country transfers</div>
+              </td>
+              <td class="px-6 py-4">
+                <div class="flex flex-wrap gap-1">
+                  <span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800">Transfer</span>
+                  <span class="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800">Domestic</span>
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">Active</span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"> May 20, 2025 </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                <div class="flex space-x-2">
+                  <button class="text-gray-500 hover:text-primary">
+                    <div class="w-5 h-5 flex items-center justify-center">
+                      <i class="ri-pencil-line"></i>
+                    </div>
+                  </button>
+                  <button class="text-gray-500 hover:text-primary">
+                    <div class="w-5 h-5 flex items-center justify-center">
+                      <i class="ri-file-copy-line"></i>
+                    </div>
+                  </button>
+                  <button class="text-gray-500 hover:text-red-600">
+                    <div class="w-5 h-5 flex items-center justify-center">
+                      <i class="ri-delete-bin-6-line"></i>
+                    </div>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="flex items-center">
+                  <input type="checkbox" class="custom-checkbox mr-3">
+                  <span class="text-sm font-medium text-gray-900">SCH-005</span>
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900">Corporate Payment Schema</div>
+                <div class="text-xs text-gray-500">For business accounts</div>
+              </td>
+              <td class="px-6 py-4">
+                <div class="flex flex-wrap gap-1">
+                  <span class="px-2 py-1 text-xs rounded-full bg-pink-100 text-pink-800">Payment</span>
+                  <span class="px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-800">Corporate</span>
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800">Draft</span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"> May 25, 2025 </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                <div class="flex space-x-2">
+                  <button class="text-gray-500 hover:text-primary">
+                    <div class="w-5 h-5 flex items-center justify-center">
+                      <i class="ri-pencil-line"></i>
+                    </div>
+                  </button>
+                  <button class="text-gray-500 hover:text-primary">
+                    <div class="w-5 h-5 flex items-center justify-center">
+                      <i class="ri-file-copy-line"></i>
+                    </div>
+                  </button>
+                  <button class="text-gray-500 hover:text-red-600">
+                    <div class="w-5 h-5 flex items-center justify-center">
+                      <i class="ri-delete-bin-6-line"></i>
+                    </div>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="px-6 py-3 flex items-center justify-between border-t">
+        <div class="flex items-center text-sm text-gray-500">
+          <span>Showing</span>
+          <div class="relative mx-2">
+            <select
+              class="appearance-none pl-2 pr-6 py-1 border border-gray-300 rounded-button text-sm focus:border-primary">
+              <option value="10">10</option>
+              <option value="25">25</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+            <div class="absolute inset-y-0 right-0 flex items-center px-1 pointer-events-none">
+              <i class="ri-arrow-down-s-line text-gray-400"></i>
+            </div>
+          </div>
+          <span>of 24 entries</span>
+        </div>
+        <div class="flex items-center space-x-1">
+          <button
+            class="px-2 py-1 border border-gray-300 rounded-button text-sm text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled>
+            <div class="w-5 h-5 flex items-center justify-center">
+              <i class="ri-arrow-left-s-line"></i>
+            </div>
+          </button>
+          <button class="px-3 py-1 border border-primary bg-primary text-white rounded-button text-sm">1</button>
+          <button
+            class="px-3 py-1 border border-gray-300 rounded-button text-sm text-gray-700 hover:bg-gray-50">2</button>
+          <button
+            class="px-3 py-1 border border-gray-300 rounded-button text-sm text-gray-700 hover:bg-gray-50">3</button>
+          <button class="px-2 py-1 border border-gray-300 rounded-button text-sm text-gray-500 hover:bg-gray-50">
+            <div class="w-5 h-5 flex items-center justify-center">
+              <i class="ri-arrow-right-s-line"></i>
+            </div>
+          </button>
+        </div>
       </div>
     </div>
-    <!-- Main Content Area -->
-    <main class="flex-1 overflow-y-auto p-6">
-      <div id="tab-schemas" class="space-y-6 tab-content">
-        <!-- Schemas Table -->
-        <div class="bg-white rounded-lg shadow overflow-hidden">
-          <div class="p-4 border-b flex justify-between items-center">
-            <h2 class="text-lg font-medium">Accounting Schemas</h2>
-            <div class="flex items-center space-x-2">
-              <button class="p-2 text-gray-500 hover:text-primary">
-                <div class="w-5 h-5 flex items-center justify-center">
-                  <i class="ri-refresh-line"></i>
-                </div>
-              </button>
-              <button class="p-2 text-gray-500 hover:text-primary">
-                <div class="w-5 h-5 flex items-center justify-center">
-                  <i class="ri-filter-3-line"></i>
-                </div>
-              </button>
-              <button class="p-2 text-gray-500 hover:text-primary">
-                <div class="w-5 h-5 flex items-center justify-center">
-                  <i class="ri-more-2-fill"></i>
-                </div>
-              </button>
-            </div>
-          </div>
-          <!-- Top Header -->
-          <header class="bg-white shadow-sm z-10 mx-6">
-            <div class="px-6 py-3 bg-white border-t border-b flex flex-wrap items-center gap-3">
-              <div class="relative">
-                <select class="appearance-none pl-3 pr-8 py-2 border border-gray-300 rounded-button text-sm focus:border-primary">
-                  <option value="">All Operation Types</option>
-                  <option value="deposit">Deposit</option>
-                  <option value="withdrawal">Withdrawal</option>
-                  <option value="transfer">Transfer</option>
-                  <option value="payment">Payment</option>
-                  <option value="vat">VAT</option>
-                </select>
-                <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                  <i class="ri-arrow-down-s-line text-gray-400"></i>
-                </div>
-              </div>
-              <div class="relative">
-                <select class="appearance-none pl-3 pr-8 py-2 border border-gray-300 rounded-button text-sm focus:border-primary">
-                  <option value="">All Statuses</option>
-                  <option value="active">Active</option>
-                  <option value="inactive">Inactive</option>
-                  <option value="draft">Draft</option>
-                </select>
-                <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                  <i class="ri-arrow-down-s-line text-gray-400"></i>
-                </div>
-              </div>
-              <div class="relative">
-                <select class="appearance-none pl-3 pr-8 py-2 border border-gray-300 rounded-button text-sm focus:border-primary">
-                  <option value="">Last 30 Days</option>
-                  <option value="7days">Last 7 Days</option>
-                  <option value="60days">Last 60 Days</option>
-                  <option value="90days">Last 90 Days</option>
-                  <option value="custom">Custom Range</option>
-                </select>
-                <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                  <i class="ri-arrow-down-s-line text-gray-400"></i>
-                </div>
-              </div>
-              <div class="relative flex-grow max-w-md">
-                <input type="text" placeholder="Search schemas, operations, or codes..." class="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-button text-sm">
-                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <i class="ri-search-line text-gray-400"></i>
-                </div>
-              </div>
-              <div class="flex items-center space-x-3">
-                <button class="flex items-center px-3 py-2 border border-gray-300 rounded-button text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">
-                  <div class="w-4 h-4 mr-2 flex items-center justify-center">
-                    <i class="ri-download-2-line"></i>
-                  </div> Export Data
+  </div>
+  <!-- operation types tab-->
+  <div id="tab-operationTypes" class="hidden tab-content rounded-lg shadow overflow-hidden">
+    <div class="p-4 border-b flex justify-between items-center">
+      <h2 class="text-lg font-medium">Operation Types</h2>
+      <button (click)="toggleForm('operation')" id="newOperationTypeBtn"
+        class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+        <div class="w-4 h-4 mr-2 flex items-center justify-center">
+          <i class="ri-add-line"></i>
+        </div>New Operation Type
+      </button>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="w-full">
+        <thead>
+          <tr class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th class="px-6 py-3">Code</th>
+            <th class="px-6 py-3">Identifier</th>
+            <th class="px-6 py-3">Label</th>
+            <th class="px-6 py-3">Category</th>
+            <th class="px-6 py-3">Status</th>
+            <th class="px-6 py-3">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200">
+          <tr class="hover:bg-gray-50">
+            <td class="px-6 py-4 whitespace-nowrap text-sm">OPT-001</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm">DEPOSIT</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm">Cash Deposit</td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800">Cash Operations</span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">Active</span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex space-x-2">
+                <button class="text-gray-500 hover:text-primary">
+                  <div class="w-5 h-5 flex items-center justify-center">
+                    <i class="ri-pencil-line"></i>
+                  </div>
                 </button>
-                <button (click)="toggleForm('schema')" id="newSchemaBtn" class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
-                  <div class="w-4 h-4 mr-2 flex items-center justify-center">
-                    <i class="ri-add-line"></i>
-                  </div> New Schema
+                <button class="text-gray-500 hover:text-red-600">
+                  <div class="w-5 h-5 flex items-center justify-center">
+                    <i class="ri-delete-bin-6-line"></i>
+                  </div>
                 </button>
               </div>
-            </div>
-          </header>
-          <div class="overflow-x-auto">
-            <table class="w-full">
-              <thead>
-                <tr class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  <th class="px-6 py-3">
-                    <div class="flex items-center">
-                      <input type="checkbox" class="custom-checkbox mr-3">
-                      <span>Schema ID</span>
-                      <div class="w-4 h-4 ml-1 flex items-center justify-center">
-                        <i class="ri-arrow-up-s-line"></i>
-                      </div>
-                    </div>
-                  </th>
-                  <th class="px-6 py-3">Schema Name</th>
-                  <th class="px-6 py-3">Associated Operations</th>
-                  <th class="px-6 py-3">Status</th>
-                  <th class="px-6 py-3">Created Date</th>
-                  <th class="px-6 py-3">Actions</th>
-                </tr>
-              </thead>
-              <tbody class="bg-white divide-y divide-gray-200">
-                <tr class="hover:bg-gray-50">
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="flex items-center">
-                      <input type="checkbox" class="custom-checkbox mr-3">
-                      <span class="text-sm font-medium text-gray-900">SCH-001</span>
-                    </div>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="text-sm text-gray-900">Standard Deposit Schema</div>
-                    <div class="text-xs text-gray-500">Default for deposits</div>
-                  </td>
-                  <td class="px-6 py-4">
-                    <div class="flex flex-wrap gap-1">
-                      <span class="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800">Deposit</span>
-                      <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">Cash-in</span>
-                    </div>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">Active</span>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"> May 12, 2025 </td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <div class="flex space-x-2">
-                      <button class="text-gray-500 hover:text-primary">
-                        <div class="w-5 h-5 flex items-center justify-center">
-                          <i class="ri-pencil-line"></i>
-                        </div>
-                      </button>
-                      <button class="text-gray-500 hover:text-primary">
-                        <div class="w-5 h-5 flex items-center justify-center">
-                          <i class="ri-file-copy-line"></i>
-                        </div>
-                      </button>
-                      <button class="text-gray-500 hover:text-red-600">
-                        <div class="w-5 h-5 flex items-center justify-center">
-                          <i class="ri-delete-bin-6-line"></i>
-                        </div>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-                <tr class="hover:bg-gray-50">
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="flex items-center">
-                      <input type="checkbox" class="custom-checkbox mr-3">
-                      <span class="text-sm font-medium text-gray-900">SCH-002</span>
-                    </div>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="text-sm text-gray-900">Premium Withdrawal Schema</div>
-                    <div class="text-xs text-gray-500">For VIP clients</div>
-                  </td>
-                  <td class="px-6 py-4">
-                    <div class="flex flex-wrap gap-1">
-                      <span class="px-2 py-1 text-xs rounded-full bg-purple-100 text-purple-800">Withdrawal</span>
-                      <span class="px-2 py-1 text-xs rounded-full bg-red-100 text-red-800">Cash-out</span>
-                    </div>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">Active</span>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"> May 15, 2025 </td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <div class="flex space-x-2">
-                      <button class="text-gray-500 hover:text-primary">
-                        <div class="w-5 h-5 flex items-center justify-center">
-                          <i class="ri-pencil-line"></i>
-                        </div>
-                      </button>
-                      <button class="text-gray-500 hover:text-primary">
-                        <div class="w-5 h-5 flex items-center justify-center">
-                          <i class="ri-file-copy-line"></i>
-                        </div>
-                      </button>
-                      <button class="text-gray-500 hover:text-red-600">
-                        <div class="w-5 h-5 flex items-center justify-center">
-                          <i class="ri-delete-bin-6-line"></i>
-                        </div>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-                <tr class="hover:bg-gray-50">
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="flex items-center">
-                      <input type="checkbox" class="custom-checkbox mr-3">
-                      <span class="text-sm font-medium text-gray-900">SCH-003</span>
-                    </div>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="text-sm text-gray-900">International Transfer Schema</div>
-                    <div class="text-xs text-gray-500">Cross-border transfers</div>
-                  </td>
-                  <td class="px-6 py-4">
-                    <div class="flex flex-wrap gap-1">
-                      <span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800">Transfer</span>
-                      <span class="px-2 py-1 text-xs rounded-full bg-indigo-100 text-indigo-800">International</span>
-                    </div>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">Active</span>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"> May 18, 2025 </td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <div class="flex space-x-2">
-                      <button class="text-gray-500 hover:text-primary">
-                        <div class="w-5 h-5 flex items-center justify-center">
-                          <i class="ri-pencil-line"></i>
-                        </div>
-                      </button>
-                      <button class="text-gray-500 hover:text-primary">
-                        <div class="w-5 h-5 flex items-center justify-center">
-                          <i class="ri-file-copy-line"></i>
-                        </div>
-                      </button>
-                      <button class="text-gray-500 hover:text-red-600">
-                        <div class="w-5 h-5 flex items-center justify-center">
-                          <i class="ri-delete-bin-6-line"></i>
-                        </div>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-                <tr class="hover:bg-gray-50">
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="flex items-center">
-                      <input type="checkbox" class="custom-checkbox mr-3">
-                      <span class="text-sm font-medium text-gray-900">SCH-004</span>
-                    </div>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="text-sm text-gray-900">Domestic Transfer Schema</div>
-                    <div class="text-xs text-gray-500">In-country transfers</div>
-                  </td>
-                  <td class="px-6 py-4">
-                    <div class="flex flex-wrap gap-1">
-                      <span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800">Transfer</span>
-                      <span class="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800">Domestic</span>
-                    </div>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">Active</span>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"> May 20, 2025 </td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <div class="flex space-x-2">
-                      <button class="text-gray-500 hover:text-primary">
-                        <div class="w-5 h-5 flex items-center justify-center">
-                          <i class="ri-pencil-line"></i>
-                        </div>
-                      </button>
-                      <button class="text-gray-500 hover:text-primary">
-                        <div class="w-5 h-5 flex items-center justify-center">
-                          <i class="ri-file-copy-line"></i>
-                        </div>
-                      </button>
-                      <button class="text-gray-500 hover:text-red-600">
-                        <div class="w-5 h-5 flex items-center justify-center">
-                          <i class="ri-delete-bin-6-line"></i>
-                        </div>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-                <tr class="hover:bg-gray-50">
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="flex items-center">
-                      <input type="checkbox" class="custom-checkbox mr-3">
-                      <span class="text-sm font-medium text-gray-900">SCH-005</span>
-                    </div>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="text-sm text-gray-900">Corporate Payment Schema</div>
-                    <div class="text-xs text-gray-500">For business accounts</div>
-                  </td>
-                  <td class="px-6 py-4">
-                    <div class="flex flex-wrap gap-1">
-                      <span class="px-2 py-1 text-xs rounded-full bg-pink-100 text-pink-800">Payment</span>
-                      <span class="px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-800">Corporate</span>
-                    </div>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800">Draft</span>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"> May 25, 2025 </td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <div class="flex space-x-2">
-                      <button class="text-gray-500 hover:text-primary">
-                        <div class="w-5 h-5 flex items-center justify-center">
-                          <i class="ri-pencil-line"></i>
-                        </div>
-                      </button>
-                      <button class="text-gray-500 hover:text-primary">
-                        <div class="w-5 h-5 flex items-center justify-center">
-                          <i class="ri-file-copy-line"></i>
-                        </div>
-                      </button>
-                      <button class="text-gray-500 hover:text-red-600">
-                        <div class="w-5 h-5 flex items-center justify-center">
-                          <i class="ri-delete-bin-6-line"></i>
-                        </div>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+            </td>
+          </tr>
+          <tr class="hover:bg-gray-50">
+            <td class="px-6 py-4 whitespace-nowrap text-sm">OPT-002</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm">WITHDRAWAL</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm">ATM Withdrawal</td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="px-2 py-1 text-xs rounded-full bg-purple-100 text-purple-800">Card Operations</span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">Active</span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex space-x-2">
+                <button class="text-gray-500 hover:text-primary">
+                  <div class="w-5 h-5 flex items-center justify-center">
+                    <i class="ri-pencil-line"></i>
+                  </div>
+                </button>
+                <button class="text-gray-500 hover:text-red-600">
+                  <div class="w-5 h-5 flex items-center justify-center">
+                    <i class="ri-delete-bin-6-line"></i>
+                  </div>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <!-- fees and commission -->
+  <div id="tab-feesCommissions" class="hidden tab-content bg-white rounded-lg shadow overflow-hidden">
+    <div class="p-4 border-b flex justify-between items-center">
+      <h2 class="text-lg font-medium">Fees & Commissions</h2>
+      <button (click)="toggleForm('fee')"
+        class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+        <div class="w-4 h-4 mr-2 flex items-center justify-center">
+          <i class="ri-add-line"></i>
+        </div> New Fee
+      </button>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="w-full">
+        <thead>
+          <tr class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th class="px-6 py-3">Fee Code</th>
+            <th class="px-6 py-3">Type</th>
+            <th class="px-6 py-3">Amount/Rate</th>
+            <th class="px-6 py-3">Operation Type</th>
+            <th class="px-6 py-3">Status</th>
+            <th class="px-6 py-3">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200">
+          <tr class="hover:bg-gray-50">
+            <td class="px-6 py-4 whitespace-nowrap text-sm">FEE-001</td>
+            <td class="px-6 py-4">
+              <div class="text-sm text-gray-900">Processing Fee</div>
+              <div class="text-xs text-gray-500">Percentage Based</div>
+            </td>
+            <td class="px-6 py-4">
+              <div class="text-sm text-gray-900">1.5%</div>
+              <div class="text-xs text-gray-500">Max: $50</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800">Deposit</span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">Active</span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex space-x-2">
+                <button class="text-gray-500 hover:text-primary">
+                  <div class="w-5 h-5 flex items-center justify-center">
+                    <i class="ri-pencil-line"></i>
+                  </div>
+                </button>
+                <button class="text-gray-500 hover:text-red-600">
+                  <div class="w-5 h-5 flex items-center justify-center">
+                    <i class="ri-delete-bin-6-line"></i>
+                  </div>
+                </button>
+              </div>
+            </td>
+          </tr>
+          <tr class="hover:bg-gray-50">
+            <td class="px-6 py-4 whitespace-nowrap text-sm">FEE-002</td>
+            <td class="px-6 py-4">
+              <div class="text-sm text-gray-900">Service Fee</div>
+              <div class="text-xs text-gray-500">Fixed Amount</div>
+            </td>
+            <td class="px-6 py-4">
+              <div class="text-sm text-gray-900">$2.00</div>
+              <div class="text-xs text-gray-500">Per Transaction</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="px-2 py-1 text-xs rounded-full bg-purple-100 text-purple-800">Withdrawal</span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">Active</span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex space-x-2">
+                <button class="text-gray-500 hover:text-primary">
+                  <div class="w-5 h-5 flex items-center justify-center">
+                    <i class="ri-pencil-line"></i>
+                  </div>
+                </button>
+                <button class="text-gray-500 hover:text-red-600">
+                  <div class="w-5 h-5 flex items-center justify-center">
+                    <i class="ri-delete-bin-6-line"></i>
+                  </div>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <!-- category mapping tab -->
+  <div id="tab-categoryMappings" class="hidden tab-content rounded-lg shadow overflow-hidden">
+    <div class="p-4 border-b flex justify-between items-center">
+      <h2 class="text-lg font-medium">Wallet Category Operation Type Mappings</h2>
+      <button (click)="toggleForm('mapping')"
+        class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+        <div class="w-4 h-4 mr-2 flex items-center justify-center">
+          <i class="ri-add-line"></i>
+        </div> New Mapp
+      </button>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="w-full">
+        <thead>
+          <tr class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th class="px-6 py-3">ID</th>
+            <th class="px-6 py-3">Operation Type</th>
+            <th class="px-6 py-3">Wallet Category</th>
+            <th class="px-6 py-3">Fee Details</th>
+            <th class="px-6 py-3">Limits</th>
+            <th class="px-6 py-3">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200">
+          <tr class="hover:bg-gray-50">
+            <td class="px-6 py-4 whitespace-nowrap text-sm">MAP-001</td>
+            <td class="px-6 py-4">
+              <div class="text-sm text-gray-900">Deposit</div>
+              <div class="text-xs text-gray-500">Standard Operation</div>
+            </td>
+            <td class="px-6 py-4">
+              <div class="text-sm text-gray-900">Personal Savings</div>
+              <div class="text-xs text-gray-500">CAT-001</div>
+            </td>
+            <td class="px-6 py-4">
+              <div class="text-sm text-gray-900">Processing Fee: 1.5%</div>
+              <div class="text-xs text-gray-500">Max Amount: $500</div>
+            </td>
+            <td class="px-6 py-4">
+              <div class="text-sm text-gray-900">Max: $10,000</div>
+              <div class="text-xs text-gray-500">Period: Monthly</div>
+            </td>
+            <td class="px-6 py-4">
+              <div class="flex space-x-2">
+                <button class="text-gray-500 hover:text-primary">
+                  <div class="w-5 h-5 flex items-center justify-center">
+                    <i class="ri-pencil-line"></i>
+                  </div>
+                </button>
+                <button class="text-gray-500 hover:text-red-600">
+                  <div class="w-5 h-5 flex items-center justify-center">
+                    <i class="ri-delete-bin-6-line"></i>
+                  </div>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <!-- balance history-->
+  <div id="tab-balanceHistory" class="hidden tab-content bg-white rounded-lg shadow overflow-hidden">
+    <div class="p-4 border-b flex justify-between items-center">
+      <h2 class="text-lg font-medium">Wallet Balance History</h2>
+      <div class="flex space-x-2">
+        <div class="relative">
+          <select
+            class="appearance-none pl-3 pr-8 py-2 border border-gray-300 rounded-button text-sm focus:border-primary">
+            <option value="">All Wallets</option>
+            <option value="w1">Wallet 001</option>
+            <option value="w2">Wallet 002</option>
+          </select>
+          <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+            <i class="ri-arrow-down-s-line text-gray-400"></i>
           </div>
-          <div class="px-6 py-3 flex items-center justify-between border-t">
-            <div class="flex items-center text-sm text-gray-500">
-              <span>Showing</span>
-              <div class="relative mx-2">
-                <select class="appearance-none pl-2 pr-6 py-1 border border-gray-300 rounded-button text-sm focus:border-primary">
-                  <option value="10">10</option>
-                  <option value="25">25</option>
-                  <option value="50">50</option>
-                  <option value="100">100</option>
-                </select>
-                <div class="absolute inset-y-0 right-0 flex items-center px-1 pointer-events-none">
-                  <i class="ri-arrow-down-s-line text-gray-400"></i>
+        </div>
+        <button
+          class="flex items-center px-3 py-2 border border-gray-300 rounded-button text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+          <div class="w-4 h-4 mr-2 flex items-center justify-center">
+            <i class="ri-download-2-line"></i>
+          </div> Export
+        </button>
+      </div>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="w-full">
+        <thead>
+          <tr class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th class="px-6 py-3">Code</th>
+            <th class="px-6 py-3">Identifier</th>
+            <th class="px-6 py-3">Effective Balance</th>
+            <th class="px-6 py-3">Logical Balance</th>
+            <th class="px-6 py-3">Specific Balance</th>
+            <th class="px-6 py-3">Last Updated</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200">
+          <tr class="hover:bg-gray-50">
+            <td class="px-6 py-4 whitespace-nowrap text-sm">WBH-001</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm">HIST-20250529-001</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm">$5,234.56</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm">$5,234.56</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm">$5,000.00</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm">May 29, 2025 14:30</td>
+          </tr>
+          <tr class="hover:bg-gray-50">
+            <td class="px-6 py-4 whitespace-nowrap text-sm">WBH-002</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm">HIST-20250529-002</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm">$3,456.78</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm">$3,456.78</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm">$3,000.00</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm">May 29, 2025 14:15</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="px-6 py-3 flex items-center justify-between border-t">
+      <div class="flex items-center text-sm text-gray-500">
+        <span>Showing</span>
+        <div class="relative mx-2">
+          <select
+            class="appearance-none pl-2 pr-6 py-1 border border-gray-300 rounded-button text-sm focus:border-primary">
+            <option value="10">10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+          </select>
+          <div class="absolute inset-y-0 right-0 flex items-center px-1 pointer-events-none">
+            <i class="ri-arrow-down-s-line text-gray-400"></i>
+          </div>
+        </div>
+        <span>of 50 entries</span>
+      </div>
+      <div class="flex items-center space-x-1">
+        <button
+          class="px-2 py-1 border border-gray-300 rounded-button text-sm text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+          disabled>
+          <div class="w-5 h-5 flex items-center justify-center">
+            <i class="ri-arrow-left-s-line"></i>
+          </div>
+        </button>
+        <button class="px-3 py-1 border border-primary bg-primary text-white rounded-button text-sm">1</button>
+        <button
+          class="px-3 py-1 border border-gray-300 rounded-button text-sm text-gray-700 hover:bg-gray-50">2</button>
+        <button
+          class="px-3 py-1 border border-gray-300 rounded-button text-sm text-gray-700 hover:bg-gray-50">3</button>
+        <button class="px-2 py-1 border border-gray-300 rounded-button text-sm text-gray-500 hover:bg-gray-50">
+          <div class="w-5 h-5 flex items-center justify-center">
+            <i class="ri-arrow-right-s-line"></i>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- vat tab -->
+  <div id="tab-vatRates" class="hidden tab-content bg-white rounded-lg shadow overflow-hidden">
+    <div class="p-4 border-b flex justify-between items-center">
+      <h2 class="text-lg font-medium">VAT Rate Management</h2>
+      <button (click)="toggleForm('vat')"
+        class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+        <div class="w-4 h-4 mr-2 flex items-center justify-center">
+          <i class="ri-add-line"></i>
+        </div> New VAT
+      </button>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="w-full">
+        <thead>
+          <tr class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th class="px-6 py-3">VAT Code</th>
+            <th class="px-6 py-3">Rate</th>
+            <th class="px-6 py-3">Label</th>
+            <th class="px-6 py-3">Identifier</th>
+            <th class="px-6 py-3">Status</th>
+            <th class="px-6 py-3">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200">
+          <tr class="hover:bg-gray-50">
+            <td class="px-6 py-4 whitespace-nowrap text-sm">VAT-001</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm">20%</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm">Standard Rate</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm">STD-VAT-20</td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">Active</span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex space-x-2">
+                <button class="text-gray-500 hover:text-primary">
+                  <div class="w-5 h-5 flex items-center justify-center">
+                    <i class="ri-pencil-line"></i>
+                  </div>
+                </button>
+                <button class="text-gray-500 hover:text-red-600">
+                  <div class="w-5 h-5 flex items-center justify-center">
+                    <i class="ri-delete-bin-6-line"></i>
+                  </div>
+                </button>
+              </div>
+            </td>
+          </tr>
+          <tr class="hover:bg-gray-50">
+            <td class="px-6 py-4 whitespace-nowrap text-sm">VAT-002</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm">5%</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm">Reduced Rate</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm">RED-VAT-5</td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">Active</span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex space-x-2">
+                <button class="text-gray-500 hover:text-primary">
+                  <div class="w-5 h-5 flex items-center justify-center">
+                    <i class="ri-pencil-line"></i>
+                  </div>
+                </button>
+                <button class="text-gray-500 hover:text-red-600">
+                  <div class="w-5 h-5 flex items-center justify-center">
+                    <i class="ri-delete-bin-6-line"></i>
+                  </div>
+                </button>
+              </div>
+            </td>
+          </tr>
+          <tr class="hover:bg-gray-50">
+            <td class="px-6 py-4 whitespace-nowrap text-sm">VAT-003</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm">0%</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm">Zero Rate</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm">ZERO-VAT</td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800">Inactive</span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex space-x-2">
+                <button class="text-gray-500 hover:text-primary">
+                  <div class="w-5 h-5 flex items-center justify-center">
+                    <i class="ri-pencil-line"></i>
+                  </div>
+                </button>
+                <button class="text-gray-500 hover:text-red-600">
+                  <div class="w-5 h-5 flex items-center justify-center">
+                    <i class="ri-delete-bin-6-line"></i>
+                  </div>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</main>
+<!-- Toast Notification -->
+<div id="toast"
+  class="toast hidden fixed bottom-4 right-4 bg-white rounded-lg shadow-lg p-4 max-w-xs z-50 flex items-center">
+  <div class="w-8 h-8 flex items-center justify-center rounded-full bg-green-100 text-green-500 mr-3">
+    <i class="ri-check-line"></i>
+  </div>
+  <div>
+    <h4 class="font-medium text-gray-900">Success</h4>
+    <p class="text-sm text-gray-600">Schema created successfully!</p>
+  </div>
+  <button id="closeToast" class="ml-auto text-gray-400 hover:text-gray-500">
+    <div class="w-5 h-5 flex items-center justify-center">
+      <i class="ri-close-line"></i>
+    </div>
+  </button>
+</div>
+<div *ngIf="isAnyModalVisible" class="fixed inset-0 z-50  bg-black bg-opacity-50 flex items-center justify-center">
+  <!-- New Schema Modal -->
+  <div *ngIf="isNewSchemaVisible" class="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4 transform">
+    <div class="flex justify-between items-center p-6 border-b">
+      <h3 class="text-lg font-medium">Create New Accounting Schema</h3>
+      <button id="closeSchemaModal" class="text-gray-400 hover:text-gray-500">
+        <div (click)="closeForm('schema')" class="w-5 h-5 flex items-center justify-center">
+          <i class="ri-close-line"></i>
+        </div>
+      </button>
+    </div>
+    <div class="p-6 overflow-y-auto max-h-[70vh]">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="col-span-2">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Operation Type Details</label>
+          <div class="border border-gray-300 rounded-button p-4 space-y-4">
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">Operation Code (ID)</label>
+                <input type="number"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary"
+                  placeholder="Enter operation code">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">Operation Identifier</label>
+                <input type="text"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary"
+                  placeholder="Enter identifier">
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">Operation Label</label>
+                <input type="text"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary"
+                  placeholder="Enter label">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">Fiscal Identifier</label>
+                <input type="text"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary"
+                  placeholder="Enter fiscal identifier">
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-600 mb-1">Fiscal Label</label>
+              <input type="text"
+                class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary"
+                placeholder="Enter fiscal label">
+            </div>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Schema ID</label>
+          <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary"
+            placeholder="Auto-generated" disabled>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+          <div class="relative">
+            <select
+              class="appearance-none w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary">
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+              <option value="draft">Draft</option>
+            </select>
+            <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+              <i class="ri-arrow-down-s-line text-gray-400"></i>
+            </div>
+          </div>
+        </div>
+        <div class="col-span-2">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+          <textarea class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary" rows="3"
+            placeholder="Enter schema description"></textarea>
+        </div>
+        <div class="col-span-2">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Associated Operation Types</label>
+          <div class="border border-gray-300 rounded-button p-3 max-h-40 overflow-y-auto">
+            <div class="space-y-2">
+              <div class="flex items-center">
+                <input type="checkbox" id="op-deposit" class="custom-checkbox mr-2">
+                <label for="op-deposit" class="text-sm">Deposit</label>
+              </div>
+              <div class="flex items-center">
+                <input type="checkbox" id="op-withdrawal" class="custom-checkbox mr-2">
+                <label for="op-withdrawal" class="text-sm">Withdrawal</label>
+              </div>
+              <div class="flex items-center">
+                <input type="checkbox" id="op-transfer" class="custom-checkbox mr-2">
+                <label for="op-transfer" class="text-sm">Transfer</label>
+              </div>
+              <div class="flex items-center">
+                <input type="checkbox" id="op-payment" class="custom-checkbox mr-2">
+                <label for="op-payment" class="text-sm">Payment</label>
+              </div>
+              <div class="flex items-center">
+                <input type="checkbox" id="op-cashin" class="custom-checkbox mr-2">
+                <label for="op-cashin" class="text-sm">Cash-in</label>
+              </div>
+              <div class="flex items-center">
+                <input type="checkbox" id="op-cashout" class="custom-checkbox mr-2">
+                <label for="op-cashout" class="text-sm">Cash-out</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-span-2">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Fee Schema Configuration</label>
+          <div class="border border-gray-300 rounded-button overflow-hidden">
+            <div class="p-4 space-y-4">
+              <div class="grid grid-cols-3 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-600 mb-1">Schema Code</label>
+                  <input type="number"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary"
+                    placeholder="Enter schema code">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-600 mb-1">Schema Identifier</label>
+                  <input type="text"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary"
+                    placeholder="Enter identifier">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-600 mb-1">Schema Label</label>
+                  <input type="text"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary"
+                    placeholder="Enter label">
                 </div>
               </div>
-              <span>of 24 entries</span>
-            </div>
-            <div class="flex items-center space-x-1">
-              <button class="px-2 py-1 border border-gray-300 rounded-button text-sm text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
-                <div class="w-5 h-5 flex items-center justify-center">
-                  <i class="ri-arrow-left-s-line"></i>
+              <div class="mt-6">
+                <div class="flex justify-between items-center mb-3">
+                  <label class="block text-sm font-medium text-gray-700">Fee Rules</label>
+                  <button class="flex items-center text-sm text-primary hover:text-primary-dark">
+                    <div class="w-4 h-4 mr-1 flex items-center justify-center">
+                      <i class="ri-add-line"></i>
+                    </div> Add Rule
+                  </button>
                 </div>
-              </button>
-              <button class="px-3 py-1 border border-primary bg-primary text-white rounded-button text-sm">1</button>
-              <button class="px-3 py-1 border border-gray-300 rounded-button text-sm text-gray-700 hover:bg-gray-50">2</button>
-              <button class="px-3 py-1 border border-gray-300 rounded-button text-sm text-gray-700 hover:bg-gray-50">3</button>
-              <button class="px-2 py-1 border border-gray-300 rounded-button text-sm text-gray-500 hover:bg-gray-50">
-                <div class="w-5 h-5 flex items-center justify-center">
-                  <i class="ri-arrow-right-s-line"></i>
+                <div class="space-y-4">
+                  <div class="border border-gray-200 rounded-lg p-4">
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                      <div>
+                        <label class="block text-sm font-medium text-gray-600 mb-1">Rule Code</label>
+                        <input type="number"
+                          class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary"
+                          placeholder="Enter rule code">
+                      </div>
+                      <div>
+                        <label class="block text-sm font-medium text-gray-600 mb-1">Rule Type</label>
+                        <div class="relative">
+                          <select
+                            class="appearance-none w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary">
+                            <option value="">Select rule type</option>
+                            <option value="percentage">Percentage Based</option>
+                            <option value="fixed">Fixed Amount</option>
+                            <option value="tiered">Tiered Rate</option>
+                          </select>
+                          <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                            <i class="ri-arrow-down-s-line text-gray-400"></i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                      <div>
+                        <label class="block text-sm font-medium text-gray-600 mb-1">Rule Identifier</label>
+                        <input type="text"
+                          class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary"
+                          placeholder="Enter identifier">
+                      </div>
+                      <div>
+                        <label class="block text-sm font-medium text-gray-600 mb-1">Rule Label</label>
+                        <input type="text"
+                          class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary"
+                          placeholder="Enter label">
+                      </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                      <div>
+                        <label class="block text-sm font-medium text-gray-600 mb-1">Primary Wallet ID</label>
+                        <input type="text"
+                          class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary"
+                          placeholder="Enter wallet ID">
+                      </div>
+                      <div>
+                        <label class="block text-sm font-medium text-gray-600 mb-1">Primary Amount</label>
+                        <input type="number" step="0.01"
+                          class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary"
+                          placeholder="0.00">
+                      </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                      <div>
+                        <label class="block text-sm font-medium text-gray-600 mb-1">Fees Wallet ID</label>
+                        <input type="number"
+                          class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary"
+                          placeholder="Enter fees wallet ID">
+                      </div>
+                      <div>
+                        <label class="block text-sm font-medium text-gray-600 mb-1">Fees Amount</label>
+                        <input type="number" step="0.01"
+                          class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary"
+                          placeholder="0.00">
+                      </div>
+                    </div>
+                    <div class="grid grid-cols-3 gap-4">
+                      <div>
+                        <label class="block text-sm font-medium text-gray-600 mb-1">VAT Rate</label>
+                        <div class="relative">
+                          <select
+                            class="appearance-none w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary">
+                            <option value="">Select VAT rate</option>
+                            <option value="standard">Standard (20%)</option>
+                            <option value="reduced">Reduced (5%)</option>
+                            <option value="zero">Zero (0%)</option>
+                          </select>
+                          <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                            <i class="ri-arrow-down-s-line text-gray-400"></i>
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <label class="block text-sm font-medium text-gray-600 mb-1">VAT Wallet ID</label>
+                        <input type="number"
+                          class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary"
+                          placeholder="Enter VAT wallet ID">
+                      </div>
+                      <div>
+                        <label class="block text-sm font-medium text-gray-600 mb-1">VAT Amount</label>
+                        <input type="number" step="0.01"
+                          class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary"
+                          placeholder="0.00">
+                      </div>
+                    </div>
+                    <div class="mt-4">
+                      <label class="block text-sm font-medium text-gray-600 mb-1">Transaction Direction</label>
+                      <div class="relative">
+                        <select
+                          class="appearance-none w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary">
+                          <option value="">Select direction</option>
+                          <option value="debit">Debit</option>
+                          <option value="credit">Credit</option>
+                        </select>
+                        <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                          <i class="ri-arrow-down-s-line text-gray-400"></i>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- operation types tab-->
-      <div id="tab-operationTypes" class="hidden tab-content rounded-lg shadow overflow-hidden">
-        <div class="p-4 border-b flex justify-between items-center">
-          <h2 class="text-lg font-medium">Operation Types</h2>
-          <button (click)="toggleForm('operation')" id="newOperationTypeBtn" class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
-            <div class="w-4 h-4 mr-2 flex items-center justify-center">
-              <i class="ri-add-line"></i>
-            </div>New Operation Type
-          </button>
-        </div>
-        <div class="overflow-x-auto">
-          <table class="w-full">
-            <thead>
-              <tr class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                <th class="px-6 py-3">Code</th>
-                <th class="px-6 py-3">Identifier</th>
-                <th class="px-6 py-3">Label</th>
-                <th class="px-6 py-3">Category</th>
-                <th class="px-6 py-3">Status</th>
-                <th class="px-6 py-3">Actions</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-200">
-              <tr class="hover:bg-gray-50">
-                <td class="px-6 py-4 whitespace-nowrap text-sm">OPT-001</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm">DEPOSIT</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm">Cash Deposit</td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <span class="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800">Cash Operations</span>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">Active</span>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="flex space-x-2">
-                    <button class="text-gray-500 hover:text-primary">
-                      <div class="w-5 h-5 flex items-center justify-center">
-                        <i class="ri-pencil-line"></i>
-                      </div>
-                    </button>
-                    <button class="text-gray-500 hover:text-red-600">
-                      <div class="w-5 h-5 flex items-center justify-center">
-                        <i class="ri-delete-bin-6-line"></i>
-                      </div>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-              <tr class="hover:bg-gray-50">
-                <td class="px-6 py-4 whitespace-nowrap text-sm">OPT-002</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm">WITHDRAWAL</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm">ATM Withdrawal</td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <span class="px-2 py-1 text-xs rounded-full bg-purple-100 text-purple-800">Card Operations</span>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">Active</span>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="flex space-x-2">
-                    <button class="text-gray-500 hover:text-primary">
-                      <div class="w-5 h-5 flex items-center justify-center">
-                        <i class="ri-pencil-line"></i>
-                      </div>
-                    </button>
-                    <button class="text-gray-500 hover:text-red-600">
-                      <div class="w-5 h-5 flex items-center justify-center">
-                        <i class="ri-delete-bin-6-line"></i>
-                      </div>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <!-- fees and commission -->
-      <div id="tab-feesCommissions" class="hidden tab-content bg-white rounded-lg shadow overflow-hidden">
-        <div class="p-4 border-b flex justify-between items-center">
-          <h2 class="text-lg font-medium">Fees & Commissions</h2>
-          <button (click)="toggleForm('fee')" class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
-            <div class="w-4 h-4 mr-2 flex items-center justify-center">
-              <i class="ri-add-line"></i>
-            </div> New Fee
-          </button>
-        </div>
-        <div class="overflow-x-auto">
-          <table class="w-full">
-            <thead>
-              <tr class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                <th class="px-6 py-3">Fee Code</th>
-                <th class="px-6 py-3">Type</th>
-                <th class="px-6 py-3">Amount/Rate</th>
-                <th class="px-6 py-3">Operation Type</th>
-                <th class="px-6 py-3">Status</th>
-                <th class="px-6 py-3">Actions</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-200">
-              <tr class="hover:bg-gray-50">
-                <td class="px-6 py-4 whitespace-nowrap text-sm">FEE-001</td>
-                <td class="px-6 py-4">
-                  <div class="text-sm text-gray-900">Processing Fee</div>
-                  <div class="text-xs text-gray-500">Percentage Based</div>
-                </td>
-                <td class="px-6 py-4">
-                  <div class="text-sm text-gray-900">1.5%</div>
-                  <div class="text-xs text-gray-500">Max: $50</div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <span class="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800">Deposit</span>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">Active</span>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="flex space-x-2">
-                    <button class="text-gray-500 hover:text-primary">
-                      <div class="w-5 h-5 flex items-center justify-center">
-                        <i class="ri-pencil-line"></i>
-                      </div>
-                    </button>
-                    <button class="text-gray-500 hover:text-red-600">
-                      <div class="w-5 h-5 flex items-center justify-center">
-                        <i class="ri-delete-bin-6-line"></i>
-                      </div>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-              <tr class="hover:bg-gray-50">
-                <td class="px-6 py-4 whitespace-nowrap text-sm">FEE-002</td>
-                <td class="px-6 py-4">
-                  <div class="text-sm text-gray-900">Service Fee</div>
-                  <div class="text-xs text-gray-500">Fixed Amount</div>
-                </td>
-                <td class="px-6 py-4">
-                  <div class="text-sm text-gray-900">$2.00</div>
-                  <div class="text-xs text-gray-500">Per Transaction</div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <span class="px-2 py-1 text-xs rounded-full bg-purple-100 text-purple-800">Withdrawal</span>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">Active</span>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="flex space-x-2">
-                    <button class="text-gray-500 hover:text-primary">
-                      <div class="w-5 h-5 flex items-center justify-center">
-                        <i class="ri-pencil-line"></i>
-                      </div>
-                    </button>
-                    <button class="text-gray-500 hover:text-red-600">
-                      <div class="w-5 h-5 flex items-center justify-center">
-                        <i class="ri-delete-bin-6-line"></i>
-                      </div>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <!-- category mapping tab -->
-      <div id="tab-categoryMappings" class="hidden tab-content rounded-lg shadow overflow-hidden">
-        <div class="p-4 border-b flex justify-between items-center">
-          <h2 class="text-lg font-medium">Wallet Category Operation Type Mappings</h2>
-          <button (click)="toggleForm('mapping')" class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
-            <div class="w-4 h-4 mr-2 flex items-center justify-center">
-              <i class="ri-add-line"></i>
-            </div> New Mapp
-          </button>
-        </div>
-        <div class="overflow-x-auto">
-          <table class="w-full">
-            <thead>
-              <tr class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                <th class="px-6 py-3">ID</th>
-                <th class="px-6 py-3">Operation Type</th>
-                <th class="px-6 py-3">Wallet Category</th>
-                <th class="px-6 py-3">Fee Details</th>
-                <th class="px-6 py-3">Limits</th>
-                <th class="px-6 py-3">Actions</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-200">
-              <tr class="hover:bg-gray-50">
-                <td class="px-6 py-4 whitespace-nowrap text-sm">MAP-001</td>
-                <td class="px-6 py-4">
-                  <div class="text-sm text-gray-900">Deposit</div>
-                  <div class="text-xs text-gray-500">Standard Operation</div>
-                </td>
-                <td class="px-6 py-4">
-                  <div class="text-sm text-gray-900">Personal Savings</div>
-                  <div class="text-xs text-gray-500">CAT-001</div>
-                </td>
-                <td class="px-6 py-4">
-                  <div class="text-sm text-gray-900">Processing Fee: 1.5%</div>
-                  <div class="text-xs text-gray-500">Max Amount: $500</div>
-                </td>
-                <td class="px-6 py-4">
-                  <div class="text-sm text-gray-900">Max: $10,000</div>
-                  <div class="text-xs text-gray-500">Period: Monthly</div>
-                </td>
-                <td class="px-6 py-4">
-                  <div class="flex space-x-2">
-                    <button class="text-gray-500 hover:text-primary">
-                      <div class="w-5 h-5 flex items-center justify-center">
-                        <i class="ri-pencil-line"></i>
-                      </div>
-                    </button>
-                    <button class="text-gray-500 hover:text-red-600">
-                      <div class="w-5 h-5 flex items-center justify-center">
-                        <i class="ri-delete-bin-6-line"></i>
-                      </div>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <!-- balance history-->
-      <div id="tab-balanceHistory" class="hidden tab-content bg-white rounded-lg shadow overflow-hidden">
-        <div class="p-4 border-b flex justify-between items-center">
-          <h2 class="text-lg font-medium">Wallet Balance History</h2>
-          <div class="flex space-x-2">
-            <div class="relative">
-              <select class="appearance-none pl-3 pr-8 py-2 border border-gray-300 rounded-button text-sm focus:border-primary">
-                <option value="">All Wallets</option>
-                <option value="w1">Wallet 001</option>
-                <option value="w2">Wallet 002</option>
-              </select>
-              <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                <i class="ri-arrow-down-s-line text-gray-400"></i>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">Fee Identifier</label>
+                <input type="text"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary"
+                  placeholder="Enter identifier">
               </div>
             </div>
-            <button class="flex items-center px-3 py-2 border border-gray-300 rounded-button text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
-              <div class="w-4 h-4 mr-2 flex items-center justify-center">
-                <i class="ri-download-2-line"></i>
-              </div> Export
-            </button>
-          </div>
-        </div>
-        <div class="overflow-x-auto">
-          <table class="w-full">
-            <thead>
-              <tr class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                <th class="px-6 py-3">Code</th>
-                <th class="px-6 py-3">Identifier</th>
-                <th class="px-6 py-3">Effective Balance</th>
-                <th class="px-6 py-3">Logical Balance</th>
-                <th class="px-6 py-3">Specific Balance</th>
-                <th class="px-6 py-3">Last Updated</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-200">
-              <tr class="hover:bg-gray-50">
-                <td class="px-6 py-4 whitespace-nowrap text-sm">WBH-001</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm">HIST-20250529-001</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm">$5,234.56</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm">$5,234.56</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm">$5,000.00</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm">May 29, 2025 14:30</td>
-              </tr>
-              <tr class="hover:bg-gray-50">
-                <td class="px-6 py-4 whitespace-nowrap text-sm">WBH-002</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm">HIST-20250529-002</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm">$3,456.78</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm">$3,456.78</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm">$3,000.00</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm">May 29, 2025 14:15</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="px-6 py-3 flex items-center justify-between border-t">
-          <div class="flex items-center text-sm text-gray-500">
-            <span>Showing</span>
-            <div class="relative mx-2">
-              <select class="appearance-none pl-2 pr-6 py-1 border border-gray-300 rounded-button text-sm focus:border-primary">
-                <option value="10">10</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
-              </select>
-              <div class="absolute inset-y-0 right-0 flex items-center px-1 pointer-events-none">
-                <i class="ri-arrow-down-s-line text-gray-400"></i>
+            <div>
+              <label class="block text-sm font-medium text-gray-600 mb-1">Fee Label</label>
+              <input type="text"
+                class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary"
+                placeholder="Enter label">
+            </div>
+            <div class="grid grid-cols-3 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">Minimum Limit</label>
+                <input type="number" step="0.01"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary"
+                  placeholder="0.00">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">Maximum Limit</label>
+                <input type="number" step="0.01"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary"
+                  placeholder="0.00">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">Maximum Amount</label>
+                <input type="number" step="0.01"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary"
+                  placeholder="0.00">
               </div>
             </div>
-            <span>of 50 entries</span>
-          </div>
-          <div class="flex items-center space-x-1">
-            <button class="px-2 py-1 border border-gray-300 rounded-button text-sm text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
-              <div class="w-5 h-5 flex items-center justify-center">
-                <i class="ri-arrow-left-s-line"></i>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">Fee Amount</label>
+                <input type="number" step="0.01"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary"
+                  placeholder="0.00">
               </div>
-            </button>
-            <button class="px-3 py-1 border border-primary bg-primary text-white rounded-button text-sm">1</button>
-            <button class="px-3 py-1 border border-gray-300 rounded-button text-sm text-gray-700 hover:bg-gray-50">2</button>
-            <button class="px-3 py-1 border border-gray-300 rounded-button text-sm text-gray-700 hover:bg-gray-50">3</button>
-            <button class="px-2 py-1 border border-gray-300 rounded-button text-sm text-gray-500 hover:bg-gray-50">
-              <div class="w-5 h-5 flex items-center justify-center">
-                <i class="ri-arrow-right-s-line"></i>
+              <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">Fee Percentage</label>
+                <div class="relative">
+                  <input type="text"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary"
+                    placeholder="Enter percentage">
+                  <div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-gray-500"> %
+                  </div>
+                </div>
               </div>
-            </button>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-600 mb-1">Financial Institution ID</label>
+              <input type="number"
+                class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary"
+                placeholder="Enter institution ID">
+            </div>
           </div>
-        </div>
-      </div>
-      <!-- vat tab -->
-      <div id="tab-vatRates" class="hidden tab-content bg-white rounded-lg shadow overflow-hidden">
-        <div class="p-4 border-b flex justify-between items-center">
-          <h2 class="text-lg font-medium">VAT Rate Management</h2>
-          <button (click)="toggleForm('vat')" class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
-            <div class="w-4 h-4 mr-2 flex items-center justify-center">
-              <i class="ri-add-line"></i>
-            </div> New VAT
-          </button>
-        </div>
-        <div class="overflow-x-auto">
-          <table class="w-full">
-            <thead>
-              <tr class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                <th class="px-6 py-3">VAT Code</th>
-                <th class="px-6 py-3">Rate</th>
-                <th class="px-6 py-3">Label</th>
-                <th class="px-6 py-3">Identifier</th>
-                <th class="px-6 py-3">Status</th>
-                <th class="px-6 py-3">Actions</th>
+          <table class="w-full text-sm">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-4 py-2 text-left font-medium text-gray-500">Fee Type</th>
+                <th class="px-4 py-2 text-left font-medium text-gray-500">Amount</th>
+                <th class="px-4 py-2 text-left font-medium text-gray-500">Type</th>
+                <th class="px-4 py-2 text-left font-medium text-gray-500">Apply</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-200">
-              <tr class="hover:bg-gray-50">
-                <td class="px-6 py-4 whitespace-nowrap text-sm">VAT-001</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm">20%</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm">Standard Rate</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm">STD-VAT-20</td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">Active</span>
+              <tr>
+                <td class="px-4 py-2">Processing Fee</td>
+                <td class="px-4 py-2">
+                  <input type="text"
+                    class="w-full px-2 py-1 border border-gray-300 rounded-button text-sm focus:border-primary"
+                    value="1.5">
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="flex space-x-2">
-                    <button class="text-gray-500 hover:text-primary">
-                      <div class="w-5 h-5 flex items-center justify-center">
-                        <i class="ri-pencil-line"></i>
-                      </div>
-                    </button>
-                    <button class="text-gray-500 hover:text-red-600">
-                      <div class="w-5 h-5 flex items-center justify-center">
-                        <i class="ri-delete-bin-6-line"></i>
-                      </div>
-                    </button>
+                <td class="px-4 py-2">
+                  <div class="relative">
+                    <select
+                      class="appearance-none w-full px-2 py-1 border border-gray-300 rounded-button text-sm focus:border-primary">
+                      <option value="percentage">Percentage</option>
+                      <option value="fixed">Fixed</option>
+                    </select>
+                    <div class="absolute inset-y-0 right-0 flex items-center px-1 pointer-events-none">
+                      <i class="ri-arrow-down-s-line text-gray-400 text-xs"></i>
+                    </div>
                   </div>
+                </td>
+                <td class="px-4 py-2">
+                  <label class="custom-switch">
+                    <input type="checkbox" checked>
+                    <span class="switch-slider"></span>
+                  </label>
                 </td>
               </tr>
-              <tr class="hover:bg-gray-50">
-                <td class="px-6 py-4 whitespace-nowrap text-sm">VAT-002</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm">5%</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm">Reduced Rate</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm">RED-VAT-5</td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">Active</span>
+              <tr>
+                <td class="px-4 py-2">Service Fee</td>
+                <td class="px-4 py-2">
+                  <input type="text"
+                    class="w-full px-2 py-1 border border-gray-300 rounded-button text-sm focus:border-primary"
+                    value="2.00">
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="flex space-x-2">
-                    <button class="text-gray-500 hover:text-primary">
-                      <div class="w-5 h-5 flex items-center justify-center">
-                        <i class="ri-pencil-line"></i>
-                      </div>
-                    </button>
-                    <button class="text-gray-500 hover:text-red-600">
-                      <div class="w-5 h-5 flex items-center justify-center">
-                        <i class="ri-delete-bin-6-line"></i>
-                      </div>
-                    </button>
+                <td class="px-4 py-2">
+                  <div class="relative">
+                    <select
+                      class="appearance-none w-full px-2 py-1 border border-gray-300 rounded-button text-sm focus:border-primary">
+                      <option value="fixed">Fixed</option>
+                      <option value="percentage">Percentage</option>
+                    </select>
+                    <div class="absolute inset-y-0 right-0 flex items-center px-1 pointer-events-none">
+                      <i class="ri-arrow-down-s-line text-gray-400 text-xs"></i>
+                    </div>
                   </div>
+                </td>
+                <td class="px-4 py-2">
+                  <label class="custom-switch">
+                    <input type="checkbox" checked>
+                    <span class="switch-slider"></span>
+                  </label>
                 </td>
               </tr>
-              <tr class="hover:bg-gray-50">
-                <td class="px-6 py-4 whitespace-nowrap text-sm">VAT-003</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm">0%</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm">Zero Rate</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm">ZERO-VAT</td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800">Inactive</span>
+              <tr>
+                <td class="px-4 py-2">Transaction Fee</td>
+                <td class="px-4 py-2">
+                  <input type="text"
+                    class="w-full px-2 py-1 border border-gray-300 rounded-button text-sm focus:border-primary"
+                    value="0.5">
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="flex space-x-2">
-                    <button class="text-gray-500 hover:text-primary">
-                      <div class="w-5 h-5 flex items-center justify-center">
-                        <i class="ri-pencil-line"></i>
-                      </div>
-                    </button>
-                    <button class="text-gray-500 hover:text-red-600">
-                      <div class="w-5 h-5 flex items-center justify-center">
-                        <i class="ri-delete-bin-6-line"></i>
-                      </div>
-                    </button>
+                <td class="px-4 py-2">
+                  <div class="relative">
+                    <select
+                      class="appearance-none w-full px-2 py-1 border border-gray-300 rounded-button text-sm focus:border-primary">
+                      <option value="percentage">Percentage</option>
+                      <option value="fixed">Fixed</option>
+                    </select>
+                    <div class="absolute inset-y-0 right-0 flex items-center px-1 pointer-events-none">
+                      <i class="ri-arrow-down-s-line text-gray-400 text-xs"></i>
+                    </div>
                   </div>
+                </td>
+                <td class="px-4 py-2">
+                  <label class="custom-switch">
+                    <input type="checkbox">
+                    <span class="switch-slider"></span>
+                  </label>
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
+        <button class="mt-2 flex items-center text-sm text-primary hover:text-primary-dark">
+          <div class="w-4 h-4 mr-1 flex items-center justify-center">
+            <i class="ri-add-line"></i>
+          </div> Add Fee
+        </button>
       </div>
-    </main>
-    <!-- Toast Notification -->
-    <div id="toast" class="toast hidden fixed bottom-4 right-4 bg-white rounded-lg shadow-lg p-4 max-w-xs z-50 flex items-center">
-      <div class="w-8 h-8 flex items-center justify-center rounded-full bg-green-100 text-green-500 mr-3">
-        <i class="ri-check-line"></i>
+    </div>
+    <div class="px-6 py-4 border-t flex justify-between items-center">
+      <div class="flex items-center space-x-2">
+        <div class="w-2 h-2 rounded-full bg-yellow-400"></div>
+        <span class="text-sm text-gray-600">All fields are required</span>
       </div>
-      <div>
-        <h4 class="font-medium text-gray-900">Success</h4>
-        <p class="text-sm text-gray-600">Schema created successfully!</p>
+      <div class="flex space-x-3">
+        <button (click)="closeForm('schema')" id="cancelSchemaBtn"
+          class="px-4 py-2 border border-gray-300 rounded-button text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+        <button
+          class="px-4 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap flex items-center">
+          <div class="w-4 h-4 mr-2 flex items-center justify-center">
+            <i class="ri-save-line"></i>
+          </div> Save Schema
+        </button>
       </div>
-      <button id="closeToast" class="ml-auto text-gray-400 hover:text-gray-500">
+    </div>
+  </div>
+  <!-- Operation Type Modal -->
+  <div *ngIf="isNewOperationTypeVisible"
+    class="modal-content bg-white rounded-lg shadow-xl max-w-lg w-full mx-4 transform">
+    <div class="flex justify-between items-center p-6 border-b">
+      <h3 class="text-lg font-medium">New Operation Type</h3>
+      <button (click)="closeForm('operation')" class="close-modal text-gray-400 hover:text-gray-500">
         <div class="w-5 h-5 flex items-center justify-center">
           <i class="ri-close-line"></i>
         </div>
       </button>
     </div>
-    <div *ngIf="isAnyModalVisible" class="fixed inset-0 z-50  bg-black bg-opacity-50 flex items-center justify-center">
-      <!-- New Schema Modal -->
-      <div *ngIf="isNewSchemaVisible" class="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4 transform">
-        <div class="flex justify-between items-center p-6 border-b">
-          <h3 class="text-lg font-medium">Create New Accounting Schema</h3>
-          <button id="closeSchemaModal" class="text-gray-400 hover:text-gray-500">
-            <div (click)="closeForm('schema')" class="w-5 h-5 flex items-center justify-center">
-              <i class="ri-close-line"></i>
-            </div>
-          </button>
+    <div id="tab-operationTypes" class="p-6">
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Label</label>
+          <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary"
+            placeholder="Enter label">
         </div>
-        <div class="p-6 overflow-y-auto max-h-[70vh]">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="col-span-2">
-              <label class="block text-sm font-medium text-gray-700 mb-1">Operation Type Details</label>
-              <div class="border border-gray-300 rounded-button p-4 space-y-4">
-                <div class="grid grid-cols-2 gap-4">
-                  <div>
-                    <label class="block text-sm font-medium text-gray-600 mb-1">Operation Code (ID)</label>
-                    <input type="number" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary" placeholder="Enter operation code">
-                  </div>
-                  <div>
-                    <label class="block text-sm font-medium text-gray-600 mb-1">Operation Identifier</label>
-                    <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary" placeholder="Enter identifier">
-                  </div>
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                  <div>
-                    <label class="block text-sm font-medium text-gray-600 mb-1">Operation Label</label>
-                    <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary" placeholder="Enter label">
-                  </div>
-                  <div>
-                    <label class="block text-sm font-medium text-gray-600 mb-1">Fiscal Identifier</label>
-                    <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary" placeholder="Enter fiscal identifier">
-                  </div>
-                </div>
-                <div>
-                  <label class="block text-sm font-medium text-gray-600 mb-1">Fiscal Label</label>
-                  <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary" placeholder="Enter fiscal label">
-                </div>
-              </div>
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Schema ID</label>
-              <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary" placeholder="Auto-generated" disabled>
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
-              <div class="relative">
-                <select class="appearance-none w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary">
-                  <option value="active">Active</option>
-                  <option value="inactive">Inactive</option>
-                  <option value="draft">Draft</option>
-                </select>
-                <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                  <i class="ri-arrow-down-s-line text-gray-400"></i>
-                </div>
-              </div>
-            </div>
-            <div class="col-span-2">
-              <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
-              <textarea class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary" rows="3" placeholder="Enter schema description"></textarea>
-            </div>
-            <div class="col-span-2">
-              <label class="block text-sm font-medium text-gray-700 mb-1">Associated Operation Types</label>
-              <div class="border border-gray-300 rounded-button p-3 max-h-40 overflow-y-auto">
-                <div class="space-y-2">
-                  <div class="flex items-center">
-                    <input type="checkbox" id="op-deposit" class="custom-checkbox mr-2">
-                    <label for="op-deposit" class="text-sm">Deposit</label>
-                  </div>
-                  <div class="flex items-center">
-                    <input type="checkbox" id="op-withdrawal" class="custom-checkbox mr-2">
-                    <label for="op-withdrawal" class="text-sm">Withdrawal</label>
-                  </div>
-                  <div class="flex items-center">
-                    <input type="checkbox" id="op-transfer" class="custom-checkbox mr-2">
-                    <label for="op-transfer" class="text-sm">Transfer</label>
-                  </div>
-                  <div class="flex items-center">
-                    <input type="checkbox" id="op-payment" class="custom-checkbox mr-2">
-                    <label for="op-payment" class="text-sm">Payment</label>
-                  </div>
-                  <div class="flex items-center">
-                    <input type="checkbox" id="op-cashin" class="custom-checkbox mr-2">
-                    <label for="op-cashin" class="text-sm">Cash-in</label>
-                  </div>
-                  <div class="flex items-center">
-                    <input type="checkbox" id="op-cashout" class="custom-checkbox mr-2">
-                    <label for="op-cashout" class="text-sm">Cash-out</label>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-span-2">
-              <label class="block text-sm font-medium text-gray-700 mb-1">Fee Schema Configuration</label>
-              <div class="border border-gray-300 rounded-button overflow-hidden">
-                <div class="p-4 space-y-4">
-                  <div class="grid grid-cols-3 gap-4">
-                    <div>
-                      <label class="block text-sm font-medium text-gray-600 mb-1">Schema Code</label>
-                      <input type="number" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary" placeholder="Enter schema code">
-                    </div>
-                    <div>
-                      <label class="block text-sm font-medium text-gray-600 mb-1">Schema Identifier</label>
-                      <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary" placeholder="Enter identifier">
-                    </div>
-                    <div>
-                      <label class="block text-sm font-medium text-gray-600 mb-1">Schema Label</label>
-                      <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary" placeholder="Enter label">
-                    </div>
-                  </div>
-                  <div class="mt-6">
-                    <div class="flex justify-between items-center mb-3">
-                      <label class="block text-sm font-medium text-gray-700">Fee Rules</label>
-                      <button class="flex items-center text-sm text-primary hover:text-primary-dark">
-                        <div class="w-4 h-4 mr-1 flex items-center justify-center">
-                          <i class="ri-add-line"></i>
-                        </div> Add Rule
-                      </button>
-                    </div>
-                    <div class="space-y-4">
-                      <div class="border border-gray-200 rounded-lg p-4">
-                        <div class="grid grid-cols-2 gap-4 mb-4">
-                          <div>
-                            <label class="block text-sm font-medium text-gray-600 mb-1">Rule Code</label>
-                            <input type="number" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary" placeholder="Enter rule code">
-                          </div>
-                          <div>
-                            <label class="block text-sm font-medium text-gray-600 mb-1">Rule Type</label>
-                            <div class="relative">
-                              <select class="appearance-none w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary">
-                                <option value="">Select rule type</option>
-                                <option value="percentage">Percentage Based</option>
-                                <option value="fixed">Fixed Amount</option>
-                                <option value="tiered">Tiered Rate</option>
-                              </select>
-                              <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                                <i class="ri-arrow-down-s-line text-gray-400"></i>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="grid grid-cols-2 gap-4 mb-4">
-                          <div>
-                            <label class="block text-sm font-medium text-gray-600 mb-1">Rule Identifier</label>
-                            <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary" placeholder="Enter identifier">
-                          </div>
-                          <div>
-                            <label class="block text-sm font-medium text-gray-600 mb-1">Rule Label</label>
-                            <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary" placeholder="Enter label">
-                          </div>
-                        </div>
-                        <div class="grid grid-cols-2 gap-4 mb-4">
-                          <div>
-                            <label class="block text-sm font-medium text-gray-600 mb-1">Primary Wallet ID</label>
-                            <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary" placeholder="Enter wallet ID">
-                          </div>
-                          <div>
-                            <label class="block text-sm font-medium text-gray-600 mb-1">Primary Amount</label>
-                            <input type="number" step="0.01" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary" placeholder="0.00">
-                          </div>
-                        </div>
-                        <div class="grid grid-cols-2 gap-4 mb-4">
-                          <div>
-                            <label class="block text-sm font-medium text-gray-600 mb-1">Fees Wallet ID</label>
-                            <input type="number" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary" placeholder="Enter fees wallet ID">
-                          </div>
-                          <div>
-                            <label class="block text-sm font-medium text-gray-600 mb-1">Fees Amount</label>
-                            <input type="number" step="0.01" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary" placeholder="0.00">
-                          </div>
-                        </div>
-                        <div class="grid grid-cols-3 gap-4">
-                          <div>
-                            <label class="block text-sm font-medium text-gray-600 mb-1">VAT Rate</label>
-                            <div class="relative">
-                              <select class="appearance-none w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary">
-                                <option value="">Select VAT rate</option>
-                                <option value="standard">Standard (20%)</option>
-                                <option value="reduced">Reduced (5%)</option>
-                                <option value="zero">Zero (0%)</option>
-                              </select>
-                              <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                                <i class="ri-arrow-down-s-line text-gray-400"></i>
-                              </div>
-                            </div>
-                          </div>
-                          <div>
-                            <label class="block text-sm font-medium text-gray-600 mb-1">VAT Wallet ID</label>
-                            <input type="number" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary" placeholder="Enter VAT wallet ID">
-                          </div>
-                          <div>
-                            <label class="block text-sm font-medium text-gray-600 mb-1">VAT Amount</label>
-                            <input type="number" step="0.01" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary" placeholder="0.00">
-                          </div>
-                        </div>
-                        <div class="mt-4">
-                          <label class="block text-sm font-medium text-gray-600 mb-1">Transaction Direction</label>
-                          <div class="relative">
-                            <select class="appearance-none w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary">
-                              <option value="">Select direction</option>
-                              <option value="debit">Debit</option>
-                              <option value="credit">Credit</option>
-                            </select>
-                            <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                              <i class="ri-arrow-down-s-line text-gray-400"></i>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div>
-                    <label class="block text-sm font-medium text-gray-600 mb-1">Fee Identifier</label>
-                    <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary" placeholder="Enter identifier">
-                  </div>
-                </div>
-                <div>
-                  <label class="block text-sm font-medium text-gray-600 mb-1">Fee Label</label>
-                  <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary" placeholder="Enter label">
-                </div>
-                <div class="grid grid-cols-3 gap-4">
-                  <div>
-                    <label class="block text-sm font-medium text-gray-600 mb-1">Minimum Limit</label>
-                    <input type="number" step="0.01" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary" placeholder="0.00">
-                  </div>
-                  <div>
-                    <label class="block text-sm font-medium text-gray-600 mb-1">Maximum Limit</label>
-                    <input type="number" step="0.01" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary" placeholder="0.00">
-                  </div>
-                  <div>
-                    <label class="block text-sm font-medium text-gray-600 mb-1">Maximum Amount</label>
-                    <input type="number" step="0.01" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary" placeholder="0.00">
-                  </div>
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                  <div>
-                    <label class="block text-sm font-medium text-gray-600 mb-1">Fee Amount</label>
-                    <input type="number" step="0.01" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary" placeholder="0.00">
-                  </div>
-                  <div>
-                    <label class="block text-sm font-medium text-gray-600 mb-1">Fee Percentage</label>
-                    <div class="relative">
-                      <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary" placeholder="Enter percentage">
-                      <div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-gray-500"> % </div>
-                    </div>
-                  </div>
-                </div>
-                <div>
-                  <label class="block text-sm font-medium text-gray-600 mb-1">Financial Institution ID</label>
-                  <input type="number" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary" placeholder="Enter institution ID">
-                </div>
-              </div>
-              <table class="w-full text-sm">
-                <thead class="bg-gray-50">
-                  <tr>
-                    <th class="px-4 py-2 text-left font-medium text-gray-500">Fee Type</th>
-                    <th class="px-4 py-2 text-left font-medium text-gray-500">Amount</th>
-                    <th class="px-4 py-2 text-left font-medium text-gray-500">Type</th>
-                    <th class="px-4 py-2 text-left font-medium text-gray-500">Apply</th>
-                  </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-200">
-                  <tr>
-                    <td class="px-4 py-2">Processing Fee</td>
-                    <td class="px-4 py-2">
-                      <input type="text" class="w-full px-2 py-1 border border-gray-300 rounded-button text-sm focus:border-primary" value="1.5">
-                    </td>
-                    <td class="px-4 py-2">
-                      <div class="relative">
-                        <select class="appearance-none w-full px-2 py-1 border border-gray-300 rounded-button text-sm focus:border-primary">
-                          <option value="percentage">Percentage</option>
-                          <option value="fixed">Fixed</option>
-                        </select>
-                        <div class="absolute inset-y-0 right-0 flex items-center px-1 pointer-events-none">
-                          <i class="ri-arrow-down-s-line text-gray-400 text-xs"></i>
-                        </div>
-                      </div>
-                    </td>
-                    <td class="px-4 py-2">
-                      <label class="custom-switch">
-                        <input type="checkbox" checked>
-                        <span class="switch-slider"></span>
-                      </label>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="px-4 py-2">Service Fee</td>
-                    <td class="px-4 py-2">
-                      <input type="text" class="w-full px-2 py-1 border border-gray-300 rounded-button text-sm focus:border-primary" value="2.00">
-                    </td>
-                    <td class="px-4 py-2">
-                      <div class="relative">
-                        <select class="appearance-none w-full px-2 py-1 border border-gray-300 rounded-button text-sm focus:border-primary">
-                          <option value="fixed">Fixed</option>
-                          <option value="percentage">Percentage</option>
-                        </select>
-                        <div class="absolute inset-y-0 right-0 flex items-center px-1 pointer-events-none">
-                          <i class="ri-arrow-down-s-line text-gray-400 text-xs"></i>
-                        </div>
-                      </div>
-                    </td>
-                    <td class="px-4 py-2">
-                      <label class="custom-switch">
-                        <input type="checkbox" checked>
-                        <span class="switch-slider"></span>
-                      </label>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="px-4 py-2">Transaction Fee</td>
-                    <td class="px-4 py-2">
-                      <input type="text" class="w-full px-2 py-1 border border-gray-300 rounded-button text-sm focus:border-primary" value="0.5">
-                    </td>
-                    <td class="px-4 py-2">
-                      <div class="relative">
-                        <select class="appearance-none w-full px-2 py-1 border border-gray-300 rounded-button text-sm focus:border-primary">
-                          <option value="percentage">Percentage</option>
-                          <option value="fixed">Fixed</option>
-                        </select>
-                        <div class="absolute inset-y-0 right-0 flex items-center px-1 pointer-events-none">
-                          <i class="ri-arrow-down-s-line text-gray-400 text-xs"></i>
-                        </div>
-                      </div>
-                    </td>
-                    <td class="px-4 py-2">
-                      <label class="custom-switch">
-                        <input type="checkbox">
-                        <span class="switch-slider"></span>
-                      </label>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <button class="mt-2 flex items-center text-sm text-primary hover:text-primary-dark">
-              <div class="w-4 h-4 mr-1 flex items-center justify-center">
-                <i class="ri-add-line"></i>
-              </div> Add Fee
-            </button>
-          </div>
-        </div>
-        <div class="px-6 py-4 border-t flex justify-between items-center">
-          <div class="flex items-center space-x-2">
-            <div class="w-2 h-2 rounded-full bg-yellow-400"></div>
-            <span class="text-sm text-gray-600">All fields are required</span>
-          </div>
-          <div class="flex space-x-3">
-            <button (click)="closeForm('schema')" id="cancelSchemaBtn" class="px-4 py-2 border border-gray-300 rounded-button text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">Cancel</button>
-            <button class="px-4 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap flex items-center">
-              <div class="w-4 h-4 mr-2 flex items-center justify-center">
-                <i class="ri-save-line"></i>
-              </div> Save Schema
-            </button>
-          </div>
-        </div>
-      </div>
-      <!-- Operation Type Modal -->
-      <div *ngIf="isNewOperationTypeVisible" class="modal-content bg-white rounded-lg shadow-xl max-w-lg w-full mx-4 transform">
-        <div class="flex justify-between items-center p-6 border-b">
-          <h3 class="text-lg font-medium">New Operation Type</h3>
-          <button (click)="closeForm('operation')" class="close-modal text-gray-400 hover:text-gray-500">
-            <div class="w-5 h-5 flex items-center justify-center">
-              <i class="ri-close-line"></i>
-            </div>
-          </button>
-        </div>
-        <div id="tab-operationTypes" class="p-6">
-          <div class="space-y-4">
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Label</label>
-              <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary" placeholder="Enter label">
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Fee Schema</label>
-              <select class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary">
-                <option value="">Select schema</option>
-                <option value="cash">wallet to wallet</option>
-                <option value="card">commercial payment</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <div class="px-6 py-4 border-t flex justify-end space-x-3">
-          <button (click)="closeForm('operation')" class="close-modal px-4 py-2 border border-gray-300 rounded-button text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">Cancel</button>
-          <button class="px-4 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90">Create Operation Type</button>
-        </div>
-      </div>
-      <!-- fees and commission modal -->
-      <div *ngIf="isNewFeeVisible" class="modal-content bg-white rounded-lg shadow-xl max-w-lg w-full mx-4 transform">
-        <div class="flex justify-between items-center p-6 border-b">
-          <h3 class="text-lg font-medium">New Fee Structure</h3>
-          <button (click)="closeForm('fee')" class="close-modal text-gray-400 hover:text-gray-500">
-            <div class="w-5 h-5 flex items-center justify-center">
-              <i class="ri-close-line"></i>
-            </div>
-          </button>
-        </div>
-        <div class="p-6">
-          <div class="space-y-4">
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Fee Code</label>
-              <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary" placeholder="Enter fee code">
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Fee Type</label>
-              <select class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary">
-                <option value="">Select fee type</option>
-                <option value="percentage">Percentage Based</option>
-                <option value="fixed">Fixed Amount</option>
-              </select>
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Amount/Rate</label>
-              <input type="number" step="0.01" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary" placeholder="Enter amount or rate">
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Operation Type</label>
-              <select class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary">
-                <option value="">Select operation type</option>
-                <option value="deposit">Deposit</option>
-                <option value="withdrawal">Withdrawal</option>
-                <option value="transfer">Transfer</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <div class="px-6 py-4 border-t flex justify-end space-x-3">
-          <button (click)="closeForm('fee')" class="close-modal px-4 py-2 border border-gray-300 rounded-button text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">Cancel</button>
-          <button class="px-4 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90">Create Fee Structure</button>
-        </div>
-      </div>
-      <!-- category mapping modal -->
-      <div *ngIf="isNewMappingVisible" class="modal-content bg-white rounded-lg shadow-xl max-w-xl w-full mx-4 transform">
-        <div class="flex justify-between items-center p-6 border-b">
-          <h3 class="text-lg font-medium">New Category Operation Mapping</h3>
-          <button (click)="closeForm('mapping')" class="close-modal text-gray-400 hover:text-gray-500">
-            <div class="w-5 h-5 flex items-center justify-center">
-              <i class="ri-close-line"></i>
-            </div>
-          </button>
-        </div>
-        <div class="p-6">
-          <div class="space-y-4">
-            <div class="grid grid-cols-2 gap-4">
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Operation Type</label>
-                <select class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary">
-                  <option value="">Select operation type</option>
-                  <option value="deposit">Deposit</option>
-                  <option value="withdrawal">Withdrawal</option>
-                  <option value="transfer">Transfer</option>
-                </select>
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Wallet Category</label>
-                <select class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary">
-                  <option value="">Select category</option>
-                  <option value="personal">Personal</option>
-                  <option value="business">Business</option>
-                  <option value="savings">Savings</option>
-                </select>
-              </div>
-            </div>
-            <div class="grid grid-cols-2 gap-4">
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Fee Structure</label>
-                <select class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary">
-                  <option value="">Select fee structure</option>
-                  <option value="fee1">Processing Fee (1.5%)</option>
-                  <option value="fee2">Service Fee ($2.00)</option>
-                </select>
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Maximum Limit</label>
-                <input type="number" step="0.01" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary" placeholder="Enter max limit">
-              </div>
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Periodicity</label>
-              <select class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary">
-                <option value="">Select periodicity</option>
-                <option value="daily">Daily</option>
-                <option value="weekly">Weekly</option>
-                <option value="monthly">Monthly</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <div class="px-6 py-4 border-t flex justify-end space-x-3">
-          <button (click)="closeForm('mapping')" class="close-modal px-4 py-2 border border-gray-300 rounded-button text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">Cancel</button>
-          <button class="px-4 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90">Create Mapping</button>
-        </div>
-      </div>
-      <!-- vat modal -->
-      <div *ngIf="isNewVatVisible" class="modal-content bg-white rounded-lg shadow-xl max-w-lg w-full mx-4 transform">
-        <div class="flex justify-between items-center p-6 border-b">
-          <h3 class="text-lg font-medium">New VAT Rate</h3>
-          <button (click)="closeForm('vat')" class="close-modal text-gray-400 hover:text-gray-500">
-            <div class="w-5 h-5 flex items-center justify-center">
-              <i class="ri-close-line"></i>
-            </div>
-          </button>
-        </div>
-        <div class="p-6">
-          <div class="space-y-4">
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">VAT Code</label>
-              <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary" placeholder="Enter VAT code">
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Rate (%)</label>
-              <input type="number" step="0.01" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary" placeholder="Enter VAT rate">
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Label</label>
-              <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary" placeholder="Enter label">
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Identifier</label>
-              <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary" placeholder="Enter identifier">
-            </div>
-          </div>
-        </div>
-        <div class="px-6 py-4 border-t flex justify-end space-x-3">
-          <button (click)="closeForm('vat')" class="close-modal px-4 py-2 border border-gray-300 rounded-button text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">Cancel</button>
-          <button class="px-4 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90">Create VAT Rate</button>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Fee Schema</label>
+          <select class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary">
+            <option value="">Select schema</option>
+            <option value="cash">wallet to wallet</option>
+            <option value="card">commercial payment</option>
+          </select>
         </div>
       </div>
     </div>
+    <div class="px-6 py-4 border-t flex justify-end space-x-3">
+      <button (click)="closeForm('operation')"
+        class="close-modal px-4 py-2 border border-gray-300 rounded-button text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">Cancel</button>
+      <button class="px-4 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90">Create
+        Operation Type</button>
+    </div>
+  </div>
+  <!-- fees and commission modal -->
+  <div *ngIf="isNewFeeVisible" class="modal-content bg-white rounded-lg shadow-xl max-w-lg w-full mx-4 transform">
+    <div class="flex justify-between items-center p-6 border-b">
+      <h3 class="text-lg font-medium">New Fee Structure</h3>
+      <button (click)="closeForm('fee')" class="close-modal text-gray-400 hover:text-gray-500">
+        <div class="w-5 h-5 flex items-center justify-center">
+          <i class="ri-close-line"></i>
+        </div>
+      </button>
+    </div>
+    <div class="p-6">
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Fee Code</label>
+          <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary"
+            placeholder="Enter fee code">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Fee Type</label>
+          <select class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary">
+            <option value="">Select fee type</option>
+            <option value="percentage">Percentage Based</option>
+            <option value="fixed">Fixed Amount</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Amount/Rate</label>
+          <input type="number" step="0.01"
+            class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary"
+            placeholder="Enter amount or rate">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Operation Type</label>
+          <select class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary">
+            <option value="">Select operation type</option>
+            <option value="deposit">Deposit</option>
+            <option value="withdrawal">Withdrawal</option>
+            <option value="transfer">Transfer</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="px-6 py-4 border-t flex justify-end space-x-3">
+      <button (click)="closeForm('fee')"
+        class="close-modal px-4 py-2 border border-gray-300 rounded-button text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">Cancel</button>
+      <button class="px-4 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90">Create Fee
+        Structure</button>
+    </div>
+  </div>
+  <!-- category mapping modal -->
+  <div *ngIf="isNewMappingVisible" class="modal-content bg-white rounded-lg shadow-xl max-w-xl w-full mx-4 transform">
+    <div class="flex justify-between items-center p-6 border-b">
+      <h3 class="text-lg font-medium">New Category Operation Mapping</h3>
+      <button (click)="closeForm('mapping')" class="close-modal text-gray-400 hover:text-gray-500">
+        <div class="w-5 h-5 flex items-center justify-center">
+          <i class="ri-close-line"></i>
+        </div>
+      </button>
+    </div>
+    <div class="p-6">
+      <div class="space-y-4">
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Operation Type</label>
+            <select class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary">
+              <option value="">Select operation type</option>
+              <option value="deposit">Deposit</option>
+              <option value="withdrawal">Withdrawal</option>
+              <option value="transfer">Transfer</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Wallet Category</label>
+            <select class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary">
+              <option value="">Select category</option>
+              <option value="personal">Personal</option>
+              <option value="business">Business</option>
+              <option value="savings">Savings</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Fee Structure</label>
+            <select class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary">
+              <option value="">Select fee structure</option>
+              <option value="fee1">Processing Fee (1.5%)</option>
+              <option value="fee2">Service Fee ($2.00)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Maximum Limit</label>
+            <input type="number" step="0.01"
+              class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary"
+              placeholder="Enter max limit">
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Periodicity</label>
+          <select class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary">
+            <option value="">Select periodicity</option>
+            <option value="daily">Daily</option>
+            <option value="weekly">Weekly</option>
+            <option value="monthly">Monthly</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="px-6 py-4 border-t flex justify-end space-x-3">
+      <button (click)="closeForm('mapping')"
+        class="close-modal px-4 py-2 border border-gray-300 rounded-button text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">Cancel</button>
+      <button class="px-4 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90">Create
+        Mapping</button>
+    </div>
+  </div>
+  <!-- vat modal -->
+  <div *ngIf="isNewVatVisible" class="modal-content bg-white rounded-lg shadow-xl max-w-lg w-full mx-4 transform">
+    <div class="flex justify-between items-center p-6 border-b">
+      <h3 class="text-lg font-medium">New VAT Rate</h3>
+      <button (click)="closeForm('vat')" class="close-modal text-gray-400 hover:text-gray-500">
+        <div class="w-5 h-5 flex items-center justify-center">
+          <i class="ri-close-line"></i>
+        </div>
+      </button>
+    </div>
+    <div class="p-6">
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">VAT Code</label>
+          <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary"
+            placeholder="Enter VAT code">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Rate (%)</label>
+          <input type="number" step="0.01"
+            class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary"
+            placeholder="Enter VAT rate">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Label</label>
+          <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary"
+            placeholder="Enter label">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Identifier</label>
+          <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:border-primary"
+            placeholder="Enter identifier">
+        </div>
+      </div>
+    </div>
+    <div class="px-6 py-4 border-t flex justify-end space-x-3">
+      <button (click)="closeForm('vat')"
+        class="close-modal px-4 py-2 border border-gray-300 rounded-button text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">Cancel</button>
+      <button class="px-4 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90">Create VAT
+        Rate</button>
+    </div>
+  </div>
+</div>

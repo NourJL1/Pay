@@ -1,16 +1,23 @@
-<!-- Tabs -->
-<div class="bg-white border-b mx-6">
-  <div class="px-6 flex">
-    <button class="tab-button px-4 py-3 text-sm active font-medium text-primary" (click)="showTab('overview')"
-      id="overview">Overview</button>
-    <button class="tab-button px-4 py-3 text-sm text-gray-500" (click)="showTab('wallets')"
-      id="wallets">Wallets</button>
-    <button class="tab-button px-4 py-3 text-sm text-gray-500" (click)="showTab('settings')"
-      id="settings">Settings</button>
-    <button class="tab-button px-4 py-3 text-sm text-gray-500" (click)="showTab('cards')" id="cards">Cards</button>
-    <button class="tab-button px-4 py-3 text-sm text-gray-500" (click)="showTab('accounts')"
-      id="cards">Accounts</button>
+<div class="rounded-lg">
+  <div class="flex items-center justify-between px-6 py-3 bg-white">
+    <div class="flex items-center">
+      <h1 class="text-xl font-semibold text-gray-800">Wallet Management</h1>
+    </div>
+  </div>
+  <!-- Tabs -->
+  <div class="bg-white border-b">
+    <div class="px-6 flex">
+      <button class="tab-button px-4 py-3 text-sm active font-medium text-primary" (click)="showTab('overview')"
+        id="overview">Overview</button>
+      <button class="tab-button px-4 py-3 text-sm text-gray-500" (click)="showTab('wallets')"
+        id="wallets">Wallets</button>
+      <button class="tab-button px-4 py-3 text-sm text-gray-500" (click)="showTab('settings')"
+        id="settings">Settings</button>
+      <button class="tab-button px-4 py-3 text-sm text-gray-500" (click)="showTab('cards')" id="cards">Cards</button>
+      <button class="tab-button px-4 py-3 text-sm text-gray-500" (click)="showTab('accounts')"
+        id="cards">Accounts</button>
 
+    </div>
   </div>
 </div>
 <!-- Dashboard Content -->
@@ -157,8 +164,25 @@
   </div>
   <!-- Wallet Management Section -->
   <div id="tab-wallets" class="tab-content hidden bg-white rounded shadow mb-6">
-    <div class="p-5 border-b border-gray-200">
-      <div class="flex flex-wrap items-center justify-between">
+    <div class="bg-white rounded-lg shadow overflow-hidden">
+      <div class="p-4 border-b flex justify-between items-center">
+        <h2 class="text-lg font-medium">Wallet Management</h2>
+        <div class="flex items-center space-x-3">
+          <button
+            class="flex items-center px-3 py-2 border border-gray-300 rounded-button text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">
+            <div class="w-4 h-4 mr-2 flex items-center justify-center">
+              <i class="ri-download-2-line"></i>
+            </div> Export Data
+          </button>
+          <button (click)="toggleForm('schema')" id="newSchemaBtn"
+            class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+            <div class="w-4 h-4 mr-2 flex items-center justify-center">
+              <i class="ri-add-line"></i>
+            </div> New Wallet
+          </button>
+        </div>
+      </div>
+      <!-- <div class="flex flex-wrap items-center justify-between">
         <h3 class="text-lg font-semibold text-gray-800">Wallet Management</h3>
         <div class="flex space-x-3">
           <button (click)="toggleForm('create-wallet')"
@@ -202,10 +226,61 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
     <!-- Filters -->
-    <div class="bg-white rounded-lg shadow p-4">
+    <!-- Top Header -->
+    <header class="bg-white shadow-sm z-10 mx-6">
+      <div class="px-6 py-3 bg-white border-t border-b flex flex-wrap items-center gap-3">
+        <div class="relative">
+          <select
+            class="appearance-none pl-3 pr-8 py-2 border border-gray-300 rounded-button text-sm focus:border-primary">
+            <option value="">All Operation Types</option>
+            <option value="deposit">Deposit</option>
+            <option value="withdrawal">Withdrawal</option>
+            <option value="transfer">Transfer</option>
+            <option value="payment">Payment</option>
+            <option value="vat">VAT</option>
+          </select>
+          <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+            <i class="ri-arrow-down-s-line text-gray-400"></i>
+          </div>
+        </div>
+        <div class="relative">
+          <select
+            class="appearance-none pl-3 pr-8 py-2 border border-gray-300 rounded-button text-sm focus:border-primary">
+            <option value="">All Statuses</option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+            <option value="draft">Draft</option>
+          </select>
+          <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+            <i class="ri-arrow-down-s-line text-gray-400"></i>
+          </div>
+        </div>
+        <div class="relative">
+          <select
+            class="appearance-none pl-3 pr-8 py-2 border border-gray-300 rounded-button text-sm focus:border-primary">
+            <option value="">Last 30 Days</option>
+            <option value="7days">Last 7 Days</option>
+            <option value="60days">Last 60 Days</option>
+            <option value="90days">Last 90 Days</option>
+            <option value="custom">Custom Range</option>
+          </select>
+          <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+            <i class="ri-arrow-down-s-line text-gray-400"></i>
+          </div>
+        </div>
+        <div class="relative flex-grow max-w-md">
+          <input type="text" placeholder="Search schemas, operations, or codes..."
+            class="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-button text-sm">
+          <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+            <i class="ri-search-line text-gray-400"></i>
+          </div>
+        </div>
+      </div>
+    </header>
+    <!-- <div class="bg-white rounded-lg shadow p-4">
       <div class="flex flex-wrap gap-4">
         <div class="w-full sm:w-auto">
           <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
@@ -260,7 +335,7 @@
             <i class="ri-filter-3-line mr-1"></i> Apply Filters </button>
         </div>
       </div>
-    </div>
+    </div> -->
     <!-- Table -->
     <div class="overflow-x-auto">
       <table class="min-w-full divide-y divide-gray-200">

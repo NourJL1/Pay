@@ -36,4 +36,7 @@ export class SideNavComponent implements OnInit{
     this.router.navigate(['/home']);
   }
 
+    currentYear: number = new Date().getFullYear();
+
+
 }
