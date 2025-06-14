@@ -109,10 +109,12 @@
         background: #E31937;
         cursor: pointer;
         }
-        .tab-button {
+        .tab-button, 
+[class$="-tab-button"] {
         position: relative;
         }
-        .tab-button.active:after {
+        .tab-button.active:after,
+[class$="-tab-button"].active:after  {
         content: '';
         position: absolute;
         bottom: -10px;

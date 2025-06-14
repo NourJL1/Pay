@@ -53,15 +53,6 @@ export class AccountingComponent {
     );
   }
 
-
-  toggleOpertionForm(): void {
-    console.log(this.isNewOperationTypeVisible)
-    this.isNewOperationTypeVisible = true;
-  }
-  closeOperationForm(): void {
-    this.isNewOperationTypeVisible = false;
-  }
-
   showTab(tabId: string): void {
     const tabButtons = document.querySelectorAll('.tab-button');
     const tabContents = document.querySelectorAll('.tab-content');
