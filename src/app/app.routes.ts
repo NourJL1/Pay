@@ -9,7 +9,6 @@ import { WalletComponent } from './components/security/wallet/wallet.component';
 import { NavbarComponent } from './components/security/navbar/navbar.component';
 import { AdminDashboardComponent } from './components/security/admin-dashboard/admin-dashboard.component';
 import { walletStatusGuard } from './guards/wallet-status.guard';
-import { UsersComponent } from './components/security/admin-dashboard/users/users.component';
 import { SideNavComponent } from './components/security/admin-dashboard/side-nav/side-nav.component'; 
 import { DashboardComponent } from './components/security/admin-dashboard/dashboard/dashboard.component';
 import { PendingComponent } from './components/security/wallet/pending/pending.component';
@@ -28,7 +27,6 @@ export const routes: Routes = [
   { path: 'welcome', component: WelcomeComponent},
   //{ path: 'wallet', component: WalletComponent},
   {path: 'dashboard', component: DashboardComponent},
-  {path: 'users', component: UsersComponent},
   {path: 'side-nav', component: SideNavComponent},
 
   // Protected routes
@@ -65,7 +63,6 @@ export const routes: Routes = [
   {path: 'account', component: SideNavComponent, children:
     [
       {path: 'dashboard', component: DashboardComponent},
-      {path: 'users', component: UsersComponent},
       {path: 'accounting', component: AccountingComponent},
       {path: 'wallets', component: WalletMngComponent},
       {path: 'products', component: ProductsComponent},
