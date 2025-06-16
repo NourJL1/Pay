@@ -86,3 +86,4 @@ input:checked+.custom-switch {
 input:checked+.custom-switch::after {
     transform: translateX(22px);
 }
+
