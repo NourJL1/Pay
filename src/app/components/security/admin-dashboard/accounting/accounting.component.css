@@ -1,21 +1,4 @@
-      :where([class^="ri-"])::before {
-        content: "\f3c2";
-      }
 
-      body {
-        font-family: 'Inter', sans-serif;
-        background-color: #F8F9FA;
-      }
-
-      .sidebar-link.active {
-        background-color: rgba(227, 25, 55, 0.1);
-        color: #E31937;
-        border-left: 3px solid #E31937;
-      }
-
-      .sidebar-link:hover:not(.active) {
-        background-color: rgba(0, 0, 0, 0.05);
-      }
 
       input:focus,
       select:focus {
