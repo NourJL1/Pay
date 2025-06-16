@@ -112,14 +112,20 @@
             <div class="flex items-center space-x-4">
 
                 <!-- Language -->
-                <div class="relative">
-                    <button class="flex items-center space-x-1 focus:outline-none">
-                        <span class="text-sm text-gray-700">EN</span>
-                        <div class="w-4 h-4 flex items-center justify-center">
-                            <i class="ri-arrow-down-s-line text-gray-600"></i>
-                        </div>
-                    </button>
+                <div class="d-flex align-items-center">
+                <div class="lang-switch d-flex align-items-center me-3">
+                    <span class="ri-global-line fs-5 me-2"></span>
+                    <select>
+                        <option>EN</option>
+                        <option>FR</option>
+                        <option>ES</option>
+                    </select>
                 </div>
+                <label class="d-flex align-items-center">
+                    <input type="checkbox" id="themeSwitch">
+                    <span class="custom-switch"></span>
+                </label>
+            </div>
 
                 <!-- Notifications -->
                 <div class="relative">
