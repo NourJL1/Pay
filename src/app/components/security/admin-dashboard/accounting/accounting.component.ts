@@ -12,8 +12,9 @@ export class AccountingComponent {
   isFeeSchemaVisible: boolean = false;
   isFeeRuleVisible: boolean = false;
   isFeeRuleTypeVisible: boolean = false;
-  isNewOperationTypeVisible: boolean = false;
+  isOperationTypeVisible: boolean = false;
   isOperationMappingVisible: boolean = false;
+  isPeriodicityVisible: boolean = false;
 
   toggleForm(modal: String): void {
     switch (modal) {
@@ -21,8 +22,9 @@ export class AccountingComponent {
       case 'fee-schema': this.isFeeSchemaVisible = true; break;
       case 'fee-rule': this.isFeeRuleVisible = true; break;
       case 'fee-rule-type': this.isFeeRuleTypeVisible = true; break;
-      case 'operation-type': this.isNewOperationTypeVisible = true; break;
+      case 'operation-type': this.isOperationTypeVisible = true; break;
       case 'operation-mapping': this.isOperationMappingVisible = true; break;
+      case 'operation-periodicity': this.isPeriodicityVisible = true; break;
     }
   }
   closeForm(modal: String): void {
@@ -31,8 +33,10 @@ export class AccountingComponent {
       case 'fee-schema': this.isFeeSchemaVisible = false; break;
       case 'fee-rule': this.isFeeRuleVisible = false; break;
       case 'fee-rule-type': this.isFeeRuleTypeVisible = false; break;
-      case 'operation-type': this.isNewOperationTypeVisible = false; break;
+      case 'operation-type': this.isOperationTypeVisible = false; break;
       case 'operation-mapping': this.isOperationMappingVisible = false; break;
+      case 'operation-periodicity': this.isPeriodicityVisible = false; break;
+
     }
   }
 
@@ -40,10 +44,11 @@ export class AccountingComponent {
     return (
       this.isFeeVisible ||
       this.isFeeSchemaVisible ||
-      this.isNewOperationTypeVisible ||
+      this.isOperationTypeVisible ||
       this.isFeeRuleVisible ||
       this.isFeeRuleTypeVisible ||
-      this.isOperationMappingVisible
+      this.isOperationMappingVisible ||
+      this.isPeriodicityVisible
     );
   }
 

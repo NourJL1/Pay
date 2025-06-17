@@ -17,6 +17,7 @@ import { SettingsComponent } from './components/security/wallet/settings/setting
 import { AccountingComponent } from './components/security/admin-dashboard/accounting/accounting.component';
 import { WalletMngComponent } from './components/security/admin-dashboard/wallet-mng/wallet-mng.component';
 import { ProductsComponent } from './components/security/admin-dashboard/products/products.component';
+import { ProfilingComponent } from './components/security/admin-dashboard/profiling/profiling.component';
 
 export const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -66,6 +67,7 @@ export const routes: Routes = [
       {path: 'accounting', component: AccountingComponent},
       {path: 'wallets', component: WalletMngComponent},
       {path: 'products', component: ProductsComponent},
+      {path: 'profiling', component: ProfilingComponent},
       //{path: 'transactions', component: },
     ]
 },
