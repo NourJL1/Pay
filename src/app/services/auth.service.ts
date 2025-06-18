@@ -4,7 +4,6 @@ import { Observable, tap, catchError, throwError } from 'rxjs';
 import { UserService } from './user.service';
 import { environment } from '../../environments/environment';
 import { Router } from '@angular/router';
-// Update the import path below if the Customer model is located elsewhere
 import { Customer } from '../entities/customer';
 
 @Injectable({
@@ -22,13 +21,9 @@ export class AuthService {
   register(customer: Customer, files: File[]): Observable<any> {
     const formData = new FormData();
     formData.append('customer', JSON.stringify(customer));
-
     if (files?.length) {
       files.forEach(file => formData.append('files', file, file.name));
     }
-
-    console.log(FormData)
-
     return this.http.post(`${this.apiUrl}/api/customers/register`, formData).pipe(
       tap(response => console.log('Customer registration successful:', response)),
       catchError(this.handleError)
@@ -37,22 +32,18 @@ export class AuthService {
 
   login(username: string, password: string): Observable<any> {
     const loginPayload = { username, password };
-
     return this.http.post<any>(`${this.apiUrl}/api/customers/login`, loginPayload).pipe(
       tap({
         next: (response) => {
-          console.log(response)
-          // Store all relevant customer data
-          localStorage.setItem('authToken', response.token);
+          console.log('Login response:', response);
+          localStorage.setItem('roles', response.roles); // Changed from authToken
           localStorage.setItem('role', JSON.stringify(response.role));
           localStorage.setItem('username', response.username);
-          localStorage.setItem('customerId', response.cusCode.toString());
-          localStorage.setItem('fullname', response.fullname);
-
-          this.userService.setLoggedInUserId(response.cusCode);
-          this.router.navigate(['/wallet']); // Update as needed
+          localStorage.setItem('cusCode', response.cusCode);
+          localStorage.setItem('fullname', response.fullname || '');
+          this.userService.setLoggedInUserId(Number(response.cusCode));
         },
-        error: (err) => {console.error('Customer login failed:', err); }
+        error: (err) => { console.error('Customer login failed:', err); }
       }),
       catchError(this.handleError)
     );
@@ -65,11 +56,11 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    return !!localStorage.getItem('authToken') && !!localStorage.getItem('customerId');
+    return !!localStorage.getItem('roles') && !!localStorage.getItem('cusCode');
   }
 
-  getAuthToken(): string | null {
-    return localStorage.getItem('authToken');
+  getRoles(): string | null {
+    return localStorage.getItem('roles');
   }
 
   private handleError(error: HttpErrorResponse) {
