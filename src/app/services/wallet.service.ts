@@ -6,6 +6,7 @@ import { interval, switchMap, distinctUntilChanged } from 'rxjs';
 import { WalletStatus } from '../entities/wallet-status';
 import { environment } from '../../environments/environment';
 import { AuthService } from './auth.service';
+import { Wallet } from '../entities/wallet';
 
 @Injectable({
   providedIn: 'root',
@@ -52,7 +53,20 @@ export class WalletService {
       distinctUntilChanged((prev, curr) => prev.wstIden === curr.wstIden)
     );
   }
+  getWalletCount(): Observable<number> {
+  return this.http.get<number>(`${this.apiUrl}/count`, { headers: this.getHeaders() });
 }
+ // Get wallets by customer code
+  getWalletsByCustomerCode(cusCode: number): Observable<Wallet[]> {
+    return this.http.get<Wallet[]>(`${this.apiUrl}/by-customer/${cusCode}`);
+  }
+
+  // Get wallet status (if needed separately)
+  getWalletStatusByCustomerCode(cusCode: number): Observable<string> {
+    return this.http.get<string>(`${this.apiUrl}/by-customer/${cusCode}/status`);
+  }
+}
+
 
 interface WALLET {
   walCode: number;

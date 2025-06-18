@@ -8,6 +8,7 @@ import { OperationType } from './operation-type';
 import { CardList } from './card-list';
 import { AccountList } from './account-list';
 import { WalletOperationTypeMap } from './wallet-operation-type-map';
+import { WalletStatus } from './wallet-status';
 export class Wallet {
 
     walCode!: number;
@@ -35,12 +36,7 @@ export class Wallet {
     Object.assign(this, init);
   }
 }
-export enum WalletStatus {
-  ACTIVE = 'ACTIVE',
-  INACTIVE = 'INACTIVE',
-  PENDING = 'PENDING',
-  BLOCKED = 'BLOCKED'
-}
+
 
 export enum WalletType {
   PERSONAL = 'CUSTOMER',
