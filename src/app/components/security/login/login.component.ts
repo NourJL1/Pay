@@ -5,21 +5,17 @@ import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
-import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   imports: [FormsModule, CommonModule],
   styleUrls: ['./login.component.css'],
-  standalone: true
 })
 export class LoginComponent {
   username: string = '';
-  password: string = '';
+  cusMotDePasse: string = '';
   errorMessage: string = '';
-  isLoading: boolean = false;
-cusMotDePasse: any;
 
   constructor(
     private authService: AuthService,
@@ -28,87 +24,42 @@ cusMotDePasse: any;
   ) {}
 
   async onSubmit(): Promise<void> {
-    this.errorMessage = '';
-    this.isLoading = true;
-
     try {
-      // 1. First authenticate the user
-      const authResponse = await firstValueFrom(
-        this.authService.login(this.username, this.password)
-      );
+      const response = await firstValueFrom(this.authService.login(this.username, this.cusMotDePasse));
+      console.log('Full login response:', response);
 
-      // 2. Store the authentication token if available
-      if (authResponse.token) {
-        localStorage.setItem('token', authResponse.token);
+      // Extract role (adjust if role is an object)
+      const role = typeof response.role === 'string' ? response.role.toLowerCase() : response.role?.name?.toLowerCase() || 'customer';
+
+      if (!role) {
+        this.errorMessage = 'No role found in response.';
+        return;
       }
 
-      // 3. Handle redirection based on role
-      const role = authResponse.role?.toLowerCase() || 'customer';
+      localStorage.setItem('cusCode', response.cusCode);
       localStorage.setItem('role', role);
-      localStorage.setItem('cusCode', authResponse.cusCode);
+      localStorage.setItem('username', response.username || 'CUSTOMER');
+
+      console.log('Stored Role:', localStorage.getItem('role'));
 
       if (role === 'admin') {
+        console.log('Redirecting to admin dashboard');
         await this.router.navigate(['/account/dashboard']);
       } else {
-        await this.handleCustomerRedirect(authResponse.cusCode);
-      }
+        console.log('Checking wallet status');
+        const walletStatus = await firstValueFrom(this.walletService.getWalletStatus());
+        console.log('Wallet Status:', walletStatus);
 
-    } catch (error: unknown) {
-      this.handleError(error);
-    } finally {
-      this.isLoading = false;
-    }
-  }
-
-  private async handleCustomerRedirect(cusCode: number): Promise<void> {
-    try {
-      const wallets = await firstValueFrom(
-        this.walletService.getWalletsByCustomerCode(cusCode)
-      );
-
-      if (!wallets?.length) {
-        throw new Error('No wallet found for this user');
-      }
-
-      const status = wallets[0].walletStatus?.wstIden?.toUpperCase();
-      switch (status) {
-        case 'ACTIVE':
+        if (walletStatus.wstIden === 'ACTIVE') {
           await this.router.navigate(['/wallet']);
-          break;
-        case 'PENDING':
+        } else {
           await this.router.navigate(['/pending']);
-          break;
-        default:
-          throw new Error(`Wallet status: ${status}`);
+        }
       }
     } catch (error) {
-      console.error('Wallet redirect error:', error);
-      throw error;
+      console.error('Login error:', error);
+      this.errorMessage = 'Login failed. Please check your credentials or try again later.';
     }
-  }
-
-  private handleError(error: unknown): void {
-    if (error instanceof HttpErrorResponse) {
-      switch (error.status) {
-        case 0:
-          this.errorMessage = 'Network error - please check your connection';
-          break;
-        case 403:
-          this.errorMessage = 'Access forbidden - invalid credentials or insufficient permissions';
-          break;
-        case 401:
-          this.errorMessage = 'Invalid username or password';
-          break;
-        default:
-          this.errorMessage = `Server error (${error.status}) - please try again later`;
-      }
-    } else if (error instanceof Error) {
-      this.errorMessage = error.message;
-    } else {
-      this.errorMessage = 'An unknown error occurred';
-    }
-    
-    console.error('Login error:', error);
   }
 
   goHome(): void {

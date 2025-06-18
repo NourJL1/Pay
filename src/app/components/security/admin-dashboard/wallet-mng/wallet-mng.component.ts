@@ -1,29 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { WalletService } from '../../../../services/wallet.service'; // <-- importe ton service ici
+import { Component, ElementRef, ViewChild } from '@angular/core';
 @Component({
   selector: 'app-wallet-mng',
   imports: [CommonModule],
   templateUrl: './wallet-mng.component.html',
   styleUrl: './wallet-mng.component.css'
 })
-export class WalletMngComponent implements OnInit {
-  totalWallets: number | null = null;
+export class WalletMngComponent {
 
-  constructor(private walletService: WalletService) {}
-
-ngOnInit(): void {
-  this.walletService.getWalletCount().subscribe({
-    next: (count) => {
-      this.totalWallets = count;
-      console.log('Wallet count:', count); // ✅ Confirm it's coming through
-    },
-    error: (err) => {
-      console.error('Erreur lors de la récupération du total des wallets', err);
-    },
-  });
-}
-
+  ngOnInit(): void {
+  }
 
   isWalletFormVisible: boolean = false;
   isWalletDetailsVisible: boolean = false;
