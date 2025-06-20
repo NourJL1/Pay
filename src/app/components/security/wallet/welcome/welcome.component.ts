@@ -1,22 +1,25 @@
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { WalletService } from '../../../../services/wallet.service';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-welcome',
+  standalone: true, // si tu es en standalone
   imports: [CommonModule],
   templateUrl: './welcome.component.html',
-  styleUrl: './welcome.component.css'
+  styleUrls: ['./welcome.component.css'],
+  providers: [DatePipe] // ajoute cette ligne
 })
-export class WelcomeComponent {
-
+export class WelcomeComponent implements OnInit, OnDestroy {
   wallet: any = null;
   loading = true;
   error: string | null = null;
   private statusCheckSubscription?: Subscription;
+  today: Date = new Date();
+  username: string = '';
 
   constructor(
     private http: HttpClient,
@@ -24,60 +27,46 @@ export class WelcomeComponent {
     private walletService: WalletService
   ) {}
 
-  ngOnInit() {
-    this.loadWallet();
-    this.username = localStorage.getItem('username') || 'User';
+  ngOnInit(): void {
+    this.username = localStorage.getItem('username') || 'CUSTOMER';
+    this.loadCustomerWallet();
   }
 
-  loadWallet() {
+  loadCustomerWallet(): void {
     this.loading = true;
     this.error = null;
-    
-    const userId = localStorage.getItem('userId');
-    if (!userId) {
-      this.error = 'User not authenticated';
+
+    const cusCode = localStorage.getItem('cusCode');
+    if (!cusCode) {
+      this.error = 'Customer not authenticated';
       this.loading = false;
       this.router.navigate(['/login']);
       return;
     }
 
-    this.http.get(`http://localhost:8080/api/wallet/users/${userId}`).subscribe({
-      next: (data: any) => {
-        this.wallet = data;
+    const url = `http://localhost:8081/api/wallets/by-customer/${cusCode}`;
+    this.http.get<any>(url).subscribe({
+      next: (walletData) => {
+        this.wallet = walletData;
         this.loading = false;
-        console.log('status:', data.status);
-        // If wallet status isn't approved, redirect to welcome
-        /* if (data.status == 'ACTIVE') {
-          this.router.navigate(['/wallet/welcome']);
-        } */
+        console.log('Wallet loaded:', walletData);
       },
       error: (err) => {
-        console.error('Failed to load wallet', err);
-        this.error = 'Failed to load wallet data';
+        console.error('Failed to load wallet:', err);
+        this.error = 'Erreur lors du chargement du portefeuille.';
         this.loading = false;
       }
     });
   }
 
-  ngOnDestroy() {
+  logout(): void {
+    localStorage.clear();
+    this.router.navigate(['/home']);
+  }
+
+  ngOnDestroy(): void {
     if (this.statusCheckSubscription) {
       this.statusCheckSubscription.unsubscribe();
     }
   }
-
-  logout() {
-    // Clear user data
-    //localStorage.removeItem('userId');
-    //localStorage.removeItem('authToken');
-    localStorage.clear()
-    
-    // Redirect to login page
-    this.router.navigate(['/home']);
-  }
-
-  today: Date = new Date();
-
-  username: string = '';
-
-
 }

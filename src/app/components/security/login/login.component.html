@@ -2,11 +2,11 @@
   <div class="login-header">
     <img src="../../../../assets/logo.png" alt="App Logo" class="logo" />
     <h3>Welcome Back!</h3>
-    <div class="flex items-right justify-end" >
-    <button class="right-4 top-3 text-gray-600 hover:text-red-600 text-xl" (click)="goHome()" aria-label="Close">
-      <i class="fa-solid fa-arrow-left"></i>
-    </button>
-  </div>
+    <div class="flex items-right justify-end">
+      <button class="right-4 top-3 text-gray-600 hover:text-red-600 text-xl" (click)="goHome()" aria-label="Close">
+        <i class="fa-solid fa-arrow-left"></i>
+      </button>
+    </div>
   </div>
 
   <form (ngSubmit)="onSubmit()" #loginForm="ngForm" class="login-form">
@@ -40,10 +40,12 @@
       {{ errorMessage }}
     </div>
 
+    <div *ngIf="isLoading" class="spinner">Loading...</div>
+
     <button
       type="submit"
       class="btn btn-primary login-button"
-      [disabled]="!loginForm.form.valid"
+      [disabled]="!loginForm.form.valid || isLoading"
     >
       Login
     </button>

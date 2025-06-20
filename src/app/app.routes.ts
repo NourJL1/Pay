@@ -25,7 +25,7 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'admin-dashboard', component: AdminDashboardComponent },
-  { path: 'welcome', component: WelcomeComponent},
+  //{ path: 'welcome', component: WelcomeComponent},
   //{ path: 'wallet', component: WalletComponent},
   {path: 'dashboard', component: DashboardComponent},
   {path: 'side-nav', component: SideNavComponent},
@@ -43,12 +43,7 @@ export const routes: Routes = [
     canActivate: [AuthGuard, walletStatusGuard],
     data: { requiredStatus: 'ACTIVE' }
   },
-  {
-    path: 'welcome',
-    component: WelcomeComponent,
-    canActivate: [AuthGuard, walletStatusGuard],
-    data: { requiredStatus: 'PENDING' }
-  },
+  
   {
     path: 'admin-dashboard',
     component: AdminDashboardComponent,
@@ -72,7 +67,7 @@ export const routes: Routes = [
     ]
 },
 
-  /* { 
+/*  { 
     path: 'wallet', 
     component: WalletComponent,
     canActivate: [AuthGuard, walletStatusGuard],
@@ -82,11 +77,23 @@ export const routes: Routes = [
       {path: 'welcome', component: WelcomeComponent},
       {path: 'settings', component: SettingsComponent}
     ]
-  },
+  },*/
   {
     path: 'pending',
     component: PendingComponent,
     canActivate: [walletStatusGuard, AuthGuard],
-    data: { requiredStatus: 'PENDING', role: 'CUSTOMER_ROLE' }
-  }, */
+    data: { requiredStatus: 'PENDING', role: 'ROLE_CUSTOMER' }
+  }, 
+  {
+    path: 'welcome',
+    component: WelcomeComponent,
+    canActivate: [ walletStatusGuard, AuthGuard],
+    data: { requiredStatus: 'ACTIVE', role: 'ROLE_CUSTOMER'}
+  }
+  ,
+  {
+    path: 'wallets',
+    component: WalletMngComponent,
+    canActivate: [AuthGuard],
+  }
 ];

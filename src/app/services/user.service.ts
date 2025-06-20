@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Role } from '../entities/role';
-import { WalletStatus } from '../entities/wallet';
+import { WalletStatus } from '../entities/wallet-status';
 import { User } from '../entities/user';
 export interface LocalUser {
   id?: number;

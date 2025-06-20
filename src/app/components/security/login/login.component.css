@@ -14,6 +14,11 @@
   text-align: center;
   margin-bottom: 25px;
 }
+.spinner {
+  text-align: center;
+  color: #555;
+  margin: 10px 0;
+}
 
 .login-header .logo {
   width: 60px;

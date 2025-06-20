@@ -18,26 +18,16 @@ export class AuthService {
     private router: Router
   ) {}
 
-  register(customer: Customer, files: File[]): Observable<any> {
-    const formData = new FormData();
-    formData.append('customer', JSON.stringify(customer));
-    if (files?.length) {
-      files.forEach(file => formData.append('files', file, file.name));
-    }
-    return this.http.post(`${this.apiUrl}/api/customers/register`, formData).pipe(
-      tap(response => console.log('Customer registration successful:', response)),
-      catchError(this.handleError)
-    );
-  }
-
   login(username: string, password: string): Observable<any> {
     const loginPayload = { username, password };
     return this.http.post<any>(`${this.apiUrl}/api/customers/login`, loginPayload).pipe(
       tap({
         next: (response) => {
           console.log('Login response:', response);
-          localStorage.setItem('roles', response.roles); // Changed from authToken
-          localStorage.setItem('role', JSON.stringify(response.role));
+          localStorage.setItem('roles', response.roles || 'ROLE_CUSTOMER'); // Fallback to ROLE_CUSTOMER
+          // Extract role name from response.role (e.g., { name: "CUSTOMER" })
+          const roleName = response.role?.name || response.role || 'CUSTOMER';
+          localStorage.setItem('role', roleName); // Store role name (e.g., "CUSTOMER")
           localStorage.setItem('username', response.username);
           localStorage.setItem('cusCode', response.cusCode);
           localStorage.setItem('fullname', response.fullname || '');
