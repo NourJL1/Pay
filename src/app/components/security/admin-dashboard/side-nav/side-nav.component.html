@@ -43,9 +43,20 @@
                         [routerLinkActiveOptions]="{ exact: true }"
                         class="nav-item flex items-center p-3 text-gray-600 rounded transition-all">
                         <div class="w-6 h-6 flex items-center justify-center">
-                            <i class="ri-calculator-line"></i>
+                            <i class="ri-calculator-line ri-lg"></i>
                         </div>
                         <span class="ml-3">Accounting Schema</span>
+                    </a>
+                </li>
+
+                 <li>
+                    <a routerLink="/account/customers" routerLinkActive="bg-primary bg-opacity-90 text-white"
+                        [routerLinkActiveOptions]="{ exact: true }"
+                        class="nav-item flex items-center p-3 text-gray-600 rounded transition-all">
+                        <div class="w-6 h-6 flex items-center justify-center">
+                            <i class="ri-contacts-line ri-lg"></i>
+                        </div>
+                        <span class="ml-3">Customer Management</span>
                     </a>
                 </li>
 
@@ -54,7 +65,7 @@
                         [routerLinkActiveOptions]="{ exact: true }"
                         class="nav-item flex items-center p-3 text-gray-600 rounded transition-all">
                         <div class="w-6 h-6 flex items-center justify-center">
-                            <i class="ri-user-settings-line"></i>
+                            <i class="ri-user-settings-line ri-lg"></i>
                         </div>
                         <span class="ml-3">Users Profiling</span>
                     </a>
@@ -65,7 +76,7 @@
                         [routerLinkActiveOptions]="{ exact: true }"
                         class="nav-item flex items-center p-3 text-gray-600 rounded transition-all">
                         <div class="w-6 h-6 flex items-center justify-center">
-                            <i class="ri-bank-card-line"></i>
+                            <i class="ri-bank-card-line ri-lg"></i>
                         </div>
                         <span class="ml-3">Products</span>
                     </a>
@@ -103,7 +114,7 @@
         </button>
     </aside>
     <!-- Main Content -->
-    <main id="mainContent" class="main-content ml-[260px]  bg-gray-50">
+    <main id="mainContent" class="main-content ml-[260px] bg-gray-50 flex flex-col min-h-screen">
         <!-- Header -->
         <header class="flex justify-between items-center border-b px-6 py-4 bg-white">
             <div>
@@ -142,8 +153,10 @@
 
             </div>
         </header>
+        <!-- main content -->
         <router-outlet></router-outlet>
-        <footer class="bottom-0 text-center text-sm text-gray-500 mx-4 py-4 border-t border-gray-200">
+        <!-- footer -->
+        <footer class="mt-auto text-center text-sm text-gray-500 mx-4 py-4 border-t border-gray-200">
             &copy; {{ currentYear }} UIB. All rights reserved.
         </footer>
     </main>

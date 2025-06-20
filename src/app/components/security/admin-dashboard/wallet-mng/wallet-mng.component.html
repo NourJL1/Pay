@@ -264,17 +264,11 @@
             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               <div class="flex items-center">
                 <span>Wallet Code</span>
-                <div class="w-5 h-5 flex items-center justify-center ml-1 text-gray-400">
-                  <i class="ri-arrow-up-s-line"></i>
-                </div>
               </div>
             </th>
             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               <div class="flex items-center">
                 <span>Identifier</span>
-                <div class="w-5 h-5 flex items-center justify-center ml-1 text-gray-400">
-                  <i class="ri-arrow-down-s-line"></i>
-                </div>
               </div>
             </th>
             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -285,9 +279,6 @@
             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               <div class="flex items-center">
                 <span>Effective Balance</span>
-                <div class="w-5 h-5 flex items-center justify-center ml-1 text-gray-400">
-                  <i class="ri-arrow-down-s-line"></i>
-                </div>
               </div>
             </th>
             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -1456,7 +1447,7 @@
     </div>
   </div>
 
-
+  <!-- Modals -->
   <div *ngIf="isAnyModalVisible" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 ">
     <!-- Create Wallet Modal -->
     <div *ngIf="isWalletFormVisible" id="create-wallet-modal" class="bg-white rounded-lg shadow-xl w-full max-w-2xl">
@@ -1629,13 +1620,13 @@
             <div class="mb-6">
               <div class="flex border-b border-gray-200">
                 <button class="details-tab-button  px-4 py-3 text-sm active font-medium text-primary"
-                  id="deatils-basic-info" (click)="showTab('basic-info','details')"> Basic Info </button>
-                <button class="details-tab-button  px-4 py-3 text-sm text-gray-500" id="deatils-balance"
+                  id="details-basic-info" (click)="showTab('basic-info','details')"> Basic Info </button>
+                <button class="details-tab-button  px-4 py-3 text-sm text-gray-500" id="details-balance"
                   (click)="showTab('balance','details')"> Balance
                 </button>
-                <button class="details-tab-button px-4 py-3 text-sm text-gray-500" id="deatils-relationships"
+                <button class="details-tab-button px-4 py-3 text-sm text-gray-500" id="details-relationships"
                   (click)="showTab('relationships','details')"> Relationships </button>
-                <button class="details-tab-button px-4 py-3 text-sm text-gray-500" id="deatils-operations"
+                <button class="details-tab-button px-4 py-3 text-sm text-gray-500" id="details-operations"
                   (click)="showTab('operations','details')">
                   Operations </button>
               </div>

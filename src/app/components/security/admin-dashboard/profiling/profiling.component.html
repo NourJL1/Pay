@@ -1,8 +1,78 @@
 <div class="flex items-center justify-between px-6 py-3 bg-white border-b">
-  <div class="flex items-center">
-    <h1 class="text-xl font-semibold text-gray-800">Users Profiling Management</h1>
-  </div>
+    <div class="flex items-center">
+        <h1 class="text-xl font-semibold text-gray-800">Users Profiling Management</h1>
+    </div>
 </div>
 <main class="flex-1 overflow-y-auto p-6 custom-scrollbar">
-    
+    <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <div class="flex items-center">
+                            <div class="custom-checkbox" id="select-all-checkbox"></div>
+                        </div>
+                    </th>
+                    <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <div class="flex items-center">
+                            <span>Username</span>
+                        </div>
+                    </th>
+                    <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <div class="flex items-center">
+                            <span>Full Name</span>
+                        </div>
+                    </th>
+                    <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <div class="flex items-center">
+                            <span>Wallet Management</span>
+                        </div>
+                    </th>
+                    <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <div class="flex items-center">
+                            <span>Accounting Management</span>
+                        </div>
+                    </th>
+                    <th scope="col"
+                        class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Actions </th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                <tr class="hover:bg-gray-50 cursor-pointer" data-wallet-id="1">
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="custom-checkbox" data-checkbox-id="1"></div>
+                    </td>
+                     <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">michael</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">Michael Johnson</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="custom-checkbox" data-checkbox-id="1"></div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="custom-checkbox" data-checkbox-id="1"></div>
+                    </td>
+
+                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <div class="flex items-center justify-end space-x-2">
+                            <button class="text-green-600 hover:text-gray-500">
+                                <i class="ri-edit-line"></i>
+                            </button>
+                            <button class="text-red-600 hover:text-gray-500">
+                                <i class="ri-delete-bin-line"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </main>
