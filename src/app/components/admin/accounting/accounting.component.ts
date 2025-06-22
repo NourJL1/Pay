@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Fees } from '../../../../entities/fees';
-import { FeesService } from '../../../../services/fees.service';
+import { Fees } from '../../../entities/fees';
+import { FeesService } from '../../../services/fees.service';
 import { HttpHeaders } from '@angular/common/http';
 
 @Component({
