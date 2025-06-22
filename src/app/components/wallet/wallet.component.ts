@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
-import { WalletService } from '../../../services/wallet.service';
+import { WalletService } from '../../services/wallet.service';
 import { Subscription, interval, switchMap } from 'rxjs';
 
 @Component({

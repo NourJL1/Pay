@@ -6,14 +6,14 @@ import { AuthGuard } from './guards/auth.guard';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { WalletComponent } from './components/wallet/wallet.component';
 import { walletStatusGuard } from './guards/wallet-status.guard';
-import { SideNavComponent } from './components/admin-dashboard/side-nav/side-nav.component'; 
-import { DashboardComponent } from './components/admin-dashboard/dashboard/dashboard.component';
+import { SideNavComponent } from './components/admin/side-nav/side-nav.component'; 
+import { DashboardComponent } from './components/admin/dashboard/dashboard.component';
 import { WelcomeComponent } from './components/wallet/welcome/welcome.component';
-import { AccountingComponent } from './components/admin-dashboard/accounting/accounting.component';
-import { WalletMngComponent } from './components/admin-dashboard/wallet-mng/wallet-mng.component';
-import { ProductsComponent } from './components/admin-dashboard/products/products.component';
-import { ProfilingComponent } from './components/admin-dashboard/profiling/profiling.component';
-import { CustomerMngComponent } from './components/admin-dashboard/customer-mng/customer-mng.component';
+import { AccountingComponent } from './components/admin/accounting/accounting.component';
+import { WalletMngComponent } from './components/admin/wallet-mng/wallet-mng.component';
+import { ProductsComponent } from './components/admin/products/products.component';
+import { ProfilingComponent } from './components/admin/profiling/profiling.component';
+import { CustomerMngComponent } from './components/admin/customer-mng/customer-mng.component';
 
 export const routes: Routes = [
   { path: 'home', component: HomeComponent },

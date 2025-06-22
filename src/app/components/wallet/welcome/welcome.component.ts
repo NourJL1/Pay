@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { WalletService } from '../../../../services/wallet.service';
+import { WalletService } from '../../../services/wallet.service';
 import { CommonModule, DatePipe } from '@angular/common';
 
 @Component({

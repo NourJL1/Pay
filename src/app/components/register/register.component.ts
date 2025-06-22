@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { UserService } from '../../../services/user.service';
+import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators, AbstractControl, } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NgxIntlTelInputModule, CountryISO, SearchCountryField } from 'ngx-intl-tel-input';
 import { HttpClient } from '@angular/common/http';
-import { CustomerService } from '../../../services/customer.service';
+import { CustomerService } from '../../services/customer.service';
 import { error } from 'node:console';
 
 
