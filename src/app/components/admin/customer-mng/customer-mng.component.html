@@ -44,54 +44,39 @@
                         </div>
                     </div>
                     <div class="w-full sm:w-auto">
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Type</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Country</label>
                         <div class="relative">
                             <select
                                 class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary rounded-lg sm:text-sm">
-                                <option value="">All Types</option>
-                                <option value="personal">Personal</option>
-                                <option value="business">Business</option>
-                                <option value="premium">Premium</option>
+                                <option value="">select country</option>
+                                <option value="personal">Tunisia</option>
+                                <option value="business">Algeria</option>
+                                <option value="premium">Lybia</option>
                             </select>
                         </div>
                     </div>
                     <div class="w-full sm:w-auto">
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Cities</label>
                         <div class="relative">
                             <select
                                 class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary rounded-lg sm:text-sm">
-                                <option value="">All Categories</option>
-                                <option value="standard">Standard</option>
-                                <option value="savings">Savings</option>
-                                <option value="investment">Investment</option>
+                                <option value="">select city</option>
+                                <option value="standard">Tunis</option>
+                                <option value="savings">Manouba</option>
+                                <option value="investment">Ariana</option>
                             </select>
                         </div>
                     </div>
-                    <div class="w-full sm:w-auto">
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Balance Range</label>
-                        <div class="flex items-center space-x-2">
-                            <input type="number" placeholder="Min"
-                                class="w-24 pl-3 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary text-sm">
-                            <span class="text-gray-500">-</span>
-                            <input type="number" placeholder="Max"
-                                class="w-24 pl-3 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary text-sm">
-                        </div>
-                    </div>
-                    <div class="w-full sm:w-auto">
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Date Range</label>
-                        <div class="flex items-center space-x-2">
-                            <input type="date" placeholder="Min"
-                                class="w-24 pl-3 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary text-sm">
-                            <span class="text-gray-500">-</span>
-                            <input type="date" placeholder="Max"
-                                class="w-24 pl-3 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary text-sm">
-                        </div>
-                    </div>
-                    <div class="relative flex-grow max-w-md">
-                        <input type="text" placeholder="Search schemas, operations, or codes..."
-                            class="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-button text-sm">
-                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                            <i class="ri-search-line text-gray-400"></i>
+
+                    <!-- Search Input -->
+                    <div class="w-full sm:flex-1 sm:min-w-[300px]">
+                        <label class="block text-sm font-medium text-gray-700 mb-1 sr-only">Search</label>
+                        <div class="relative">
+                            <input type="text" placeholder="Search Username, Email, or codes..."
+                                class="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg text-sm focus:ring-primary focus:border-primary">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <i class="ri-search-line text-gray-400"></i>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -105,9 +90,7 @@
                     <tr>
                         <th scope="col"
                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            <div class="flex items-center">
-                                <div class="custom-checkbox" id="select-all-checkbox"></div>
-                            </div>
+                            <input type="checkbox">
                         </th>
                         <th scope="col"
                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -157,10 +140,9 @@
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
-                    <tr (click)="toggleForm('customer-details')" class="hover:bg-gray-50 cursor-pointer"
-                        data-customer-id="1">
+                    <tr class="hover:bg-gray-50 cursor-pointer" data-customer-id="1">
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="custom-checkbox" data-checkbox-id="1"></div>
+                            <input type="checkbox">
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="text-sm font-medium text-gray-900">W-10045</div>
@@ -186,6 +168,10 @@
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                             <div class="flex items-center justify-end space-x-2">
+                                <button (click)="toggleForm('customer-details')"
+                                    class="text-blue-600 hover:text-gray-500">
+                                    <i class="ri-eye-line"></i>
+                                </button>
                                 <button class="text-green-600 hover:text-gray-500">
                                     <i class="ri-edit-line"></i>
                                 </button>
@@ -197,7 +183,7 @@
                     </tr>
                     <tr class="hover:bg-gray-50 cursor-pointer" data-customer-id="2">
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="custom-checkbox" data-checkbox-id="2"></div>
+                            <input type="checkbox">
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="text-sm font-medium text-gray-900">W-10046</div>
@@ -223,6 +209,10 @@
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                             <div class="flex items-center justify-end space-x-2">
+                                <button (click)="toggleForm('customer-details')"
+                                    class="text-blue-600 hover:text-gray-500">
+                                    <i class="ri-eye-line"></i>
+                                </button>
                                 <button class="text-green-600 hover:text-gray-500">
                                     <i class="ri-edit-line"></i>
                                 </button>
@@ -234,7 +224,7 @@
                     </tr>
                     <tr class="hover:bg-gray-50 cursor-pointer" data-customer-id="3">
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="custom-checkbox" data-checkbox-id="3"></div>
+                            <input type="checkbox">
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="text-sm font-medium text-gray-900">W-10047</div>
@@ -262,6 +252,10 @@
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                             <div class="flex items-center justify-end space-x-2">
+                                <button (click)="toggleForm('customer-details')"
+                                    class="text-blue-600 hover:text-gray-500">
+                                    <i class="ri-eye-line"></i>
+                                </button>
                                 <button class="text-green-600 hover:text-gray-500">
                                     <i class="ri-edit-line"></i>
                                 </button>
@@ -273,7 +267,7 @@
                     </tr>
                     <tr class="hover:bg-gray-50 cursor-pointer" data-customer-id="4">
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="custom-checkbox" data-checkbox-id="4"></div>
+                            <input type="checkbox">
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="text-sm font-medium text-gray-900">W-10048</div>
@@ -300,6 +294,10 @@
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                             <div class="flex items-center justify-end space-x-2">
+                                <button (click)="toggleForm('customer-details')"
+                                    class="text-blue-600 hover:text-gray-500">
+                                    <i class="ri-eye-line"></i>
+                                </button>
                                 <button class="text-green-600 hover:text-gray-500">
                                     <i class="ri-edit-line"></i>
                                 </button>
@@ -311,7 +309,7 @@
                     </tr>
                     <tr class="hover:bg-gray-50 cursor-pointer" data-customer-id="5">
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="custom-checkbox" data-checkbox-id="5"></div>
+                            <input type="checkbox">
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="text-sm font-medium text-gray-900">W-10049</div>
@@ -338,6 +336,10 @@
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                             <div class="flex items-center justify-end space-x-2">
+                                <button (click)="toggleForm('customer-details')"
+                                    class="text-blue-600 hover:text-gray-500">
+                                    <i class="ri-eye-line"></i>
+                                </button>
                                 <button class="text-green-600 hover:text-gray-500">
                                     <i class="ri-edit-line"></i>
                                 </button>
@@ -461,7 +463,9 @@
                                 </div>
 
                                 <div class="flex items-center mt-2">
-                                    <span class="text-xs font-medium text-green-600">Active</span>
+                                    <span
+                                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                        Active </span>
                                 </div>
                             </div>
                         </div>
@@ -524,7 +528,9 @@
                                         <div class="flex items-start">
                                             <div>
                                                 <label class="block text-xs text-gray-500 mb-1">Status</label>
-                                                <div class="text-sm font-medium text-green-600">Active</div>
+                                                <span
+                                                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                    Active </span>
                                             </div>
                                         </div>
                                     </div>
@@ -648,7 +654,8 @@
                             </div>
 
                             <!-- Document Preview Panel (hidden by default) -->
-                            <div id="document-preview" class="hidden mt-6 border border-gray-200 rounded-lg bg-white p-4">
+                            <div id="document-preview"
+                                class="hidden mt-6 border border-gray-200 rounded-lg bg-white p-4">
                                 <div class="flex justify-between items-center mb-4">
                                     <h4 id="preview-title" class="font-medium text-gray-800">Preview: File</h4>
                                     <button (click)="closePreview()" class="text-gray-500 hover:text-gray-700">
@@ -660,7 +667,8 @@
                                     <div class="w-full h-full">
                                         <img id="image" class="hidden doc-frame top-0 left-0 w-full h-full"
                                             src="../../../../../assets/PASSPORT.jpg">
-                                        <iframe id="pdf" class="hidden doc-frame top-0 left-0 w-full h-full" style="min-height: 400px;"
+                                        <iframe id="pdf" class="hidden doc-frame top-0 left-0 w-full h-full"
+                                            style="min-height: 400px;"
                                             src="../../../../../assets/Diagramme de classe G wallet.pdf"></iframe>
                                         <div id="error" class="hidden doc-frame text-center">
                                             <i class="ri-file-text-line text-4xl text-gray-300 mb-2"></i>
@@ -680,7 +688,7 @@
 
                         <!-- relationships -->
                         <div id="details-tab-relationships" class="details-tab-content hidden">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
                                     <h5 class="text-sm font-semibold text-gray-700 mb-3">Linked Cards</h5>
                                     <div class="border border-gray-200 rounded-lg overflow-hidden">
@@ -753,95 +761,91 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="mt-6">
-                                <h5 class="text-sm font-semibold text-gray-700 mb-3">Operation Types</h5>
+                            </div> -->
+                            <div>
+                                <h5 class="text-sm font-semibold text-gray-700 mb-3">Customer Relationships</h5>
                                 <div class="border border-gray-200 rounded-lg overflow-hidden">
                                     <table class="min-w-full divide-y divide-gray-200">
                                         <thead class="bg-gray-50">
                                             <tr>
                                                 <th scope="col"
                                                     class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                    Operation Type </th>
+                                                    code </th>
                                                 <th scope="col"
                                                     class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                    Code
+                                                    Full Name </th>
+                                                <th scope="col"
+                                                    class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                    email
                                                 </th>
                                                 <th scope="col"
                                                     class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                                     Status </th>
-                                                <th scope="col"
-                                                    class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                    Limit </th>
                                             </tr>
                                         </thead>
                                         <tbody class="bg-white divide-y divide-gray-200">
                                             <tr>
-                                                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
-                                                    Deposit
-                                                </td>
                                                 <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
                                                     DEP-001
                                                 </td>
+                                                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
+                                                    Sarah Williams
+                                                </td>
+                                                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
+                                                    sarah.williams&#64;gmail.com
+                                                </td>
                                                 <td class="px-4 py-3 whitespace-nowrap">
                                                     <span
                                                         class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                                        Enabled </span>
-                                                </td>
-                                                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
-                                                    $50,000 /
-                                                    day
+                                                        Active </span>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
-                                                    Withdrawal
-                                                </td>
                                                 <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                                                    WIT-001
+                                                    DEP-001
+                                                </td>
+                                                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
+                                                    Sarah Williams
+                                                </td>
+                                                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
+                                                    sarah.williams&#64;gmail.com
                                                 </td>
                                                 <td class="px-4 py-3 whitespace-nowrap">
                                                     <span
                                                         class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                                        Enabled </span>
-                                                </td>
-                                                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
-                                                    $10,000 /
-                                                    day
+                                                        Active </span>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
-                                                    Transfer
-                                                </td>
                                                 <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                                                    TRF-001
+                                                    DEP-001
+                                                </td>
+                                                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
+                                                    Sarah Williams
+                                                </td>
+                                                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
+                                                    sarah.williams&#64;gmail.com
                                                 </td>
                                                 <td class="px-4 py-3 whitespace-nowrap">
                                                     <span
                                                         class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                                        Enabled </span>
-                                                </td>
-                                                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
-                                                    $25,000 /
-                                                    day
+                                                        Active </span>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
-                                                    Payment
-                                                </td>
                                                 <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                                                    PAY-001
+                                                    DEP-001
+                                                </td>
+                                                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
+                                                    Sarah Williams
+                                                </td>
+                                                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
+                                                    sarah.williams&#64;gmail.com
                                                 </td>
                                                 <td class="px-4 py-3 whitespace-nowrap">
                                                     <span
                                                         class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                                        Enabled </span>
-                                                </td>
-                                                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
-                                                    $15,000 /
-                                                    day
+                                                        Active </span>
                                                 </td>
                                             </tr>
                                         </tbody>
