@@ -3,11 +3,20 @@
         <h1 class="text-xl font-semibold text-gray-800">Customer Management</h1>
     </div>
 </div>
+<!-- Tabs -->
+<div class="bg-white border-b">
+    <div class="px-6 flex">
+        <button class="tab-button px-4 py-3 text-sm active font-medium text-primary" (click)="showTab('overview')"
+            id="overview">Overview</button>
+        <button class="tab-button px-4 py-3 text-sm text-gray-500" (click)="showTab('settings')"
+            id="settings">Settings</button>
+    </div>
+</div>
 
 <!-- main content -->
 <main class="flex-1 overflow-y-auto p-6 custom-scrollbar">
-
-    <div id="tab-customer" class="tab-content bg-white rounded shadow mb-6  rounded-lg">
+    <!-- overview content -->
+    <div id="tab-overview" class="tab-content bg-white rounded shadow mb-6  rounded-lg">
         <div class="p-4 flex justify-between items-center">
             <h2 class="text-lg font-medium">Customer Management</h2>
             <div class="flex items-center space-x-3">
@@ -406,6 +415,418 @@
             </div>
         </div>
     </div>
+
+    <!-- settings content -->
+    <div id="tab-settings" class="tab-content hidden">
+        <!-- Settings Tabs -->
+        <div class="bg-white rounded-lg shadow">
+            <div class="border-b border-gray-200">
+                <nav class="flex -mb-px">
+                    <button id="settings-status" (click)="showTab('status', 'settings')"
+                        class="settings-tab-button relative px-4 py-3 text-sm active font-medium text-primary">Customer
+                        Status</button>
+                    <button id="settings-identityType" (click)="showTab('identityType', 'settings')"
+                        class="settings-tab-button relative px-4 py-3 text-sm text-gray-500">Customer Identity
+                        Type</button>
+                    <button id="settings-country" (click)="showTab('country', 'settings')"
+                        class="settings-tab-button relative px-4 py-3 text-sm text-gray-500">Country </button>
+                    <button id="settings-city" (click)="showTab('city', 'settings')"
+                        class="settings-tab-button relative px-4 py-3 text-sm text-gray-500">Country </button>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Status -->
+        <div id="settings-tab-status" class="settings-tab-content p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-lg font-medium text-gray-900">Customer Status Management</h3>
+                <button id="btn-add-status" (click)="toggleForm('customer-status')"
+                    class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+                    <i class="ri-add-line mr-1"></i> Add Status </button>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Status Code</th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Status Identifier</th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Status Label</th>
+                            <th scope="col"
+                                class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CUS-001</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">11001</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Active</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <div class="flex justify-end space-x-2">
+                                    <button class="text-green-600 hover:text-gray-500">
+                                        <div class="w-6 h-6 flex items-center justify-center">
+                                            <i class="ri-edit-line"></i>
+                                        </div>
+                                    </button>
+                                    <button class="text-red-600 hover:text-red-500">
+                                        <div class="w-6 h-6 flex items-center justify-center">
+                                            <i class="ri-delete-bin-line"></i>
+                                        </div>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CUS-002</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">11002</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Inactive</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <div class="flex justify-end space-x-2">
+                                    <button class="text-green-600 hover:text-gray-500">
+                                        <div class="w-6 h-6 flex items-center justify-center">
+                                            <i class="ri-edit-line"></i>
+                                        </div>
+                                    </button>
+                                    <button class="text-red-600 hover:text-red-500">
+                                        <div class="w-6 h-6 flex items-center justify-center">
+                                            <i class="ri-delete-bin-line"></i>
+                                        </div>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CUS-003</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">11003</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Suspended</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <div class="flex justify-end space-x-2">
+                                    <button class="text-green-600 hover:text-gray-500">
+                                        <div class="w-6 h-6 flex items-center justify-center">
+                                            <i class="ri-edit-line"></i>
+                                        </div>
+                                    </button>
+                                    <button class="text-red-600 hover:text-red-500">
+                                        <div class="w-6 h-6 flex items-center justify-center">
+                                            <i class="ri-delete-bin-line"></i>
+                                        </div>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CUS-004</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">11004</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Closed</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <div class="flex justify-end space-x-2">
+                                    <button class="text-green-600 hover:text-gray-500">
+                                        <div class="w-6 h-6 flex items-center justify-center">
+                                            <i class="ri-edit-line"></i>
+                                        </div>
+                                    </button>
+                                    <button class="text-red-600 hover:text-red-500">
+                                        <div class="w-6 h-6 flex items-center justify-center">
+                                            <i class="ri-delete-bin-line"></i>
+                                        </div>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CUS-005</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">11005</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Pending</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <div class="flex justify-end space-x-2">
+                                    <button class="text-green-600 hover:text-gray-500">
+                                        <div class="w-6 h-6 flex items-center justify-center">
+                                            <i class="ri-edit-line"></i>
+                                        </div>
+                                    </button>
+                                    <button class="text-red-600 hover:text-red-500">
+                                        <div class="w-6 h-6 flex items-center justify-center">
+                                            <i class="ri-delete-bin-line"></i>
+                                        </div>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- IdentityType -->
+        <div id="settings-tab-identityType" class="settings-tab-content hidden p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-lg font-medium text-gray-900">Identity Type Management</h3>
+                <button id="btn-add-status" (click)="toggleForm('customer-identityType')"
+                    class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+                    <i class="ri-add-line mr-1"></i> Add Status </button>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Code</th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Status Identifier</th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Label</th>
+                            <th scope="col"
+                                class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CIT-001</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">11001</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">CIN</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <div class="flex justify-end space-x-2">
+                                    <button class="text-green-600 hover:text-gray-500">
+                                        <div class="w-6 h-6 flex items-center justify-center">
+                                            <i class="ri-edit-line"></i>
+                                        </div>
+                                    </button>
+                                    <button class="text-red-600 hover:text-red-500">
+                                        <div class="w-6 h-6 flex items-center justify-center">
+                                            <i class="ri-delete-bin-line"></i>
+                                        </div>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CIT-002</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">11002</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">PASSPORT</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <div class="flex justify-end space-x-2">
+                                    <button class="text-green-600 hover:text-gray-500">
+                                        <div class="w-6 h-6 flex items-center justify-center">
+                                            <i class="ri-edit-line"></i>
+                                        </div>
+                                    </button>
+                                    <button class="text-red-600 hover:text-red-500">
+                                        <div class="w-6 h-6 flex items-center justify-center">
+                                            <i class="ri-delete-bin-line"></i>
+                                        </div>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CIT-003</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">11003</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">DRIVERS LISCENCE</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <div class="flex justify-end space-x-2">
+                                    <button class="text-green-600 hover:text-gray-500">
+                                        <div class="w-6 h-6 flex items-center justify-center">
+                                            <i class="ri-edit-line"></i>
+                                        </div>
+                                    </button>
+                                    <button class="text-red-600 hover:text-red-500">
+                                        <div class="w-6 h-6 flex items-center justify-center">
+                                            <i class="ri-delete-bin-line"></i>
+                                        </div>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- country -->
+        <div id="settings-tab-country" class="settings-tab-content hidden p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-lg font-medium text-gray-900">Countries Management</h3>
+                <button id="btn-add-status" (click)="toggleForm('country')"
+                    class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+                    <i class="ri-add-line mr-1"></i> Add Country </button>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Country Code</th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Country Identifier</th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Country Label</th>
+                            <th scope="col"
+                                class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CTR-001</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">11001</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">TUNISIA</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <div class="flex justify-end space-x-2">
+                                    <button class="text-green-600 hover:text-gray-500">
+                                        <div class="w-6 h-6 flex items-center justify-center">
+                                            <i class="ri-edit-line"></i>
+                                        </div>
+                                    </button>
+                                    <button class="text-red-600 hover:text-red-500">
+                                        <div class="w-6 h-6 flex items-center justify-center">
+                                            <i class="ri-delete-bin-line"></i>
+                                        </div>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CTR-002</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">11002</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">USA</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <div class="flex justify-end space-x-2">
+                                    <button class="text-green-600 hover:text-gray-500">
+                                        <div class="w-6 h-6 flex items-center justify-center">
+                                            <i class="ri-edit-line"></i>
+                                        </div>
+                                    </button>
+                                    <button class="text-red-600 hover:text-red-500">
+                                        <div class="w-6 h-6 flex items-center justify-center">
+                                            <i class="ri-delete-bin-line"></i>
+                                        </div>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CTR-003</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">11003</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">FRANCE</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <div class="flex justify-end space-x-2">
+                                    <button class="text-green-600 hover:text-gray-500">
+                                        <div class="w-6 h-6 flex items-center justify-center">
+                                            <i class="ri-edit-line"></i>
+                                        </div>
+                                    </button>
+                                    <button class="text-red-600 hover:text-red-500">
+                                        <div class="w-6 h-6 flex items-center justify-center">
+                                            <i class="ri-delete-bin-line"></i>
+                                        </div>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- city -->
+        <div id="settings-tab-city" class="settings-tab-content hidden p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-lg font-medium text-gray-900">City Management</h3>
+                <button id="btn-add-status" (click)="toggleForm('city')"
+                    class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+                    <i class="ri-add-line mr-1"></i> Add City </button>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                City Code</th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                City Identifier</th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                City Label</th>
+                            <th scope="col"
+                                class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CTY-001</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">11001</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">TUNIS</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <div class="flex justify-end space-x-2">
+                                    <button class="text-green-600 hover:text-gray-500">
+                                        <div class="w-6 h-6 flex items-center justify-center">
+                                            <i class="ri-edit-line"></i>
+                                        </div>
+                                    </button>
+                                    <button class="text-red-600 hover:text-red-500">
+                                        <div class="w-6 h-6 flex items-center justify-center">
+                                            <i class="ri-delete-bin-line"></i>
+                                        </div>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CTY-002</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">11002</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">NEW YORK CITY</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <div class="flex justify-end space-x-2">
+                                    <button class="text-green-600 hover:text-gray-500">
+                                        <div class="w-6 h-6 flex items-center justify-center">
+                                            <i class="ri-edit-line"></i>
+                                        </div>
+                                    </button>
+                                    <button class="text-red-600 hover:text-red-500">
+                                        <div class="w-6 h-6 flex items-center justify-center">
+                                            <i class="ri-delete-bin-line"></i>
+                                        </div>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CTY-003</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">11003</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">PARIS</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <div class="flex justify-end space-x-2">
+                                    <button class="text-green-600 hover:text-gray-500">
+                                        <div class="w-6 h-6 flex items-center justify-center">
+                                            <i class="ri-edit-line"></i>
+                                        </div>
+                                    </button>
+                                    <button class="text-red-600 hover:text-red-500">
+                                        <div class="w-6 h-6 flex items-center justify-center">
+                                            <i class="ri-delete-bin-line"></i>
+                                        </div>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </main>
 
 <!-- Modals -->
@@ -475,12 +896,14 @@
                     <div class="mb-6">
                         <div class="flex border-b border-gray-200">
                             <button class="details-tab-button  px-4 py-3 text-sm active font-medium text-primary"
-                                id="details-basic-info" (click)="showTab('basic-info','details')"> Basic Info </button>
+                                id="details-basic-info" (click)="showTab('basic-info','details')"> Basic Info
+                            </button>
                             <button class="details-tab-button  px-4 py-3 text-sm text-gray-500" id="details-documents"
                                 (click)="showTab('documents','details')"> Documents
                             </button>
                             <button class="details-tab-button px-4 py-3 text-sm text-gray-500"
-                                id="details-relationships" (click)="showTab('relationships','details')"> Relationships
+                                id="details-relationships" (click)="showTab('relationships','details')">
+                                Relationships
                             </button>
                         </div>
                     </div>
@@ -499,7 +922,8 @@
                                     <div class="space-y-4">
                                         <div class="flex items-start">
                                             <div>
-                                                <label class="block text-xs text-gray-500 mb-1">Customer Code</label>
+                                                <label class="block text-xs text-gray-500 mb-1">Customer
+                                                    Code</label>
                                                 <div class="text-sm font-medium text-gray-800">10045</div>
                                             </div>
                                         </div>
@@ -566,10 +990,13 @@
                                             <div>
                                                 <label class="block text-xs text-gray-500 mb-1">Address</label>
                                                 <div class="space-y-1">
-                                                    <div class="text-sm font-medium text-gray-800">123 Main Street</div>
-                                                    <div class="text-sm font-medium text-gray-800">New York, NY 10001
+                                                    <div class="text-sm font-medium text-gray-800">123 Main Street
                                                     </div>
-                                                    <div class="text-sm font-medium text-gray-800">United States</div>
+                                                    <div class="text-sm font-medium text-gray-800">New York, NY
+                                                        10001
+                                                    </div>
+                                                    <div class="text-sm font-medium text-gray-800">United States
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -599,7 +1026,8 @@
                                         </div>
                                         <div>
                                             <div class="font-medium text-gray-800">CIN</div>
-                                            <div class="text-xs text-gray-500">PDF • 2.4 MB • Added 15 Jan 2023</div>
+                                            <div class="text-xs text-gray-500">PDF • 2.4 MB • Added 15 Jan 2023
+                                            </div>
                                         </div>
                                     </div>
                                     <div
@@ -620,7 +1048,8 @@
                                         </div>
                                         <div>
                                             <div class="font-medium text-gray-800">Passport</div>
-                                            <div class="text-xs text-gray-500">PDF • 1.1 MB • Added 10 Jan 2023</div>
+                                            <div class="text-xs text-gray-500">PDF • 1.1 MB • Added 10 Jan 2023
+                                            </div>
                                         </div>
                                     </div>
                                     <div
@@ -641,7 +1070,8 @@
                                         </div>
                                         <div>
                                             <div class="font-medium text-gray-800">Address Proof</div>
-                                            <div class="text-xs text-gray-500">PDF • 1.1 MB • Added 10 Jan 2023</div>
+                                            <div class="text-xs text-gray-500">PDF • 1.1 MB • Added 10 Jan 2023
+                                            </div>
                                         </div>
                                     </div>
                                     <div
@@ -673,7 +1103,8 @@
                                         <div id="error" class="hidden doc-frame text-center">
                                             <i class="ri-file-text-line text-4xl text-gray-300 mb-2"></i>
                                             <p class="text-gray-500">Document preview</p>
-                                            <p class="text-xs text-gray-400 mt-2">Actual content would be displayed here
+                                            <p class="text-xs text-gray-400 mt-2">Actual content would be displayed
+                                                here
                                                 for
                                                 authorized users</p>
                                         </div>
@@ -862,5 +1293,169 @@
                 class="px-4 py-2 border border-gray-300 text-gray-700 rounded-button hover:bg-gray-50 transition text-sm whitespace-nowrap">
                 Close </button>
         </div>
+    </div>
+
+    <!-- Add Status Modal -->
+    <div *ngIf="isCustomerStatusVisible" id="add-status-modal"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
+        <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+          <h3 class="text-lg font-medium text-gray-900">Add Wallet Status</h3>
+          <button id="close-status-modal" (click)="closeForm('customer-status')"
+            class="text-gray-400 hover:text-gray-500">
+            <div class="w-6 h-6 flex items-center justify-center">
+              <i class="ri-close-line"></i>
+            </div>
+          </button>
+        </div>
+        <div class="p-6">
+          <form id="add-status-form">
+            <div class="space-y-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Status Identifier</label>
+                <input type="text"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                  placeholder="Identifier" required>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Status Label</label>
+                <input type="text"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                  placeholder="Label" required>
+              </div>
+            </div>
+            <div class="mt-6 flex justify-end space-x-3">
+              <button type="button" (click)="closeForm('customer-status')" id="cancel-add-status"
+                class="px-4 py-2 border border-gray-300 rounded-button text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+              <button type="submit"
+                class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 whitespace-nowrap">Add
+                Status</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Identity Type Modal -->
+    <div *ngIf="isCustomerIdentityTypeVisible" id="add-identityType-modal"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
+        <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+          <h3 class="text-lg font-medium text-gray-900">Add Identity Type Status</h3>
+          <button id="close-status-modal" (click)="closeForm('customer-identityType')"
+            class="text-gray-400 hover:text-gray-500">
+            <div class="w-6 h-6 flex items-center justify-center">
+              <i class="ri-close-line"></i>
+            </div>
+          </button>
+        </div>
+        <div class="p-6">
+          <form id="add-status-form">
+            <div class="space-y-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Identity Type Identifier</label>
+                <input type="text"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                  placeholder="Identifier" required>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Identity Type Label</label>
+                <input type="text"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                  placeholder="Label" required>
+              </div>
+            </div>
+            <div class="mt-6 flex justify-end space-x-3">
+              <button type="button" (click)="closeForm('customer-identityType')" id="cancel-add-status"
+                class="px-4 py-2 border border-gray-300 rounded-button text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+              <button type="submit"
+                class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 whitespace-nowrap">Add
+                Identity Type</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Status Modal -->
+    <div *ngIf="isCountryVisible" id="add-country-modal"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
+        <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+          <h3 class="text-lg font-medium text-gray-900">Add Country</h3>
+          <button id="close-status-modal" (click)="closeForm('country')"
+            class="text-gray-400 hover:text-gray-500">
+            <div class="w-6 h-6 flex items-center justify-center">
+              <i class="ri-close-line"></i>
+            </div>
+          </button>
+        </div>
+        <div class="p-6">
+          <form id="add-status-form">
+            <div class="space-y-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Country Identifier</label>
+                <input type="text"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                  placeholder="Identifier" required>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Country Label</label>
+                <input type="text"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                  placeholder="Label" required>
+              </div>
+            </div>
+            <div class="mt-6 flex justify-end space-x-3">
+              <button type="button" (click)="closeForm('country')" id="cancel-add-status"
+                class="px-4 py-2 border border-gray-300 rounded-button text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+              <button type="submit"
+                class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 whitespace-nowrap">Add
+                Country</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add City Modal -->
+    <div *ngIf="isCityVisible" id="add-city-modal"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
+        <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+          <h3 class="text-lg font-medium text-gray-900">Add City</h3>
+          <button id="close-status-modal" (click)="closeForm('city')"
+            class="text-gray-400 hover:text-gray-500">
+            <div class="w-6 h-6 flex items-center justify-center">
+              <i class="ri-close-line"></i>
+            </div>
+          </button>
+        </div>
+        <div class="p-6">
+          <form id="add-status-form">
+            <div class="space-y-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">City Identifier</label>
+                <input type="text"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                  placeholder="Identifier" required>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">City Label</label>
+                <input type="text"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                  placeholder="Label" required>
+              </div>
+            </div>
+            <div class="mt-6 flex justify-end space-x-3">
+              <button type="button" (click)="closeForm('city')" id="cancel-add-status"
+                class="px-4 py-2 border border-gray-300 rounded-button text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+              <button type="submit"
+                class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 whitespace-nowrap">Add
+                City</button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
 </div>
