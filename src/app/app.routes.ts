@@ -14,14 +14,12 @@ import { WalletMngComponent } from './components/admin/wallet-mng/wallet-mng.com
 import { ProductsComponent } from './components/admin/products/products.component';
 import { ProfilingComponent } from './components/admin/profiling/profiling.component';
 import { CustomerMngComponent } from './components/admin/customer-mng/customer-mng.component';
-import { PendingComponent } from './components/wallet/pending/pending.component';
 
 export const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
-  { path: 'pending', component: PendingComponent },
   {
     path: 'wallet',
     component: WalletComponent,
@@ -32,15 +30,15 @@ export const routes: Routes = [
     path: 'welcome',
     component: WelcomeComponent,
     canActivate: [AuthGuard, walletStatusGuard],
-    data: { requiredStatus: 'ACTIVE' }
+    data: { requiredStatus: 'PENDING' }
   },
 
   // Redirects
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   {path: 'admin', 
-    component: SideNavComponent, /* 
+    component: SideNavComponent, 
     canActivate: [AuthGuard],
-    data: { role: 'ROLE_ADMIN' }, */
+    data: { role: 'ROLE_ADMIN' },
     children:
     [
       {path: 'dashboard', component: DashboardComponent},
