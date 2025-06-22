@@ -18,10 +18,11 @@ export interface LocalCustomer {
   providedIn: 'root',
 })
 export class CustomerService {
-  private apiUrl = `${environment.apiUrl}/customers`;
+  
+  private apiUrl = `${environment.apiUrl}/api/customers`;
   private loggedInCustomerId: number | null = null;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   private getHttpOptions() {
     const roles: Role[] = JSON.parse(localStorage.getItem('roles') || '[]');
@@ -112,6 +113,20 @@ export class CustomerService {
       { status },
       this.getHttpOptions()
     );
+  }
+
+  sendOTP(email: string) {
+    return this.http.post<string>(`${this.apiUrl}/sendEmail`, {
+      "cusMailAdress": email,
+      "subject": "TOTP"
+    })
+  }
+
+  verifyOTP(email: string, code: string) {
+    return this.http.post<boolean>(`${this.apiUrl}/compareTOTP`, {
+      "cusMailAdress": email,
+      "code": code
+    })
   }
 }
 

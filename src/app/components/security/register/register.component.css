@@ -1,21 +1,31 @@
-
 /* Main Content Section Styling */
 .register-container {
-  flex-grow: 1; /* Allow the content to take available space */
+  flex-grow: 1;
+  /* Allow the content to take available space */
   padding: 20px;
-  background-color: #ffffff; /* White background for the content */
-  border-radius: 8px; /* Rounded corners for content box */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow around content */
-  margin: 20px auto; /* Center the content section */
-  width: 90%; /* Make the content width responsive */
-  max-width: 1100px; /* Maximum width for larger screens */
-  min-width: 800px; /* Minimum width for narrower screens */
+  background-color: #ffffff;
+  /* White background for the content */
+  border-radius: 8px;
+  /* Rounded corners for content box */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  /* Soft shadow around content */
+  margin: 20px auto;
+  /* Center the content section */
+  width: 90%;
+  /* Make the content width responsive */
+  max-width: 1100px;
+  /* Maximum width for larger screens */
+  min-width: 800px;
+  /* Minimum width for narrower screens */
 }
+
 h2 {
   text-align: center;
   margin-bottom: 25px;
-  font-size: 24px; /* Increased font size for better visibility */
-  color: #333; /* Darker color for better contrast */
+  font-size: 24px;
+  /* Increased font size for better visibility */
+  color: #333;
+  /* Darker color for better contrast */
 }
 
 .steps {
@@ -31,7 +41,8 @@ h2 {
   border-bottom: 2px solid #ccc;
   color: #888;
   font-weight: 500;
-  transition: color 0.3s ease, border-color 0.3s ease; /* Smooth transition */
+  transition: color 0.3s ease, border-color 0.3s ease;
+  /* Smooth transition */
 }
 
 .steps span.active {
@@ -43,40 +54,53 @@ h2 {
 label {
   display: block;
   margin: 15px 0 5px;
-  font-weight: 600; /* Slightly bolder for emphasis */
-  color: #555; /* Darker color for better readability */
+  font-weight: 600;
+  /* Slightly bolder for emphasis */
+  color: #555;
+  /* Darker color for better readability */
 }
 
 input {
   width: 100%;
   padding: 10px 12px;
   border: 1px solid #ccc;
-  border-radius: 8px; /* Slightly larger radius for a softer look */
+  border-radius: 8px;
+  /* Slightly larger radius for a softer look */
   box-sizing: border-box;
-  transition: border-color 0.3s ease; /* Smooth transition */
+  transition: border-color 0.3s ease;
+  /* Smooth transition */
 }
 
 input:focus {
-  border-color: #e32323; /* Highlight border on focus */
-  outline: none; /* Remove default outline */
+  border-color: #e32323;
+  /* Highlight border on focus */
+  outline: none;
+  /* Remove default outline */
 }
 
 .buttons {
   margin-top: 25px;
   display: flex;
-  justify-content: center; /* center all the cards */
-  gap: 40px; /* adjust this to control spacing */
+  justify-content: center;
+  /* center all the cards */
+  gap: 40px;
+  /* adjust this to control spacing */
 }
 
 button {
-  padding: 12px 25px; /* Increased padding for a more substantial button */
-  border: none; /* Remove border for a cleaner look */
+  padding: 12px 25px;
+  /* Increased padding for a more substantial button */
+  border: none;
+  /* Remove border for a cleaner look */
   background-color: #e32323;
   color: #fff;
-  font-weight: 600; /* Slightly bolder for emphasis */
-  border-radius: 8px; /* Slightly larger radius */
+  font-weight: 600;
+  /* Slightly bolder for emphasis */
+  border-radius: 8px;
+  /* Slightly larger radius */
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease; /* Added transform for hover effect */
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  /* Added transform for hover effect */
 }
 
 button[disabled] {
@@ -85,8 +109,10 @@ button[disabled] {
 }
 
 button:hover:not([disabled]) {
-  background-color: #c21c1c; /* Darker shade on hover */
-  transform: translateY(-2px); /* Slight lift effect on hover */
+  background-color: #c21c1c;
+  /* Darker shade on hover */
+  transform: translateY(-2px);
+  /* Slight lift effect on hover */
 }
 
 
@@ -95,7 +121,8 @@ button:hover:not([disabled]) {
 
 
 
-.error, .success {
+.error,
+.success {
   border-radius: 8px;
   padding: 12px 16px;
   font-size: 14px;
@@ -133,31 +160,41 @@ button:hover:not([disabled]) {
 .mt-4 {
   margin-top: 1rem;
 }
+
 .text-center {
   text-align: center;
 }
+
 .text-sm {
   font-size: 0.875rem;
 }
+
 .text-gray-600 {
   color: #4B5563;
 }
+
 .text-blue-500 {
   color: #e32323;
 }
+
 .text-blue-500:hover {
   text-decoration: underline;
 }
+
 .wallet-options {
   display: flex;
-  justify-content: center; /* center all the cards */
-  gap: 90px; /* adjust this to control spacing */
-  flex-wrap: nowrap; /* ou wrap si tu veux que ça passe à la ligne sur petit écran */
+  justify-content: center;
+  /* center all the cards */
+  gap: 90px;
+  /* adjust this to control spacing */
+  flex-wrap: nowrap;
+  /* ou wrap si tu veux que ça passe à la ligne sur petit écran */
 }
 
 .wallet-card {
   flex: 1;
-  max-width: 200px; /* pour garder une taille uniforme */
+  max-width: 200px;
+  /* pour garder une taille uniforme */
   text-align: center;
   border: 2px solid #ccc;
   border-radius: 12px;
@@ -187,4 +224,38 @@ button:hover:not([disabled]) {
 /* Ensure the dropdown has proper z-index */
 .ngx-intl-tel-input.dropdown {
   z-index: 1000;
+}
+
+
+
+
+
+.otp-group {
+  margin-top: 25px;
+  padding-top: 25px;
+  border-top: 1px solid #eee;
+}
+
+.otp-input {
+  width: 60%;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.email-group {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.email-input-wrapper {
+  flex: 1;
+  min-width: 0;
+  /* Allows shrinking below content width */
+}
+
+.email-input-wrapper.full-width {
+  flex: 1 0 100%;
+  /* Takes full width when button is hidden */
 }

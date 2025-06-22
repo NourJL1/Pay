@@ -44,7 +44,7 @@ export class LoginComponent {
 
       if (role === 'admin') {
         console.log('Redirecting to admin dashboard');
-        await this.router.navigate(['/account/dashboard']);
+        await this.router.navigate(['/admin/dashboard']);
       } else {
         console.log('Checking wallet status');
         const walletStatus = await firstValueFrom(this.walletService.getWalletStatus());
