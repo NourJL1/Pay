@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Fees } from '../entities/fees';
 import { environment } from '../../environments/environment';
@@ -8,12 +8,7 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class FeesService {
-
- private apiUrl = `${environment.apiUrl}/fees`;
-
-  private httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-  };
+  private apiUrl = `${environment.apiUrl}/api/fees`;
 
   constructor(private http: HttpClient) {}
 
@@ -25,18 +20,19 @@ export class FeesService {
     return this.http.get<Fees>(`${this.apiUrl}/${id}`);
   }
 
-  create(fees: Fees): Observable<Fees> {
-    return this.http.post<Fees>(this.apiUrl, fees, this.httpOptions);
+  create(fees: Fees, options?: { headers?: any }): Observable<Fees> {
+    return this.http.post<Fees>(this.apiUrl, fees, options);
   }
 
-  update(id: number, fees: Fees): Observable<Fees> {
-    return this.http.put<Fees>(`${this.apiUrl}/${id}`, fees, this.httpOptions);
+  update(id: number, fees: Fees, options?: { headers?: any }): Observable<Fees> {
+    return this.http.put<Fees>(`${this.apiUrl}/${id}`, fees, options);
   }
 
-  delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`, this.httpOptions);
+  delete(id: number, options?: { headers?: any }): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`, options);
   }
 
   search(word: string): Observable<Fees[]> {
     return this.http.get<Fees[]>(`${this.apiUrl}/search?word=${word}`);
-  }}
+  }
+}
