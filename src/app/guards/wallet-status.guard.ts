@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { map, catchError, of } from 'rxjs';
+import { map, catchError, of, tap } from 'rxjs';
 import { WalletService } from '../services/wallet.service';
 import { AuthService } from '../services/auth.service';
 
@@ -13,17 +13,36 @@ export const walletStatusGuard: CanActivateFn = (route) => {
     return router.createUrlTree(['/login']);
   }
 
-  const requiredStatus = route.data?.['requiredStatus'] || 'ACTIVE';
-  
+  const requiredStatus = (route.data?.['requiredStatus'] || 'ACTIVE').toUpperCase();
+
   return walletService.getWalletStatus().pipe(
+    tap(status => {
+      console.log('Guard - Wallet status:', status?.wstLabe);
+      console.log('Guard - Required status:', requiredStatus);
+    }),
     map(status => {
-      if (status === requiredStatus) {
+      const currentStatus = status?.wstLabe?.trim().toUpperCase();
+
+      if (currentStatus === requiredStatus) {
+        console.log('Guard - Access granted');
         return true;
       }
-      return router.createUrlTree(
-        requiredStatus === 'ACTIVE' ? ['/welcome'] : ['/wallet']
-      );
+
+      // Redirection claire selon le statut ACTUEL du wallet
+      if (currentStatus === 'PENDING') {
+        console.log('Guard - Redirecting to /pending');
+        return router.createUrlTree(['/pending']);
+      } else if (currentStatus === 'ACTIVE') {
+        console.log('Guard - Redirecting to /welcome');
+        return router.createUrlTree(['/welcome']);
+      } else {
+        console.log('Guard - Unknown status, redirecting to /login');
+        return router.createUrlTree(['/login']);
+      }
     }),
-    catchError(() => of(router.createUrlTree(['/welcome'])))
+    catchError((error) => {
+      console.error('Guard - Error fetching wallet status:', error);
+      return of(router.createUrlTree(['/login']));
+    })
   );
 };

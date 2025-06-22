@@ -16,6 +16,7 @@ export class LoginComponent {
   username: string = '';
   cusMotDePasse: string = '';
   errorMessage: string = '';
+  isLoading: boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -24,41 +25,59 @@ export class LoginComponent {
   ) {}
 
   async onSubmit(): Promise<void> {
+    this.isLoading = true;
+    this.errorMessage = '';
+
     try {
-      const response = await firstValueFrom(this.authService.login(this.username, this.cusMotDePasse));
+      const response = await firstValueFrom(
+        this.authService.login(this.username, this.cusMotDePasse)
+      );
+
       console.log('Full login response:', response);
 
-      // Extract role (adjust if role is an object)
-      const role = typeof response.role === 'string' ? response.role.toLowerCase() : response.role?.name?.toLowerCase() || 'customer';
-
-      if (!role) {
-        this.errorMessage = 'No role found in response.';
-        return;
-      }
-
+      // ✅ Stocker les infos dans le localStorage
+      localStorage.setItem('authToken', response.token);
       localStorage.setItem('cusCode', response.cusCode);
-      localStorage.setItem('role', role);
-      localStorage.setItem('username', response.username || 'CUSTOMER');
+      localStorage.setItem('role', response.role?.name || 'CUSTOMER');
+      localStorage.setItem('username', response.username);
+      localStorage.setItem('fullname', response.fullname);
 
-      console.log('Stored Role:', localStorage.getItem('role'));
+      const role = (response.role?.name || 'CUSTOMER').toLowerCase();
 
       if (role === 'admin') {
         console.log('Redirecting to admin dashboard');
         await this.router.navigate(['/admin/dashboard']);
       } else {
         console.log('Checking wallet status');
-        const walletStatus = await firstValueFrom(this.walletService.getWalletStatus());
-        console.log('Wallet Status:', walletStatus);
 
-        if (walletStatus.wstIden === 'ACTIVE') {
-          await this.router.navigate(['/wallet']);
-        } else {
+        try {
+          const walletStatus = await firstValueFrom(this.walletService.getWalletStatus());
+          console.log('Wallet Status:', walletStatus);
+
+          const status = walletStatus.wstLabe?.trim().toUpperCase();
+          console.log('Wallet status label:', status);
+
+          if (status === 'PENDING') {
+            console.log('Redirecting to /pending');
+            await this.router.navigate(['/pending']);
+          } else if (status === 'ACTIVE') {
+            console.log('Redirecting to /welcome');
+            await this.router.navigate(['/welcome']);
+          } else {
+            this.errorMessage = 'Unknown wallet status: ' + status;
+            console.warn('Unexpected wallet status:', status);
+          }
+        } catch (walletError) {
+          console.error('Wallet status error:', walletError);
+          this.errorMessage = 'Unable to fetch wallet status.';
           await this.router.navigate(['/pending']);
         }
       }
     } catch (error) {
       console.error('Login error:', error);
-      this.errorMessage = 'Login failed. Please check your credentials or try again later.';
+      this.errorMessage = 'Login failed. Please check your credentials.';
+    } finally {
+      this.isLoading = false;
     }
   }
 

@@ -16,30 +16,30 @@ export class AuthGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): boolean {
-    const roles = JSON.parse(localStorage.getItem('roles') || '[]'); // Fetch roles from local storage
-    const requiredRole = route.data['role'] as string; // Get the role defined in the route
+    const rolesString = localStorage.getItem('roles') || '';
+    // On considère que rolesString est une chaîne de rôles séparés par des virgules
+    const roles = rolesString.split(',').map(r => r.trim());
 
-    // Check for the presence of the required role or higher (Admin can access all)
-    const hasRole = roles.some((role: { name: string }) => {
-      return this.isRoleHierarchical(role.name, requiredRole);
-    });
+    const requiredRole = route.data['role'] as string;
+
+    // Check if user roles contain or are higher than required role
+    const hasRole = roles.some(userRole => this.isRoleHierarchical(userRole, requiredRole));
 
     if (hasRole) {
-      return true; // Allow access if the required role is found
+      return true;
     }
 
-    // Redirect to login or unauthorized page if the user doesn't have the required role
     this.router.navigate(['/login']);
     return false;
   }
 
-  // Helper function to check for role hierarchy
   private isRoleHierarchical(userRole: string, requiredRole: string): boolean {
-    const roleHierarchy = ['ROLE_USER', 'ROLE_MANAGER', 'ROLE_ADMIN']; // Define the role hierarchy
+    const roleHierarchy = ['ROLE_USER', 'ROLE_MANAGER', 'ROLE_ADMIN'];
 
     const userRoleIndex = roleHierarchy.indexOf(userRole);
     const requiredRoleIndex = roleHierarchy.indexOf(requiredRole);
 
-    return userRoleIndex >= requiredRoleIndex; // User can access if their role is equal to or higher in the hierarchy
+    return userRoleIndex >= requiredRoleIndex;
   }
+  
 }
