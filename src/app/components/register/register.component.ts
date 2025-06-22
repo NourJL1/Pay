@@ -250,10 +250,9 @@ export class RegisterComponent {
   sendOtp() {
     this.customerService.sendOTP(this.CUSTOMER.cusMailAdress).subscribe(
       {
-        next: (Result: any) => 
-        {
-          if(Result.message=='success')
-            this.otpSent=true;
+        next: (Result: any) => {
+          if (Result.message == 'success')
+            this.otpSent = true;
         },
         error: (err) => {
           console.error('OTP mailing Failed: ', err);

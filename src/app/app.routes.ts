@@ -36,9 +36,9 @@ export const routes: Routes = [
   // Redirects
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   {path: 'admin', 
-    component: SideNavComponent, 
+    component: SideNavComponent, /* 
     canActivate: [AuthGuard],
-    data: { role: 'ROLE_ADMIN' },
+    data: { role: 'ROLE_ADMIN' }, */
     children:
     [
       {path: 'dashboard', component: DashboardComponent},
