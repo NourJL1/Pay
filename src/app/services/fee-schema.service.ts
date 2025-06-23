@@ -4,40 +4,35 @@ import { Observable } from 'rxjs';
 import { FeeSchema } from '../entities/fee-schema';
 import { environment } from '../../environments/environment';
 
-
 @Injectable({
   providedIn: 'root'
 })
 export class FeeSchemaService {
-
-private apiUrl = `${environment.apiUrl}/fee-schemas`;
-
-  private httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-  };
+  private apiUrl = `${environment.apiUrl}/api/fee-schemas`;
 
   constructor(private http: HttpClient) {}
 
-  getAll(): Observable<FeeSchema[]> {
-    return this.http.get<FeeSchema[]>(this.apiUrl);
+  getAll(options?: { headers: HttpHeaders }): Observable<FeeSchema[]> {
+    return this.http.get<FeeSchema[]>(this.apiUrl, options);
   }
 
-  getById(id: number): Observable<FeeSchema> {
-    return this.http.get<FeeSchema>(`${this.apiUrl}/${id}`);
+  getById(id: number, options?: { headers: HttpHeaders }): Observable<FeeSchema> {
+    return this.http.get<FeeSchema>(`${this.apiUrl}/${id}`, options);
   }
 
-  create(feeSchema: FeeSchema): Observable<FeeSchema> {
-    return this.http.post<FeeSchema>(this.apiUrl, feeSchema, this.httpOptions);
+  create(feeSchema: FeeSchema, options?: { headers: HttpHeaders }): Observable<FeeSchema> {
+    return this.http.post<FeeSchema>(this.apiUrl, feeSchema, options);
   }
 
-  update(id: number, feeSchema: FeeSchema): Observable<FeeSchema> {
-    return this.http.put<FeeSchema>(`${this.apiUrl}/${id}`, feeSchema, this.httpOptions);
+  update(id: number, feeSchema: FeeSchema, options?: { headers: HttpHeaders }): Observable<FeeSchema> {
+    return this.http.put<FeeSchema>(`${this.apiUrl}/${id}`, feeSchema, options);
   }
 
-  delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`, this.httpOptions);
+  delete(id: number, options?: { headers: HttpHeaders }): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`, options);
   }
 
-  search(word: string): Observable<FeeSchema[]> {
-    return this.http.get<FeeSchema[]>(`${this.apiUrl}/search?word=${word}`);
-  }}
+  search(word: string, options?: { headers: HttpHeaders }): Observable<FeeSchema[]> {
+    return this.http.get<FeeSchema[]>(`${this.apiUrl}/search?word=${word}`, options);
+  }
+}

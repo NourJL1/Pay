@@ -8,35 +8,31 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class FeeRuleTypeService {
-
-private apiUrl = `${environment.apiUrl}/fee-rule-types`;
-
-  private httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-  };
+  private apiUrl = `${environment.apiUrl}/api/fee-rule-types`;
 
   constructor(private http: HttpClient) {}
 
-  getAll(): Observable<FeeRuleType[]> {
-    return this.http.get<FeeRuleType[]>(this.apiUrl);
+  getAll(options?: { headers: HttpHeaders }): Observable<FeeRuleType[]> {
+    return this.http.get<FeeRuleType[]>(this.apiUrl, options);
   }
 
-  getById(id: number): Observable<FeeRuleType> {
-    return this.http.get<FeeRuleType>(`${this.apiUrl}/${id}`);
+  getById(id: number, options?: { headers: HttpHeaders }): Observable<FeeRuleType> {
+    return this.http.get<FeeRuleType>(`${this.apiUrl}/${id}`, options);
   }
 
-  create(feeRuleType: FeeRuleType): Observable<FeeRuleType> {
-    return this.http.post<FeeRuleType>(this.apiUrl, feeRuleType, this.httpOptions);
+  create(feeRuleType: FeeRuleType, options?: { headers: HttpHeaders }): Observable<FeeRuleType> {
+    return this.http.post<FeeRuleType>(this.apiUrl, feeRuleType, options);
   }
 
-  update(id: number, feeRuleType: FeeRuleType): Observable<FeeRuleType> {
-    return this.http.put<FeeRuleType>(`${this.apiUrl}/${id}`, feeRuleType, this.httpOptions);
+  update(id: number, feeRuleType: FeeRuleType, options?: { headers: HttpHeaders }): Observable<FeeRuleType> {
+    return this.http.put<FeeRuleType>(`${this.apiUrl}/${id}`, feeRuleType, options);
   }
 
-  delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`, this.httpOptions);
+  delete(id: number, options?: { headers: HttpHeaders }): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`, options);
   }
 
-  search(word: string): Observable<FeeRuleType[]> {
-    return this.http.get<FeeRuleType[]>(`${this.apiUrl}/search?word=${word}`);
-  }}
+  search(word: string, options?: { headers: HttpHeaders }): Observable<FeeRuleType[]> {
+    return this.http.get<FeeRuleType[]>(`${this.apiUrl}/search?word=${word}`, options);
+  }
+}
