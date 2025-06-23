@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';  // Import FormsModule
 import { CommonModule } from '@angular/common';  // Import CommonModule
+import { CustomerService } from '../../services/customer.service';
 
 @Component({
   selector: 'app-forgot-password',
@@ -11,27 +12,25 @@ import { CommonModule } from '@angular/common';  // Import CommonModule
   styleUrls: ['./forgot-password.component.css'],
 })
 export class ForgotPasswordComponent {
-  email: string = '';
   message: string = '';
   loading: boolean = false;
+  email: any;
 
-  constructor(private http: HttpClient) {}
+  constructor(private customerService: CustomerService) { }
 
   onSubmit() {
     this.loading = true;  // Show loading indicator
-
-    this.http.post('http://localhost:8080/api/auth/forgot-password', { email: this.email })
-      .subscribe({
-        next: () => {
-          this.message = 'A reset link has been sent to your email.';
-          this.email = ''; // Clear the email field
+    console.log(this.email)
+    this.customerService.sendEmail(this.email, "Reset Password").subscribe(
+      {
+        next: (Result: any) => {
+          if (Result.message == 'success')
+            console.log("yaay")
         },
-        error: () => {
-          this.message = 'Error sending reset link. Try again later.';
-        },
-        complete: () => {
-          this.loading = false;  // Hide loading indicator when the request completes
+        error: (err) => {
+          console.error('mailing Failed: ', err);
         }
       });
   }
+
 }

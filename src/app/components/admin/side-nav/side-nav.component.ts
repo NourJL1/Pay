@@ -15,6 +15,9 @@ export class SideNavComponent implements OnInit{
   ngOnInit(): void {}
 
   isCollapsed = false;
+  fullname = localStorage.getItem('fullname');
+  username = localStorage.getItem('username')
+  role = localStorage.getItem('role')
 
   toggleSidebar(): void {
     this.isCollapsed = !this.isCollapsed;

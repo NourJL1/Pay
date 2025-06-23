@@ -10,22 +10,38 @@ import { Component } from '@angular/core';
 export class CustomerMngComponent {
 
   isUserDetailsVisible: boolean = false;
+  isCustomerStatusVisible: boolean = false;
+  isCustomerIdentityTypeVisible: boolean = false;
+  isCountryVisible: boolean = false;
+  isCityVisible: boolean = false;
 
   toggleForm(modal: string) {
     switch (modal) {
       case 'customer-details': this.isUserDetailsVisible = true; break;
+      case 'customer-status': this.isCustomerStatusVisible = true; break;
+      case 'customer-identityType': this.isCustomerIdentityTypeVisible = true; break;
+      case 'country': this.isCountryVisible = true; break;
+      case 'city': this.isCityVisible = true; break;
     }
   }
 
   closeForm(modal: string) {
     switch (modal) {
       case 'customer-details': this.isUserDetailsVisible = false; break;
+      case 'customer-status': this.isCustomerStatusVisible = false; break;
+      case 'customer-identityType': this.isCustomerIdentityTypeVisible = false; break;
+      case 'country': this.isCountryVisible = false; break;
+      case 'city': this.isCityVisible = false; break;
     }
   }
 
   get isAnyModalVisible(): boolean {
     return (
-      this.isUserDetailsVisible
+      this.isUserDetailsVisible ||
+      this.isCustomerStatusVisible ||
+      this.isCustomerIdentityTypeVisible ||
+      this.isCountryVisible ||
+      this.isCityVisible
     );
   }
 

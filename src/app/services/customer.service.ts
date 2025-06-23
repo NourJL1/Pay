@@ -115,10 +115,10 @@ export class CustomerService {
     );
   }
 
-  sendOTP(email: string) {
+  sendEmail(email: string, subject: string) {
     return this.http.post<string>(`${this.apiUrl}/sendEmail`, {
       "cusMailAdress": email,
-      "subject": "TOTP"
+      "subject": subject
     })
   }
 

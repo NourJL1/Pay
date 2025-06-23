@@ -204,7 +204,7 @@ export class RegisterComponent {
     }
 
     // Split fullname into first, middle, and last names
-    const nameParts = this.CUSTOMER.fullname.trim().split(' ');
+    /* const nameParts = this.CUSTOMER.fullname.trim().split(' ');
     this.CUSTOMER.cusFirstName = nameParts[0] || '';
     this.CUSTOMER.cusMidName = nameParts.length > 2 ? nameParts.slice(1, -1).join(' ') : '';
     this.CUSTOMER.cusLastName = nameParts.length > 1 ? nameParts[nameParts.length - 1] : '';
@@ -216,7 +216,7 @@ export class RegisterComponent {
     }
 
     const phoneValue = this.phoneForm.get('phone')?.value as PhoneNumber;
-    this.CUSTOMER.cusPhoneNbr = phoneValue.e164Number;
+    this.CUSTOMER.cusPhoneNbr = phoneValue.e164Number; */
 
     console.log(this.CUSTOMER)
 
@@ -248,12 +248,11 @@ export class RegisterComponent {
   }
 
   sendOtp() {
-    this.customerService.sendOTP(this.CUSTOMER.cusMailAdress).subscribe(
+    this.customerService.sendEmail(this.CUSTOMER.cusMailAdress, "TOTP").subscribe(
       {
-        next: (Result: any) => 
-        {
-          if(Result.message=='success')
-            this.otpSent=true;
+        next: (Result: any) => {
+          if (Result.message == 'success')
+            this.otpSent = true;
         },
         error: (err) => {
           console.error('OTP mailing Failed: ', err);
