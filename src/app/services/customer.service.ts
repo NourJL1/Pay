@@ -52,6 +52,14 @@ export class CustomerService {
     );
   }
 
+  // Get customer details by email
+  getCustomerByEmail(email: string): Observable<Customer> {
+    return this.http.get<Customer>(
+      `${this.apiUrl}/email/${email}`,
+      this.getHttpOptions()
+    );
+  }
+
   // Get customer details by ID
   getCustomerById(customerId: number): Observable<Customer> {
     return this.http.get<Customer>(
@@ -67,6 +75,11 @@ export class CustomerService {
       customer,
       this.getHttpOptions()
     );
+  }
+
+  resetPassword(cusCode: number, password: string)
+  {
+    return this.http.put<string>(`${this.apiUrl}/resetPassword/${cusCode}`, password)
   }
 
   // Assign roles to a customer
