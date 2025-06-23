@@ -15,6 +15,7 @@ import { ProductsComponent } from './components/admin/products/products.componen
 import { ProfilingComponent } from './components/admin/profiling/profiling.component';
 import { CustomerMngComponent } from './components/admin/customer-mng/customer-mng.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+import { PendingComponent } from './components/wallet/pending/pending.component';
 
 export const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -22,6 +23,7 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
+  { path: 'pending', component: PendingComponent},
   {
     path: 'wallet',
     component: WalletComponent,
@@ -32,7 +34,7 @@ export const routes: Routes = [
     path: 'welcome',
     component: WelcomeComponent,
     canActivate: [AuthGuard, walletStatusGuard],
-    data: { requiredStatus: 'PENDING' }
+    data: { requiredStatus: 'ACTIVE' }
   },
 
   // Redirects
