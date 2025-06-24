@@ -11,7 +11,7 @@ import { CardType } from '../entities/card-type';
 })
 export class CardTypeService {
 
-private apiUrl = `${environment.apiUrl}/card-types`;
+private apiUrl = `${environment.apiUrl}/api/card-types`;
 
   private httpOptions = {
     headers: new HttpHeaders({'Content-Type': 'application/json'}),

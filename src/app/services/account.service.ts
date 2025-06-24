@@ -10,7 +10,7 @@ import { Account } from '../entities/account';
 })
 export class AccountService {
 
-   private apiUrl = `${environment.apiUrl}/accounts`;
+   private apiUrl = `${environment.apiUrl}/api/accounts`;
 
   constructor(private http: HttpClient) {}
 

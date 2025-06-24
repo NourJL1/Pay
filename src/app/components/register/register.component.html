@@ -28,19 +28,19 @@
       <div *ngIf="currentStep === 1" class="step">
         <h3 class="text-lg font-medium mb-4">Choose Wallet Type:</h3>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div *ngFor="let type of ['CUSTOMER', 'INTERNE', 'MERCHANT']"
-            [class]="'wallet-card ' + (CUSTOMER.walletType === type ? 'selected' : '')"
-            (click)="CUSTOMER.walletType = type">
-            <input type="radio" name="walletType" [value]="type" [(ngModel)]="CUSTOMER.walletType" hidden>
+          <div *ngFor="let type of walletTypes"
+            [class]="'wallet-card ' + (selectedWalletType === type ? 'selected' : '')"
+            (click)="selectedWalletType = type">
+            <input type="radio" name="selectedWalletType" [value]="type" [(ngModel)]="selectedWalletType" hidden>
             <h4 class="font-semibold">
-              <span *ngIf="type === 'CUSTOMER'">👤</span>
-              <span *ngIf="type === 'INTERNE'">🧑‍💼</span>
-              <span *ngIf="type === 'MERCHANT'">🏬</span>
-              {{ type | titlecase }}
+              <span *ngIf="type.wtyCode === 1">👤</span>
+              <span *ngIf="type.wtyCode === 2">🧑‍💼</span>
+              <span *ngIf="type.wtyCode === 3">🏬</span>
+              {{ type.wtyLabe| titlecase }}
             </h4>
             <p class="text-sm text-gray-600 mt-1">
-              {{ type === 'CUSTOMER' ? 'Use your wallet to buy, pay and manage your funds.' :
-              type === 'INTERNE' ? 'Internal use wallet. Track, test, and operate securely.' :
+              {{ type.wtyCode === 1 ? 'Use your wallet to buy, pay and manage your funds.' :
+              type.wtyCode === 2 ? 'Internal use wallet. Track, test, and operate securely.' :
               'Receive payments, manage sales and grow your business.' }}
             </p>
           </div>
@@ -51,40 +51,39 @@
       <div *ngIf="currentStep === 2" class="step space-y-4">
         <div class="form-field">
           <label class="form-label">First Name:</label>
-          <input class="form-input" [(ngModel)]="CUSTOMER.cusFirstName" name="cusFirstName" type="text" required>
+          <input class="form-input" [(ngModel)]="customer.cusFirstName" name="cusFirstName" type="text" required>
         </div>
 
         <div class="form-field">
           <label class="form-label">Middle Name (Optional):</label>
-          <input class="form-input" [(ngModel)]="CUSTOMER.cusMidName" name="cusMidName" type="text">
+          <input class="form-input" [(ngModel)]="customer.cusMidName" name="cusMidName" type="text">
         </div>
 
         <div class="form-field">
           <label class="form-label">Last Name:</label>
-          <input class="form-input" [(ngModel)]="CUSTOMER.cusLastName" name="cusLastName" type="text" required>
+          <input class="form-input" [(ngModel)]="customer.cusLastName" name="cusLastName" type="text" required>
         </div>
 
         <div class="form-field">
           <label class="form-label">Username:</label>
-          <input class="form-input" [(ngModel)]="CUSTOMER.username" name="username" type="text" required>
+          <input class="form-input" [(ngModel)]="customer.username" name="username" type="text" required>
         </div>
       </div>
 
       <!-- Step 3 - Location -->
       <div *ngIf="currentStep === 3" class="step space-y-4">
         <h3 class="text-lg font-medium">Select Your Country and City</h3>
-
         <div class="form-field">
           <label class="form-label">Country:</label>
-          <select class="form-input" [(ngModel)]="CUSTOMER.country" name="country" (change)="onCountryChange()">
-            <option *ngFor="let country of countries" [value]="country">{{ country }}</option>
+          <select class="form-input" [(ngModel)]="customer.country" name="country" (change)="onCountryChange()">
+            <option *ngFor="let country of countries" [ngValue]="country">{{ country.ctrLabe }}</option>
           </select>
         </div>
 
         <div class="form-field">
           <label class="form-label">City:</label>
-          <select class="form-input" [(ngModel)]="CUSTOMER.city" name="city">
-            <option *ngFor="let city of cities" [value]="city">{{ city }}</option>
+          <select class="form-input" [(ngModel)]="customer.city" name="city">
+            <option *ngFor="let city of cities" [ngValue]="city">{{ city.ctyLabe }}</option>
           </select>
         </div>
       </div>
@@ -93,10 +92,7 @@
       <div *ngIf="currentStep === 4" class="step">
         <div class="form-field">
           <label class="form-label">Phone Number:</label>
-          <ngx-intl-tel-input [cssClass]="'form-input'" [preferredCountries]="preferredCountries"
-            [onlyCountries]="[selectedCountry]" [enableAutoCountrySelect]="false" [enablePlaceholder]="true"
-            [separateDialCode]="separateDialCode" [searchCountryField]="searchCountryField"
-            [formControl]="phoneForm.controls.phone" required>
+          <ngx-intl-tel-input [(ngModel)]="customer.cusPhoneNbr" name="cusPhoneNbr" [onlyCountries]="[customer.country?.ctrIden!]" [preferredCountries]="preferredCountries" [enablePlaceholder]="true" [separateDialCode]="true" [formControl]="phoneForm.controls.phone"  required>
           </ngx-intl-tel-input>
         </div>
       </div>
@@ -106,7 +102,7 @@
         <div class="form-field">
           <label class="form-label">Email:</label>
           <div class="flex gap-2">
-            <input class="form-input flex-1" [(ngModel)]="CUSTOMER.cusMailAdress" name="cusMailAdress" type="email"
+            <input class="form-input flex-1" [(ngModel)]="customer.cusMailAddress" name="cusMailAddress" type="email"
               required #email="ngModel" email [disabled]="otpSent">
             <button *ngIf="!otpSent" class="btn primary" type="button" (click)="sendOtp()" [disabled]="email.invalid">
               Send OTP
@@ -138,7 +134,7 @@
         <!-- Password Section -->
         <div *ngIf="otpVerified" class="form-field">
           <label class="form-label">Password:</label>
-          <input class="form-input" [(ngModel)]="CUSTOMER.cusMotDePasse" name="password" type="password" required
+          <input class="form-input" [(ngModel)]="customer.cusMotDePasse" name="cusMotDePasse" type="password" required
             minlength="6" #password="ngModel">
           <div *ngIf="password.invalid && password.touched" class="error-message">
             <div *ngIf="password.errors?.['required']">Password is required</div>
@@ -148,7 +144,7 @@
       </div>
 
       <!-- Step 6 - KYC -->
-      <div *ngIf="currentStep === 6" class="step space-y-4">
+      <!-- <div *ngIf="currentStep === 6" class="step space-y-4">
         <div class="form-field">
           <label class="form-label">Identification Type:</label>
           <select class="form-input" [(ngModel)]="CUSTOMER.identificationType" name="idType">
@@ -163,7 +159,7 @@
           <input type="file" class="form-input p-2" multiple (change)="onFileSelected($event)"
             accept=".jpg,.jpeg,.png,.pdf">
         </div>
-      </div>
+      </div> -->
     </form>
 
     <!-- Navigation Buttons -->

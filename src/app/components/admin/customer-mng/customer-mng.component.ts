@@ -1,19 +1,34 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { CountryService } from '../../../services/country.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-customer-mng',
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './customer-mng.component.html',
   styleUrl: './customer-mng.component.css'
 })
 export class CustomerMngComponent {
+
+  constructor(private http: HttpClient, private countryService: CountryService) {}
 
   isUserDetailsVisible: boolean = false;
   isCustomerStatusVisible: boolean = false;
   isCustomerIdentityTypeVisible: boolean = false;
   isCountryVisible: boolean = false;
   isCityVisible: boolean = false;
+
+  countries: String[] = []
+
+  ngOnInit(): void {
+    this.http.get<any>('https://countriesnow.space/api/v0.1/countries')
+      .subscribe((response) => {
+        this.countries = response.data.map((item: any) => item.country).sort();
+        console.log(this.countries)
+      });
+  }
 
   toggleForm(modal: string) {
     switch (modal) {

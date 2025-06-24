@@ -9,7 +9,7 @@ import { AccountList } from '../entities/account-list';
 })
 export class AccountListService {
 
-   private apiUrl = `${environment.apiUrl}/account-lists`;
+   private apiUrl = `${environment.apiUrl}/api/account-lists`;
 
   constructor(private http: HttpClient) {}
 

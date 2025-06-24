@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment';
 })
 export class CustomerDocService {
 
-private apiUrl = `${environment.apiUrl}/customer-doc`;
+private apiUrl = `${environment.apiUrl}/api/customer-doc`;
 
   constructor(private http: HttpClient) {}
 

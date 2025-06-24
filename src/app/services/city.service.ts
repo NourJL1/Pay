@@ -3,13 +3,14 @@ import { City } from '../entities/city';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { Country } from '../entities/country';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CityService {
 
- private apiUrl = `${environment.apiUrl}/cities`;
+ private apiUrl = `${environment.apiUrl}/api/cities`;
 
   constructor(private http: HttpClient) {}
 
@@ -23,6 +24,11 @@ export class CityService {
 
   getById(id: number): Observable<City> {
     return this.http.get<City>(`${this.apiUrl}/${id}`);
+  }
+
+  getByCountry(country: Country)
+  {
+    return this.http.get<City[]>(`${this.apiUrl}/getByCountry/${country.ctrCode}`)
   }
 
   create(city: City): Observable<City> {

@@ -9,7 +9,7 @@ import { Periodicity } from '../entities/periodicity';
 })
 export class PeriodicityService {
 
- private apiUrl = `${environment.apiUrl}/periodicities`;
+ private apiUrl = `${environment.apiUrl}/api/periodicities`;
 
   private httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })

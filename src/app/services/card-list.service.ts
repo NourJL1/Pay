@@ -11,7 +11,7 @@ import { CardList } from '../entities/card-list';
 })
 export class CardListService {
 
-  private apiUrl = `${environment.apiUrl}/card-lists`;
+  private apiUrl = `${environment.apiUrl}/api/card-lists`;
 
   constructor(private http: HttpClient) {}
 

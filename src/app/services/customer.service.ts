@@ -6,14 +6,6 @@ import { Role } from '../entities/role';
 import { WalletStatus } from '../entities/wallet-status';
 import { Customer } from '../entities/customer';
 
-export interface LocalCustomer {
-  cusCode?: number;
-  username: string;
-  cusMotDePasse: string;
-  fullname: string;
-  cusMailAdress: string;
-}
-
 @Injectable({
   providedIn: 'root',
 })
@@ -36,9 +28,9 @@ export class CustomerService {
   }
 
   // Register a new customer
-  register(customer: LocalCustomer): Observable<Customer> {
+  register(customer: Customer): Observable<Customer> {
     return this.http.post<Customer>(
-      `${this.apiUrl}/register`,
+      `${this.apiUrl}`,
       customer,
       this.getHttpOptions()
     );
@@ -69,7 +61,7 @@ export class CustomerService {
   }
 
   // Update customer information
-  updateCustomer(username: string, customer: LocalCustomer): Observable<Customer> {
+  updateCustomer(username: string, customer: Customer): Observable<Customer> {
     return this.http.put<Customer>(
       `${this.apiUrl}/${username}`,
       customer,

@@ -1,17 +1,19 @@
 import { Component } from '@angular/core';
-import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators, AbstractControl, } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NgxIntlTelInputModule, CountryISO, SearchCountryField } from 'ngx-intl-tel-input';
 import { HttpClient } from '@angular/common/http';
 import { CustomerService } from '../../services/customer.service';
+import { Customer } from '../../entities/customer';
 import { error } from 'node:console';
-
-
-interface City {
-  name: string;
-}
+import { CountryService } from '../../services/country.service';
+import { CityService } from '../../services/city.service';
+import { Country } from '../../entities/country';
+import { City } from '../../entities/city';
+import { WalletType } from '../../entities/wallet-type';
+import { WalletTypeService } from '../../services/wallet-type.service';
+import { Role } from '../../entities/role';
 
 interface PhoneNumber {
   internationalNumber: string;
@@ -37,11 +39,64 @@ interface PhoneNumber {
 })
 export class RegisterComponent {
 
+  constructor(
+    private customerService: CustomerService,
+    private countryService: CountryService,
+    private cityService: CityService,
+    private walletTypeService: WalletTypeService,
+    private router: Router) { }
+
+  ngOnInit(): void {
+    this.walletTypeService.getAll().subscribe(
+      {
+        next: (types: WalletType[]) => {
+          this.walletTypes = types;
+        },
+        error: (err) => {
+          console.log(err)
+        }
+      }
+    );
+
+    this.countryService.getAll().subscribe(
+      {
+        next: (countries: Country[]) => {
+          this.countries = countries;
+        },
+        error: (err) => {
+          console.log(err)
+        }
+      }
+    );
+  }
+
+  onCountryChange(): void {
+      this.cityService.getByCountry(this.customer.country!).subscribe(
+        {
+          next: (cities: City[]) => {
+            this.cities = cities;
+          },
+          error: (err) => {
+            console.log(err)
+          }
+        }
+      );
+  }
+
+  get preferredCountries(): string[] {
+  if (!this.customer.country?.ctrIden) {
+    return ['us', 'gb']; // Default fallback countries
+  }
+  return [this.customer.country.ctrIden];
+}
 
   currentStep = 1;
+  countries: Country[] = [];
+  cities: City[] = [];
+  phoneCode: string = ''
 
-  countries: any[] = [];
-  cities: string[] = [];
+  walletTypes: WalletType[] = []
+  selectedWalletType?: WalletType
 
   phoneForm = new FormGroup({
     phone: new FormControl<PhoneNumber | null>(null, [
@@ -50,36 +105,22 @@ export class RegisterComponent {
     ])
   });
 
-  selectedCountry: any;
-  CountryISO = CountryISO;
+  /* selectedCountry: string[] = [];
+  countryISO = CountryISO;
   SearchCountryField = SearchCountryField;
   preferredCountries: CountryISO[] = [
     CountryISO.Tunisia, // Added Tunisia since you're using +216
     CountryISO.UnitedStates,
     CountryISO.UnitedKingdom
-  ];
+  ]; */
 
-  separateDialCode = true;
-  searchCountryField = [
+
+/*   searchCountryField = [
     SearchCountryField.Iso2,
     SearchCountryField.Name
-  ];
+  ]; */
 
-  CUSTOMER = {
-    username: '',
-    cusMotDePasse: '',
-    cusFirstName: '',
-    cusMidName: '',
-    cusLastName: '',
-    fullname: '',
-    cusPhoneNbr: '',
-    cusMailAdress: '',
-    identificationType: '',
-    walletType: '',
-    country: '',
-    city: '',
-    cusAdress: ''
-  }
+  customer: Customer = new Customer();
 
 
   errorMessage: string = '';
@@ -88,7 +129,6 @@ export class RegisterComponent {
   otpVerified: boolean = false;
   otpCode: any;
 
-  constructor(private customerService: CustomerService, private router: Router, private http: HttpClient) { }
 
   // Custom phone number validator
   private validatePhoneNumber(control: AbstractControl) {
@@ -107,11 +147,11 @@ export class RegisterComponent {
 
   goToNextStep() {
 
-    console.log(this.CUSTOMER)
+    console.log(this.customer)
 
     // Step 1: Choosing a wallet type
     if (this.currentStep === 1) {
-      if (!this.CUSTOMER.walletType) {
+      if (!this.selectedWalletType) {
         this.errorMessage = 'Please choose a wallet type.';
         return;
       }
@@ -119,7 +159,7 @@ export class RegisterComponent {
 
     // Step 2: Validate Full Name and Username
     if (this.currentStep === 2) {
-      if (!this.CUSTOMER.cusFirstName?.trim()/*  || !this.CUSTOMER.cusMidName?.trim() */ || !this.CUSTOMER.cusLastName?.trim() || !this.CUSTOMER.username?.trim()) {
+      if (!this.customer.cusFirstName?.trim() || !this.customer.cusLastName?.trim() || !this.customer.username?.trim()) {
         this.errorMessage = 'Please fill in both Full Name and Username.';
         return;
       }
@@ -141,12 +181,12 @@ export class RegisterComponent {
       }
 
       const phoneValue = phoneControl.value as PhoneNumber;
-      this.CUSTOMER.cusPhoneNbr = phoneValue.e164Number;
+      this.customer.cusPhoneNbr = phoneValue.e164Number;
     }
 
     // Step 5: Validate Email and Password
     if (this.currentStep === 5) {
-      if (!this.CUSTOMER.cusMailAdress?.trim() || !this.CUSTOMER.cusMotDePasse?.trim()) {
+      if (!this.customer.cusMailAddress?.trim() || !this.customer.cusMotDePasse?.trim()) {
         this.errorMessage = 'Please enter your email and password.';
         return;
       }
@@ -157,82 +197,10 @@ export class RegisterComponent {
     this.currentStep++;
   }
 
-  ngOnInit(): void {
-    this.getCountries();
-  }
-
-  getCountries(): void {
-    this.http.get<any>('https://countriesnow.space/api/v0.1/countries')
-      .subscribe((response) => {
-        this.countries = response.data.map((item: any) => item.country).sort();
-      });
-  }
-
-  onCountryChange(): void {
-    const countryName = this.CUSTOMER.country;
-    if (countryName) {
-      this.getCities(countryName);
-    }
-  }
-
-  getCities(countryName: string): void {
-    this.http.post<any>('https://countriesnow.space/api/v0.1/countries/cities', {
-      country: countryName
-    }).subscribe(
-      (res) => {
-        this.cities = res.data || [];
-      },
-      (error) => {
-        console.error("Error fetching cities", error);
-      }
-    );
-  }
-
   goToPreviousStep() {
     if (this.currentStep > 1) {
       this.currentStep--;
     }
-  }
-
-  onSubmit(): void {
-    // First validate the current step (step 6)
-    if (this.currentStep === 6) {
-      if (!this.CUSTOMER.identificationType) {
-        this.errorMessage = 'Please select an identification type.';
-        return;
-      }
-    }
-
-    // Split fullname into first, middle, and last names
-    /* const nameParts = this.CUSTOMER.fullname.trim().split(' ');
-    this.CUSTOMER.cusFirstName = nameParts[0] || '';
-    this.CUSTOMER.cusMidName = nameParts.length > 2 ? nameParts.slice(1, -1).join(' ') : '';
-    this.CUSTOMER.cusLastName = nameParts.length > 1 ? nameParts[nameParts.length - 1] : '';
-
-    // Then handle phone number validation if we're coming from step 4
-    if (this.phoneForm.invalid) {
-      this.errorMessage = 'Please enter a valid phone number.';
-      return;
-    }
-
-    const phoneValue = this.phoneForm.get('phone')?.value as PhoneNumber;
-    this.CUSTOMER.cusPhoneNbr = phoneValue.e164Number; */
-
-    console.log(this.CUSTOMER)
-
-
-    this.customerService.register(this.CUSTOMER).subscribe({
-      next: () => {
-        this.successMessage = 'Registration successful!';
-        this.errorMessage = '';
-        setTimeout(() => this.router.navigate(['/login']), 2000);
-      },
-      error: (error) => {
-        console.error('Registration error:', error);
-        this.errorMessage = 'Registration failed. Please try again.';
-        this.successMessage = '';
-      },
-    });
   }
 
   onFileSelected(event: Event): void {
@@ -248,7 +216,12 @@ export class RegisterComponent {
   }
 
   sendOtp() {
-    this.customerService.sendEmail(this.CUSTOMER.cusMailAdress, "TOTP").subscribe(
+    if (!this.customer.cusMailAddress) {
+      console.error('Email address is required');
+      return;
+    }
+
+    this.customerService.sendEmail(this.customer.cusMailAddress, "TOTP").subscribe(
       {
         next: (Result: any) => {
           if (Result.message == 'success')
@@ -261,7 +234,13 @@ export class RegisterComponent {
   }
 
   verifyOtp() {
-    this.customerService.verifyOTP(this.CUSTOMER.cusMailAdress, this.otpCode).subscribe({
+
+    if (!this.customer.cusMailAddress) {
+      console.error('Email address is required');
+      return;
+    }
+
+    this.customerService.verifyOTP(this.customer.cusMailAddress, this.otpCode).subscribe({
       next: (verif: boolean) => {
         this.otpVerified = verif; // Direct assignment (no .valueOf needed)
         console.log('OTP Verification Result:', verif);
@@ -270,6 +249,50 @@ export class RegisterComponent {
         console.error('OTP Verification Failed:', err);
         // Handle errors (e.g., show error message)
       }
+    });
+  }
+
+  
+
+  onSubmit(): void {
+    // First validate the current step (step 6)
+    /* if (this.currentStep === 6) {
+      if (!this.CUSTOMER.identificationType) {
+        this.errorMessage = 'Please select an identification type.';
+        return;
+      }
+    } */
+
+    // Split fullname into first, middle, and last names
+    /* const nameParts = this.CUSTOMER.fullname.trim().split(' ');
+    this.CUSTOMER.cusFirstName = nameParts[0] || '';
+    this.CUSTOMER.cusMidName = nameParts.length > 2 ? nameParts.slice(1, -1).join(' ') : '';
+    this.CUSTOMER.cusLastName = nameParts.length > 1 ? nameParts[nameParts.length - 1] : '';
+
+    // Then handle phone number validation if we're coming from step 4
+    if (this.phoneForm.invalid) {
+      this.errorMessage = 'Please enter a valid phone number.';
+      return;
+    }
+
+    const phoneValue = this.phoneForm.get('phone')?.value as PhoneNumber;
+    this.customer.cusPhoneNbr = phoneValue.e164Number; */
+
+    console.log(this.customer)
+
+    this.customer.role = new Role(this.selectedWalletType?.wtyCode!,  this.selectedWalletType?.wtyLabe!);
+
+    this.customerService.register(this.customer).subscribe({
+      next: () => {
+        this.successMessage = 'Registration successful!';
+        this.errorMessage = '';
+        setTimeout(() => this.router.navigate(['/login']), 2000);
+      },
+      error: (error) => {
+        console.error('Registration error:', error);
+        this.errorMessage = 'Registration failed. Please try again.';
+        this.successMessage = '';
+      },
     });
   }
 }

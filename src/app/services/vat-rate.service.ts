@@ -12,7 +12,7 @@ import { environment } from '../../environments/environment';
 })
 export class VatRateService {
 
- private apiUrl = `${environment.apiUrl}/vat-rates`;
+ private apiUrl = `${environment.apiUrl}/api/vat-rates`;
 
   private httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })

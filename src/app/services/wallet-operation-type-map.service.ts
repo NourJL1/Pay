@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment';
 })
 export class WalletOperationTypeMapService {
 
-private apiUrl = `${environment.apiUrl}/wallet-operation-type-map`;
+private apiUrl = `${environment.apiUrl}/api/wallet-operation-type-map`;
 
   private httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })

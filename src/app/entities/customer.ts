@@ -6,8 +6,10 @@ import { City } from './city';
 import { Country } from './country';
 import { Wallet } from './wallet';
 import { WalletOperations } from './wallet-operations';
+
+
 export class Customer {
-cusCode?: number;
+  cusCode?: number;
   cusFirstName?: string;
   cusMidName?: string;
   cusLastName?: string;
@@ -17,19 +19,17 @@ cusCode?: number;
   cusAddress?: string;
   cusIden?: string;
   cusFinId?: number;
-
   contacts?: CustomerContacts[];
   status?: CustomerStatus;
   identity?: CustomerIdentity;
   city?: City;
   country?: Country;
-  wallets?: Wallet[];
+  wallet?: Wallet[];
   walletOperations?: WalletOperations[];
-  username: string;
+  username?: string;
+  role?: Role;
 
-  roles: Role[];
-
-  constructor(
+  /* constructor(
     cusCode: number,
     cusFirstName: string,
     cusMidName: string,
@@ -53,6 +53,6 @@ cusCode?: number;
     this.cusPhoneNbr = cusPhoneNbr;
     this.cusAddress = cusAddress;
     this.cusIden = cusIden;
-  }
-    
+  } */
+
 }
