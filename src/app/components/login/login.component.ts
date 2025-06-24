@@ -24,6 +24,10 @@ export class LoginComponent {
     private router: Router
   ) {}
 
+    ngOnInit(): void {
+    localStorage.clear()
+    }
+
   async onSubmit(): Promise<void> {
     this.isLoading = true;
     this.errorMessage = '';

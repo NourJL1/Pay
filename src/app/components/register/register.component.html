@@ -96,11 +96,11 @@
         <div class="form-field">
           <label class="form-label">Phone Number:</label>
           <ngx-intl-tel-input [(ngModel)]="customer.cusPhoneNbr" name="cusPhoneNbr"
-            [onlyCountries]="[customer.country?.ctrIden!]"
-            [enablePlaceholder]="true" [separateDialCode]="true" [formControl]="phoneForm.controls.phone" required>
+            [onlyCountries]="selectedCountryCode ? [selectedCountryCode] : []"
+            [preferredCountries]="selectedCountryCode ? [selectedCountryCode] : ['us', 'gb']" [enablePlaceholder]="true"
+            [separateDialCode]="true" [formControl]="phoneForm.controls.phone" required>
           </ngx-intl-tel-input>
         </div>
-
       </div>
 
       <!-- Step 4 - Phone -->
@@ -153,7 +153,8 @@
 
         <div class="form-field">
           <label class="form-label">Confirm Password:</label>
-          <input class="form-input" [(ngModel)]="confirm" name="confirm" type="password" required minlength="6" required>
+          <input class="form-input" [(ngModel)]="confirm" name="confirm" type="password" required minlength="6"
+            required>
         </div>
       </div>
 

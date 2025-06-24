@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { CountryService } from '../../../services/country.service';
 import { HttpClient } from '@angular/common/http';
 import { Customer, CustomerService } from '../../../services/customer.service';
@@ -19,12 +19,6 @@ import { Country } from '../../../entities/country';
   styleUrl: './customer-mng.component.css'
 })
 export class CustomerMngComponent {
-  addCustomerStatus() {
-    throw new Error('Method not implemented.');
-  }
-  updateCustomerStatus() {
-    throw new Error('Method not implemented.');
-  }
 
   constructor(
     private http: HttpClient,
@@ -49,9 +43,37 @@ export class CustomerMngComponent {
   selectedCustomer?: Customer
   selectedStatus?: CustomerStatus;
   selectedType?: CustomerIdentityType
+  selectedCountry?: Country
+  selectedCity?: City
 
   countryLabels: String[] = []
   countryIdens: String[] = []
+
+  //class CountryDTO{ctrIden?: string; ctrLabe?: string}
+
+  
+  addCustomerStatus(addStatusForm: NgForm) {
+    throw new Error('Method not implemented.');
+  }
+  updateCustomerStatus(addStatusForm: NgForm) {
+    throw new Error('Method not implemented.');
+  }
+
+  
+deleteCustomer(customer: Customer) {
+  if (confirm('Are you sure you want to delete this customer?')) {
+  this.customerService.deleteCustomer(customer.username!).subscribe(
+      {
+        next: () => {
+          console.log("deleted succ")
+        },
+        error: (err) => {
+          console.log(err)
+        }
+      }
+    )
+  }
+}
 
 
   ngOnInit(): void {
@@ -103,6 +125,7 @@ export class CustomerMngComponent {
       {
         next: (cities: City[]) => {
           this.cities = cities
+          console.log(cities)
         },
         error: (err) => {
           console.log(err)

@@ -28,6 +28,7 @@ export class Customer {
   walletOperations?: WalletOperations[];
   username?: string;
   role?: Role;
+  roles?: Role[]
 
   get fullName(): string
   {
