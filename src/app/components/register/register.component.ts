@@ -14,6 +14,7 @@ import { City } from '../../entities/city';
 import { WalletType } from '../../entities/wallet-type';
 import { WalletTypeService } from '../../services/wallet-type.service';
 import { Role } from '../../entities/role';
+import { WalletService } from '../../services/wallet.service';
 
 interface PhoneNumber {
   internationalNumber: string;
@@ -39,15 +40,16 @@ interface PhoneNumber {
 })
 export class RegisterComponent {
 
-
   constructor(
     private customerService: CustomerService,
     private countryService: CountryService,
     private cityService: CityService,
+    private walletService: WalletService,
     private walletTypeService: WalletTypeService,
     private router: Router) { }
 
   ngOnInit(): void {
+    localStorage.clear()
     this.walletTypeService.getAll().subscribe(
       {
         next: (types: WalletType[]) => {
@@ -71,7 +73,11 @@ export class RegisterComponent {
     );
   }
 
+
   onCountryChange(): void {
+    //console.log(this.customer.country)
+    this.selectedCountryCode = this.customer.country?.ctrIden!
+
     this.cityService.getByCountry(this.customer.country!).subscribe(
       {
         next: (cities: City[]) => {
@@ -84,13 +90,6 @@ export class RegisterComponent {
     );
   }
 
-  get preferredCountries(): string[] {
-    if (!this.customer.country?.ctrIden) {
-      return ['us', 'gb']; // Default fallback countries
-    }
-    return [this.customer.country.ctrIden];
-  }
-
   currentStep = 1;
   countries: Country[] = [];
   cities: City[] = [];
@@ -98,6 +97,7 @@ export class RegisterComponent {
 
   walletTypes: WalletType[] = []
   selectedWalletType?: WalletType
+  selectedCountryCode: string | null = null;
 
   phoneForm = new FormGroup({
     phone: new FormControl<PhoneNumber | null>(null, [
@@ -192,7 +192,7 @@ export class RegisterComponent {
 
     // In the goToNextStep method, update the phone validation part:
     if (this.currentStep === 4) {
-      
+
       if (!this.customer.cusMailAddress?.trim()) {
         this.errorMessage = 'Please enter your email.';
         return;
@@ -201,7 +201,7 @@ export class RegisterComponent {
 
     // Step 5: Validate Email and Password
     if (this.currentStep === 5) {
-      if (!this.customer.cusMotDePasse?.trim() || this.customer.cusMotDePasse!=this.confirm) {
+      if (!this.customer.cusMotDePasse?.trim() || this.customer.cusMotDePasse != this.confirm) {
         this.errorMessage = 'Please enter your password.';
         return;
       }
@@ -309,5 +309,8 @@ export class RegisterComponent {
         this.successMessage = '';
       },
     });
+
+    //this.walletService.
   }
+
 }
