@@ -39,6 +39,7 @@ interface PhoneNumber {
 })
 export class RegisterComponent {
 
+
   constructor(
     private customerService: CustomerService,
     private countryService: CountryService,
@@ -71,24 +72,24 @@ export class RegisterComponent {
   }
 
   onCountryChange(): void {
-      this.cityService.getByCountry(this.customer.country!).subscribe(
-        {
-          next: (cities: City[]) => {
-            this.cities = cities;
-          },
-          error: (err) => {
-            console.log(err)
-          }
+    this.cityService.getByCountry(this.customer.country!).subscribe(
+      {
+        next: (cities: City[]) => {
+          this.cities = cities;
+        },
+        error: (err) => {
+          console.log(err)
         }
-      );
+      }
+    );
   }
 
   get preferredCountries(): string[] {
-  if (!this.customer.country?.ctrIden) {
-    return ['us', 'gb']; // Default fallback countries
+    if (!this.customer.country?.ctrIden) {
+      return ['us', 'gb']; // Default fallback countries
+    }
+    return [this.customer.country.ctrIden];
   }
-  return [this.customer.country.ctrIden];
-}
 
   currentStep = 1;
   countries: Country[] = [];
@@ -115,10 +116,10 @@ export class RegisterComponent {
   ]; */
 
 
-/*   searchCountryField = [
-    SearchCountryField.Iso2,
-    SearchCountryField.Name
-  ]; */
+  /*   searchCountryField = [
+      SearchCountryField.Iso2,
+      SearchCountryField.Name
+    ]; */
 
   customer: Customer = new Customer();
 
@@ -128,6 +129,7 @@ export class RegisterComponent {
   otpSent: boolean = false;
   otpVerified: boolean = false;
   otpCode: any;
+  confirm: string = '';
 
 
   // Custom phone number validator
@@ -165,8 +167,12 @@ export class RegisterComponent {
       }
     }
 
-    // In the goToNextStep method, update the phone validation part:
-    if (this.currentStep === 4) {
+    // Step 2: Validate Full Name and Username
+    if (this.currentStep === 3) {
+      if (!this.customer.cusAddress?.trim() || !this.customer.country || !this.customer.city) {
+        this.errorMessage = 'Please provide you address.';
+        return;
+      }
       const phoneControl = this.phoneForm.get('phone');
 
       if (!phoneControl?.value) {
@@ -184,10 +190,19 @@ export class RegisterComponent {
       this.customer.cusPhoneNbr = phoneValue.e164Number;
     }
 
+    // In the goToNextStep method, update the phone validation part:
+    if (this.currentStep === 4) {
+      
+      if (!this.customer.cusMailAddress?.trim()) {
+        this.errorMessage = 'Please enter your email.';
+        return;
+      }
+    }
+
     // Step 5: Validate Email and Password
     if (this.currentStep === 5) {
-      if (!this.customer.cusMailAddress?.trim() || !this.customer.cusMotDePasse?.trim()) {
-        this.errorMessage = 'Please enter your email and password.';
+      if (!this.customer.cusMotDePasse?.trim() || this.customer.cusMotDePasse!=this.confirm) {
+        this.errorMessage = 'Please enter your password.';
         return;
       }
     }
@@ -252,7 +267,7 @@ export class RegisterComponent {
     });
   }
 
-  
+
 
   onSubmit(): void {
     // First validate the current step (step 6)
@@ -280,7 +295,7 @@ export class RegisterComponent {
 
     console.log(this.customer)
 
-    this.customer.role = new Role(this.selectedWalletType?.wtyCode!,  this.selectedWalletType?.wtyLabe!);
+    this.customer.role = new Role(this.selectedWalletType?.wtyCode!, this.selectedWalletType?.wtyLabe!);
 
     this.customerService.register(this.customer).subscribe({
       next: () => {

@@ -24,10 +24,15 @@ export class Customer {
   identity?: CustomerIdentity;
   city?: City;
   country?: Country;
-  wallet?: Wallet[];
+  wallets?: Wallet[];
   walletOperations?: WalletOperations[];
   username?: string;
   role?: Role;
+
+  get fullName(): string
+  {
+    return this.cusMidName ? this.cusFirstName + ' ' + this.cusMidName + ' ' + this.cusLastName : this.cusFirstName + ' ' + this.cusLastName 
+  }
 
   /* constructor(
     cusCode: number,

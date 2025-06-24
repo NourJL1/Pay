@@ -3,6 +3,14 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CountryService } from '../../../services/country.service';
 import { HttpClient } from '@angular/common/http';
+import { Customer, CustomerService } from '../../../services/customer.service';
+import { CustomerStatusService } from '../../../services/customer-status.service';
+import { CustomerStatus } from '../../../entities/customer-status';
+import { City } from '../../../entities/city';
+import { CustomerIdentityType } from '../../../entities/customer-identity-type';
+import { CityService } from '../../../services/city.service';
+import { CustomerIdentityTypeService } from '../../../services/customer-identity-type.service';
+import { Country } from '../../../entities/country';
 
 @Component({
   selector: 'app-customer-mng',
@@ -11,8 +19,20 @@ import { HttpClient } from '@angular/common/http';
   styleUrl: './customer-mng.component.css'
 })
 export class CustomerMngComponent {
+  addCustomerStatus() {
+    throw new Error('Method not implemented.');
+  }
+  updateCustomerStatus() {
+    throw new Error('Method not implemented.');
+  }
 
-  constructor(private http: HttpClient, private countryService: CountryService) {}
+  constructor(
+    private http: HttpClient,
+    private customerService: CustomerService,
+    private customerStatusService: CustomerStatusService,
+    private customerIdentityTypeService: CustomerIdentityTypeService,
+    private countryService: CountryService,
+    private cityService: CityService) { }
 
   isUserDetailsVisible: boolean = false;
   isCustomerStatusVisible: boolean = false;
@@ -20,13 +40,80 @@ export class CustomerMngComponent {
   isCountryVisible: boolean = false;
   isCityVisible: boolean = false;
 
-  countries: String[] = []
+  countries: Country[] = []
+  cities: City[] = []
+  customers: Customer[] = []
+  statuses: CustomerStatus[] = []
+  types: CustomerIdentityType[] = []
+
+  selectedCustomer?: Customer
+  selectedStatus?: CustomerStatus;
+  selectedType?: CustomerIdentityType
+
+  countryLabels: String[] = []
+  countryIdens: String[] = []
+
 
   ngOnInit(): void {
+    this.customerService.getAllCustomers().subscribe(
+      {
+        next: (customers: Customer[]) => {
+          this.customers = customers
+        },
+        error: (err) => {
+          console.log(err)
+        }
+      }
+    )
+
+    this.customerStatusService.getAll().subscribe(
+      {
+        next: (statuses: CustomerStatus[]) => {
+          this.statuses = statuses
+        },
+        error: (err) => {
+          console.log(err)
+        }
+      }
+    )
+
+    this.customerIdentityTypeService.getAll().subscribe(
+      {
+        next: (types: CustomerIdentityType[]) => {
+          this.types = types
+        },
+        error: (err) => {
+          console.log(err)
+        }
+      }
+    )
+
+    this.countryService.getAll().subscribe(
+      {
+        next: (countries: Country[]) => {
+          this.countries = countries
+        },
+        error: (err) => {
+          console.log(err)
+        }
+      }
+    )
+
+    this.cityService.getAll().subscribe(
+      {
+        next: (cities: City[]) => {
+          this.cities = cities
+        },
+        error: (err) => {
+          console.log(err)
+        }
+      }
+    )
+
     this.http.get<any>('https://countriesnow.space/api/v0.1/countries')
       .subscribe((response) => {
-        this.countries = response.data.map((item: any) => item.country).sort();
-        console.log(this.countries)
+        this.countryLabels = response.data.map((item: any) => item.country).sort();
+        this.countryIdens = response.data.map((item: any) => item.iso2).sort();
       });
   }
 

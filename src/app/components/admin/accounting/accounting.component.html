@@ -44,7 +44,7 @@
         </nav>
       </div>
 
-    
+
 
       <!-- Fees Content -->
       <div id="fees-tab-overview" class="fees-tab-content p-6">
@@ -118,99 +118,99 @@
             <i class="ri-add-line mr-1"></i> Add Fee Schema </button>
         </div>
         <div class="overflow-x-auto">
-  <table class="min-w-full divide-y divide-gray-200">
-    <thead class="bg-gray-50">
-      <tr>
-        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-          Schema Code
-        </th>
-        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-          Schema Identifier
-        </th>
-        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-          Schema Name
-        </th>
-        <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-          Actions
-        </th>
-      </tr>
-    </thead>
-    <tbody class="bg-white divide-y divide-gray-200">
-      <tr *ngFor="let schema of feeSchemasList">
-        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ schema.fscCode }}</td>
-        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ schema.fscIden }}</td>
-        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ schema.fscLabe }}</td>
-        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-          <div class="flex justify-end space-x-2">
-            <button class="text-green-600 hover:text-gray-500" (click)="editFeeSchema(schema)">
-              <div class="w-6 h-6 flex items-center justify-center">
-                <i class="ri-edit-line"></i>
-              </div>
-            </button>
-            <button class="text-red-600 hover:text-red-500" (click)="deleteFeeSchema(schema.fscCode)">
-              <div class="w-6 h-6 flex items-center justify-center">
-                <i class="ri-delete-bin-line"></i>
-              </div>
-            </button>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Schema Code
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Schema Identifier
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Schema Name
+                </th>
+                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <tr *ngFor="let schema of feeSchemasList">
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ schema.fscCode }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ schema.fscIden }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ schema.fscLabe }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <div class="flex justify-end space-x-2">
+                    <button class="text-green-600 hover:text-gray-500" (click)="editFeeSchema(schema)">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-edit-line"></i>
+                      </div>
+                    </button>
+                    <button class="text-red-600 hover:text-red-500" (click)="deleteFeeSchema(schema.fscCode)">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-delete-bin-line"></i>
+                      </div>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <!-- Fee Rule Type Content -->
-<div id="fees-tab-type" class="fees-tab-content p-6 hidden">
-  <div class="flex justify-between items-center mb-6">
-    <h3 class="text-lg font-medium text-gray-900">Fee Rule Type Management</h3>
-    <button id="btn-add-type" (click)="toggleForm('fee-rule-type')"
-      class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
-      <i class="ri-add-line mr-1"></i> Add Fee Rule Type
-    </button>
-  </div>
-  <div class="overflow-x-auto">
-    <table class="min-w-full divide-y divide-gray-200">
-      <thead class="bg-gray-50">
-        <tr>
-          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-            Type Code
-          </th>
-          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-            Type Identifier
-          </th>
-          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-            Type Name
-          </th>
-          <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-            Actions
-          </th>
-        </tr>
-      </thead>
-      <tbody class="bg-white divide-y divide-gray-200">
-        <tr *ngFor="let type of feeRuleTypesList">
-          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ type.frtCode }}</td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ type.frtIden }}</td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ type.frtLabe }}</td>
-          <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-            <div class="flex justify-end space-x-2">
-              <button class="text-green-600 hover:text-gray-500" (click)="editFeeRuleType(type)">
-                <div class="w-6 h-6 flex items-center justify-center">
-                  <i class="ri-edit-line"></i>
-                </div>
-              </button>
-              <button class="text-red-600 hover:text-red-500" (click)="deleteFeeRuleType(type.frtCode)">
-                <div class="w-6 h-6 flex items-center justify-center">
-                  <i class="ri-delete-bin-line"></i>
-                </div>
-              </button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
+      <div id="fees-tab-type" class="fees-tab-content p-6 hidden">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-lg font-medium text-gray-900">Fee Rule Type Management</h3>
+          <button id="btn-add-type" (click)="toggleForm('fee-rule-type')"
+            class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+            <i class="ri-add-line mr-1"></i> Add Fee Rule Type
+          </button>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Type Code
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Type Identifier
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Type Name
+                </th>
+                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <tr *ngFor="let type of feeRuleTypesList">
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ type.frtCode }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ type.frtIden }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ type.frtLabe }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <div class="flex justify-end space-x-2">
+                    <button class="text-green-600 hover:text-gray-500" (click)="editFeeRuleType(type)">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-edit-line"></i>
+                      </div>
+                    </button>
+                    <button class="text-red-600 hover:text-red-500" (click)="deleteFeeRuleType(type.frtCode)">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-delete-bin-line"></i>
+                      </div>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
       <!-- Fee Rule Content -->
       <div id="fees-tab-rule" class="fees-tab-content p-6 hidden">
         <div class="flex justify-between items-center mb-6">
@@ -461,7 +461,7 @@
 <!-- FORMS -->
 <div *ngIf="isAnyModalVisible" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
   <!-- Add/Edit Fee Modal (already included above, removing duplicate) -->
-   <!-- Add/Edit Fee Modal -->
+  <!-- Add/Edit Fee Modal -->
   <div *ngIf="isFeeVisible" id="add-fee-modal" class="bg-white rounded-lg shadow-xl w-full max-w-md">
     <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
       <h3 class="text-lg font-medium text-gray-900">{{ selectedFee ? 'Edit Fee' : 'Add Fee' }}</h3>
@@ -516,8 +516,10 @@
             placeholder="Maximum fee amount" required min="0">
         </div>
         <div>
-          <label for="financialInstitutionId" class="block text-sm font-medium text-gray-700 mb-1">Financial Institution ID</label>
-          <input type="number" id="financialInstitutionId" name="financialInstitutionId" [(ngModel)]="newFee.financialInstitutionId"
+          <label for="financialInstitutionId" class="block text-sm font-medium text-gray-700 mb-1">Financial Institution
+            ID</label>
+          <input type="number" id="financialInstitutionId" name="financialInstitutionId"
+            [(ngModel)]="newFee.financialInstitutionId"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
             placeholder="Financial Institution ID" required min="1">
         </div>
@@ -532,91 +534,93 @@
       </div>
     </form>
   </div>
-<!-- Add/Edit Fee Schema Modal -->
-<div *ngIf="isFeeSchemaVisible" id="fee-schema-modal"
-     class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-  <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
-    <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-      <h3 class="text-lg font-medium text-gray-900">{{ selectedFeeSchema ? 'Edit Fee Schema' : 'Add Fee Schema' }}</h3>
-      <button id="close-type-modal" (click)="closeForm('fee-schema')" class="text-gray-400 hover:text-gray-500">
-        <div class="w-6 h-6 flex items-center justify-center">
-          <i class="ri-close-line"></i>
-        </div>
-      </button>
-    </div>
-    <div class="p-6">
-      <form id="fee-schema-form" (ngSubmit)="selectedFeeSchema ? updateFeeSchema() : addFeeSchema()">
-        <div class="space-y-4">
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Identifier</label>
-            <input type="text" id="fscIden" name="fscIden" [(ngModel)]="newFeeSchema.fscIden"
-                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-                   placeholder="Identifier" required>
+  <!-- Add/Edit Fee Schema Modal -->
+  <div *ngIf="isFeeSchemaVisible" id="fee-schema-modal"
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
+      <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+        <h3 class="text-lg font-medium text-gray-900">{{ selectedFeeSchema ? 'Edit Fee Schema' : 'Add Fee Schema' }}
+        </h3>
+        <button id="close-type-modal" (click)="closeForm('fee-schema')" class="text-gray-400 hover:text-gray-500">
+          <div class="w-6 h-6 flex items-center justify-center">
+            <i class="ri-close-line"></i>
           </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Schema Label</label>
-            <input type="text" id="fscLabe" name="fscLabe" [(ngModel)]="newFeeSchema.fscLabe"
-                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-                   placeholder="Label" required>
+        </button>
+      </div>
+      <div class="p-6">
+        <form id="fee-schema-form" (ngSubmit)="selectedFeeSchema ? updateFeeSchema() : addFeeSchema()">
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Identifier</label>
+              <input type="text" id="fscIden" name="fscIden" [(ngModel)]="newFeeSchema.fscIden"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                placeholder="Identifier" required>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Schema Label</label>
+              <input type="text" id="fscLabe" name="fscLabe" [(ngModel)]="newFeeSchema.fscLabe"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                placeholder="Label" required>
+            </div>
           </div>
-        </div>
-        <div class="mt-6 flex justify-end space-x-3">
-          <button type="button" (click)="closeForm('fee-schema')" id="cancel-fee-schema"
-                  class="px-4 py-2 border border-gray-300 rounded-button text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">
-            Cancel
-          </button>
-          <button type="submit"
-                  class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 whitespace-nowrap">
-            {{ selectedFeeSchema ? 'Update Schema' : 'Add Schema' }}
-          </button>
-        </div>
-      </form>
+          <div class="mt-6 flex justify-end space-x-3">
+            <button type="button" (click)="closeForm('fee-schema')" id="cancel-fee-schema"
+              class="px-4 py-2 border border-gray-300 rounded-button text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">
+              Cancel
+            </button>
+            <button type="submit"
+              class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 whitespace-nowrap">
+              {{ selectedFeeSchema ? 'Update Schema' : 'Add Schema' }}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
-</div>
 
   <!-- Add/Edit Fee Rule Type Modal -->
-<div *ngIf="isFeeRuleTypeVisible" id="fee-rule-type-modal"
-  class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-  <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
-    <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-      <h3 class="text-lg font-medium text-gray-900">{{ selectedFeeRuleType ? 'Edit Fee Rule Type' : 'Add Fee Rule Type' }}</h3>
-      <button id="close-type-modal" (click)="closeForm('fee-rule-type')" class="text-gray-400 hover:text-gray-500">
-        <div class="w-6 h-6 flex items-center justify-center">
-          <i class="ri-close-line"></i>
-        </div>
-      </button>
-    </div>
-    <div class="p-6">
-      <form id="fee-rule-type-form" (ngSubmit)="selectedFeeRuleType ? updateFeeRuleType() : addFeeRuleType()">
-        <div class="space-y-4">
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Identifier</label>
-            <input type="text" id="frtIden" name="frtIden" [(ngModel)]="newFeeRuleType.frtIden"
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-              placeholder="Identifier" required>
+  <div *ngIf="isFeeRuleTypeVisible" id="fee-rule-type-modal"
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
+      <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+        <h3 class="text-lg font-medium text-gray-900">{{ selectedFeeRuleType ? 'Edit Fee Rule Type' : 'Add Fee Rule
+          Type' }}</h3>
+        <button id="close-type-modal" (click)="closeForm('fee-rule-type')" class="text-gray-400 hover:text-gray-500">
+          <div class="w-6 h-6 flex items-center justify-center">
+            <i class="ri-close-line"></i>
           </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Fee Rule Type Label</label>
-            <input type="text" id="frtLabe" name="frtLabe" [(ngModel)]="newFeeRuleType.frtLabe"
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-              placeholder="Label" required>
+        </button>
+      </div>
+      <div class="p-6">
+        <form id="fee-rule-type-form" (ngSubmit)="selectedFeeRuleType ? updateFeeRuleType() : addFeeRuleType()">
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Identifier</label>
+              <input type="text" id="frtIden" name="frtIden" [(ngModel)]="newFeeRuleType.frtIden"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                placeholder="Identifier" required>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Fee Rule Type Label</label>
+              <input type="text" id="frtLabe" name="frtLabe" [(ngModel)]="newFeeRuleType.frtLabe"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                placeholder="Label" required>
+            </div>
           </div>
-        </div>
-        <div class="mt-6 flex justify-end space-x-3">
-          <button type="button" (click)="closeForm('fee-rule-type')" id="cancel-fee-rule-type"
-            class="px-4 py-2 border border-gray-300 rounded-button text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">
-            Cancel
-          </button>
-          <button type="submit"
-            class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 whitespace-nowrap">
-            {{ selectedFeeRuleType ? 'Update Type' : 'Add Type' }}
-          </button>
-        </div>
-      </form>
+          <div class="mt-6 flex justify-end space-x-3">
+            <button type="button" (click)="closeForm('fee-rule-type')" id="cancel-fee-rule-type"
+              class="px-4 py-2 border border-gray-300 rounded-button text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">
+              Cancel
+            </button>
+            <button type="submit"
+              class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 whitespace-nowrap">
+              {{ selectedFeeRuleType ? 'Update Type' : 'Add Type' }}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
-</div>
 
   <!-- Add Fee Rule Modal -->
   <div *ngIf="isFeeRuleVisible" id="fee-rule-modal"
