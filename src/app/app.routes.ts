@@ -34,7 +34,7 @@ export const routes: Routes = [
     path: 'welcome',
     component: WelcomeComponent,
     canActivate: [AuthGuard, walletStatusGuard],
-    data: { requiredStatus: 'PENDING' }
+    data: { requiredStatus: 'ACTIVE' }
   },
 
   // Redirects

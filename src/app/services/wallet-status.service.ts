@@ -9,20 +9,24 @@ import { environment } from '../../environments/environment';
 })
 export class WalletStatusService {
 
- private apiUrl = `${environment.apiUrl}/api/wallet-status`;
+  private apiUrl = `${environment.apiUrl}/api/wallet-status`;
+
 
   private httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+      // 'X-Roles': 'ROLE_ADMIN' // Uncomment for testing if needed
+    })
   };
 
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<WalletStatus[]> {
-    return this.http.get<WalletStatus[]>(this.apiUrl);
+    return this.http.get<WalletStatus[]>(this.apiUrl, this.httpOptions);
   }
 
   getById(id: number): Observable<WalletStatus> {
-    return this.http.get<WalletStatus>(`${this.apiUrl}/${id}`);
+    return this.http.get<WalletStatus>(`${this.apiUrl}/${id}`, this.httpOptions);
   }
 
   create(walletStatus: WalletStatus): Observable<WalletStatus> {
@@ -38,5 +42,6 @@ export class WalletStatusService {
   }
 
   search(word: string): Observable<WalletStatus[]> {
-    return this.http.get<WalletStatus[]>(`${this.apiUrl}/search?word=${word}`);
-  }}
+    return this.http.get<WalletStatus[]>(`${this.apiUrl}/search?word=${word}`, this.httpOptions);
+  }
+}

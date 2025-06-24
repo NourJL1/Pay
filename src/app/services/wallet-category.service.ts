@@ -9,20 +9,33 @@ import { environment } from '../../environments/environment';
 })
 export class WalletCategoryService {
 
-private apiUrl = `${environment.apiUrl}/api/wallet-categories`;
+  private apiUrl = `${environment.apiUrl}/api/wallet-categories`;
+
+
+
 
   private httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json'
+      // 'X-Roles': 'ROLE_ADMIN' // Uncomment for testing
+    })
+  };
+
+  private deleteOptions = {
+    headers: new HttpHeaders({
+      // No Content-Type for DELETE as it has no body
+      // 'X-Roles': 'ROLE_ADMIN' // Uncomment for testing
+    })
   };
 
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<WalletCategory[]> {
-    return this.http.get<WalletCategory[]>(this.apiUrl);
+    return this.http.get<WalletCategory[]>(this.apiUrl, this.httpOptions);
   }
 
   getById(id: number): Observable<WalletCategory> {
-    return this.http.get<WalletCategory>(`${this.apiUrl}/${id}`);
+    return this.http.get<WalletCategory>(`${this.apiUrl}/${id}`, this.httpOptions);
   }
 
   create(walletCategory: WalletCategory): Observable<WalletCategory> {
@@ -34,9 +47,10 @@ private apiUrl = `${environment.apiUrl}/api/wallet-categories`;
   }
 
   delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`, this.httpOptions);
+    return this.http.delete<void>(`${this.apiUrl}/${id}`, this.deleteOptions);
   }
 
   search(word: string): Observable<WalletCategory[]> {
-    return this.http.get<WalletCategory[]>(`${this.apiUrl}/search?word=${word}`);
-  }}
+    return this.http.get<WalletCategory[]>(`${this.apiUrl}/search?word=${word}`, this.httpOptions);
+  }
+}
