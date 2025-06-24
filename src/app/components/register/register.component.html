@@ -95,11 +95,16 @@
 
         <div class="form-field">
           <label class="form-label">Phone Number:</label>
-          <ngx-intl-tel-input [(ngModel)]="customer.cusPhoneNbr" name="cusPhoneNbr"
-            [onlyCountries]="selectedCountryCode ? [selectedCountryCode] : []"
-            [preferredCountries]="selectedCountryCode ? [selectedCountryCode] : ['us', 'gb']" [enablePlaceholder]="true"
-            [separateDialCode]="true" [formControl]="phoneForm.controls.phone" required>
-          </ngx-intl-tel-input>
+          <ngx-intl-tel-input
+  [formControl]="phoneForm.controls.phone"
+  name="cusPhoneNbr"
+  [onlyCountries]="selectedCountryCode ? [selectedCountryCode] : []"
+  [preferredCountries]="selectedCountryCode ? [selectedCountryCode] : ['us', 'gb']"
+  [enablePlaceholder]="true"
+  [separateDialCode]="true"
+  required>
+</ngx-intl-tel-input>
+
         </div>
       </div>
 
