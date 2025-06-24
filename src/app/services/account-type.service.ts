@@ -10,7 +10,7 @@ import { AccountType } from '../entities/account-type';
 })
 export class AccountTypeService {
 
-private apiUrl = `${environment.apiUrl}/account-types`;
+private apiUrl = `${environment.apiUrl}/api/account-types`;
 
   constructor(private http: HttpClient) {}
 

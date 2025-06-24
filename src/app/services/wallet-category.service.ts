@@ -8,7 +8,12 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class WalletCategoryService {
+<<<<<<< HEAD
   private apiUrl = `${environment.apiUrl}/api/wallet-categories`;
+=======
+
+private apiUrl = `${environment.apiUrl}/api/wallet-categories`;
+>>>>>>> c8eb148005385c8f29130972be4aa41fc72c4ff0
 
   private httpOptions = {
     headers: new HttpHeaders({

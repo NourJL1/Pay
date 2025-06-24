@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment';
 })
 export class DocTypeService {
 
-private apiUrl = `${environment.apiUrl}/doc-type`;
+private apiUrl = `${environment.apiUrl}/api/doc-type`;
 
   constructor(private http: HttpClient) {}
 

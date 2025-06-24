@@ -6,14 +6,6 @@ import { Role } from '../entities/role';
 import { WalletStatus } from '../entities/wallet-status';
 import { Customer } from '../entities/customer';
 
-export interface LocalCustomer {
-  cusCode?: number;
-  username: string;
-  cusMotDePasse: string;
-  fullname: string;
-  cusMailAdress: string;
-}
-
 @Injectable({
   providedIn: 'root',
 })
@@ -36,9 +28,9 @@ export class CustomerService {
   }
 
   // Register a new customer
-  register(customer: LocalCustomer): Observable<Customer> {
+  register(customer: Customer): Observable<Customer> {
     return this.http.post<Customer>(
-      `${this.apiUrl}/register`,
+      `${this.apiUrl}`,
       customer,
       this.getHttpOptions()
     );
@@ -52,6 +44,14 @@ export class CustomerService {
     );
   }
 
+  // Get customer details by email
+  getCustomerByEmail(email: string): Observable<Customer> {
+    return this.http.get<Customer>(
+      `${this.apiUrl}/email/${email}`,
+      this.getHttpOptions()
+    );
+  }
+
   // Get customer details by ID
   getCustomerById(customerId: number): Observable<Customer> {
     return this.http.get<Customer>(
@@ -61,12 +61,17 @@ export class CustomerService {
   }
 
   // Update customer information
-  updateCustomer(username: string, customer: LocalCustomer): Observable<Customer> {
+  updateCustomer(username: string, customer: Customer): Observable<Customer> {
     return this.http.put<Customer>(
       `${this.apiUrl}/${username}`,
       customer,
       this.getHttpOptions()
     );
+  }
+
+  resetPassword(cusCode: number, password: string)
+  {
+    return this.http.put<string>(`${this.apiUrl}/resetPassword/${cusCode}`, password)
   }
 
   // Assign roles to a customer

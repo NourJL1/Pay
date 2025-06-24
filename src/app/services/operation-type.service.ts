@@ -9,7 +9,7 @@ import { OperationType } from '../entities/operation-type';
 })
 export class OperationTypeService {
 
- private apiUrl = `${environment.apiUrl}/operation-types`;
+ private apiUrl = `${environment.apiUrl}/api/operation-types`;
 
   private httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })

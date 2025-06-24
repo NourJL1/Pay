@@ -2,7 +2,7 @@ import { Wallet } from "./wallet";
 
 export class WalletType {
 
-      wtyCode!: number;
+  wtyCode!: number;
   wtyIden!: string;
   wtyLabe!: string;
   wallets?: Wallet[]; // Optional to avoid circular JSON issues

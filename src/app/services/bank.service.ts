@@ -11,7 +11,7 @@ import { Bank} from '../entities/bank';
 })
 export class BankService {
 
- private apiUrl = `${environment.apiUrl}/banks`;
+ private apiUrl = `${environment.apiUrl}/api/banks`;
 
   constructor(private http: HttpClient) {}
 

@@ -11,7 +11,7 @@ import { WalletOperationTypeMap } from './wallet-operation-type-map';
 import { WalletStatus } from './wallet-status';
 export class Wallet {
 
-    walCode!: number;
+  walCode!: number;
   walIden!: string;
   walLabe?: string;
   walKey?: number;
