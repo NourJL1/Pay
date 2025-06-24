@@ -8,12 +8,9 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class WalletStatusService {
-<<<<<<< HEAD
-  private apiUrl = `${environment.apiUrl}/api/wallet-status`;
-=======
 
- private apiUrl = `${environment.apiUrl}/api/wallet-status`;
->>>>>>> c8eb148005385c8f29130972be4aa41fc72c4ff0
+  private apiUrl = `${environment.apiUrl}/api/wallet-status`;
+
 
   private httpOptions = {
     headers: new HttpHeaders({
