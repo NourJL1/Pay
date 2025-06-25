@@ -98,12 +98,12 @@
           <ngx-intl-tel-input
   [formControl]="phoneForm.controls.phone"
   name="cusPhoneNbr"
-  [onlyCountries]="selectedCountryCode ? [selectedCountryCode] : []"
-  [preferredCountries]="selectedCountryCode ? [selectedCountryCode] : ['us', 'gb']"
+  [preferredCountries]="['tn', 'us', 'gb']"
   [enablePlaceholder]="true"
   [separateDialCode]="true"
   required>
 </ngx-intl-tel-input>
+
 
         </div>
       </div>

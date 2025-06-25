@@ -1,12 +1,11 @@
 export class VatRate {
+  vatCode: number;
+  vatLabe: string;
+  vatRate: number;
 
-    vatCode?: number;
-  vatRate?: number; // use number, since Angular/TS don't have BigDecimal
-  vatLabe?: string;
-  vatIden?: string;
-  vatActive?: number;
-
-  constructor(init?: Partial<VatRate>) {
-    Object.assign(this, init);
+  constructor(data: Partial<VatRate> = {}) {
+    this.vatCode = data.vatCode || 0;
+    this.vatLabe = data.vatLabe || '';
+    this.vatRate = data.vatRate || 0;
   }
 }
