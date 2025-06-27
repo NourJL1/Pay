@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { WalletType } from '../entities/wallet-type';
 import { environment } from '../../environments/environment';
 
@@ -8,35 +9,81 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class WalletTypeService {
-
-private apiUrl = `${environment.apiUrl}/api/wallet-types`;
-
-  private httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-  };
+  private apiUrl = `${environment.apiUrl}/api/wallet-types`;
 
   constructor(private http: HttpClient) {}
 
-  getAll(): Observable<WalletType[]> {
-    return this.http.get<WalletType[]>(this.apiUrl);
+  private getHttpOptions(includeAuth: boolean = false): { headers: HttpHeaders } {
+    const role = localStorage.getItem('role') || 'ROLE_ADMIN';
+    console.log('WalletTypeService: getHttpOptions - Role:', role, 'Include Auth:', includeAuth);
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      ...(includeAuth ? { 'X-Roles': role } : {})
+    });
+    return { headers };
   }
 
-  getById(id: number): Observable<WalletType> {
-    return this.http.get<WalletType>(`${this.apiUrl}/${id}`);
+  getAll(httpOptions: { headers: HttpHeaders } = this.getHttpOptions()): Observable<WalletType[]> {
+    console.log('WalletTypeService: getAll - URL:', this.apiUrl, 'Headers:', httpOptions.headers.keys());
+    return this.http.get<WalletType[]>(this.apiUrl, httpOptions).pipe(
+      catchError(error => {
+        console.error('WalletTypeService: getAll - Error:', error, 'Response:', error.error, 'Status:', error.status);
+        return throwError(() => new Error(`Failed to fetch wallet types: ${error.status} ${error.statusText} - ${error.error?.message || 'No response body'}`));
+      })
+    );
   }
 
-  create(walletType: WalletType): Observable<WalletType> {
-    return this.http.post<WalletType>(this.apiUrl, walletType, this.httpOptions);
+  getById(id: number, httpOptions: { headers: HttpHeaders } = this.getHttpOptions()): Observable<WalletType> {
+    const url = `${this.apiUrl}/${id}`;
+    console.log('WalletTypeService: getById - URL:', url, 'Headers:', httpOptions.headers.keys());
+    return this.http.get<WalletType>(url, httpOptions).pipe(
+      catchError(error => {
+        console.error('WalletTypeService: getById - Error:', error, 'Response:', error.error, 'Status:', error.status);
+        return throwError(() => new Error(`Failed to fetch wallet type ${id}: ${error.status} ${error.statusText} - ${error.error?.message || 'No response body'}`));
+      })
+    );
   }
 
-  update(id: number, walletType: WalletType): Observable<WalletType> {
-    return this.http.put<WalletType>(`${this.apiUrl}/${id}`, walletType, this.httpOptions);
+  create(walletType: WalletType, httpOptions: { headers: HttpHeaders } = this.getHttpOptions()): Observable<WalletType> {
+    console.log('WalletTypeService: create - URL:', this.apiUrl, 'Payload:', walletType, 'Headers:', httpOptions.headers.keys());
+    return this.http.post<WalletType>(this.apiUrl, walletType, httpOptions).pipe(
+      catchError(error => {
+        console.error('WalletTypeService: create - Error:', error, 'Response:', error.error, 'Status:', error.status);
+        return throwError(() => new Error(`Failed to create wallet type: ${error.status} ${error.statusText} - ${error.error?.message || 'No response body'}`));
+      })
+    );
   }
 
-  delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`, this.httpOptions);
+  update(id: number, walletType: WalletType, httpOptions: { headers: HttpHeaders } = this.getHttpOptions()): Observable<WalletType> {
+    const url = `${this.apiUrl}/${id}`;
+    console.log('WalletTypeService: update - URL:', url, 'Payload:', walletType, 'Headers:', httpOptions.headers.keys());
+    return this.http.put<WalletType>(url, walletType, httpOptions).pipe(
+      catchError(error => {
+        console.error('WalletTypeService: update - Error:', error, 'Response:', error.error, 'Status:', error.status);
+        return throwError(() => new Error(`Failed to update wallet type ${id}: ${error.status} ${error.statusText} - ${error.error?.message || 'No response body'}`));
+      })
+    );
   }
 
-  search(word: string): Observable<WalletType[]> {
-    return this.http.get<WalletType[]>(`${this.apiUrl}/search?word=${word}`);
-  }}
+  delete(id: number, httpOptions: { headers: HttpHeaders } = this.getHttpOptions()): Observable<void> {
+    const url = `${this.apiUrl}/${id}`;
+    console.log('WalletTypeService: delete - URL:', url, 'Headers:', httpOptions.headers.keys());
+    return this.http.delete<void>(url, httpOptions).pipe(
+      catchError(error => {
+        console.error('WalletTypeService: delete - Error:', error, 'Response:', error.error, 'Status:', error.status);
+        return throwError(() => new Error(`Failed to delete wallet type ${id}: ${error.status} ${error.statusText} - ${error.error?.message || 'No response body'}`));
+      })
+    );
+  }
+
+  search(word: string, httpOptions: { headers: HttpHeaders } = this.getHttpOptions()): Observable<WalletType[]> {
+    const url = `${this.apiUrl}/search?word=${word}`;
+    console.log('WalletTypeService: search - URL:', url, 'Headers:', httpOptions.headers.keys());
+    return this.http.get<WalletType[]>(url, httpOptions).pipe(
+      catchError(error => {
+        console.error('WalletTypeService: search - Error:', error, 'Response:', error.error, 'Status:', error.status);
+        return throwError(() => new Error(`Failed to search wallet types: ${error.status} ${error.statusText} - ${error.error?.message || 'No response body'}`));
+      })
+    );
+  }
+}

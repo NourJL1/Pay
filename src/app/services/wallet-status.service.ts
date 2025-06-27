@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { WalletStatus } from '../entities/wallet-status';
 import { environment } from '../../environments/environment';
 
@@ -8,40 +9,81 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class WalletStatusService {
-
   private apiUrl = `${environment.apiUrl}/api/wallet-status`;
-
-
-  private httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-      // 'X-Roles': 'ROLE_ADMIN' // Uncomment for testing if needed
-    })
-  };
 
   constructor(private http: HttpClient) {}
 
-  getAll(): Observable<WalletStatus[]> {
-    return this.http.get<WalletStatus[]>(this.apiUrl, this.httpOptions);
+  private getHttpOptions(includeAuth: boolean = false): { headers: HttpHeaders } {
+    const role = localStorage.getItem('role') || 'ROLE_ADMIN';
+    console.log('WalletStatusService: getHttpOptions - Role:', role, 'Include Auth:', includeAuth);
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      ...(includeAuth ? { 'X-Roles': role } : {})
+    });
+    return { headers };
   }
 
-  getById(id: number): Observable<WalletStatus> {
-    return this.http.get<WalletStatus>(`${this.apiUrl}/${id}`, this.httpOptions);
+  getAll(httpOptions: { headers: HttpHeaders } = this.getHttpOptions()): Observable<WalletStatus[]> {
+    console.log('WalletStatusService: getAll - URL:', this.apiUrl, 'Headers:', httpOptions.headers.keys());
+    return this.http.get<WalletStatus[]>(this.apiUrl, httpOptions).pipe(
+      catchError(error => {
+        console.error('WalletStatusService: getAll - Error:', error, 'Response:', error.error, 'Status:', error.status);
+        return throwError(() => new Error(`Failed to fetch wallet statuses: ${error.status} ${error.statusText} - ${error.error?.message || 'No response body'}`));
+      })
+    );
   }
 
-  create(walletStatus: WalletStatus): Observable<WalletStatus> {
-    return this.http.post<WalletStatus>(this.apiUrl, walletStatus, this.httpOptions);
+  getById(id: number, httpOptions: { headers: HttpHeaders } = this.getHttpOptions()): Observable<WalletStatus> {
+    const url = `${this.apiUrl}/${id}`;
+    console.log('WalletStatusService: getById - URL:', url, 'Headers:', httpOptions.headers.keys());
+    return this.http.get<WalletStatus>(url, httpOptions).pipe(
+      catchError(error => {
+        console.error('WalletStatusService: getById - Error:', error, 'Response:', error.error, 'Status:', error.status);
+        return throwError(() => new Error(`Failed to fetch wallet status ${id}: ${error.status} ${error.statusText} - ${error.error?.message || 'No response body'}`));
+      })
+    );
   }
 
-  update(id: number, walletStatus: WalletStatus): Observable<WalletStatus> {
-    return this.http.put<WalletStatus>(`${this.apiUrl}/${id}`, walletStatus, this.httpOptions);
+  create(walletStatus: WalletStatus, httpOptions: { headers: HttpHeaders } = this.getHttpOptions()): Observable<WalletStatus> {
+    console.log('WalletStatusService: create - URL:', this.apiUrl, 'Payload:', walletStatus, 'Headers:', httpOptions.headers.keys());
+    return this.http.post<WalletStatus>(this.apiUrl, walletStatus, httpOptions).pipe(
+      catchError(error => {
+        console.error('WalletStatusService: create - Error:', error, 'Response:', error.error, 'Status:', error.status);
+        return throwError(() => new Error(`Failed to create wallet status: ${error.status} ${error.statusText} - ${error.error?.message || 'No response body'}`));
+      })
+    );
   }
 
-  delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`, this.httpOptions);
+  update(id: number, walletStatus: WalletStatus, httpOptions: { headers: HttpHeaders } = this.getHttpOptions()): Observable<WalletStatus> {
+    const url = `${this.apiUrl}/${id}`;
+    console.log('WalletStatusService: update - URL:', url, 'Payload:', walletStatus, 'Headers:', httpOptions.headers.keys());
+    return this.http.put<WalletStatus>(url, walletStatus, httpOptions).pipe(
+      catchError(error => {
+        console.error('WalletStatusService: update - Error:', error, 'Response:', error.error, 'Status:', error.status);
+        return throwError(() => new Error(`Failed to update wallet status ${id}: ${error.status} ${error.statusText} - ${error.error?.message || 'No response body'}`));
+      })
+    );
   }
 
-  search(word: string): Observable<WalletStatus[]> {
-    return this.http.get<WalletStatus[]>(`${this.apiUrl}/search?word=${word}`, this.httpOptions);
+  delete(id: number, httpOptions: { headers: HttpHeaders } = this.getHttpOptions()): Observable<void> {
+    const url = `${this.apiUrl}/${id}`;
+    console.log('WalletStatusService: delete - URL:', url, 'Headers:', httpOptions.headers.keys());
+    return this.http.delete<void>(url, httpOptions).pipe(
+      catchError(error => {
+        console.error('WalletStatusService: delete - Error:', error, 'Response:', error.error, 'Status:', error.status);
+        return throwError(() => new Error(`Failed to delete wallet status ${id}: ${error.status} ${error.statusText} - ${error.error?.message || 'No response body'}`));
+      })
+    );
+  }
+
+  search(word: string, httpOptions: { headers: HttpHeaders } = this.getHttpOptions()): Observable<WalletStatus[]> {
+    const url = `${this.apiUrl}/search?word=${word}`;
+    console.log('WalletStatusService: search - URL:', url, 'Headers:', httpOptions.headers.keys());
+    return this.http.get<WalletStatus[]>(url, httpOptions).pipe(
+      catchError(error => {
+        console.error('WalletStatusService: search - Error:', error, 'Response:', error.error, 'Status:', error.status);
+        return throwError(() => new Error(`Failed to search wallet statuses: ${error.status} ${error.statusText} - ${error.error?.message || 'No response body'}`));
+      })
+    );
   }
 }
