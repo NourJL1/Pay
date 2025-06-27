@@ -1,515 +1,2395 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { WalletStatusService } from '../../../services/wallet-status.service';
-import { WalletStatus } from '../../../entities/wallet-status';
-import { WalletCategoryService } from '../../../services/wallet-category.service';
-import { WalletCategory } from '../../../entities/wallet-category';
-import { WalletTypeService } from '../../../services/wallet-type.service';
-import { WalletType } from '../../../entities/wallet-type';
+<div class="flex items-center justify-between px-6 py-3 bg-white border-b">
+  <div class="flex items-center">
+    <h1 class="text-xl font-semibold text-gray-800">Wallet Management</h1>
+  </div>
+</div>
+<!-- Tabs -->
+<div class="bg-white border-b">
+  <div class="px-6 flex">
+    <button class="tab-button px-4 py-3 text-sm active font-medium text-primary" (click)="showTab('overview')"
+      id="overview">Overview</button>
+    <button class="tab-button px-4 py-3 text-sm text-gray-500" (click)="showTab('wallets')"
+      id="wallets">Wallets</button>
+    <button class="tab-button px-4 py-3 text-sm text-gray-500" (click)="showTab('settings')"
+      id="settings">Settings</button>
+    <button class="tab-button px-4 py-3 text-sm text-gray-500" (click)="showTab('cards')" id="cards">Cards</button>
+    <button class="tab-button px-4 py-3 text-sm text-gray-500" (click)="showTab('accounts')"
+      id="cards">Accounts</button>
+  </div>
+</div>
+<main class="flex-1 overflow-y-auto p-6 custom-scrollbar">
+  <!-- Dashboard Content -->
+  <div id="tab-overview" class="tab-content">
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+      <div
+        class="bg-gradient-to-br from-primary to-accent-primary rounded-lg shadow-lg p-5 text-white gradient-card transform hover:scale-105 transition-all duration-300">
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="text-sm font-medium opacity-90">Total Wallets</div>
+            <div class="text-2xl font-bold mt-1">4,328</div>
+            <div class="text-xs opacity-75 mt-1">Updated just now</div>
+          </div>
+          <div class="w-12 h-12 flex items-center justify-center bg-white bg-opacity-20 rounded-full backdrop-blur-sm">
+            <i class="ri-wallet-3-line ri-lg"></i>
+          </div>
+        </div>
+        <div class="mt-4 flex items-center text-xs">
+          <span class="flex items-center bg-white bg-opacity-20 px-2 py-1 rounded-full backdrop-blur-sm">
+            <i class="ri-arrow-up-s-line"></i>
+            <span class="ml-1">12.5%</span>
+          </span>
+          <span class="ml-2 opacity-80">Since last month</span>
+        </div>
+        <div class="mt-3 h-1 bg-white bg-opacity-20 rounded-full">
+          <div class="h-1 bg-white rounded-full" style="width: 75%"></div>
+        </div>
+      </div>
+      <div
+        class="bg-gradient-to-br from-secondary from-accent-secondary to-accent-tertiary rounded-lg shadow-lg p-5 text-white gradient-card transform hover:scale-105 transition-all duration-300">
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="text-sm font-medium opacity-90">Total Balance</div>
+            <div class="text-2xl font-bold mt-1">$7,842,391</div>
+            <div class="text-xs opacity-75 mt-1">Last updated: 5 mins ago</div>
+          </div>
+          <div class="w-12 h-12 flex items-center justify-center bg-white bg-opacity-20 rounded-full backdrop-blur-sm">
+            <i class="ri-money-dollar-circle-line ri-lg"></i>
+          </div>
+        </div>
+        <div class="mt-4 flex items-center text-xs">
+          <span class="flex items-center bg-white bg-opacity-20 px-2 py-1 rounded-full backdrop-blur-sm">
+            <i class="ri-arrow-up-s-line"></i>
+            <span class="ml-1">8.3%</span>
+          </span>
+          <span class="ml-2 opacity-80">Since last month</span>
+        </div>
+        <div class="mt-3 h-1 bg-white bg-opacity-20 rounded-full">
+          <div class="h-1 bg-white rounded-full" style="width: 83%"></div>
+        </div>
+      </div>
+      <div
+        class="bg-gradient-to-br from-green-400 to-emerald-600 rounded-lg shadow-lg p-5 text-white gradient-card transform hover:scale-105 transition-all duration-300">
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="text-sm font-medium opacity-90">Active Wallets</div>
+            <div class="text-2xl font-bold mt-1">3,754</div>
+            <div class="text-xs opacity-75 mt-1">Real-time data</div>
+          </div>
+          <div class="w-12 h-12 flex items-center justify-center bg-white bg-opacity-20 rounded-full backdrop-blur-sm">
+            <i class="ri-check-line ri-lg"></i>
+          </div>
+        </div>
+        <div class="mt-4 flex items-center text-xs">
+          <span class="flex items-center bg-white bg-opacity-20 px-2 py-1 rounded-full backdrop-blur-sm">
+            <i class="ri-arrow-up-s-line"></i>
+            <span class="ml-1">5.2%</span>
+          </span>
+          <span class="ml-2 opacity-80">Since last month</span>
+        </div>
+        <div class="mt-3 h-1 bg-white bg-opacity-20 rounded-full">
+          <div class="h-1 bg-white rounded-full" style="width: 92%"></div>
+        </div>
+      </div>
+      <div
+        class="bg-gradient-to-br from-blue-400 to-indigo-600 rounded-lg shadow-lg p-5 text-white gradient-card transform hover:scale-105 transition-all duration-300">
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="text-sm font-medium opacity-90">Recent Operations</div>
+            <div class="text-2xl font-bold mt-1">1,287</div>
+            <div class="text-xs opacity-75 mt-1">Last 24 hours</div>
+          </div>
+          <div class="w-12 h-12 flex items-center justify-center bg-white bg-opacity-20 rounded-full backdrop-blur-sm">
+            <i class="ri-history-line ri-lg"></i>
+          </div>
+        </div>
+        <div class="mt-4 flex items-center text-xs">
+          <span class="flex items-center bg-white bg-opacity-20 px-2 py-1 rounded-full backdrop-blur-sm">
+            <i class="ri-arrow-down-s-line"></i>
+            <span class="ml-1">3.1%</span>
+          </span>
+          <span class="ml-2 opacity-80">Since yesterday</span>
+        </div>
+        <div class="mt-3 h-1 bg-white bg-opacity-20 rounded-full">
+          <div class="h-1 bg-white rounded-full" style="width: 65%"></div>
+        </div>
+      </div>
+    </div>
+    <!-- Charts Section -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+      <div class="bg-white rounded shadow p-5">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-lg font-semibold text-gray-800">Wallet Distribution</h3>
+          <div class="dropdown">
+            <button class="flex items-center text-sm text-gray-500 hover:text-gray-700">
+              <span>This Month</span>
+              <div class="w-5 h-5 flex items-center justify-center ml-1">
+                <i class="ri-arrow-down-s-line"></i>
+              </div>
+            </button>
+            <div class="dropdown-content">
+              <a href="#" class="text-sm">This Week</a>
+              <a href="#" class="text-sm">This Month</a>
+              <a href="#" class="text-sm">This Year</a>
+              <a href="#" class="text-sm">Custom Range</a>
+            </div>
+          </div>
+        </div>
+        <div id="wallet-distribution-chart" class="h-64"></div>
+      </div>
+      <div class="bg-white rounded shadow p-5">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-lg font-semibold text-gray-800">Balance Trends</h3>
+          <div class="dropdown">
+            <button class="flex items-center text-sm text-gray-500 hover:text-gray-700">
+              <span>Last 30 Days</span>
+              <div class="w-5 h-5 flex items-center justify-center ml-1">
+                <i class="ri-arrow-down-s-line"></i>
+              </div>
+            </button>
+            <div class="dropdown-content">
+              <a href="#" class="text-sm">Last 7 Days</a>
+              <a href="#" class="text-sm">Last 30 Days</a>
+              <a href="#" class="text-sm">Last 90 Days</a>
+              <a href="#" class="text-sm">Custom Range</a>
+            </div>
+          </div>
+        </div>
+        <div id="balance-trends-chart" class="h-64"></div>
+      </div>
+    </div>
+  </div>
+  <!-- Wallet Management Section -->
+  <div id="tab-wallets" class="tab-content hidden bg-white rounded shadow mb-6  rounded-lg">
+    <div class="p-4 flex justify-between items-center">
+      <h2 class="text-lg font-medium">Wallet Management</h2>
+      <div class="flex items-center space-x-3">
+        <button
+          class="flex items-center px-3 py-2 border border-gray-300 rounded-button text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">
+          <div class="w-4 h-4 mr-2 flex items-center justify-center">
+            <i class="ri-download-2-line"></i>
+          </div> Export Data
+        </button>
+        <button (click)="toggleForm('create-wallet')" id="newSchemaBtn"
+          class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+          <div class="w-4 h-4 mr-2 flex items-center justify-center">
+            <i class="ri-add-line"></i>
+          </div> New Wallet
+        </button>
+      </div>
+    </div>
 
-@Component({
-  selector: 'app-wallet-mng',
-  imports: [CommonModule, FormsModule],
-  templateUrl: './wallet-mng.component.html',
-  styleUrls: ['./wallet-mng.component.css'],
-  standalone: true
-})
-export class WalletMngComponent implements OnInit {
-  walletStatuses: WalletStatus[] = [];
-  isWalletStatusVisible: boolean = false;
-  selectedStatus: WalletStatus = new WalletStatus();
-  isStatusEditMode: boolean = false;
+    <!-- Filters -->
+    <header class="bg-white shadow-sm z-10">
+      <div class="px-6 py-3 bg-white border-t border-b flex flex-wrap items-center gap-3">
+        <div class="flex flex-wrap gap-4">
+          <div class="w-full sm:w-auto">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+            <div class="relative">
+              <select
+                class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary rounded-lg sm:text-sm">
+                <option value="">All Statuses</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+                <option value="suspended">Suspended</option>
+                <option value="closed">Closed</option>
+              </select>
+            </div>
+          </div>
+          <div class="w-full sm:w-auto">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Type</label>
+            <div class="relative">
+              <select
+                class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary rounded-lg sm:text-sm">
+                <option value="">All Types</option>
+                <option value="personal">Personal</option>
+                <option value="business">Business</option>
+                <option value="premium">Premium</option>
+              </select>
+            </div>
+          </div>
+          <div class="w-full sm:w-auto">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+            <div class="relative">
+              <select
+                class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary rounded-lg sm:text-sm">
+                <option value="">All Categories</option>
+                <option value="standard">Standard</option>
+                <option value="savings">Savings</option>
+                <option value="investment">Investment</option>
+              </select>
+            </div>
+          </div>
+          <div class="w-full sm:w-auto">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Balance Range</label>
+            <div class="flex items-center space-x-2">
+              <input type="number" placeholder="Min"
+                class="w-24 pl-3 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary text-sm">
+              <span class="text-gray-500">-</span>
+              <input type="number" placeholder="Max"
+                class="w-24 pl-3 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary text-sm">
+            </div>
+          </div>
+          <div class="w-full sm:w-auto">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Date Range</label>
+            <div class="flex items-center space-x-2">
+              <input type="date" placeholder="Min"
+                class="w-24 pl-3 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary text-sm">
+              <span class="text-gray-500">-</span>
+              <input type="date" placeholder="Max"
+                class="w-24 pl-3 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary text-sm">
+            </div>
+          </div>
+          <div class="relative flex-grow max-w-md">
+            <input type="text" placeholder="Search schemas, operations, or codes..."
+              class="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-button text-sm">
+            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+              <i class="ri-search-line text-gray-400"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
 
-  walletCategories: WalletCategory[] = [];
-  isWalletCategoryVisible: boolean = false;
-  selectedCategory: WalletCategory = new WalletCategory();
-  isCategoryEditMode: boolean = false;
+    <!-- Table -->
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <input type="checkbox">
+            </th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <div class="flex items-center">
+                <span>Wallet Code</span>
+              </div>
+            </th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <div class="flex items-center">
+                <span>Identifier</span>
+              </div>
+            </th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <div class="flex items-center">
+                <span>Name</span>
+              </div>
+            </th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <div class="flex items-center">
+                <span>Effective Balance</span>
+              </div>
+            </th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <div class="flex items-center">
+                <span>Status</span>
+              </div>
+            </th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <div class="flex items-center">
+                <span>Type</span>
+              </div>
+            </th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <div class="flex items-center">
+                <span>Last Updated</span>
+              </div>
+            </th>
+            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Actions </th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          <tr (click)="toggleForm('wallet-details')" class="hover:bg-gray-50 cursor-pointer" data-wallet-id="1">
+            <td class="px-6 py-4 whitespace-nowrap">
+              <input type="checkbox">
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm font-medium text-gray-900">W-10045</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-900">PERS-WALLET-2845</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-900">Michael Johnson's Personal</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-900">$12,458.32</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full status-active"> Active </span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-900">Personal</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-500">2023-05-21 14:32</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+              <div class="flex items-center justify-end space-x-2">
+                <button (click)="toggleForm('wallet-details')" class="text-blue-600 hover:text-gray-500">
+                  <i class="ri-eye-line"></i>
+                </button>
+                <button class="text-green-600 hover:text-gray-500">
+                  <i class="ri-edit-line"></i>
+                </button>
+                <button class="text-red-600 hover:text-gray-500">
+                  <i class="ri-delete-bin-line"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+          <tr class="hover:bg-gray-50 cursor-pointer" data-wallet-id="2">
+            <td class="px-6 py-4 whitespace-nowrap">
+              <input type="checkbox">
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm font-medium text-gray-900">W-10046</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-900">CORP-WALLET-3721</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-900">TechSolutions Inc.</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-900">$145,782.65</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full status-active"> Active </span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-900">Corporate</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-500">2023-05-20 09:15</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+              <div class="flex items-center justify-end space-x-2">
+                <button (click)="toggleForm('wallet-details')" class="text-blue-600 hover:text-gray-500">
+                  <i class="ri-eye-line"></i>
+                </button>
+                <button class="text-green-600 hover:text-gray-500">
+                  <i class="ri-edit-line"></i>
+                </button>
+                <button class="text-red-600 hover:text-gray-500">
+                  <i class="ri-delete-bin-line"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+          <tr class="hover:bg-gray-50 cursor-pointer" data-wallet-id="3">
+            <td class="px-6 py-4 whitespace-nowrap">
+              <input type="checkbox">
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm font-medium text-gray-900">W-10047</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-900">PERS-WALLET-4582</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-900">Sarah Williams's Savings</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-900">$5,872.41</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full status-suspended"> Suspended
+              </span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-900">Savings</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-500">2023-05-19 16:48</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+              <div class="flex items-center justify-end space-x-2">
+                <button (click)="toggleForm('wallet-details')" class="text-blue-600 hover:text-gray-500">
+                  <i class="ri-eye-line"></i>
+                </button>
+                <button class="text-green-600 hover:text-gray-500">
+                  <i class="ri-edit-line"></i>
+                </button>
+                <button class="text-red-600 hover:text-gray-500">
+                  <i class="ri-delete-bin-line"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+          <tr class="hover:bg-gray-50 cursor-pointer" data-wallet-id="4">
+            <td class="px-6 py-4 whitespace-nowrap">
+              <input type="checkbox">
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm font-medium text-gray-900">W-10048</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-900">BUS-WALLET-1298</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-900">Global Traders LLC</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-900">$87,321.09</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full status-inactive"> Inactive
+              </span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-900">Business</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-500">2023-05-18 11:23</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+              <div class="flex items-center justify-end space-x-2">
+                <button (click)="toggleForm('wallet-details')" class="text-blue-600 hover:text-gray-500">
+                  <i class="ri-eye-line"></i>
+                </button>
+                <button class="text-green-600 hover:text-gray-500">
+                  <i class="ri-edit-line"></i>
+                </button>
+                <button class="text-red-600 hover:text-gray-500">
+                  <i class="ri-delete-bin-line"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+          <tr class="hover:bg-gray-50 cursor-pointer" data-wallet-id="5">
+            <td class="px-6 py-4 whitespace-nowrap">
+              <input type="checkbox">
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm font-medium text-gray-900">W-10049</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-900">PERS-WALLET-7625</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-900">Robert Chen's Primary</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-900">$3,456.78</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full status-error"> Error </span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-900">Personal</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-500">2023-05-17 08:52</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+              <div class="flex items-center justify-end space-x-2">
+                <button (click)="toggleForm('wallet-details')" class="text-blue-600 hover:text-gray-500">
+                  <i class="ri-eye-line"></i>
+                </button>
+                <button class="text-green-600 hover:text-gray-500">
+                  <i class="ri-edit-line"></i>
+                </button>
+                <button class="text-red-600 hover:text-gray-500">
+                  <i class="ri-delete-bin-line"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- Pagination -->
+    <div class="px-6 py-4 flex items-center justify-between border-t border-gray-200">
+      <div class="flex-1 flex justify-between sm:hidden">
+        <button
+          class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+          Previous </button>
+        <button
+          class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+          Next </button>
+      </div>
+      <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+        <div>
+          <p class="text-sm text-gray-700"> Showing <span class="font-medium">1</span> to <span
+              class="font-medium">5</span> of <span class="font-medium">42</span> results </p>
+        </div>
+        <div>
+          <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+            <button
+              class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+              <span class="sr-only">Previous</span>
+              <div class="w-5 h-5 flex items-center justify-center">
+                <i class="ri-arrow-left-s-line"></i>
+              </div>
+            </button>
+            <button
+              class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+              1 </button>
+            <button
+              class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-primary text-sm font-medium text-white">
+              2 </button>
+            <button
+              class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+              3 </button>
+            <span
+              class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
+              ... </span>
+            <button
+              class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+              8 </button>
+            <button
+              class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+              9 </button>
+            <button
+              class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+              <span class="sr-only">Next</span>
+              <div class="w-5 h-5 flex items-center justify-center">
+                <i class="ri-arrow-right-s-line"></i>
+              </div>
+            </button>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
 
-  walletTypesList: WalletType[] = [];
-  newWalletType: WalletType = new WalletType();
-  selectedWalletType: WalletType | null = null;
-  isWalletTypeEditMode: boolean = false;
+  <!-- Settings Section -->
+  <div id="tab-settings" class="tab-content hidden space-y-6">
+    <!-- Settings Tabs -->
+    <div class="bg-white rounded-lg shadow">
+      <div class="border-b border-gray-200">
+        <nav class="flex -mb-px">
+          <button id="settings-status" (click)="showTab('status', 'settings')"
+            class="settings-tab-button relative px-4 py-3 text-sm active font-medium text-primary">Wallet
+            Status</button>
+          <button id="settings-type" (click)="showTab('type', 'settings')"
+            class="settings-tab-button relative px-4 py-3 text-sm text-gray-500">Wallet
+            Type</button>
+          <button id="settings-category" (click)="showTab('category', 'settings')"
+            class="settings-tab-button relative px-4 py-3 text-sm text-gray-500">Wallet
+            Category</button>
+        </nav>
+      </div>
+      <!-- Wallet Status Content -->
+      <div id="settings-tab-status" class="settings-tab-content p-6">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-lg font-medium text-gray-900">Wallet Status Management</h3>
+          <button id="btn-add-status" (click)="toggleForm('wallet-status')"
+            class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+            <i class="ri-add-line mr-1"></i> Add Status
+          </button>
+        </div>
+        <div *ngIf="errorMessage" class="mb-4 p-4 bg-red-100 text-red-700 rounded-lg">
+          {{ errorMessage }}
+        </div>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Status Code</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Status Identifier</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Status Label</th>
+                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Actions</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <tr *ngFor="let status of walletStatuses">
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{status.wstCode}}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{status.wstIden}}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{status.wstLabe}}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <div class="flex justify-end space-x-2">
+                    <button class="text-green-600 hover:text-gray-500" (click)="editStatus(status)">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-edit-line"></i>
+                      </div>
+                    </button>
+                    <button class="text-red-600 hover:text-red-500" (click)="deleteStatus(status.wstCode)">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-delete-bin-line"></i>
+                      </div>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- Wallet Type Content -->
+      <div id="settings-tab-type" class="settings-tab-content p-6 hidden">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-lg font-medium text-gray-900">Wallet Type Management</h3>
+          <button id="btn-add-type" (click)="toggleForm('wallet-type')"
+            class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+            <i class="ri-add-line mr-1"></i> Add Type
+          </button>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Type Code
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Type Identifier
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Type Label
+                </th>
+                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <tr *ngFor="let type of walletTypesList">
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ type.wtyCode }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ type.wtyIden }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ type.wtyLabe }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <div class="flex justify-end space-x-2">
+                    <button (click)="editWalletType(type)" class="text-green-600 hover:text-gray-500">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-edit-line"></i>
+                      </div>
+                    </button>
+                    <button (click)="deleteWalletType(type.wtyCode)" class="text-red-600 hover:text-red-500">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-delete-bin-line"></i>
+                      </div>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- Wallet Category Content -->
+      <div id="settings-tab-category" class="settings-tab-content p-6 hidden">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-lg font-medium text-gray-900">Wallet Category Management</h3>
+          <button id="btn-add-category" (click)="toggleForm('wallet-category')"
+            class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+            <i class="ri-add-line mr-1"></i> Add Category
+          </button>
+        </div>
+        <div *ngIf="errorMessage" class="mb-4 p-4 bg-red-100 text-red-700 rounded-lg">
+          {{ errorMessage }}
+        </div>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Category Code</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Category Identifier</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Category Label</th>
+                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Actions</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <tr *ngFor="let category of walletCategories">
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{category.wcaCode}}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{category.wcaIden}}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{category.wcaLabe}}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <div class="flex justify-end space-x-2">
+                    <button class="text-green-600 hover:text-gray-500" (click)="editCategory(category)">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-edit-line"></i>
+                      </div>
+                    </button>
+                    <button class="text-red-600 hover:text-red-500" (click)="deleteCategory(category.wcaCode!)">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-delete-bin-line"></i>
+                      </div>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Cards Section -->
+  <div id="tab-cards" class="tab-content hidden space-y-6">
+    <!-- Cards Tabs -->
+    <div class="bg-white rounded-lg shadow">
+      <div class="border-b border-gray-200">
+        <nav class="flex -mb-px">
+          <button id="cards-overview" (click)="showTab('overview', 'cards')"
+            class="cards-tab-button px-4 py-3 text-sm active font-medium text-primary">Cards Overview</button>
+          <button id="cards-type" (click)="showTab('type', 'cards')"
+            class="cards-tab-button relative px-4 py-3 text-sm text-gray-500">Card Type</button>
+          <button id="cards-list" (click)="showTab('list', 'cards')"
+            class="cards-tab-button relative px-4 py-3 text-sm text-gray-500">Card List</button>
+        </nav>
+      </div>
+      <!-- Cards Content-->
+      <div id="cards-tab-overview" class="cards-tab-content p-6">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-lg font-medium text-gray-900">Cards Management</h3>
+          <button id="btn-add-card" (click)="toggleForm('create-card')"
+            class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+            <i class="ri-add-line mr-1"></i> Add Card </button>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Label</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Expiracy Date</th>
+                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  List</th>
+                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Type</th>
+                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  EMV</th>
+                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Actions</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CAR-001</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">16-08-2025</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">MASTER CARD</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CREDIT CARD</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">WCA-001</td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <div class="flex justify-end space-x-2">
+                    <button class="text-green-600 hover:text-gray-500">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-edit-line"></i>
+                      </div>
+                    </button>
+                    <button class="text-red-600 hover:text-red-500">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-delete-bin-line"></i>
+                      </div>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CAR-002</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">16-08-2025</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">VISA</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CREDIT CARD</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">WCA-001</td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <div class="flex justify-end space-x-2">
+                    <button class="text-green-600 hover:text-gray-500">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-edit-line"></i>
+                      </div>
+                    </button>
+                    <button class="text-red-600 hover:text-red-500">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-delete-bin-line"></i>
+                      </div>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CAR-003</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">16-08-2025</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">MASTER CARD</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">DEBIT CARD</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">WCA-001</td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <div class="flex justify-end space-x-2">
+                    <button class="text-green-600 hover:text-gray-500">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-edit-line"></i>
+                      </div>
+                    </button>
+                    <button class="text-red-600 hover:text-red-500">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-delete-bin-line"></i>
+                      </div>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CAR-004</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">16-08-2025</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">VISA</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">DEBIT CARD</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">WCA-001</td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <div class="flex justify-end space-x-2">
+                    <button class="text-green-600 hover:text-gray-500">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-edit-line"></i>
+                      </div>
+                    </button>
+                    <button class="text-red-600 hover:text-red-500">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-delete-bin-line"></i>
+                      </div>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CAR-005</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">16-08-2025</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">MASTER CARD</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CREDIT CARD</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">WCA-001</td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <div class="flex justify-end space-x-2">
+                    <button class="text-green-600 hover:text-gray-500">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-edit-line"></i>
+                      </div>
+                    </button>
+                    <button class="text-red-600 hover:text-red-500">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-delete-bin-line"></i>
+                      </div>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- Card Type Content-->
+      <div id="cards-tab-type" class="cards-tab-content hidden p-6">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-lg font-medium text-gray-900">Card Type Management</h3>
+          <button id="btn-add-card" (click)="toggleForm('card-type')"
+            class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+            <i class="ri-add-line mr-1"></i> Add Card Type </button>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Type Code</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Type Identifier</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Type Label</th>
+                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Actions</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CTY-001</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">111</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">CREDIT CARD</td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <div class="flex justify-end space-x-2">
+                    <button class="text-green-600 hover:text-gray-500">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-edit-line"></i>
+                      </div>
+                    </button>
+                    <button class="text-red-600 hover:text-red-500">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-delete-bin-line"></i>
+                      </div>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CTY-002</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">112</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">DEBIT CARD</td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <div class="flex justify-end space-x-2">
+                    <button class="text-green-600 hover:text-gray-500">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-edit-line"></i>
+                      </div>
+                    </button>
+                    <button class="text-red-600 hover:text-red-500">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-delete-bin-line"></i>
+                      </div>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- Card List Content-->
+      <div id="cards-tab-list" class="cards-tab-content hidden p-6">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-lg font-medium text-gray-900">Card List Management</h3>
+          <button id="btn-add-card" (click)="toggleForm('card-list')"
+            class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+            <i class="ri-add-line mr-1"></i> Add Card List </button>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  List Code</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  List Identifier</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  List Label</th>
+                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Actions</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CLI-001</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">15001</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">MASTERCARD</td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <div class="flex justify-end space-x-2">
+                    <button class="text-green-600 hover:text-gray-500">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-edit-line"></i>
+                      </div>
+                    </button>
+                    <button class="text-red-600 hover:text-red-500">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-delete-bin-line"></i>
+                      </div>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CLI-002</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">15002</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">VISA</td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <div class="flex justify-end space-x-2">
+                    <button class="text-green-600 hover:text-gray-500">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-edit-line"></i>
+                      </div>
+                    </button>
+                    <button class="text-red-600 hover:text-red-500">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-delete-bin-line"></i>
+                      </div>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
 
-  errorMessage: string | null = null;
-  successMessage: string | null = null;
+  <!-- Account Section -->
+  <div id="tab-accounts" class="tab-content hidden space-y-6">
+    <!-- account Tabs -->
+    <div class="bg-white rounded-lg shadow">
+      <div class="border-b border-gray-200">
+        <nav class="flex -mb-px">
+          <button id="accounts-overview" (click)="showTab('overview', 'accounts')"
+            class="accounts-tab-button px-4 py-3 text-sm active font-medium text-primary">Accounts Overview</button>
+          <button id="accounts-type" (click)="showTab('type', 'accounts')"
+            class="accounts-tab-button relative px-4 py-3 text-sm text-gray-500">Account Type</button>
+          <button id="accounts-list" (click)="showTab('list', 'accounts')"
+            class="accounts-tab-button relative px-4 py-3 text-sm text-gray-500">Account List</button>
+        </nav>
+      </div>
+      <!-- accounts Content-->
+      <div id="accounts-tab-overview" class="accounts-tab-content p-6">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-lg font-medium text-gray-900">Accounts Management</h3>
+          <button id="btn-add-account" (click)="toggleForm('create-account')"
+            class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+            <i class="ri-add-line mr-1"></i> Add Account </button>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  CODE</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  BANK</th>
+                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  List</th>
+                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Type</th>
+                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  action</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">ACC-001</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">UIB</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CHECKING</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">INDIVIDUAL</td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <div class="flex justify-end space-x-2">
+                    <button class="text-green-600 hover:text-gray-500">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-edit-line"></i>
+                      </div>
+                    </button>
+                    <button class="text-red-600 hover:text-red-500">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-delete-bin-line"></i>
+                      </div>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">ACC-002</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">UIB</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">SAVINGS</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">INDIVIDUAL</td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <div class="flex justify-end space-x-2">
+                    <button class="text-green-600 hover:text-gray-500">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-edit-line"></i>
+                      </div>
+                    </button>
+                    <button class="text-red-600 hover:text-red-500">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-delete-bin-line"></i>
+                      </div>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">ACC-003</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">UIB</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CHECKING</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">BUSINESS</td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <div class="flex justify-end space-x-2">
+                    <button class="text-green-600 hover:text-gray-500">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-edit-line"></i>
+                      </div>
+                    </button>
+                    <button class="text-red-600 hover:text-red-500">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-delete-bin-line"></i>
+                      </div>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">ACC-004/td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">UIB</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CHECKING</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">INDIVIDUAL</td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <div class="flex justify-end space-x-2">
+                    <button class="text-green-600 hover:text-gray-500">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-edit-line"></i>
+                      </div>
+                    </button>
+                    <button class="text-red-600 hover:text-red-500">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-delete-bin-line"></i>
+                      </div>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">ACC-005</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">UIB</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">SAVINGS</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">INDIVIDUAL</td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <div class="flex justify-end space-x-2">
+                    <button class="text-green-600 hover:text-gray-500">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-edit-line"></i>
+                      </div>
+                    </button>
+                    <button class="text-red-600 hover:text-red-500">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-delete-bin-line"></i>
+                      </div>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- account Type Content-->
+      <div id="accounts-tab-type" class="accounts-tab-content hidden p-6">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-lg font-medium text-gray-900">Account Type Management</h3>
+          <button id="btn-add-account" (click)="toggleForm('account-type')"
+            class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+            <i class="ri-add-line mr-1"></i> Add Account Type </button>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Type Code</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Type Identifier</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Type Label</th>
+                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Actions</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">ATY-001</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">19001</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">INDIVIDUAL</td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <div class="flex justify-end space-x-2">
+                    <button class="text-green-600 hover:text-gray-500">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-edit-line"></i>
+                      </div>
+                    </button>
+                    <button class="text-red-600 hover:text-red-500">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-delete-bin-line"></i>
+                      </div>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">ATY-002</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">19002</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">BUSINESS</td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <div class="flex justify-end space-x-2">
+                    <button class="text-green-600 hover:text-gray-500">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-edit-line"></i>
+                      </div>
+                    </button>
+                    <button class="text-red-600 hover:text-red-500">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-delete-bin-line"></i>
+                      </div>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- account List Content-->
+      <div id="accounts-tab-list" class="accounts-tab-content hidden p-6">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-lg font-medium text-gray-900">Account List Management</h3>
+          <button id="btn-add-account" (click)="toggleForm('account-list')"
+            class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+            <i class="ri-add-line mr-1"></i> Add Account List </button>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  List Code</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  List Identifier</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  List Label</th>
+                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Actions</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">ALI-001</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">18001</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">CHECKING</td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <div class="flex justify-end space-x-2">
+                    <button class="text-green-600 hover:text-gray-500">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-edit-line"></i>
+                      </div>
+                    </button>
+                    <button class="text-red-600 hover:text-red-500">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-delete-bin-line"></i>
+                      </div>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">ALI-002</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">18002</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">SAVINGS</td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <div class="flex justify-end space-x-2">
+                    <button class="text-green-600 hover:text-gray-500">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-edit-line"></i>
+                      </div>
+                    </button>
+                    <button class="text-red-600 hover:text-red-500">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-delete-bin-line"></i>
+                      </div>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
 
-  isWalletFormVisible: boolean = false;
-  isWalletDetailsVisible: boolean = false;
-  isWalletTypeVisible: boolean = false;
-  isCardFormVisible: boolean = false;
-  isCardTypeVisible: boolean = false;
-  isCardListVisible: boolean = false;
-  isAccountFormVisible: boolean = false;
-  isAccountTypeVisible: boolean = false;
-  isAccountListVisible: boolean = false;
+<!-- Modals -->
+<div *ngIf="isAnyModalVisible" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 ">
+  <!-- Create Wallet Modal -->
+  <div *ngIf="isWalletFormVisible" id="create-wallet-modal" class="bg-white rounded-lg shadow-xl w-full max-w-2xl">
+    <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+      <h3 class="text-lg font-semibold text-gray-800">Create New Wallet</h3>
+      <button (click)="closeForm('create-wallet')" id="close-create-wallet" class="text-gray-400 hover:text-gray-500">
+        <div class="w-6 h-6 flex items-center justify-center">
+          <i class="ri-close-line ri-lg"></i>
+        </div>
+      </button>
+    </div>
+    <form id="create-wallet-form" class="p-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Label</label>
+          <input type="text" id="walLabe" name="walLabe"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+            placeholder="Label">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Identifier</label>
+          <input type="text" id="walLabe" name="walLabe"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+            placeholder="Identifier">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Key</label>
+          <input type="number" id="walKey" name="walKey"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+            placeholder="Key">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Financial Institution</label>
+          <div class="relative">
+            <select id="walFinId" name="walFinId"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
+              <option value="">Select institution</option>
+              <option value="1">Institution 1</option>
+              <option value="2">Institution 2</option>
+              <option value="3">Institution 3</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Associated Customer</label>
+          <div class="relative">
+            <select id="customer" name="customer"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
+              <option value="">Select customer</option>
+              <option value="1">customer 1</option>
+              <option value="2">customer 2</option>
+              <option value="3">customer 3</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+          <div class="relative">
+            <select id="walletStatus" name="walletStatus"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
+              <option value="">Select status</option>
+              <option value="active">Actif</option>
+              <option value="inactive">Inactif</option>
+              <option value="suspended">Suspended</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Type</label>
+          <div class="relative">
+            <select id="walletType" name="walletType"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
+              <option value="">Select type</option>
+              <option value="personal">Personal</option>
+              <option value="business">Professionnal</option>
+              <option value="corporate">Entreprise</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+          <div class="relative">
+            <select id="walletCategory" name="walletCategory"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
+              <option value="">Select category</option>
+              <option value="standard">Standard</option>
+              <option value="premium">Premium</option>
+              <option value="vip">VIP</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Associated Card</label>
+          <div class="relative">
+            <select id="cardList" name="cardList"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
+              <option value="">Select card</option>
+              <option value="1">Card 1</option>
+              <option value="2">card 2</option>
+              <option value="3">Card 3</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="px-6 py-4 border-t border-gray-200 flex justify-end space-x-3">
+      <button (click)="closeForm('create-wallet')" id="cancel-create-wallet"
+        class="px-4 py-2 border border-gray-300 text-gray-700 rounded-button hover:bg-gray-50 transition text-sm whitespace-nowrap">Cancel</button>
+      <button id="submit-create-wallet"
+        class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">Create
+        Wallet</button>
+    </div>
+  </div>
+  <!-- Wallet Detail Modal -->
+  <div *ngIf="isWalletDetailsVisible" id="wallet-detail-modal"
+    class="bg-white rounded-lg shadow-xl w-full max-w-4xl h-[90vh] overflow-hidden">
+    <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+      <h3 class="text-lg font-semibold text-gray-800">Wallet Details</h3>
+      <button id="close-wallet-detail" class="text-gray-400 hover:text-gray-500">
+        <div class="w-6 h-6 flex items-center justify-center">
+          <i (click)="closeForm('wallet-details')" class="ri-close-line ri-lg"></i>
+        </div>
+      </button>
+    </div>
+    <div class="p-6 custom-scrollbar" style="height: calc(90vh - 130px);">
+      <div class="flex flex-col md:flex-row md:space-x-6">
+        <div class="mb-6 md:mb-0">
+          <div class="bg-gray-50 p-4 rounded-lg">
+            <div class="text-center mb-4">
+              <div
+                class="w-20 h-20 mx-auto bg-primary bg-opacity-10 rounded-full flex items-center justify-center text-primary">
+                <i class="ri-wallet-3-line ri-2x"></i>
+              </div>
+              <h4 class="text-lg font-semibold mt-2">W-10045</h4>
+              <p class="text-sm text-gray-500">PERS-WALLET-2845</p>
+            </div>
+            <div class="space-y-3">
+              <div class="flex justify-between">
+                <span class="text-sm text-gray-500">Status:</span>
+                <span class="text-sm font-medium px-2 rounded-full status-active">Active</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-sm text-gray-500">Type:</span>
+                <span class="text-sm font-medium">Personal</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-sm text-gray-500">Category:</span>
+                <span class="text-sm font-medium">Standard</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-sm text-gray-500">Created:</span>
+                <span class="text-sm font-medium">2023-01-15</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-sm text-gray-500">Last Updated:</span>
+                <span class="text-sm font-medium">2023-05-21 14:32</span>
+              </div>
+            </div>
+            <div class="mt-6 space-y-2">
+              <button
+                class="w-full px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 transition text-sm whitespace-nowrap">
+                Edit Wallet </button>
+              <button
+                class="w-full px-4 py-2 border border-gray-300 text-gray-700 rounded-button hover:bg-gray-50 transition text-sm whitespace-nowrap">
+                Change Status </button>
+            </div>
+          </div>
+        </div>
+        <div class="md:w-2/3">
+          <div class="mb-6">
+            <div class="flex border-b border-gray-200">
+              <button class="details-tab-button  px-4 py-3 text-sm active font-medium text-primary"
+                id="details-basic-info" (click)="showTab('basic-info','details')"> Basic Info </button>
+              <button class="details-tab-button  px-4 py-3 text-sm text-gray-500" id="details-balance"
+                (click)="showTab('balance','details')"> Balance
+              </button>
+              <button class="details-tab-button px-4 py-3 text-sm text-gray-500" id="details-relationships"
+                (click)="showTab('relationships','details')"> Relationships </button>
+              <button class="details-tab-button px-4 py-3 text-sm text-gray-500" id="details-operations"
+                (click)="showTab('operations','details')">
+                Operations </button>
+            </div>
+          </div>
+          <div class="overflow-y-auto h-[400px]">
+            <div id="details-tab-basic-info" class="details-tab-content">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h5 class="text-sm font-semibold text-gray-700 mb-3">Wallet Information</h5>
+                  <div class="space-y-4">
+                    <div>
+                      <label class="block text-xs text-gray-500 mb-1">Wallet Code</label>
+                      <div class="text-sm font-medium">W-10045</div>
+                    </div>
+                    <div>
+                      <label class="block text-xs text-gray-500 mb-1">Identifier</label>
+                      <div class="text-sm font-medium">PERS-WALLET-2845</div>
+                    </div>
+                    <div>
+                      <label class="block text-xs text-gray-500 mb-1">Label</label>
+                      <div class="text-sm font-medium">Michael Johnson's Personal</div>
+                    </div>
+                    <div>
+                      <label class="block text-xs text-gray-500 mb-1">Wallet Key</label>
+                      <div class="text-sm font-medium">45982</div>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <h5 class="text-sm font-semibold text-gray-700 mb-3">Additional Details</h5>
+                  <div class="space-y-4">
+                    <div>
+                      <label class="block text-xs text-gray-500 mb-1">Financial ID</label>
+                      <div class="text-sm font-medium">FIN-78542</div>
+                    </div>
+                    <div>
+                      <label class="block text-xs text-gray-500 mb-1">Creation Date</label>
+                      <div class="text-sm font-medium">2023-01-15 09:45:22</div>
+                    </div>
+                    <div>
+                      <label class="block text-xs text-gray-500 mb-1">Last Updated</label>
+                      <div class="text-sm font-medium">2023-05-21 14:32:18</div>
+                    </div>
+                    <div>
+                      <label class="block text-xs text-gray-500 mb-1">Status</label>
+                      <div class="flex items-center">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full status-active mr-2">
+                          Active </span>
+                        <span class="text-xs text-gray-500">Since 2023-02-10</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="mt-6">
+                <h5 class="text-sm font-semibold text-gray-700 mb-3">Customer Information</h5>
+                <div class="bg-gray-50 p-4 rounded-lg">
+                  <div class="flex items-center">
+                    <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-500">
+                      <i class="ri-user-3-line ri-lg"></i>
+                    </div>
+                    <div class="ml-4">
+                      <div class="text-sm font-medium">Michael Johnson</div>
+                      <div class="text-xs text-gray-500">Customer ID: CUS-45782</div>
+                      <div class="flex items-center mt-1">
+                        <div class="w-4 h-4 flex items-center justify-center text-gray-500 mr-1">
+                          <i class="ri-mail-line"></i>
+                        </div>
+                        <span class="text-xs">michael.johnson&#64;example.com</span>
+                        <div class="w-4 h-4 flex items-center justify-center text-gray-500 ml-3 mr-1">
+                          <i class="ri-phone-line"></i>
+                        </div>
+                        <span class="text-xs">+1 (555) 123-4567</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="details-tab-balance" class="details-tab-content hidden">
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <div class="bg-white border border-gray-200 rounded-lg p-4">
+                  <div class="text-sm text-gray-500 mb-1">Effective Balance</div>
+                  <div class="text-xl font-bold text-gray-800">$12,458.32</div>
+                  <div class="mt-2 text-xs text-green-500 flex items-center">
+                    <i class="ri-arrow-up-s-line"></i>
+                    <span class="ml-1">+$245.87 (2.1%)</span>
+                  </div>
+                </div>
+                <div class="bg-white border border-gray-200 rounded-lg p-4">
+                  <div class="text-sm text-gray-500 mb-1">Logical Balance</div>
+                  <div class="text-xl font-bold text-gray-800">$12,458.32</div>
+                  <div class="mt-2 text-xs text-green-500 flex items-center">
+                    <i class="ri-arrow-up-s-line"></i>
+                    <span class="ml-1">+$245.87 (2.1%)</span>
+                  </div>
+                </div>
+                <div class="bg-white border border-gray-200 rounded-lg p-4">
+                  <div class="text-sm text-gray-500 mb-1">Specific Balance</div>
+                  <div class="text-xl font-bold text-gray-800">$0.00</div>
+                  <div class="mt-2 text-xs text-gray-500">No change</div>
+                </div>
+              </div>
+              <div class="mb-6">
+                <h5 class="text-sm font-semibold text-gray-700 mb-3">Balance History</h5>
+                <div id="balance-history-chart" class="h-64 border border-gray-200 rounded-lg"></div>
+              </div>
+              <div>
+                <h5 class="text-sm font-semibold text-gray-700 mb-3">Recent Balance Changes</h5>
+                <div class="border border-gray-200 rounded-lg overflow-hidden">
+                  <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                      <tr>
+                        <th scope="col"
+                          class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Date
+                        </th>
+                        <th scope="col"
+                          class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Type
+                        </th>
+                        <th scope="col"
+                          class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Amount </th>
+                        <th scope="col"
+                          class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Balance After </th>
+                      </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                      <tr>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900"> 2023-05-21 14:32 </td>
+                        <td class="px-4 py-3 whitespace-nowrap">
+                          <span
+                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                            Deposit </span>
+                        </td>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-green-500"> +$1,500.00 </td>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900"> $12,458.32 </td>
+                      </tr>
+                      <tr>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900"> 2023-05-18 09:15 </td>
+                        <td class="px-4 py-3 whitespace-nowrap">
+                          <span
+                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                            Withdrawal </span>
+                        </td>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-red-500"> -$250.00 </td>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900"> $10,958.32 </td>
+                      </tr>
+                      <tr>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900"> 2023-05-15 16:42 </td>
+                        <td class="px-4 py-3 whitespace-nowrap">
+                          <span
+                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                            Transfer </span>
+                        </td>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-red-500"> -$500.00 </td>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900"> $11,208.32 </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div id="details-tab-relationships" class="details-tab-content hidden">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h5 class="text-sm font-semibold text-gray-700 mb-3">Linked Cards</h5>
+                  <div class="border border-gray-200 rounded-lg overflow-hidden">
+                    <div class="p-4 bg-gray-50 border-b border-gray-200">
+                      <div class="flex items-center">
+                        <div class="w-10 h-10 flex items-center justify-center bg-blue-100 text-blue-500 rounded">
+                          <i class="ri-bank-card-line"></i>
+                        </div>
+                        <div class="ml-3">
+                          <div class="text-sm font-medium">Visa Platinum</div>
+                          <div class="text-xs text-gray-500">**** **** **** 4582</div>
+                        </div>
+                        <div class="ml-auto">
+                          <span
+                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                            Active </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="p-4">
+                      <div class="flex justify-between mb-2">
+                        <span class="text-xs text-gray-500">Card Holder</span>
+                        <span class="text-xs font-medium">Michael Johnson</span>
+                      </div>
+                      <div class="flex justify-between mb-2">
+                        <span class="text-xs text-gray-500">Expiry Date</span>
+                        <span class="text-xs font-medium">05/25</span>
+                      </div>
+                      <div class="flex justify-between">
+                        <span class="text-xs text-gray-500">Linked Date</span>
+                        <span class="text-xs font-medium">2023-01-15</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <h5 class="text-sm font-semibold text-gray-700 mb-3">Associated Accounts</h5>
+                  <div class="border border-gray-200 rounded-lg overflow-hidden">
+                    <div class="p-4 bg-gray-50 border-b border-gray-200">
+                      <div class="flex items-center">
+                        <div class="w-10 h-10 flex items-center justify-center bg-green-100 text-green-500 rounded">
+                          <i class="ri-bank-line"></i>
+                        </div>
+                        <div class="ml-3">
+                          <div class="text-sm font-medium">Checking Account</div>
+                          <div class="text-xs text-gray-500">AC-78542-001</div>
+                        </div>
+                        <div class="ml-auto">
+                          <span
+                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                            Primary </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="p-4">
+                      <div class="flex justify-between mb-2">
+                        <span class="text-xs text-gray-500">Account Number</span>
+                        <span class="text-xs font-medium">**** **** 4567</span>
+                      </div>
+                      <div class="flex justify-between mb-2">
+                        <span class="text-xs text-gray-500">Bank</span>
+                        <span class="text-xs font-medium">UIB Bank</span>
+                      </div>
+                      <div class="flex justify-between">
+                        <span class="text-xs text-gray-500">Linked Date</span>
+                        <span class="text-xs font-medium">2023-01-15</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="mt-6">
+                <h5 class="text-sm font-semibold text-gray-700 mb-3">Operation Types</h5>
+                <div class="border border-gray-200 rounded-lg overflow-hidden">
+                  <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                      <tr>
+                        <th scope="col"
+                          class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Operation Type </th>
+                        <th scope="col"
+                          class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Code
+                        </th>
+                        <th scope="col"
+                          class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Status </th>
+                        <th scope="col"
+                          class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Limit </th>
+                      </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                      <tr>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900"> Deposit </td>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500"> DEP-001 </td>
+                        <td class="px-4 py-3 whitespace-nowrap">
+                          <span
+                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                            Enabled </span>
+                        </td>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900"> $50,000 / day </td>
+                      </tr>
+                      <tr>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900"> Withdrawal </td>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500"> WIT-001 </td>
+                        <td class="px-4 py-3 whitespace-nowrap">
+                          <span
+                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                            Enabled </span>
+                        </td>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900"> $10,000 / day </td>
+                      </tr>
+                      <tr>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900"> Transfer </td>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500"> TRF-001 </td>
+                        <td class="px-4 py-3 whitespace-nowrap">
+                          <span
+                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                            Enabled </span>
+                        </td>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900"> $25,000 / day </td>
+                      </tr>
+                      <tr>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900"> Payment </td>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500"> PAY-001 </td>
+                        <td class="px-4 py-3 whitespace-nowrap">
+                          <span
+                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                            Enabled </span>
+                        </td>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900"> $15,000 / day </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div id="details-tab-operations" class="details-tab-content hidden">
+              <div class="mb-6">
+                <h5 class="text-sm font-semibold text-gray-700 mb-3">Recent Operations</h5>
+                <div class="border border-gray-200 rounded-lg overflow-hidden">
+                  <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                      <tr>
+                        <th scope="col"
+                          class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Date
+                        </th>
+                        <th scope="col"
+                          class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Operation </th>
+                        <th scope="col"
+                          class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Amount </th>
+                        <th scope="col"
+                          class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Status </th>
+                        <th scope="col"
+                          class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Reference </th>
+                      </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                      <tr>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900"> 2023-05-21 14:32 </td>
+                        <td class="px-4 py-3 whitespace-nowrap">
+                          <span
+                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                            Deposit </span>
+                        </td>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-green-500"> +$1,500.00 </td>
+                        <td class="px-4 py-3 whitespace-nowrap">
+                          <span
+                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                            Completed </span>
+                        </td>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500"> OP-78542-1 </td>
+                      </tr>
+                      <tr>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900"> 2023-05-18 09:15 </td>
+                        <td class="px-4 py-3 whitespace-nowrap">
+                          <span
+                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                            Withdrawal </span>
+                        </td>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-red-500"> -$250.00 </td>
+                        <td class="px-4 py-3 whitespace-nowrap">
+                          <span
+                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                            Completed </span>
+                        </td>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500"> OP-78542-2 </td>
+                      </tr>
+                      <tr>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900"> 2023-05-15 16:42 </td>
+                        <td class="px-4 py-3 whitespace-nowrap">
+                          <span
+                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                            Transfer </span>
+                        </td>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-red-500"> -$500.00 </td>
+                        <td class="px-4 py-3 whitespace-nowrap">
+                          <span
+                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                            Completed </span>
+                        </td>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500"> OP-78542-3 </td>
+                      </tr>
+                      <tr>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900"> 2023-05-10 11:23 </td>
+                        <td class="px-4 py-3 whitespace-nowrap">
+                          <span
+                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">
+                            Payment </span>
+                        </td>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-red-500"> -$120.50 </td>
+                        <td class="px-4 py-3 whitespace-nowrap">
+                          <span
+                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                            Completed </span>
+                        </td>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500"> OP-78542-4 </td>
+                      </tr>
+                      <tr>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900"> 2023-05-05 08:45 </td>
+                        <td class="px-4 py-3 whitespace-nowrap">
+                          <span
+                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                            Fee </span>
+                        </td>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-red-500"> -$5.00 </td>
+                        <td class="px-4 py-3 whitespace-nowrap">
+                          <span
+                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                            Completed </span>
+                        </td>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500"> OP-78542-5 </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div>
+                <h5 class="text-sm font-semibold text-gray-700 mb-3">Operation Type Mappings</h5>
+                <div class="border border-gray-200 rounded-lg p-4">
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded">
+                      <div class="flex items-center">
+                        <div class="w-8 h-8 flex items-center justify-center bg-green-100 text-green-500 rounded">
+                          <i class="ri-arrow-down-circle-line"></i>
+                        </div>
+                        <div class="ml-3">
+                          <div class="text-sm font-medium">Deposit</div>
+                          <div class="text-xs text-gray-500">DEP-001</div>
+                        </div>
+                      </div>
+                      <label class="custom-switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                      </label>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded">
+                      <div class="flex items-center">
+                        <div class="w-8 h-8 flex items-center justify-center bg-red-100 text-red-500 rounded">
+                          <i class="ri-arrow-up-circle-line"></i>
+                        </div>
+                        <div class="ml-3">
+                          <div class="text-sm font-medium">Withdrawal</div>
+                          <div class="text-xs text-gray-500">WIT-001</div>
+                        </div>
+                      </div>
+                      <label class="custom-switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                      </label>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded">
+                      <div class="flex items-center">
+                        <div class="w-8 h-8 flex items-center justify-center bg-blue-100 text-blue-500 rounded">
+                          <i class="ri-exchange-funds-line"></i>
+                        </div>
+                        <div class="ml-3">
+                          <div class="text-sm font-medium">Transfer</div>
+                          <div class="text-xs text-gray-500">TRF-001</div>
+                        </div>
+                      </div>
+                      <label class="custom-switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                      </label>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded">
+                      <div class="flex items-center">
+                        <div class="w-8 h-8 flex items-center justify-center bg-purple-100 text-purple-500 rounded">
+                          <i class="ri-shopping-cart-line"></i>
+                        </div>
+                        <div class="ml-3">
+                          <div class="text-sm font-medium">Payment</div>
+                          <div class="text-xs text-gray-500">PAY-001</div>
+                        </div>
+                      </div>
+                      <label class="custom-switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="mt-4 flex justify-end">
+                    <button
+                      class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 transition text-sm whitespace-nowrap">
+                      Update Mappings </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="px-6 py-4 border-t border-gray-200 flex justify-end">
+      <button (click)="closeForm('wallet-details')" id="close-wallet-detail-btn"
+        class="px-4 py-2 border border-gray-300 text-gray-700 rounded-button hover:bg-gray-50 transition text-sm whitespace-nowrap">
+        Close </button>
+    </div>
+  </div>
+  <!-- Add/Edit Status Modal -->
+  <div *ngIf="isWalletStatusVisible" id="add-status-modal"
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
+      <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+        <h3 class="text-lg font-medium text-gray-900">{{isStatusEditMode ? 'Edit Wallet Status' : 'Add Wallet
+          Status'}}</h3>
+        <button id="close-status-modal" (click)="closeForm('wallet-status')" class="text-gray-400 hover:text-gray-500">
+          <div class="w-6 h-6 flex items-center justify-center">
+            <i class="ri-close-line"></i>
+          </div>
+        </button>
+      </div>
+      <div class="p-6">
+        <form id="add-status-form" (ngSubmit)="saveStatus()">
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Status Identifier</label>
+              <input type="text" [(ngModel)]="selectedStatus.wstIden" name="wstIden"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                placeholder="Identifier" required>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Status Label</label>
+              <input type="text" [(ngModel)]="selectedStatus.wstLabe" name="wstLabe"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                placeholder="Label" required>
+            </div>
+          </div>
+          <div class="mt-6 flex justify-end space-x-3">
+            <button type="button" (click)="closeForm('wallet-status')" id="cancel-add-status"
+              class="px-4 py-2 border border-gray-300 rounded-button text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+            <button type="submit"
+              class="px-4 py-2 bg-primary text-white rounded-button hover:bg-opacity-90 whitespace-nowrap">{{isStatusEditMode
+              ? 'Update' : 'Add'}} Status</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- Add/Edit Wallet Type Modal -->
+  <div *ngIf="isWalletTypeVisible" id="add-type-modal"
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
+      <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+        <h3 class="text-lg font-medium text-gray-900">{{ isWalletTypeEditMode ? 'Edit Wallet Type' : 'Add Wallet
+          Type' }}</h3>
+        <button id="close-type-modal" (click)="closeForm('wallet-type')" class="text-gray-400 hover:text-gray-500">
+          <div class="w-6 h-6 flex items-center justify-center">
+            <i class="ri-close-line"></i>
+          </div>
+        </button>
+      </div>
+      <div class="p-6">
+        <form id="add-type-form" (ngSubmit)="saveWalletType()">
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Type Identifier</label>
+              <input type="text" [(ngModel)]="newWalletType.wtyIden" name="wtyIden"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                placeholder="Identifier" required>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Type Label</label>
+              <input type="text" [(ngModel)]="newWalletType.wtyLabe" name="wtyLabe"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                placeholder="Label" required>
+            </div>
+          </div>
+          <div class="mt-6 flex justify-end space-x-3">
+            <button type="button" (click)="closeForm('wallet-type')" id="cancel-add-type"
+              class="px-4 py-2 border border-gray-300 rounded-button text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">
+              Cancel
+            </button>
+            <button type="submit"
+              class="px-4 py-2 bg-primary text-white rounded-button hover:bg-opacity-90 whitespace-nowrap">
+              {{ isWalletTypeEditMode ? 'Update Type' : 'Add Type' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- Add/Edit Category Modal -->
+  <div *ngIf="isWalletCategoryVisible" id="add-category-modal"
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
+      <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+        <h3 class="text-lg font-medium text-gray-900">{{isCategoryEditMode ? 'Edit Wallet Category' : 'Add Wallet
+          Category'}}</h3>
+        <button id="close-category-modal" (click)="closeForm('wallet-category')"
+          class="text-gray-400 hover:text-gray-500">
+          <div class="w-6 h-6 flex items-center justify-center">
+            <i class="ri-close-line"></i>
+          </div>
+        </button>
+      </div>
+      <div class="p-6">
+        <form id="add-category-form" (ngSubmit)="saveCategory()">
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Category Identifier</label>
+              <input type="text" [(ngModel)]="selectedCategory.wcaIden" name="wcaIden"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                placeholder="Identifier" required>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Category Label</label>
+              <input type="text" [(ngModel)]="selectedCategory.wcaLabe" name="wcaLabe"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                placeholder="Label" required>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Financial Institution ID</label>
+              <input type="number" [(ngModel)]="selectedCategory.wcaFinId" name="wcaFinId"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                placeholder="Financial Institution ID" required>
+            </div>
+          </div>
+          <div class="mt-6 flex justify-end space-x-3">
+            <button type="button" (click)="closeForm('wallet-category')" id="cancel-add-category"
+              class="px-4 py-2 border border-gray-300 rounded-button text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+            <button type="submit"
+              class="px-4 py-2 bg-primary text-white rounded-button hover:bg-opacity-90 whitespace-nowrap">{{isCategoryEditMode
+              ? 'Update' : 'Add'}} Category</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- Create Cards Modal -->
+  <div *ngIf="isCardFormVisible" id="create-card-modal" class="bg-white rounded-lg shadow-xl w-full max-w-2xl">
+    <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+      <h3 class="text-lg font-semibold text-gray-800">Create New Card</h3>
+      <button (click)="closeForm('create-card')" id="close-create-wallet" class="text-gray-400 hover:text-gray-500">
+        <div class="w-6 h-6 flex items-center justify-center">
+          <i class="ri-close-line ri-lg"></i>
+        </div>
+      </button>
+    </div>
+    <form id="create-wallet-form" class="p-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Identifier</label>
+          <input type="text" id="walLabe" name="walLabe"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+            placeholder="Identifier">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Label</label>
+          <input type="text" id="walLabe" name="walLabe"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+            placeholder="Label">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">List</label>
+          <div class="relative">
+            <select id="walFinId" name="walFinId"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
+              <option value="">Pick a List</option>
+              <option value="1">MASTERCARD</option>
+              <option value="2">VISA</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Type</label>
+          <div class="relative">
+            <select id="customer" name="customer"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
+              <option value="">pick a type</option>
+              <option value="1">CREDIT CARD</option>
+              <option value="2">DEBIT CARD</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Wallet</label>
+          <div class="relative">
+            <select id="walletStatus" name="walletStatus"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
+              <option value="">pick a wallet</option>
+              <option value="active">WAL-001</option>
+              <option value="inactive">WAL-002</option>
+              <option value="suspended">WAL-003</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="px-6 py-4 border-t border-gray-200 flex justify-end space-x-3">
+      <button (click)="closeForm('create-card')" id="cancel-create-wallet"
+        class="px-4 py-2 border border-gray-300 text-gray-700 rounded-button hover:bg-gray-50 transition text-sm whitespace-nowrap">Cancel</button>
+      <button id="submit-create-wallet"
+        class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 transition text-sm whitespace-nowrap">Create
+        Card</button>
+    </div>
+  </div>
+  <!-- Add card Type Modal -->
+  <div *ngIf="isCardTypeVisible" id="add-type-modal"
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
+      <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+        <h3 class="text-lg font-medium text-gray-900">Add Card Type</h3>
+        <button id="close-type-modal" (click)="closeForm('card-type')" class="text-gray-400 hover:text-gray-500">
+          <div class="w-6 h-6 flex items-center justify-center">
+            <i class="ri-close-line"></i>
+          </div>
+        </button>
+      </div>
+      <div class="p-6">
+        <form id="add-type-form">
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Identifier</label>
+              <input type="text" id="walLabe" name="walLabe"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                placeholder="Identifier">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Type Label</label>
+              <input type="text"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                placeholder="Label" required>
+            </div>
+          </div>
+          <div class="mt-6 flex justify-end space-x-3">
+            <button type="button" (click)="closeForm('card-type')" id="cancel-add-type"
+              class="px-4 py-2 border border-gray-300 rounded-button text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+            <button type="submit"
+              class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 whitespace-nowrap">Add
+              Type</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- Add card list Modal -->
+  <div *ngIf="isCardListVisible" id="add-type-modal"
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
+      <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+        <h3 class="text-lg font-medium text-gray-900">Add Card List</h3>
+        <button id="close-type-modal" (click)="closeForm('card-list')" class="text-gray-400 hover:text-gray-500">
+          <div class="w-6 h-6 flex items-center justify-center">
+            <i class="ri-close-line"></i>
+          </div>
+        </button>
+      </div>
+      <div class="p-6">
+        <form id="add-type-form">
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Identifier</label>
+              <input type="text" id="walLabe" name="walLabe"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                placeholder="Identifier">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">List Label</label>
+              <input type="text"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                placeholder="Label" required>
+            </div>
+          </div>
+          <div class="mt-6 flex justify-end space-x-3">
+            <button type="button" (click)="closeForm('card-list')" id="cancel-add-type"
+              class="px-4 py-2 border border-gray-300 rounded-button text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+            <button type="submit"
+              class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 whitespace-nowrap">Add
+              List</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 
-  constructor(
-    private walletStatusService: WalletStatusService,
-    private walletCategoryService: WalletCategoryService,
-    private walletTypeService: WalletTypeService,
-    private cdr: ChangeDetectorRef
-  ) {}
-
-  ngOnInit(): void {
-    console.log('ngOnInit: Initializing component...');
-    this.loadWalletStatuses();
-    this.loadWalletCategories();
-    this.loadWalletTypes();
-  }
-
-  // Get HTTP headers with optional authentication
-  private getHttpOptions(includeAuth: boolean = false): { headers: HttpHeaders } {
-    const role = localStorage.getItem('role') || 'ROLE_ADMIN';
-    console.log('getHttpOptions: Role:', role, 'Include Auth:', includeAuth);
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      ...(includeAuth ? { 'X-Roles': role } : {})
-    });
-    return { headers };
-  }
-
-  // Load wallet statuses
-  loadWalletStatuses(): void {
-    this.errorMessage = null;
-    console.log('loadWalletStatuses: Fetching wallet statuses...');
-    this.walletStatusService.getAll(this.getHttpOptions()).subscribe({
-      next: (statuses: WalletStatus[]) => {
-        console.log('loadWalletStatuses: Wallet statuses received:', statuses);
-        this.walletStatuses = statuses;
-        this.cdr.detectChanges();
-      },
-      error: (error: HttpErrorResponse) => {
-        this.errorMessage = `Failed to load wallet statuses: ${error.status} ${error.statusText} - ${error.error?.message || 'No response body'}`;
-        console.error('Error loading wallet statuses:', error, 'Response:', error.error);
-        this.cdr.detectChanges();
-      }
-    });
-  }
-
-  // Load wallet categories
-  loadWalletCategories(): void {
-    this.errorMessage = null;
-    console.log('loadWalletCategories: Fetching wallet categories...');
-    this.walletCategoryService.getAll(this.getHttpOptions(true)).subscribe({
-      next: (categories: WalletCategory[]) => {
-        console.log('loadWalletCategories: Wallet categories received:', categories);
-        this.walletCategories = categories;
-        this.cdr.detectChanges();
-      },
-      error: (error: HttpErrorResponse) => {
-        this.errorMessage = `Failed to load wallet categories: ${error.status} ${error.statusText} - ${error.error?.message || 'No response body'}`;
-        console.error('Error loading wallet categories:', error, 'Response:', error.error);
-        this.cdr.detectChanges();
-      }
-    });
-  }
-
-  // Load wallet types
-  loadWalletTypes(): void {
-    this.errorMessage = null;
-    console.log('loadWalletTypes: Fetching wallet types...');
-    this.walletTypeService.getAll(this.getHttpOptions()).subscribe({
-      next: (types: WalletType[]) => {
-        console.log('loadWalletTypes: Wallet types received:', types);
-        this.walletTypesList = types;
-        this.cdr.detectChanges();
-      },
-      error: (error: HttpErrorResponse) => {
-        this.errorMessage = `Failed to load wallet types: ${error.status} ${error.statusText} - ${error.error?.message || 'No response body'}`;
-        console.error('Error loading wallet types:', error, 'Response:', error.error);
-        this.cdr.detectChanges();
-      }
-    });
-  }
-
-  // Add a new wallet type
-  addWalletType(): void {
-    console.log('addWalletType: Adding wallet type:', this.newWalletType);
-    if (!this.newWalletType.wtyIden || !this.newWalletType.wtyLabe) {
-      this.showErrorMessage('Please fill in all required fields: Type Identifier and Type Label.');
-      return;
-    }
-    this.walletTypeService.create(this.newWalletType, this.getHttpOptions()).subscribe({
-      next: (createdWalletType: WalletType) => {
-        console.log('addWalletType: Wallet type added:', createdWalletType);
-        this.walletTypesList.push(createdWalletType);
-        this.newWalletType = new WalletType();
-        this.isWalletTypeVisible = false;
-        this.showSuccessMessage('Wallet type added successfully');
-        this.cdr.detectChanges();
-      },
-      error: (err: HttpErrorResponse) => {
-        console.error('addWalletType: Error:', err, 'Response:', err.error);
-        this.showErrorMessage(`Failed to add wallet type: ${err.status} ${err.statusText} - ${err.error?.message || 'No response body'}`);
-      }
-    });
-  }
-
-  // Edit a wallet type
-  editWalletType(type: WalletType): void {
-    console.log('editWalletType: Wallet type object:', type);
-    this.selectedWalletType = type;
-    this.newWalletType = { ...type };
-    this.isWalletTypeEditMode = true;
-    this.isWalletTypeVisible = true;
-    this.cdr.detectChanges();
-  }
-
-  // Update a wallet type
-  updateWalletType(): void {
-    console.log('updateWalletType: Updating wallet type:', this.newWalletType);
-    if (!this.newWalletType.wtyIden || !this.newWalletType.wtyLabe) {
-      this.showErrorMessage('Please fill in all required fields: Type Identifier and Type Label.');
-      return;
-    }
-    if (this.selectedWalletType?.wtyCode) {
-      this.walletTypeService.update(this.selectedWalletType.wtyCode, this.newWalletType, this.getHttpOptions()).subscribe({
-        next: (updatedWalletType: WalletType) => {
-          console.log('updateWalletType: Wallet type updated:', updatedWalletType);
-          const index = this.walletTypesList.findIndex(t => t.wtyCode === updatedWalletType.wtyCode);
-          if (index !== -1) {
-            this.walletTypesList[index] = updatedWalletType;
-            this.walletTypesList = [...this.walletTypesList];
-          }
-          this.newWalletType = new WalletType();
-          this.selectedWalletType = null;
-          this.isWalletTypeEditMode = false;
-          this.isWalletTypeVisible = false;
-          this.showSuccessMessage('Wallet type updated successfully');
-          this.cdr.detectChanges();
-        },
-        error: (err: HttpErrorResponse) => {
-          console.error('updateWalletType: Error:', err, 'Response:', err.error);
-          this.showErrorMessage(`Failed to update wallet type: ${err.status} ${err.statusText} - ${err.error?.message || 'No response body'}`);
-        }
-      });
-    } else {
-      this.showErrorMessage('No wallet type selected for update.');
-    }
-  }
-
-  // Delete a wallet type
-  deleteWalletType(wtyCode: number | undefined): void {
-    console.log('deleteWalletType: wtyCode:', wtyCode);
-    if (wtyCode && confirm('Are you sure you want to delete this wallet type?')) {
-      this.walletTypeService.delete(wtyCode, this.getHttpOptions()).subscribe({
-        next: () => {
-          console.log('deleteWalletType: Success, wtyCode:', wtyCode);
-          this.walletTypesList = this.walletTypesList.filter(t => t.wtyCode !== wtyCode);
-          this.showSuccessMessage('Wallet type deleted successfully');
-          this.cdr.detectChanges();
-        },
-        error: (err: HttpErrorResponse) => {
-          console.error('deleteWalletType: Error:', err, 'Response:', err.error);
-          this.showErrorMessage(`Failed to delete wallet type: ${err.status} ${err.statusText} - ${err.error?.message || 'No response body'}`);
-        }
-      });
-    }
-  }
-
-  // Save wallet type (handles both add and update)
-  saveWalletType(): void {
-    this.errorMessage = null;
-    if (this.isWalletTypeEditMode) {
-      this.updateWalletType();
-    } else {
-      this.addWalletType();
-    }
-  }
-
-  // Save wallet status
-  saveStatus(): void {
-    this.errorMessage = null;
-    console.log('saveStatus: Saving wallet status:', this.selectedStatus);
-    if (!this.selectedStatus.wstIden || !this.selectedStatus.wstLabe) {
-      this.showErrorMessage('Please fill in all required fields: Status Identifier and Status Label.');
-      return;
-    }
-    if (this.isStatusEditMode) {
-      this.walletStatusService.update(this.selectedStatus.wstCode!, this.selectedStatus, this.getHttpOptions()).subscribe({
-        next: () => {
-          console.log('saveStatus: Wallet status updated');
-          this.loadWalletStatuses();
-          this.closeForm('wallet-status');
-          this.showSuccessMessage('Wallet status updated successfully');
-        },
-        error: (error: HttpErrorResponse) => {
-          this.showErrorMessage(`Failed to update wallet status: ${error.status} ${error.statusText} - ${error.error?.message || 'No response body'}`);
-          console.error('Error updating wallet status:', error, 'Response:', error.error);
-        }
-      });
-    } else {
-      this.walletStatusService.create(this.selectedStatus, this.getHttpOptions()).subscribe({
-        next: () => {
-          console.log('saveStatus: Wallet status created');
-          this.loadWalletStatuses();
-          this.closeForm('wallet-status');
-          this.showSuccessMessage('Wallet status added successfully');
-        },
-        error: (error: HttpErrorResponse) => {
-          this.showErrorMessage(`Failed to create wallet status: ${error.status} ${error.statusText} - ${error.error?.message || 'No response body'}`);
-          console.error('Error creating wallet status:', error, 'Response:', error.error);
-        }
-      });
-    }
-  }
-
-  // Save wallet category
-  saveCategory(): void {
-    this.errorMessage = null;
-    console.log('saveCategory: Saving wallet category:', this.selectedCategory);
-    if (!this.selectedCategory.wcaIden || !this.selectedCategory.wcaLabe || !this.selectedCategory.wcaFinId) {
-      this.showErrorMessage('Please fill in all required fields: Identifier, Label, and Financial Institution ID.');
-      return;
-    }
-    if (this.isCategoryEditMode) {
-      this.walletCategoryService.update(this.selectedCategory.wcaCode!, this.selectedCategory, this.getHttpOptions(true)).subscribe({
-        next: () => {
-          console.log('saveCategory: Wallet category updated');
-          this.loadWalletCategories();
-          this.closeForm('wallet-category');
-          this.showSuccessMessage('Wallet category updated successfully');
-        },
-        error: (error: HttpErrorResponse) => {
-          this.showErrorMessage(`Failed to update wallet category: ${error.status} ${error.statusText} - ${error.error?.message || 'No response body'}`);
-          console.error('Error updating wallet category:', error, 'Response:', error.error);
-        }
-      });
-    } else {
-      this.walletCategoryService.create(this.selectedCategory, this.getHttpOptions(true)).subscribe({
-        next: () => {
-          console.log('saveCategory: Wallet category created');
-          this.loadWalletCategories();
-          this.closeForm('wallet-category');
-          this.showSuccessMessage('Wallet category added successfully');
-        },
-        error: (error: HttpErrorResponse) => {
-          this.showErrorMessage(`Failed to create wallet category: ${error.status} ${error.statusText} - ${error.error?.message || 'No response body'}`);
-          console.error('Error creating wallet category:', error, 'Response:', error.error);
-        }
-      });
-    }
-  }
-
-  // Edit wallet status
-  editStatus(status: WalletStatus): void {
-    this.errorMessage = null;
-    console.log('editStatus: Editing wallet status:', status);
-    this.selectedStatus = { ...status };
-    this.isStatusEditMode = true;
-    this.isWalletStatusVisible = true;
-    this.cdr.detectChanges();
-  }
-
-  // Edit wallet category
-  editCategory(category: WalletCategory): void {
-    this.errorMessage = null;
-    console.log('editCategory: Editing wallet category:', category);
-    this.selectedCategory = { ...category };
-    this.isCategoryEditMode = true;
-    this.isWalletCategoryVisible = true;
-    this.cdr.detectChanges();
-  }
-
-  // Delete wallet status
-  deleteStatus(wstCode: number | undefined): void {
-    this.errorMessage = null;
-    console.log('deleteStatus: wstCode:', wstCode);
-    if (wstCode && confirm('Are you sure you want to delete this status?')) {
-      this.walletStatusService.delete(wstCode, this.getHttpOptions()).subscribe({
-        next: () => {
-          console.log('deleteStatus: Success, wstCode:', wstCode);
-          this.loadWalletStatuses();
-          this.showSuccessMessage('Wallet status deleted successfully');
-        },
-        error: (error: HttpErrorResponse) => {
-          this.showErrorMessage(`Failed to delete wallet status: ${error.status} ${error.statusText} - ${error.error?.message || 'No response body'}`);
-          console.error('Error deleting wallet status:', error, 'Response:', error.error);
-        }
-      });
-    }
-  }
-
-  // Delete wallet category
-  deleteCategory(wcaCode: number | undefined): void {
-    this.errorMessage = null;
-    console.log('deleteCategory: wcaCode:', wcaCode);
-    if (wcaCode && confirm('Are you sure you want to delete this category?')) {
-      this.walletCategoryService.delete(wcaCode, this.getHttpOptions(true)).subscribe({
-        next: () => {
-          console.log('deleteCategory: Success, wcaCode:', wcaCode);
-          this.loadWalletCategories();
-          this.showSuccessMessage('Wallet category deleted successfully');
-        },
-        error: (error: HttpErrorResponse) => {
-          this.showErrorMessage(`Failed to delete wallet category: ${error.status} ${error.statusText} - ${error.error?.message || 'No response body'}`);
-          console.error('Error deleting wallet category:', error, 'Response:', error.error);
-        }
-      });
-    }
-  }
-
-  // Show success message
-  showSuccessMessage(message: string): void {
-    console.log('showSuccessMessage:', message);
-    this.successMessage = message;
-    this.errorMessage = null;
-    setTimeout(() => {
-      this.successMessage = null;
-      this.cdr.detectChanges();
-    }, 3000);
-  }
-
-  // Show error message
-  showErrorMessage(message: string): void {
-    console.log('showErrorMessage:', message);
-    this.errorMessage = message;
-    this.successMessage = null;
-    setTimeout(() => {
-      this.errorMessage = null;
-      this.cdr.detectChanges();
-    }, 3000);
-  }
-
-  // Toggle form visibility
-  toggleForm(modal: string): void {
-    this.errorMessage = null;
-    console.log('toggleForm: Opening modal:', modal);
-    switch (modal) {
-      case 'create-wallet':
-        this.isWalletFormVisible = true;
-        break;
-      case 'wallet-details':
-        this.isWalletDetailsVisible = true;
-        break;
-      case 'wallet-status':
-        this.isWalletStatusVisible = true;
-        this.isStatusEditMode = false;
-        this.selectedStatus = new WalletStatus();
-        break;
-      case 'wallet-type':
-        this.isWalletTypeVisible = true;
-        this.isWalletTypeEditMode = false;
-        this.newWalletType = new WalletType();
-        this.selectedWalletType = null;
-        break;
-      case 'wallet-category':
-        this.isWalletCategoryVisible = true;
-        this.isCategoryEditMode = false;
-        this.selectedCategory = new WalletCategory();
-        break;
-      case 'create-card':
-        this.isCardFormVisible = true;
-        break;
-      case 'card-type':
-        this.isCardTypeVisible = true;
-        break;
-      case 'card-list':
-        this.isCardListVisible = true;
-        break;
-      case 'create-account':
-        this.isAccountFormVisible = true;
-        break;
-      case 'account-type':
-        this.isAccountTypeVisible = true;
-        break;
-      case 'account-list':
-        this.isAccountListVisible = true;
-        break;
-    }
-    this.cdr.detectChanges();
-  }
-
-  // Close form
-  closeForm(modal: string): void {
-    this.errorMessage = null;
-    console.log('closeForm: Closing modal:', modal);
-    switch (modal) {
-      case 'create-wallet':
-        this.isWalletFormVisible = false;
-        break;
-      case 'wallet-details':
-        this.isWalletDetailsVisible = false;
-        break;
-      case 'wallet-status':
-        this.isWalletStatusVisible = false;
-        this.selectedStatus = new WalletStatus();
-        this.isStatusEditMode = false;
-        break;
-      case 'wallet-type':
-        this.isWalletTypeVisible = false;
-        this.newWalletType = new WalletType();
-        this.selectedWalletType = null;
-        this.isWalletTypeEditMode = false;
-        break;
-      case 'wallet-category':
-        this.isWalletCategoryVisible = false;
-        this.selectedCategory = new WalletCategory();
-        this.isCategoryEditMode = false;
-        break;
-      case 'create-card':
-        this.isCardFormVisible = false;
-        break;
-      case 'card-type':
-        this.isCardTypeVisible = false;
-        break;
-      case 'card-list':
-        this.isCardListVisible = false;
-        break;
-      case 'create-account':
-        this.isAccountFormVisible = false;
-        break;
-      case 'account-type':
-        this.isAccountTypeVisible = false;
-        break;
-      case 'account-list':
-        this.isAccountListVisible = false;
-        break;
-    }
-    this.cdr.detectChanges();
-  }
-
-  // Show specific tab
-  showTab(tabId: string, tabType?: string): void {
-    console.log('showTab: tabId:', tabId, 'type:', tabType);
-    const buttonClass = tabType ? `${tabType}-tab-button` : 'tab-button';
-    const contentClass = tabType ? `${tabType}-tab-content` : 'tab-content';
-    const tabButtons = document.querySelectorAll(`.${buttonClass}`);
-    const tabContents = document.querySelectorAll(`.${contentClass}`);
-
-    tabButtons.forEach(btn => {
-      btn.classList.remove('active', 'text-primary', 'font-medium');
-      btn.classList.add('text-gray-500');
-    });
-
-    tabContents.forEach(content => content.classList.add('hidden'));
-
-    const activeButton = tabType ? document.getElementById(tabType + '-' + tabId) : document.getElementById(tabId);
-    activeButton?.classList.add('active', 'text-primary', 'font-medium');
-    activeButton?.classList.remove('text-gray-500');
-
-    const activeId = tabType ? `${tabType}-tab-${tabId}` : `tab-${tabId}`;
-    const activeContent = document.getElementById(activeId);
-    activeContent?.classList.remove('hidden');
-    this.cdr.detectChanges();
-  }
-
-  // Check if any modal is visible
-  get isAnyModalVisible(): boolean {
-    return (
-      this.isWalletDetailsVisible ||
-      this.isWalletFormVisible ||
-      this.isWalletStatusVisible ||
-      this.isWalletTypeVisible ||
-      this.isWalletCategoryVisible ||
-      this.isCardFormVisible ||
-      this.isCardTypeVisible ||
-      this.isCardListVisible ||
-      this.isAccountFormVisible ||
-      this.isAccountTypeVisible ||
-      this.isAccountListVisible
-    );
-  }
-}
+  <!-- Create account Modal -->
+  <div *ngIf="isAccountFormVisible" id="create-card-modal" class="bg-white rounded-lg shadow-xl w-full max-w-2xl">
+    <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+      <h3 class="text-lg font-semibold text-gray-800">Create New Account</h3>
+      <button (click)="closeForm('create-account')" id="close-create-wallet" class="text-gray-400 hover:text-gray-500">
+        <div class="w-6 h-6 flex items-center justify-center">
+          <i class="ri-close-line ri-lg"></i>
+        </div>
+      </button>
+    </div>
+    <form id="create-wallet-form" class="p-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Identifier</label>
+          <input type="text" id="walLabe" name="walLabe"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+            placeholder="Identifier">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Label</label>
+          <input type="text" id="walLabe" name="walLabe"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+            placeholder="Label">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">List</label>
+          <div class="relative">
+            <select id="walFinId" name="walFinId"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
+              <option value="">Pick a List</option>
+              <option value="1">CHECKING</option>
+              <option value="2">SAVINGS</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Type</label>
+          <div class="relative">
+            <select id="customer" name="customer"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
+              <option value="">pick a type</option>
+              <option value="1">BUSINESS</option>
+              <option value="2">INDIVIDUAL</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Bank</label>
+          <div class="relative">
+            <select id="walletStatus" name="walletStatus"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
+              <option value="">pick a bank</option>
+              <option value="active">BAN-001</option>
+              <option value="inactive">BAN-002</option>
+              <option value="suspended">BAN-003</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Wallet</label>
+          <div class="relative">
+            <select id="walletStatus" name="walletStatus"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
+              <option value="">pick a wallet</option>
+              <option value="active">WAL-001</option>
+              <option value="inactive">WAL-002</option>
+              <option value="suspended">WAL-003</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="px-6 py-4 border-t border-gray-200 flex justify-end space-x-3">
+      <button (click)="closeForm('create-account')" id="cancel-create-wallet"
+        class="px-4 py-2 border border-gray-300 text-gray-700 rounded-button hover:bg-gray-50 transition text-sm whitespace-nowrap">Cancel</button>
+      <button id="submit-create-wallet"
+        class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 transition text-sm whitespace-nowrap">Create
+        Account</button>
+    </div>
+  </div>
+  <!-- Add  account Type Modal -->
+  <div *ngIf="isAccountTypeVisible" id="add-type-modal"
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
+      <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+        <h3 class="text-lg font-medium text-gray-900">Add Account Type</h3>
+        <button id="close-type-modal" (click)="closeForm('account-type')" class="text-gray-400 hover:text-gray-500">
+          <div class="w-6 h-6 flex items-center justify-center">
+            <i class="ri-close-line"></i>
+          </div>
+        </button>
+      </div>
+      <div class="p-6">
+        <form id="add-type-form">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Identifier</label>
+            <input type="text" id="walLabe" name="walLabe"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+              placeholder="Identifier">
+          </div>
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Type Label</label>
+              <input type="text"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                placeholder="Label" required>
+            </div>
+          </div>
+          <div class="mt-6 flex justify-end space-x-3">
+            <button type="button" (click)="closeForm('account-type')" id="cancel-add-type"
+              class="px-4 py-2 border border-gray-300 rounded-button text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+            <button type="submit"
+              class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 whitespace-nowrap">Add
+              Type</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- Add account list Modal -->
+  <div *ngIf="isAccountListVisible" id="add-type-modal"
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
+      <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+        <h3 class="text-lg font-medium text-gray-900">Add Account List</h3>
+        <button id="close-type-modal" (click)="closeForm('account-list')" class="text-gray-400 hover:text-gray-500">
+          <div class="w-6 h-6 flex items-center justify-center">
+            <i class="ri-close-line"></i>
+          </div>
+        </button>
+      </div>
+      <div class="p-6">
+        <form id="add-type-form">
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Identifier</label>
+              <input type="text" id="walLabe" name="walLabe"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                placeholder="Identifier">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">List Label</label>
+              <input type="text"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                placeholder="Label" required>
+            </div>
+          </div>
+          <div class="mt-6 flex justify-end space-x-3">
+            <button type="button" (click)="closeForm('account-list')" id="cancel-add-type"
+              class="px-4 py-2 border border-gray-300 rounded-button text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+            <button type="submit"
+              class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 whitespace-nowrap">Add
+              List</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
