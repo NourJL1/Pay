@@ -15,6 +15,21 @@
 
 <!-- main content -->
 <main class="flex-1 overflow-y-auto p-6 custom-scrollbar">
+
+    <!-- Notification Area for Success and Error Messages -->
+    <div *ngIf="successMessage" class="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50">
+        {{ successMessage }}
+        <button (click)="clearMessage()" class="ml-2 text-white hover:text-gray-200">
+            <i class="ri-close-line"></i>
+        </button>
+    </div>
+    <div *ngIf="errorMessage" class="fixed top-4 right-4 bg-red-500 text-white px-4 py-2 rounded-lg shadow-lg z-50">
+        {{ errorMessage }}
+        <button (click)="clearMessage()" class="ml-2 text-white hover:text-gray-200">
+            <i class="ri-close-line"></i>
+        </button>
+    </div>
+
     <!-- overview content -->
     <div id="tab-overview" class="tab-content bg-white rounded shadow mb-6  rounded-lg">
         <div class="p-4 flex justify-between items-center">
@@ -55,7 +70,7 @@
                             <select
                                 class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary rounded-lg sm:text-sm">
                                 <option value="">select country</option>
-                                 <option *ngFor="let country of countries" [value]="country">{{country.ctrLabe}}</option>
+                                <option *ngFor="let country of countries" [value]="country">{{country.ctrLabe}}</option>
                             </select>
                         </div>
                     </div>
@@ -106,7 +121,7 @@
                                 <span>Identifier</span>
                             </div>
                         </th>
-                        
+
                         <th scope="col"
                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             <div class="flex items-center">
@@ -141,7 +156,7 @@
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="text-sm text-gray-900">{{customer.cusIden}}</div>
                         </td>
-                        
+
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="text-sm text-gray-900">{{customer.username}}</div>
                         </td>
@@ -248,7 +263,7 @@
             <div id="settings-tab-status" class="settings-tab-content p-6">
                 <div class="flex justify-between items-center mb-6">
                     <h3 class="text-lg font-medium text-gray-900">Customer Status Management</h3>
-                    <button id="btn-add-status" (click)="toggleForm('customer-status')"
+                    <button id="btn-add-status" (click)="toggleForm('customer-status');"
                         class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
                         <i class="ri-add-line mr-1"></i> Add Status </button>
                 </div>
@@ -272,17 +287,19 @@
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
                             <tr *ngFor="let status of statuses">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{status.ctsCode}}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{status.ctsIden}}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                    {{status.ctsCode}}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                    {{status.ctsIden}}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{status.ctsLabe}}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     <div class="flex justify-end space-x-2">
-                                        <button class="text-green-600 hover:text-gray-500">
+                                        <button (click)="editStatus(status)" class="text-green-600 hover:text-gray-500">
                                             <div class="w-6 h-6 flex items-center justify-center">
                                                 <i class="ri-edit-line"></i>
                                             </div>
                                         </button>
-                                        <button class="text-red-600 hover:text-red-500">
+                                        <button (click)="deleteStatus(status)" class="text-red-600 hover:text-red-500">
                                             <div class="w-6 h-6 flex items-center justify-center">
                                                 <i class="ri-delete-bin-line"></i>
                                             </div>
@@ -322,17 +339,21 @@
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
                             <tr *ngFor="let type of types">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{type.citCode}}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{type.citIden}}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                    {{type.citCode}}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                    {{type.citIden}}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{type.citLabe}}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     <div class="flex justify-end space-x-2">
-                                        <button class="text-green-600 hover:text-gray-500">
+                                        <button (click)="editIdentityType(type)"
+                                            class="text-green-600 hover:text-gray-500">
                                             <div class="w-6 h-6 flex items-center justify-center">
                                                 <i class="ri-edit-line"></i>
                                             </div>
                                         </button>
-                                        <button class="text-red-600 hover:text-red-500">
+                                        <button (click)="deleteIdentityType(type)"
+                                            class="text-red-600 hover:text-red-500">
                                             <div class="w-6 h-6 flex items-center justify-center">
                                                 <i class="ri-delete-bin-line"></i>
                                             </div>
@@ -372,17 +393,20 @@
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
                             <tr *ngFor="let country of countries">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{country.ctrCode}}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{country.ctrIden}}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                    {{country.ctrCode}}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                    {{country.ctrIden}}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{country.ctrLabe}}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     <div class="flex justify-end space-x-2">
-                                        <button class="text-green-600 hover:text-gray-500">
+                                        <!-- <button class="text-green-600 hover:text-gray-500">
                                             <div class="w-6 h-6 flex items-center justify-center">
                                                 <i class="ri-edit-line"></i>
                                             </div>
-                                        </button>
-                                        <button class="text-red-600 hover:text-red-500">
+                                        </button> -->
+                                        <button (click)="deleteCountry(country)"
+                                            class="text-red-600 hover:text-red-500">
                                             <div class="w-6 h-6 flex items-center justify-center">
                                                 <i class="ri-delete-bin-line"></i>
                                             </div>
@@ -416,23 +440,29 @@
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     City Label</th>
                                 <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    City Country</th>
+                                <th scope="col"
                                     class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Actions</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
                             <tr *ngFor="let city of cities">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{city.ctyCode}}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{city.ctyIden}}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                    {{city.ctyCode}}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                    {{city.ctyIden}}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{city.ctyLabe}}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{city.country!.ctrLabe}}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     <div class="flex justify-end space-x-2">
-                                        <button class="text-green-600 hover:text-gray-500">
+                                        <!-- <button class="text-green-600 hover:text-gray-500">
                                             <div class="w-6 h-6 flex items-center justify-center">
                                                 <i class="ri-edit-line"></i>
                                             </div>
-                                        </button>
-                                        <button class="text-red-600 hover:text-red-500">
+                                        </button> -->
+                                        <button (click)="deleteCity(city)" class="text-red-600 hover:text-red-500">
                                             <div class="w-6 h-6 flex items-center justify-center">
                                                 <i class="ri-delete-bin-line"></i>
                                             </div>
@@ -543,28 +573,32 @@
                                             <div>
                                                 <label class="block text-xs text-gray-500 mb-1">Customer
                                                     Code</label>
-                                                <div class="text-sm font-medium text-gray-800">{{selectedCustomer?.cusCode}}</div>
+                                                <div class="text-sm font-medium text-gray-800">
+                                                    {{selectedCustomer?.cusCode}}</div>
                                             </div>
                                         </div>
 
                                         <div class="flex items-start">
                                             <div>
                                                 <label class="block text-xs text-gray-500 mb-1">Identifier</label>
-                                                <div class="text-sm font-medium text-gray-800">{{selectedCustomer?.cusIden}}</div>
+                                                <div class="text-sm font-medium text-gray-800">
+                                                    {{selectedCustomer?.cusIden}}</div>
                                             </div>
                                         </div>
 
                                         <div class="flex items-start">
                                             <div>
                                                 <label class="block text-xs text-gray-500 mb-1">Full Name</label>
-                                                <div class="text-sm font-medium text-gray-800">{{selectedCustomer?.fullName}}</div>
+                                                <div class="text-sm font-medium text-gray-800">
+                                                    {{selectedCustomer?.fullName}}</div>
                                             </div>
                                         </div>
 
                                         <div class="flex items-start">
                                             <div>
                                                 <label class="block text-xs text-gray-500 mb-1">Username</label>
-                                                <div class="text-sm font-medium text-gray-800">{{selectedCustomer?.username}}</div>
+                                                <div class="text-sm font-medium text-gray-800">
+                                                    {{selectedCustomer?.username}}</div>
                                             </div>
                                         </div>
 
@@ -591,7 +625,8 @@
                                             <i class="ri-mail-line text-gray-400 text-sm mr-3 mt-0.5"></i>
                                             <div>
                                                 <label class="block text-xs text-gray-500 mb-1">Email</label>
-                                                <div class="text-sm font-medium text-gray-800">{{selectedCustomer?.cusMailAddress}}</div>
+                                                <div class="text-sm font-medium text-gray-800">
+                                                    {{selectedCustomer?.cusMailAddress}}</div>
                                             </div>
                                         </div>
 
@@ -599,7 +634,8 @@
                                             <i class="ri-phone-line text-gray-400 text-sm mr-3 mt-0.5"></i>
                                             <div>
                                                 <label class="block text-xs text-gray-500 mb-1">Phone</label>
-                                                <div class="text-sm font-medium text-gray-800">{{selectedCustomer?.cusPhoneNbr}}</div>
+                                                <div class="text-sm font-medium text-gray-800">
+                                                    {{selectedCustomer?.cusPhoneNbr}}</div>
                                             </div>
                                         </div>
 
@@ -608,10 +644,13 @@
                                             <div>
                                                 <label class="block text-xs text-gray-500 mb-1">Address</label>
                                                 <div class="space-y-1">
-                                                    <div class="text-sm font-medium text-gray-800">{{selectedCustomer?.cusAddress}}
+                                                    <div class="text-sm font-medium text-gray-800">
+                                                        {{selectedCustomer?.cusAddress}}
                                                     </div>
-                                                    <div class="text-sm font-medium text-gray-800">{{selectedCustomer?.city?.ctyLabe}}</div>
-                                                    <div class="text-sm font-medium text-gray-800">{{selectedCustomer?.country?.ctrLabe}} </div>
+                                                    <div class="text-sm font-medium text-gray-800">
+                                                        {{selectedCustomer?.city?.ctyLabe}}</div>
+                                                    <div class="text-sm font-medium text-gray-800">
+                                                        {{selectedCustomer?.country?.ctrLabe}} </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -915,7 +954,7 @@
         class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
         <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
             <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-                <h3 class="text-lg font-medium text-gray-900">Add Customer Status</h3>
+                <h3 class="text-lg font-medium text-gray-900">{{ selectedStatus ? 'Edit Customer Status' : 'Add Customer Status' }}</h3>
                 <button id="close-status-modal" (click)="closeForm('customer-status')"
                     class="text-gray-400 hover:text-gray-500">
                     <div class="w-6 h-6 flex items-center justify-center">
@@ -924,17 +963,17 @@
                 </button>
             </div>
             <div class="p-6">
-                <form (ngSubmit)="selectedStatus ? updateCustomerStatus(addStatusForm) : addCustomerStatus(addStatusForm)" #addStatusForm="ngForm"  id="add-status-form">
+                <form (ngSubmit)="selectedStatus ? updateStatus() : addStatus()" #StatusForm="ngForm" id="status-form">
                     <div class="space-y-4">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Status Identifier</label>
-                            <input type="text"
+                            <input type="text" [(ngModel)]="statusForm.ctsIden" name="ctsIden"
                                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
                                 placeholder="Identifier" required>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Status Label</label>
-                            <input type="text"
+                            <input type="text" [(ngModel)]="statusForm.ctsLabe" name="ctsLabe"
                                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
                                 placeholder="Label" required>
                         </div>
@@ -943,8 +982,8 @@
                         <button type="button" (click)="closeForm('customer-status')" id="cancel-add-status"
                             class="px-4 py-2 border border-gray-300 rounded-button text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">Cancel</button>
                         <button type="submit"
-                            class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 whitespace-nowrap">Add
-                            Status</button>
+                            class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 whitespace-nowrap">{{
+                            selectedStatus ? 'Update Customer Status' : 'Add Customer Status' }}</button>
                     </div>
                 </form>
             </div>
@@ -956,7 +995,8 @@
         class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
         <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
             <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-                <h3 class="text-lg font-medium text-gray-900">Add Identity Type Status</h3>
+                <h3 class="text-lg font-medium text-gray-900">{{ selectedIdentityType ? 'Edit Customer Identity Type' :
+                    'Add Customer Identity Type' }}</h3>
                 <button id="close-status-modal" (click)="closeForm('customer-identityType')"
                     class="text-gray-400 hover:text-gray-500">
                     <div class="w-6 h-6 flex items-center justify-center">
@@ -969,13 +1009,13 @@
                     <div class="space-y-4">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Identity Type Identifier</label>
-                            <input type="text"
+                            <input type="text" [(ngModel)]="identityTypeForm.citIden" name="citIden"
                                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
                                 placeholder="Identifier" required>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Identity Type Label</label>
-                            <input type="text"
+                            <input type="text" [(ngModel)]="identityTypeForm.citLabe" name="citLabe"
                                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
                                 placeholder="Label" required>
                         </div>
@@ -984,8 +1024,9 @@
                         <button type="button" (click)="closeForm('customer-identityType')" id="cancel-add-status"
                             class="px-4 py-2 border border-gray-300 rounded-button text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">Cancel</button>
                         <button type="submit"
-                            class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 whitespace-nowrap">Add
-                            Identity Type</button>
+                            class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 whitespace-nowrap">{{
+                            selectedIdentityType ? 'Edit Customer Identity Type' : 'Add Customer Identity Type'
+                            }}</button>
                     </div>
                 </form>
             </div>
@@ -1006,20 +1047,26 @@
                 </button>
             </div>
             <div class="p-6">
-                <form id="add-status-form">
+                <form (ngSubmit)="addCountry()" id="add-status-form">
                     <div class="space-y-4">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Country Identifier</label>
-                                
-                            <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary" [(ngModel)]="countries" name="country" required="">
-                                <option *ngFor="let ctrIden of countryIdens" [ngValue]="ctrIden">{{ ctrIden }}</option>
+
+                            <select
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                                [(ngModel)]="countryForm" name="country" required="">
+                                <option *ngFor="let country of countryList" [ngValue]="country">{{ country.ctrIden }}
+                                </option>
                             </select>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Country Label</label>
-                            
-                            <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary" [(ngModel)]="countries" name="ctrLabe" required="">
-                                <option *ngFor="let ctrLabe of countryLabels" [ngValue]="ctrLabe">{{ ctrLabe }}</option>
+
+                            <select
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                                [(ngModel)]="countryForm" name="ctrLabe" required="">
+                                <option *ngFor="let country of countryList" [ngValue]="country">{{ country.ctrLabe }}
+                                </option>
                             </select>
                         </div>
                     </div>
@@ -1048,19 +1095,30 @@
                 </button>
             </div>
             <div class="p-6">
-                <form id="add-status-form">
+                <form (ngSubmit)="addCity()" id="add-status-form">
                     <div class="space-y-4">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">City Identifier</label>
-                            <input type="text"
+                            <input type="text" [(ngModel)]="cityForm.ctyIden" name="ctrIden"
                                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
                                 placeholder="Identifier" required>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">City Label</label>
-                            <input type="text"
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Country</label>
+                            <select required (change)="onCountryChange()"
                                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-                                placeholder="Label" required>
+                                [(ngModel)]="cityForm.country" name="country">
+                                <option *ngFor="let country of countries" [ngValue]="country">{{ country.ctrLabe }}
+                                </option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">City Label</label>
+                            <select required
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                                [(ngModel)]="cityForm.ctyLabe" name="ctyLabe">
+                                <option *ngFor="let city of cityList" [ngValue]="city">{{ city }}</option>
+                            </select>
                         </div>
                     </div>
                     <div class="mt-6 flex justify-end space-x-3">

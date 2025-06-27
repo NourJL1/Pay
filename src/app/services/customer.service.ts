@@ -111,6 +111,10 @@ export class CustomerService {
     return this.http.get<Customer[]>(`${this.apiUrl}`);
   }
 
+    getAllCustomersWithWallets() {
+    return this.http.get<Customer[]>(`${this.apiUrl}/with-wallets`);
+  }
+
   // Update wallet status
   updateWalletStatus(walletId: number, status: WalletStatus): Observable<any> {
     return this.http.patch(
