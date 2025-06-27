@@ -212,81 +212,67 @@
         </div>
       </div>
       <!-- Fee Rule Content -->
-      <div id="fees-tab-rule" class="fees-tab-content p-6 hidden">
-        <div class="flex justify-between items-center mb-6">
-          <h3 class="text-lg font-medium text-gray-900">Fee Rules Management</h3>
-          <button id="btn-add-status" (click)="toggleForm('fee-rule')"
-            class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
-            <i class="ri-add-line mr-1"></i> Add Fee Rule </button>
-        </div>
-        <div class="overflow-x-auto">
-          <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
-              <tr>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Rule Code</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Rule Identifier</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Rule Name</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Primary Amount</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Fee Amount</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  TVA</th>
-                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions</th>
-              </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-              <tr>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">FRU-001</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">20001</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">COMMERCIAL PAYMENT</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">50</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">6%</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">19%</td>
-                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <div class="flex justify-end space-x-2">
-                    <button class="text-green-600 hover:text-gray-500">
-                      <div class="w-6 h-6 flex items-center justify-center">
-                        <i class="ri-edit-line"></i>
-                      </div>
-                    </button>
-                    <button class="text-red-600 hover:text-red-500">
-                      <div class="w-6 h-6 flex items-center justify-center">
-                        <i class="ri-delete-bin-line"></i>
-                      </div>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">FRU-002</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">20002</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">COMMERCIAL PAYMENT</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">50</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">6%</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">19%</td>
-                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <div class="flex justify-end space-x-2">
-                    <button class="text-green-600 hover:text-gray-500">
-                      <div class="w-6 h-6 flex items-center justify-center">
-                        <i class="ri-edit-line"></i>
-                      </div>
-                    </button>
-                    <button class="text-red-600 hover:text-red-500">
-                      <div class="w-6 h-6 flex items-center justify-center">
-                        <i class="ri-delete-bin-line"></i>
-                      </div>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+<div id="fees-tab-rule" class="fees-tab-content p-6 hidden">
+  <div class="flex justify-between items-center mb-6">
+    <h3 class="text-lg font-medium text-gray-900">Fee Rules Management</h3>
+    <button (click)="toggleForm('fee-rule')"
+      class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+      <i class="ri-add-line mr-1"></i> Add Fee Rule
+    </button>
+  </div>
+  <div class="overflow-x-auto">
+    <table class="min-w-full divide-y divide-gray-200">
+      <thead class="bg-gray-50">
+        <tr>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Rule Code
+          </th>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Rule Identifier
+          </th>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Rule Name
+          </th>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Primary Amount
+          </th>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Fee Amount
+          </th>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            TVA
+          </th>
+          <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Actions
+          </th>
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-200">
+        <tr *ngFor="let rule of feeRulesList">
+          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ rule.fruCode }}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ rule.fruIden }}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ rule.fruLabe }}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ rule.fruPrimaryAmount }}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ rule.fruFeesAmount }}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ rule.fruTva?.vatRate ? rule.fruTva.vatRate + '%' : 'N/A' }}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+            <div class="flex justify-end space-x-2">
+              <button class="text-green-600 hover:text-gray-500" (click)="editFeeRule(rule)">
+                <div class="w-6 h-6 flex items-center justify-center">
+                  <i class="ri-edit-line"></i>
+                </div>
+              </button>
+              <button class="text-red-600 hover:text-red-500" (click)="deleteFeeRule(rule.fruCode)">
+                <div class="w-6 h-6 flex items-center justify-center">
+                  <i class="ri-delete-bin-line"></i>
+                </div>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
       </div>
     </div>
   </div>
@@ -577,96 +563,131 @@
     </div>
   </div>
 
-  <!-- Add Fee Rule Modal -->
+  <!-- Add/Edit Fee Rule Modal -->
   <div *ngIf="isFeeRuleVisible" id="fee-rule-modal"
     class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
     <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
       <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-        <h3 class="text-lg font-medium text-gray-900">Add Fee Rule</h3>
-        <button id="close-type-modal" (click)="closeForm('fee-rule')" class="text-gray-400 hover:text-gray-500">
+        <h3 class="text-lg font-medium text-gray-900">{{ selectedFeeRule ? 'Edit Fee Rule' : 'Add Fee Rule' }}</h3>
+        <button (click)="closeForm('fee-rule')" class="text-gray-400 hover:text-gray-500">
           <div class="w-6 h-6 flex items-center justify-center">
             <i class="ri-close-line"></i>
           </div>
         </button>
       </div>
       <div class="p-6">
-        <form id="add-type-form">
-          <div class="space-y-4">
-            <form id="create-fee-rule" class="p-6">
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">Label</label>
-                  <input type="text" id="walLabe" name="walLabe"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-                    placeholder="Label">
-                </div>
-                <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">Identifier</label>
-                  <input type="text" id="walLabe" name="walLabe"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-                    placeholder="Identifier">
-                </div>
-                <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">Primary Wallet</label>
-                  <div class="relative">
-                    <select id="walFinId" name="walFinId"
-                      class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
-                      <option value="">Pick a List</option>
-                      <option value="1">WAL-001</option>
-                      <option value="2">WAL-002</option>
-                    </select>
-                  </div>
-                </div>
-                <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">Primary Amount</label>
-                  <input type="number" id="walLabe" name="walLabe"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-                    placeholder="Primary Amount">
-                </div>
-                <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">Fees Wallet</label>
-                  <div class="relative">
-                    <select id="customer" name="customer"
-                      class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
-                      <option value="">pick a type</option>
-                      <option value="1">WAL-001</option>
-                      <option value="2">WAL-002</option>
-                    </select>
-                  </div>
-                </div>
-                <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">Fees Amount</label>
-                  <input type="number" id="walLabe" name="walLabe"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-                    placeholder="Fee Amount">
-                </div>
-                <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">TVA Wallet</label>
-                  <div class="relative">
-                    <select id="walletStatus" name="walletStatus"
-                      class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
-                      <option value="">pick a wallet</option>
-                      <option value="active">WAL-001</option>
-                      <option value="inactive">WAL-002</option>
-                      <option value="suspended">WAL-003</option>
-                    </select>
-                  </div>
-                </div>
-                <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">TVA Amount</label>
-                  <input type="number" id="walLabe" name="walLabe"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-                    placeholder="TVA Amount">
-                </div>
-              </div>
-            </form>
+        <form (ngSubmit)="selectedFeeRule ? updateFeeRule() : addFeeRule()" id="create-fee-rule">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Label</label>
+              <input type="text" [(ngModel)]="newFeeRule.fruLabe" name="fruLabe"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                placeholder="Label" required>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Identifier</label>
+              <input type="text" [(ngModel)]="newFeeRule.fruIden" name="fruIden"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                placeholder="Identifier" required>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Primary Wallet</label>
+              <select [(ngModel)]="newFeeRule.fruPrimaryWalletId" name="fruPrimaryWalletId"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                required>
+                <option value="">Select Wallet</option>
+                <option *ngFor="let wallet of walletsList" [value]="wallet.walIden">{{ wallet.walLabe || wallet.walIden }}</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Primary Amount</label>
+              <input type="number" [(ngModel)]="newFeeRule.fruPrimaryAmount" name="fruPrimaryAmount"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                placeholder="Primary Amount" required step="0.01">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Primary Fees ID</label>
+              <input type="number" [(ngModel)]="newFeeRule.fruPrimaryFeesId" name="fruPrimaryFeesId"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                placeholder="Primary Fees ID" required>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Fees Wallet</label>
+              <select [(ngModel)]="newFeeRule.fruFeesWalletId" name="fruFeesWalletId"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                required>
+                <option value="">Select Wallet</option>
+                <option *ngFor="let wallet of walletsList" [value]="wallet.walIden">{{ wallet.walLabe || wallet.walIden }}</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Fees Amount</label>
+              <input type="number" [(ngModel)]="newFeeRule.fruFeesAmount" name="fruFeesAmount"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                placeholder="Fees Amount" required step="0.01">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">TVA Wallet</label>
+              <select [(ngModel)]="newFeeRule.fruTvaWalletId" name="fruTvaWalletId"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                required>
+                <option value="">Select Wallet</option>
+                <option *ngFor="let wallet of walletsList" [value]="wallet.walIden">{{ wallet.walLabe || wallet.walIden }}</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">TVA Amount</label>
+              <input type="number" [(ngModel)]="newFeeRule.fruTvaAmount" name="fruTvaAmount"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                placeholder="TVA Amount" required step="0.01">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Transaction Direction</label>
+              <select [(ngModel)]="newFeeRule.fruSens" name="fruSens"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                required>
+                <option value="">Select Direction</option>
+                <option value="CREDIT">Credit</option>
+                <option value="DEBIT">Debit</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Fee Rule Type</label>
+              <select [(ngModel)]="newFeeRule.feeRuleType.frtCode" name="feeRuleType"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                required>
+                <option value="">Select Fee Rule Type</option>
+                <option *ngFor="let type of feeRuleTypesList" [value]="type.frtCode">{{ type.frtLabe }}</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Fee Schema</label>
+              <select [(ngModel)]="newFeeRule.feeSchema.fscCode" name="feeSchema"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                required>
+                <option value="">Select Fee Schema</option>
+                <option *ngFor="let schema of feeSchemasList" [value]="schema.fscCode">{{ schema.fscLabe }}</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">VAT Rate</label>
+              <select [(ngModel)]="newFeeRule.fruTva.vatCode" name="fruTva"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                required>
+                <option value="">Select VAT Rate</option>
+                <option *ngFor="let vat of vatRatesList" [value]="vat.vatCode">{{ vat.vatLabe }} ({{ vat.vatRate }}%)</option>
+              </select>
+            </div>
           </div>
           <div class="mt-6 flex justify-end space-x-3">
-            <button type="button" (click)="closeForm('fee-rule')" id="cancel-add-type"
-              class="px-4 py-2 border border-gray-300 rounded-button text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+            <button type="button" (click)="closeForm('fee-rule')"
+              class="px-4 py-2 border border-gray-300 rounded-button text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">
+              Cancel
+            </button>
             <button type="submit"
-              class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 whitespace-nowrap">Add
-              Rule</button>
+              class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 whitespace-nowrap">
+              {{ selectedFeeRule ? 'Update Rule' : 'Add Rule' }}
+            </button>
           </div>
         </form>
       </div>
