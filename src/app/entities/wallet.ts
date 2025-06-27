@@ -1,6 +1,6 @@
 import { Customer } from './customer';
 //import { WalletStatus } from './wallet-status';
-//import { WalletType } from './wallet-type';
+import { WalletType } from './wallet-type';
 import { WalletCategory } from './wallet-category';
 import { WalletOperations } from './wallet-operations';
 import { WalletBalanceHistory } from './wallet-balance-history';
@@ -38,8 +38,3 @@ export class Wallet {
 }
 
 
-export enum WalletType {
-  PERSONAL = 'CUSTOMER',
-  BUSINESS = 'INTERNE',
-  MERCHANT = 'MERCHANT'
-}
