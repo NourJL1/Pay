@@ -8,6 +8,14 @@ import { WalletCategoryService } from '../../../services/wallet-category.service
 import { WalletCategory } from '../../../entities/wallet-category';
 import { WalletTypeService } from '../../../services/wallet-type.service';
 import { WalletType } from '../../../entities/wallet-type';
+import { CardService } from '../../../services/card.service';
+import { Card } from '../../../entities/card';
+import { CardTypeService } from '../../../services/card-type.service';
+import { CardType } from '../../../entities/card-type';
+import { CardListService } from '../../../services/card-list.service';
+import { CardList } from '../../../entities/card-list';
+import { WalletService } from '../../../services/wallet.service';
+import { Wallet } from '../../../entities/wallet';
 
 @Component({
   selector: 'app-wallet-mng',
@@ -31,16 +39,32 @@ export class WalletMngComponent implements OnInit {
   newWalletType: WalletType = new WalletType();
   selectedWalletType: WalletType | null = null;
   isWalletTypeEditMode: boolean = false;
+  isWalletTypeVisible: boolean = false;
 
+  cardsList: Card[] = [];
+  newCard: Card = new Card({ cardList: new CardList({ wallet: new Wallet() }), cardType: new CardType() });
+  selectedCard: Card | null = null;
+  isCardEditMode: boolean = false;
+  isCardFormVisible: boolean = false;
+
+  cardTypesList: CardType[] = [];
+  newCardType: CardType = new CardType();
+  selectedCardType: CardType | null = null;
+  isCardTypeEditMode: boolean = false;
+  isCardTypeVisible: boolean = false;
+
+  cardListsList: CardList[] = [];
+  newCardList: CardList = new CardList({ wallet: new Wallet() });
+  selectedCardList: CardList | null = null;
+  isCardListEditMode: boolean = false;
+  isCardListVisible: boolean = false;
+
+  walletsList: Wallet[] = [];
   errorMessage: string | null = null;
   successMessage: string | null = null;
 
   isWalletFormVisible: boolean = false;
   isWalletDetailsVisible: boolean = false;
-  isWalletTypeVisible: boolean = false;
-  isCardFormVisible: boolean = false;
-  isCardTypeVisible: boolean = false;
-  isCardListVisible: boolean = false;
   isAccountFormVisible: boolean = false;
   isAccountTypeVisible: boolean = false;
   isAccountListVisible: boolean = false;
@@ -49,6 +73,10 @@ export class WalletMngComponent implements OnInit {
     private walletStatusService: WalletStatusService,
     private walletCategoryService: WalletCategoryService,
     private walletTypeService: WalletTypeService,
+    private cardService: CardService,
+    private cardTypeService: CardTypeService,
+    private cardListService: CardListService,
+    private walletService: WalletService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -57,16 +85,22 @@ export class WalletMngComponent implements OnInit {
     this.loadWalletStatuses();
     this.loadWalletCategories();
     this.loadWalletTypes();
+    this.loadCards();
+    this.loadCardTypes();
+    this.loadCardLists();
+    this.loadWallets();
   }
 
-  // Get HTTP headers with optional authentication
-  private getHttpOptions(includeAuth: boolean = false): { headers: HttpHeaders } {
-    const role = localStorage.getItem('role') || 'ROLE_ADMIN';
-    console.log('getHttpOptions: Role:', role, 'Include Auth:', includeAuth);
-    const headers = new HttpHeaders({
+  private getHttpOptions(): { headers: HttpHeaders } {
+    const token = localStorage.getItem('authToken');
+    const role = localStorage.getItem('role') || 'CUSTOMER';
+    let headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      ...(includeAuth ? { 'X-Roles': role } : {})
+      'X-Roles': `ROLE_${role.toUpperCase()}`
     });
+    if (token) {
+      headers = headers.set('Authorization', `Bearer ${token}`);
+    }
     return { headers };
   }
 
@@ -81,9 +115,9 @@ export class WalletMngComponent implements OnInit {
         this.cdr.detectChanges();
       },
       error: (error: HttpErrorResponse) => {
-        this.errorMessage = `Failed to load wallet statuses: ${error.status} ${error.statusText} - ${error.error?.message || 'No response body'}`;
-        console.error('Error loading wallet statuses:', error, 'Response:', error.error);
-        this.cdr.detectChanges();
+        const message = error.status ? `Failed to load wallet statuses: ${error.status} ${error.statusText}` : 'Failed to load wallet statuses: Server error';
+        this.showErrorMessage(message);
+        console.error('Error loading wallet statuses:', error);
       }
     });
   }
@@ -92,16 +126,16 @@ export class WalletMngComponent implements OnInit {
   loadWalletCategories(): void {
     this.errorMessage = null;
     console.log('loadWalletCategories: Fetching wallet categories...');
-    this.walletCategoryService.getAll(this.getHttpOptions(true)).subscribe({
+    this.walletCategoryService.getAll(this.getHttpOptions()).subscribe({
       next: (categories: WalletCategory[]) => {
         console.log('loadWalletCategories: Wallet categories received:', categories);
         this.walletCategories = categories;
         this.cdr.detectChanges();
       },
       error: (error: HttpErrorResponse) => {
-        this.errorMessage = `Failed to load wallet categories: ${error.status} ${error.statusText} - ${error.error?.message || 'No response body'}`;
-        console.error('Error loading wallet categories:', error, 'Response:', error.error);
-        this.cdr.detectChanges();
+        const message = error.status ? `Failed to load wallet categories: ${error.status} ${error.statusText}` : 'Failed to load wallet categories: Server error';
+        this.showErrorMessage(message);
+        console.error('Error loading wallet categories:', error);
       }
     });
   }
@@ -117,14 +151,411 @@ export class WalletMngComponent implements OnInit {
         this.cdr.detectChanges();
       },
       error: (error: HttpErrorResponse) => {
-        this.errorMessage = `Failed to load wallet types: ${error.status} ${error.statusText} - ${error.error?.message || 'No response body'}`;
-        console.error('Error loading wallet types:', error, 'Response:', error.error);
-        this.cdr.detectChanges();
+        const message = error.status ? `Failed to load wallet types: ${error.status} ${error.statusText}` : 'Failed to load wallet types: Server error';
+        this.showErrorMessage(message);
+        console.error('Error loading wallet types:', error);
       }
     });
   }
 
-  // Add a new wallet type
+  // Load cards
+  loadCards(): void {
+    this.errorMessage = null;
+    console.log('loadCards: Fetching cards...');
+    this.cardService.getAll().subscribe({
+      next: (cards: Card[]) => {
+        console.log('loadCards: Cards received:', cards);
+        this.cardsList = cards;
+        this.cdr.detectChanges();
+      },
+      error: (error: HttpErrorResponse) => {
+        const message = error.status ? `Failed to load cards: ${error.status} ${error.statusText}` : 'Failed to load cards: Server error';
+        this.showErrorMessage(message);
+        console.error('Error loading cards:', error);
+      }
+    });
+  }
+
+  // Load card types
+  loadCardTypes(): void {
+    this.errorMessage = null;
+    console.log('loadCardTypes: Fetching card types...');
+    this.cardTypeService.findAll().subscribe({
+      next: (cardTypes: CardType[]) => {
+        console.log('loadCardTypes: Card types received:', cardTypes);
+        this.cardTypesList = cardTypes;
+        this.cdr.detectChanges();
+      },
+      error: (error: HttpErrorResponse) => {
+        const message = error.status ? `Failed to load card types: ${error.status} ${error.statusText}` : 'Failed to load card types: Server error';
+        this.showErrorMessage(message);
+        console.error('Error loading card types:', error);
+      }
+    });
+  }
+
+  // Load card lists
+  loadCardLists(): void {
+    this.errorMessage = null;
+    console.log('loadCardLists: Fetching card lists...');
+    this.cardListService.getAll().subscribe({
+      next: (cardLists: CardList[]) => {
+        console.log('loadCardLists: Card lists received:', cardLists);
+        this.cardListsList = cardLists;
+        this.cdr.detectChanges();
+      },
+      error: (error: HttpErrorResponse) => {
+        const message = error.status ? `Failed to load card lists: ${error.status} ${error.statusText}` : 'Failed to load card lists: Server error';
+        this.showErrorMessage(message);
+        console.error('Error loading card lists:', error);
+      }
+    });
+  }
+
+  // Load wallets
+  loadWallets(): void {
+    this.errorMessage = null;
+    console.log('loadWallets: Fetching wallets...');
+    this.walletService.getAll().subscribe({
+      next: (wallets: Wallet[]) => {
+        console.log('loadWallets: Wallets received:', wallets);
+        this.walletsList = wallets;
+        this.cdr.detectChanges();
+      },
+      error: (error: HttpErrorResponse) => {
+        const message = error.status ? `Failed to load wallets: ${error.status} ${error.statusText}` : 'Failed to load wallets: Server error';
+        this.showErrorMessage(message);
+        console.error('Error loading wallets:', error);
+      }
+    });
+  }
+
+  // Add or update card
+  saveCard(): void {
+    this.errorMessage = null;
+    console.log('saveCard: Saving card:', this.newCard);
+    if (!this.newCard.carIden || !this.newCard.carLabe || !this.newCard.carNumb || !this.newCard.carExpiryDate || !this.newCard.cardType?.ctypCode || !this.newCard.cardList?.cliCode) {
+      this.showErrorMessage('Please fill in all required fields: Identifier, Label, Number, Expiry Date, Card Type, and Card List.');
+      return;
+    }
+    if (this.isCardEditMode && this.selectedCard?.carCode) {
+      this.cardService.update(this.selectedCard.carCode, this.newCard).subscribe({
+        next: (updatedCard: Card) => {
+          console.log('saveCard: Card updated:', updatedCard);
+          const index = this.cardsList.findIndex(c => c.carCode === updatedCard.carCode);
+          if (index !== -1) {
+            this.cardsList[index] = updatedCard;
+            this.cardsList = [...this.cardsList];
+          }
+          this.newCard = new Card({ cardList: new CardList({ wallet: new Wallet() }), cardType: new CardType() });
+          this.selectedCard = null;
+          this.isCardEditMode = false;
+          this.isCardFormVisible = false;
+          this.showSuccessMessage('Card updated successfully');
+          this.cdr.detectChanges();
+        },
+        error: (error: HttpErrorResponse) => {
+          const message = error.status ? `Failed to update card: ${error.status} ${error.statusText}` : 'Failed to update card: Server error';
+          this.showErrorMessage(message);
+          console.error('Error updating card:', error);
+        }
+      });
+    } else {
+      this.cardService.create(this.newCard).subscribe({
+        next: (createdCard: Card) => {
+          console.log('saveCard: Card created:', createdCard);
+          this.cardsList.push(createdCard);
+          this.newCard = new Card({ cardList: new CardList({ wallet: new Wallet() }), cardType: new CardType() });
+          this.isCardFormVisible = false;
+          this.showSuccessMessage('Card added successfully');
+          this.cdr.detectChanges();
+        },
+        error: (error: HttpErrorResponse) => {
+          const message = error.status ? `Failed to create card: ${error.status} ${error.statusText}` : 'Failed to create card: Server error';
+          this.showErrorMessage(message);
+          console.error('Error creating card:', error);
+        }
+      });
+    }
+  }
+
+  // Edit card
+  editCard(card: Card): void {
+    this.errorMessage = null;
+    console.log('editCard: Editing card:', card);
+    this.selectedCard = card;
+    this.newCard = { 
+      ...card, 
+      cardType: card.cardType ? { ...card.cardType } : new CardType(),
+      cardList: card.cardList ? { ...card.cardList, wallet: card.cardList.wallet ? { ...card.cardList.wallet } : new Wallet() } : new CardList({ wallet: new Wallet() })
+    };
+    this.isCardEditMode = true;
+    this.isCardFormVisible = true;
+    this.cdr.detectChanges();
+  }
+
+  // Delete card
+  deleteCard(carCode: number | undefined): void {
+    this.errorMessage = null;
+    console.log('deleteCard: carCode:', carCode);
+    if (carCode && confirm('Are you sure you want to delete this card?')) {
+      this.cardService.delete(carCode).subscribe({
+        next: () => {
+          console.log('deleteCard: Success, carCode:', carCode);
+          this.cardsList = this.cardsList.filter(c => c.carCode !== carCode);
+          this.showSuccessMessage('Card deleted successfully');
+          this.cdr.detectChanges();
+        },
+        error: (error: HttpErrorResponse) => {
+          const message = error.status ? `Failed to delete card: ${error.status} ${error.statusText}` : 'Failed to delete card: Server error';
+          this.showErrorMessage(message);
+          console.error('Error deleting card:', error);
+        }
+      });
+    }
+  }
+
+  // Add or update card type
+  saveCardType(): void {
+    this.errorMessage = null;
+    console.log('saveCardType: Saving card type:', this.newCardType);
+    if (!this.newCardType.ctypIden || !this.newCardType.ctypLabe) {
+      this.showErrorMessage('Please fill in all required fields: Identifier and Label.');
+      return;
+    }
+    if (this.isCardTypeEditMode && this.selectedCardType?.ctypCode) {
+      this.cardTypeService.save(this.newCardType).subscribe({
+        next: (updatedCardType: CardType) => {
+          console.log('saveCardType: Card type updated:', updatedCardType);
+          const index = this.cardTypesList.findIndex(t => t.ctypCode === updatedCardType.ctypCode);
+          if (index !== -1) {
+            this.cardTypesList[index] = updatedCardType;
+            this.cardTypesList = [...this.cardTypesList];
+          }
+          this.newCardType = new CardType();
+          this.selectedCardType = null;
+          this.isCardTypeEditMode = false;
+          this.isCardTypeVisible = false;
+          this.showSuccessMessage('Card type updated successfully');
+          this.cdr.detectChanges();
+        },
+        error: (error: HttpErrorResponse) => {
+          const message = error.status ? `Failed to update card type: ${error.status} ${error.statusText}` : 'Failed to update card type: Server error';
+          this.showErrorMessage(message);
+          console.error('Error updating card type:', error);
+        }
+      });
+    } else {
+      this.cardTypeService.save(this.newCardType).subscribe({
+        next: (createdCardType: CardType) => {
+          console.log('saveCardType: Card type created:', createdCardType);
+          this.cardTypesList.push(createdCardType);
+          this.newCardType = new CardType();
+          this.isCardTypeVisible = false;
+          this.showSuccessMessage('Card type added successfully');
+          this.cdr.detectChanges();
+        },
+        error: (error: HttpErrorResponse) => {
+          const message = error.status ? `Failed to create card type: ${error.status} ${error.statusText}` : 'Failed to create card type: Server error';
+          this.showErrorMessage(message);
+          console.error('Error creating card type:', error);
+        }
+      });
+    }
+  }
+
+  // Edit card type
+  editCardType(cardType: CardType): void {
+    this.errorMessage = null;
+    console.log('editCardType: Editing card type:', cardType);
+    this.selectedCardType = cardType;
+    this.newCardType = { ...cardType };
+    this.isCardTypeEditMode = true;
+    this.isCardTypeVisible = true;
+    this.cdr.detectChanges();
+  }
+
+  // Delete card type
+  deleteCardType(ctypCode: number | undefined): void {
+    this.errorMessage = null;
+    console.log('deleteCardType: ctypCode:', ctypCode);
+    if (ctypCode && confirm('Are you sure you want to delete this card type?')) {
+      this.cardTypeService.deleteById(ctypCode).subscribe({
+        next: () => {
+          console.log('deleteCardType: Success, ctypCode:', ctypCode);
+          this.cardTypesList = this.cardTypesList.filter(t => t.ctypCode !== ctypCode);
+          this.showSuccessMessage('Card type deleted successfully');
+          this.cdr.detectChanges();
+        },
+        error: (error: HttpErrorResponse) => {
+          const message = error.status ? `Failed to delete card type: ${error.status} ${error.statusText}` : 'Failed to delete card type: Server error';
+          this.showErrorMessage(message);
+          console.error('Error deleting card type:', error);
+        }
+      });
+    }
+  }
+
+  // Add or update card list
+  saveCardList(): void {
+    this.errorMessage = null;
+    console.log('saveCardList: Saving card list:', this.newCardList);
+    if (!this.newCardList.cliIden || !this.newCardList.cliLabe || !this.newCardList.wallet?.walIden) {
+      this.showErrorMessage('Please fill in all required fields: Identifier, Label, and Wallet.');
+      return;
+    }
+    if (this.isCardListEditMode && this.selectedCardList?.cliCode) {
+      this.cardListService.update(this.selectedCardList.cliCode, this.newCardList).subscribe({
+        next: (updatedCardList: CardList) => {
+          console.log('saveCardList: Card list updated:', updatedCardList);
+          const index = this.cardListsList.findIndex(l => l.cliCode === updatedCardList.cliCode);
+          if (index !== -1) {
+            this.cardListsList[index] = updatedCardList;
+            this.cardListsList = [...this.cardListsList];
+          }
+          this.newCardList = new CardList({ wallet: new Wallet() });
+          this.selectedCardList = null;
+          this.isCardListEditMode = false;
+          this.isCardListVisible = false;
+          this.showSuccessMessage('Card list updated successfully');
+          this.cdr.detectChanges();
+        },
+        error: (error: HttpErrorResponse) => {
+          const message = error.status ? `Failed to update card list: ${error.status} ${error.statusText}` : 'Failed to update card list: Server error';
+          this.showErrorMessage(message);
+          console.error('Error updating card list:', error);
+        }
+      });
+    } else {
+      this.cardListService.create(this.newCardList).subscribe({
+        next: (createdCardList: CardList) => {
+          console.log('saveCardList: Card list created:', createdCardList);
+          this.cardListsList.push(createdCardList);
+          this.newCardList = new CardList({ wallet: new Wallet() });
+          this.isCardListVisible = false;
+          this.showSuccessMessage('Card list added successfully');
+          this.cdr.detectChanges();
+        },
+        error: (error: HttpErrorResponse) => {
+          const message = error.status ? `Failed to create card list: ${error.status} ${error.statusText}` : 'Failed to create card list: Server error';
+          this.showErrorMessage(message);
+          console.error('Error creating card list:', error);
+        }
+      });
+    }
+  }
+
+  // Edit card list
+  editCardList(cardList: CardList): void {
+    this.errorMessage = null;
+    console.log('editCardList: Editing card list:', cardList);
+    this.selectedCardList = cardList;
+    this.newCardList = { ...cardList, wallet: cardList.wallet ? { ...cardList.wallet } : new Wallet() };
+    this.isCardListEditMode = true;
+    this.isCardListVisible = true;
+    this.cdr.detectChanges();
+  }
+
+  // Delete card list
+  deleteCardList(cliCode: number | undefined): void {
+    this.errorMessage = null;
+    console.log('deleteCardList: cliCode:', cliCode);
+    if (cliCode && confirm('Are you sure you want to delete this card list?')) {
+      this.cardListService.delete(cliCode).subscribe({
+        next: () => {
+          console.log('deleteCardList: Success, cliCode:', cliCode);
+          this.cardListsList = this.cardListsList.filter(l => l.cliCode !== cliCode);
+          this.showSuccessMessage('Card list deleted successfully');
+          this.cdr.detectChanges();
+        },
+        error: (error: HttpErrorResponse) => {
+          const message = error.status ? `Failed to delete card list: ${error.status} ${error.statusText}` : 'Failed to delete card list: Server error';
+          this.showErrorMessage(message);
+          console.error('Error deleting card list:', error);
+        }
+      });
+    }
+  }
+
+  // Save wallet status
+  saveStatus(): void {
+    this.errorMessage = null;
+    console.log('saveStatus: Saving wallet status:', this.selectedStatus);
+    if (!this.selectedStatus.wstIden || !this.selectedStatus.wstLabe) {
+      this.showErrorMessage('Please fill in all required fields: Status Identifier and Status Label.');
+      return;
+    }
+    if (this.isStatusEditMode) {
+      this.walletStatusService.update(this.selectedStatus.wstCode!, this.selectedStatus, this.getHttpOptions()).subscribe({
+        next: () => {
+          console.log('saveStatus: Wallet status updated');
+          this.loadWalletStatuses();
+          this.closeForm('wallet-status');
+          this.showSuccessMessage('Wallet status updated successfully');
+        },
+        error: (error: HttpErrorResponse) => {
+          const message = error.status ? `Failed to update wallet status: ${error.status} ${error.statusText}` : 'Failed to update wallet status: Server error';
+          this.showErrorMessage(message);
+          console.error('Error updating wallet status:', error);
+        }
+      });
+    } else {
+      this.walletStatusService.create(this.selectedStatus, this.getHttpOptions()).subscribe({
+        next: () => {
+          console.log('saveStatus: Wallet status created');
+          this.loadWalletStatuses();
+          this.closeForm('wallet-status');
+          this.showSuccessMessage('Wallet status added successfully');
+        },
+        error: (error: HttpErrorResponse) => {
+          const message = error.status ? `Failed to create wallet status: ${error.status} ${error.statusText}` : 'Failed to create wallet status: Server error';
+          this.showErrorMessage(message);
+          console.error('Error creating wallet status:', error);
+        }
+      });
+    }
+  }
+
+  // Save wallet category
+  saveCategory(): void {
+    this.errorMessage = null;
+    console.log('saveCategory: Saving wallet category:', this.selectedCategory);
+    if (!this.selectedCategory.wcaIden || !this.selectedCategory.wcaLabe || !this.selectedCategory.wcaFinId) {
+      this.showErrorMessage('Please fill in all required fields: Identifier, Label, and Financial Institution ID.');
+      return;
+    }
+    if (this.isCategoryEditMode) {
+      this.walletCategoryService.update(this.selectedCategory.wcaCode!, this.selectedCategory, this.getHttpOptions()).subscribe({
+        next: () => {
+          console.log('saveCategory: Wallet category updated');
+          this.loadWalletCategories();
+          this.closeForm('wallet-category');
+          this.showSuccessMessage('Wallet category updated successfully');
+        },
+        error: (error: HttpErrorResponse) => {
+          const message = error.status ? `Failed to update wallet category: ${error.status} ${error.statusText}` : 'Failed to update wallet category: Server error';
+          this.showErrorMessage(message);
+          console.error('Error updating wallet category:', error);
+        }
+      });
+    } else {
+      this.walletCategoryService.create(this.selectedCategory, this.getHttpOptions()).subscribe({
+        next: () => {
+          console.log('saveCategory: Wallet category created');
+          this.loadWalletCategories();
+          this.closeForm('wallet-category');
+          this.showSuccessMessage('Wallet category added successfully');
+        },
+        error: (error: HttpErrorResponse) => {
+          const message = error.status ? `Failed to create wallet category: ${error.status} ${error.statusText}` : 'Failed to create wallet category: Server error';
+          this.showErrorMessage(message);
+          console.error('Error creating wallet category:', error);
+        }
+      });
+    }
+  }
+
+  // Add wallet type
   addWalletType(): void {
     console.log('addWalletType: Adding wallet type:', this.newWalletType);
     if (!this.newWalletType.wtyIden || !this.newWalletType.wtyLabe) {
@@ -140,14 +571,15 @@ export class WalletMngComponent implements OnInit {
         this.showSuccessMessage('Wallet type added successfully');
         this.cdr.detectChanges();
       },
-      error: (err: HttpErrorResponse) => {
-        console.error('addWalletType: Error:', err, 'Response:', err.error);
-        this.showErrorMessage(`Failed to add wallet type: ${err.status} ${err.statusText} - ${err.error?.message || 'No response body'}`);
+      error: (error: HttpErrorResponse) => {
+        const message = error.status ? `Failed to add wallet type: ${error.status} ${error.statusText}` : 'Failed to add wallet type: Server error';
+        this.showErrorMessage(message);
+        console.error('addWalletType: Error:', error);
       }
     });
   }
 
-  // Edit a wallet type
+  // Edit wallet type
   editWalletType(type: WalletType): void {
     console.log('editWalletType: Wallet type object:', type);
     this.selectedWalletType = type;
@@ -157,7 +589,7 @@ export class WalletMngComponent implements OnInit {
     this.cdr.detectChanges();
   }
 
-  // Update a wallet type
+  // Update wallet type
   updateWalletType(): void {
     console.log('updateWalletType: Updating wallet type:', this.newWalletType);
     if (!this.newWalletType.wtyIden || !this.newWalletType.wtyLabe) {
@@ -180,32 +612,14 @@ export class WalletMngComponent implements OnInit {
           this.showSuccessMessage('Wallet type updated successfully');
           this.cdr.detectChanges();
         },
-        error: (err: HttpErrorResponse) => {
-          console.error('updateWalletType: Error:', err, 'Response:', err.error);
-          this.showErrorMessage(`Failed to update wallet type: ${err.status} ${err.statusText} - ${err.error?.message || 'No response body'}`);
+        error: (error: HttpErrorResponse) => {
+          const message = error.status ? `Failed to update wallet type: ${error.status} ${error.statusText}` : 'Failed to update wallet type: Server error';
+          this.showErrorMessage(message);
+          console.error('updateWalletType: Error:', error);
         }
       });
     } else {
       this.showErrorMessage('No wallet type selected for update.');
-    }
-  }
-
-  // Delete a wallet type
-  deleteWalletType(wtyCode: number | undefined): void {
-    console.log('deleteWalletType: wtyCode:', wtyCode);
-    if (wtyCode && confirm('Are you sure you want to delete this wallet type?')) {
-      this.walletTypeService.delete(wtyCode, this.getHttpOptions()).subscribe({
-        next: () => {
-          console.log('deleteWalletType: Success, wtyCode:', wtyCode);
-          this.walletTypesList = this.walletTypesList.filter(t => t.wtyCode !== wtyCode);
-          this.showSuccessMessage('Wallet type deleted successfully');
-          this.cdr.detectChanges();
-        },
-        error: (err: HttpErrorResponse) => {
-          console.error('deleteWalletType: Error:', err, 'Response:', err.error);
-          this.showErrorMessage(`Failed to delete wallet type: ${err.status} ${err.statusText} - ${err.error?.message || 'No response body'}`);
-        }
-      });
     }
   }
 
@@ -219,75 +633,21 @@ export class WalletMngComponent implements OnInit {
     }
   }
 
-  // Save wallet status
-  saveStatus(): void {
-    this.errorMessage = null;
-    console.log('saveStatus: Saving wallet status:', this.selectedStatus);
-    if (!this.selectedStatus.wstIden || !this.selectedStatus.wstLabe) {
-      this.showErrorMessage('Please fill in all required fields: Status Identifier and Status Label.');
-      return;
-    }
-    if (this.isStatusEditMode) {
-      this.walletStatusService.update(this.selectedStatus.wstCode!, this.selectedStatus, this.getHttpOptions()).subscribe({
+  // Delete wallet type
+  deleteWalletType(wtyCode: number | undefined): void {
+    console.log('deleteWalletType: wtyCode:', wtyCode);
+    if (wtyCode && confirm('Are you sure you want to delete this wallet type?')) {
+      this.walletTypeService.delete(wtyCode, this.getHttpOptions()).subscribe({
         next: () => {
-          console.log('saveStatus: Wallet status updated');
-          this.loadWalletStatuses();
-          this.closeForm('wallet-status');
-          this.showSuccessMessage('Wallet status updated successfully');
+          console.log('deleteWalletType: Success, wtyCode:', wtyCode);
+          this.walletTypesList = this.walletTypesList.filter(t => t.wtyCode !== wtyCode);
+          this.showSuccessMessage('Wallet type deleted successfully');
+          this.cdr.detectChanges();
         },
         error: (error: HttpErrorResponse) => {
-          this.showErrorMessage(`Failed to update wallet status: ${error.status} ${error.statusText} - ${error.error?.message || 'No response body'}`);
-          console.error('Error updating wallet status:', error, 'Response:', error.error);
-        }
-      });
-    } else {
-      this.walletStatusService.create(this.selectedStatus, this.getHttpOptions()).subscribe({
-        next: () => {
-          console.log('saveStatus: Wallet status created');
-          this.loadWalletStatuses();
-          this.closeForm('wallet-status');
-          this.showSuccessMessage('Wallet status added successfully');
-        },
-        error: (error: HttpErrorResponse) => {
-          this.showErrorMessage(`Failed to create wallet status: ${error.status} ${error.statusText} - ${error.error?.message || 'No response body'}`);
-          console.error('Error creating wallet status:', error, 'Response:', error.error);
-        }
-      });
-    }
-  }
-
-  // Save wallet category
-  saveCategory(): void {
-    this.errorMessage = null;
-    console.log('saveCategory: Saving wallet category:', this.selectedCategory);
-    if (!this.selectedCategory.wcaIden || !this.selectedCategory.wcaLabe || !this.selectedCategory.wcaFinId) {
-      this.showErrorMessage('Please fill in all required fields: Identifier, Label, and Financial Institution ID.');
-      return;
-    }
-    if (this.isCategoryEditMode) {
-      this.walletCategoryService.update(this.selectedCategory.wcaCode!, this.selectedCategory, this.getHttpOptions(true)).subscribe({
-        next: () => {
-          console.log('saveCategory: Wallet category updated');
-          this.loadWalletCategories();
-          this.closeForm('wallet-category');
-          this.showSuccessMessage('Wallet category updated successfully');
-        },
-        error: (error: HttpErrorResponse) => {
-          this.showErrorMessage(`Failed to update wallet category: ${error.status} ${error.statusText} - ${error.error?.message || 'No response body'}`);
-          console.error('Error updating wallet category:', error, 'Response:', error.error);
-        }
-      });
-    } else {
-      this.walletCategoryService.create(this.selectedCategory, this.getHttpOptions(true)).subscribe({
-        next: () => {
-          console.log('saveCategory: Wallet category created');
-          this.loadWalletCategories();
-          this.closeForm('wallet-category');
-          this.showSuccessMessage('Wallet category added successfully');
-        },
-        error: (error: HttpErrorResponse) => {
-          this.showErrorMessage(`Failed to create wallet category: ${error.status} ${error.statusText} - ${error.error?.message || 'No response body'}`);
-          console.error('Error creating wallet category:', error, 'Response:', error.error);
+          const message = error.status ? `Failed to delete wallet type: ${error.status} ${error.statusText}` : 'Failed to delete wallet type: Server error';
+          this.showErrorMessage(message);
+          console.error('deleteWalletType: Error:', error);
         }
       });
     }
@@ -325,8 +685,9 @@ export class WalletMngComponent implements OnInit {
           this.showSuccessMessage('Wallet status deleted successfully');
         },
         error: (error: HttpErrorResponse) => {
-          this.showErrorMessage(`Failed to delete wallet status: ${error.status} ${error.statusText} - ${error.error?.message || 'No response body'}`);
-          console.error('Error deleting wallet status:', error, 'Response:', error.error);
+          const message = error.status ? `Failed to delete wallet status: ${error.status} ${error.statusText}` : 'Failed to delete wallet status: Server error';
+          this.showErrorMessage(message);
+          console.error('Error deleting wallet status:', error);
         }
       });
     }
@@ -337,15 +698,16 @@ export class WalletMngComponent implements OnInit {
     this.errorMessage = null;
     console.log('deleteCategory: wcaCode:', wcaCode);
     if (wcaCode && confirm('Are you sure you want to delete this category?')) {
-      this.walletCategoryService.delete(wcaCode, this.getHttpOptions(true)).subscribe({
+      this.walletCategoryService.delete(wcaCode, this.getHttpOptions()).subscribe({
         next: () => {
           console.log('deleteCategory: Success, wcaCode:', wcaCode);
           this.loadWalletCategories();
           this.showSuccessMessage('Wallet category deleted successfully');
         },
         error: (error: HttpErrorResponse) => {
-          this.showErrorMessage(`Failed to delete wallet category: ${error.status} ${error.statusText} - ${error.error?.message || 'No response body'}`);
-          console.error('Error deleting wallet category:', error, 'Response:', error.error);
+          const message = error.status ? `Failed to delete wallet category: ${error.status} ${error.statusText}` : 'Failed to delete wallet category: Server error';
+          this.showErrorMessage(message);
+          console.error('Error deleting wallet category:', error);
         }
       });
     }
@@ -402,12 +764,21 @@ export class WalletMngComponent implements OnInit {
         break;
       case 'create-card':
         this.isCardFormVisible = true;
+        this.isCardEditMode = false;
+        this.newCard = new Card({ cardList: new CardList({ wallet: new Wallet() }), cardType: new CardType() });
+        this.selectedCard = null;
         break;
       case 'card-type':
         this.isCardTypeVisible = true;
+        this.isCardTypeEditMode = false;
+        this.newCardType = new CardType();
+        this.selectedCardType = null;
         break;
       case 'card-list':
         this.isCardListVisible = true;
+        this.isCardListEditMode = false;
+        this.newCardList = new CardList({ wallet: new Wallet() });
+        this.selectedCardList = null;
         break;
       case 'create-account':
         this.isAccountFormVisible = true;
@@ -451,12 +822,21 @@ export class WalletMngComponent implements OnInit {
         break;
       case 'create-card':
         this.isCardFormVisible = false;
+        this.newCard = new Card({ cardList: new CardList({ wallet: new Wallet() }), cardType: new CardType() });
+        this.selectedCard = null;
+        this.isCardEditMode = false;
         break;
       case 'card-type':
         this.isCardTypeVisible = false;
+        this.newCardType = new CardType();
+        this.selectedCardType = null;
+        this.isCardTypeEditMode = false;
         break;
       case 'card-list':
         this.isCardListVisible = false;
+        this.newCardList = new CardList({ wallet: new Wallet() });
+        this.selectedCardList = null;
+        this.isCardListEditMode = false;
         break;
       case 'create-account':
         this.isAccountFormVisible = false;
@@ -469,6 +849,23 @@ export class WalletMngComponent implements OnInit {
         break;
     }
     this.cdr.detectChanges();
+  }
+
+  // Check if any modal is visible
+  get isAnyModalVisible(): boolean {
+    return (
+      this.isWalletDetailsVisible ||
+      this.isWalletFormVisible ||
+      this.isWalletStatusVisible ||
+      this.isWalletTypeVisible ||
+      this.isWalletCategoryVisible ||
+      this.isCardFormVisible ||
+      this.isCardTypeVisible ||
+      this.isCardListVisible ||
+      this.isAccountFormVisible ||
+      this.isAccountTypeVisible ||
+      this.isAccountListVisible
+    );
   }
 
   // Show specific tab
@@ -496,20 +893,25 @@ export class WalletMngComponent implements OnInit {
     this.cdr.detectChanges();
   }
 
-  // Check if any modal is visible
-  get isAnyModalVisible(): boolean {
-    return (
-      this.isWalletDetailsVisible ||
-      this.isWalletFormVisible ||
-      this.isWalletStatusVisible ||
-      this.isWalletTypeVisible ||
-      this.isWalletCategoryVisible ||
-      this.isCardFormVisible ||
-      this.isCardTypeVisible ||
-      this.isCardListVisible ||
-      this.isAccountFormVisible ||
-      this.isAccountTypeVisible ||
-      this.isAccountListVisible
-    );
+  // Format date for display (e.g., DD-MM-YYYY)
+  formatDate(date: Date | string | undefined): string {
+    if (!date) return '';
+    const d = typeof date === 'string' ? new Date(date) : date;
+    if (isNaN(d.getTime())) return '';
+    return `${d.getDate().toString().padStart(2, '0')}-${(d.getMonth() + 1).toString().padStart(2, '0')}-${d.getFullYear()}`;
+  }
+
+  // Parse date from input (e.g., DD-MM-YYYY to Date)
+  parseDate(dateStr: string): Date | undefined {
+    if (!dateStr) return undefined;
+    const [day, month, year] = dateStr.split('-').map(Number);
+    const date = new Date(year, month - 1, day);
+    return isNaN(date.getTime()) ? undefined : date;
+  }
+
+  // Handle expiry date input change
+  onExpiryDateChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.newCard.carExpiryDate = this.parseDate(input.value);
   }
 }

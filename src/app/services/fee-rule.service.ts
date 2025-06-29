@@ -48,8 +48,8 @@ export class FeeRuleService {
     );
   }
 
-  create(feeRule: FeeRule, httpOptions?: { headers: HttpHeaders }): Observable<FeeRule> {
-    return this.http.post<FeeRule>(this.apiUrl, feeRule, httpOptions || this.getHttpOptions()).pipe(
+  create(feeRule: FeeRule, httpOptions: { headers: HttpHeaders } = this.getHttpOptions()): Observable<FeeRule> {
+    return this.http.post<FeeRule>(this.apiUrl, feeRule, httpOptions).pipe(
       catchError(error => {
         console.error('create: Error:', error.status, error.message);
         return throwError(() => new Error('Failed to create fee rule'));
@@ -57,8 +57,8 @@ export class FeeRuleService {
     );
   }
 
-  update(id: number, feeRule: FeeRule, httpOptions?: { headers?: HttpHeaders }): Observable<FeeRule> {
-    return this.http.put<FeeRule>(`${this.apiUrl}/${id}`, feeRule, httpOptions || this.getHttpOptions()).pipe(
+  update(id: number, feeRule: FeeRule, httpOptions: { headers: HttpHeaders } = this.getHttpOptions()): Observable<FeeRule> {
+    return this.http.put<FeeRule>(`${this.apiUrl}/${id}`, feeRule, httpOptions).pipe(
       catchError(error => {
         console.error('update: Error:', error.status, error.message);
         return throwError(() => new Error('Failed to update fee rule'));
@@ -66,8 +66,8 @@ export class FeeRuleService {
     );
   }
 
-  delete(id: number, httpOptions?: { headers?: HttpHeaders }): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`, httpOptions || this.getHttpOptions()).pipe(
+  delete(id: number, httpOptions: { headers: HttpHeaders } = this.getHttpOptions()): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`, httpOptions).pipe(
       catchError(error => {
         console.error('delete: Error:', error.status, error.message);
         return throwError(() => new Error('Failed to delete fee rule'));

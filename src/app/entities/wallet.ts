@@ -1,5 +1,5 @@
 import { Customer } from './customer';
-//import { WalletStatus } from './wallet-status';
+import { WalletStatus } from './wallet-status';
 import { WalletType } from './wallet-type';
 import { WalletCategory } from './wallet-category';
 import { WalletOperations } from './wallet-operations';
@@ -8,9 +8,8 @@ import { OperationType } from './operation-type';
 import { CardList } from './card-list';
 import { AccountList } from './account-list';
 import { WalletOperationTypeMap } from './wallet-operation-type-map';
-import { WalletStatus } from './wallet-status';
-export class Wallet {
 
+export class Wallet {
   walCode!: number;
   walIden!: string;
   walLabe?: string;
@@ -36,5 +35,3 @@ export class Wallet {
     Object.assign(this, init);
   }
 }
-
-

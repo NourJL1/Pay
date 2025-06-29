@@ -48,8 +48,8 @@ export class VatRateService {
     );
   }
 
-  create(vatRate: VatRate): Observable<VatRate> {
-    return this.http.post<VatRate>(this.apiUrl, vatRate, this.getHttpOptions()).pipe(
+  create(vatRate: VatRate, httpOptions: { headers: HttpHeaders } = this.getHttpOptions()): Observable<VatRate> {
+    return this.http.post<VatRate>(this.apiUrl, vatRate, httpOptions).pipe(
       catchError(error => {
         console.error('create: Error:', error.status, error.message);
         return throwError(() => new Error('Failed to create VAT rate'));
@@ -57,8 +57,8 @@ export class VatRateService {
     );
   }
 
-  update(vatCode: number, vatRate: VatRate): Observable<VatRate> {
-    return this.http.put<VatRate>(`${this.apiUrl}/${vatCode}`, vatRate, this.getHttpOptions()).pipe(
+  update(vatCode: number, vatRate: VatRate, httpOptions: { headers: HttpHeaders } = this.getHttpOptions()): Observable<VatRate> {
+    return this.http.put<VatRate>(`${this.apiUrl}/${vatCode}`, vatRate, httpOptions).pipe(
       catchError(error => {
         console.error('update: Error:', error.status, error.message);
         return throwError(() => new Error('Failed to update VAT rate'));
@@ -66,8 +66,8 @@ export class VatRateService {
     );
   }
 
-  delete(vatCode: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${vatCode}`, this.getHttpOptions()).pipe(
+  delete(vatCode: number, httpOptions: { headers: HttpHeaders } = this.getHttpOptions()): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${vatCode}`, httpOptions).pipe(
       catchError(error => {
         console.error('delete: Error:', error.status, error.message);
         return throwError(() => new Error('Failed to delete VAT rate'));

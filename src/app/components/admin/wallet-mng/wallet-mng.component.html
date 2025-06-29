@@ -3,6 +3,13 @@
     <h1 class="text-xl font-semibold text-gray-800">Wallet Management</h1>
   </div>
 </div>
+<!-- Success/Error Messages -->
+  <div *ngIf="successMessage" class="fixed top-4 right-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded shadow-lg" role="alert">
+    <span class="block sm:inline">{{ successMessage }}</span>
+  </div>
+  <div *ngIf="errorMessage" class="fixed top-4 right-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded shadow-lg" role="alert">
+    <span class="block sm:inline">{{ errorMessage }}</span>
+  </div>
 <!-- Tabs -->
 <div class="bg-white border-b">
   <div class="px-6 flex">
@@ -738,274 +745,145 @@
             class="cards-tab-button relative px-4 py-3 text-sm text-gray-500">Card List</button>
         </nav>
       </div>
-      <!-- Cards Content-->
-      <div id="cards-tab-overview" class="cards-tab-content p-6">
-        <div class="flex justify-between items-center mb-6">
-          <h3 class="text-lg font-medium text-gray-900">Cards Management</h3>
-          <button id="btn-add-card" (click)="toggleForm('create-card')"
-            class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
-            <i class="ri-add-line mr-1"></i> Add Card </button>
-        </div>
-        <div class="overflow-x-auto">
-          <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
-              <tr>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Label</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Expiracy Date</th>
-                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  List</th>
-                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Type</th>
-                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  EMV</th>
-                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions</th>
-              </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-              <tr>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CAR-001</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">16-08-2025</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">MASTER CARD</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CREDIT CARD</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">WCA-001</td>
-                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <div class="flex justify-end space-x-2">
-                    <button class="text-green-600 hover:text-gray-500">
-                      <div class="w-6 h-6 flex items-center justify-center">
-                        <i class="ri-edit-line"></i>
-                      </div>
-                    </button>
-                    <button class="text-red-600 hover:text-red-500">
-                      <div class="w-6 h-6 flex items-center justify-center">
-                        <i class="ri-delete-bin-line"></i>
-                      </div>
-                    </button>
+      <!-- Cards Content -->
+  <div id="cards-tab-overview" class="cards-tab-content p-6">
+    <div class="flex justify-between items-center mb-6">
+      <h3 class="text-lg font-medium text-gray-900">Cards Management</h3>
+      <button id="btn-add-card" (click)="toggleForm('create-card')" class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+        <i class="ri-add-line mr-1"></i> Add Card
+      </button>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Label</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Expiry Date</th>
+            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">List</th>
+            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">EMV</th>
+            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          <tr *ngFor="let card of cardsList">
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ card.carLabe || card.carIden }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ formatDate(card.carExpiryDate) }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ card.cardList?.cliLabe || 'N/A' }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ card.cardType?.ctypLabe || 'N/A' }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ card.carEmvData || 'N/A' }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+              <div class="flex justify-end space-x-2">
+                <button class="text-green-600 hover:text-gray-500" (click)="editCard(card)">
+                  <div class="w-6 h-6 flex items-center justify-center">
+                    <i class="ri-edit-line"></i>
                   </div>
-                </td>
-              </tr>
-              <tr>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CAR-002</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">16-08-2025</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">VISA</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CREDIT CARD</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">WCA-001</td>
-                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <div class="flex justify-end space-x-2">
-                    <button class="text-green-600 hover:text-gray-500">
-                      <div class="w-6 h-6 flex items-center justify-center">
-                        <i class="ri-edit-line"></i>
-                      </div>
-                    </button>
-                    <button class="text-red-600 hover:text-red-500">
-                      <div class="w-6 h-6 flex items-center justify-center">
-                        <i class="ri-delete-bin-line"></i>
-                      </div>
-                    </button>
+                </button>
+                <button class="text-red-600 hover:text-red-500" (click)="deleteCard(card.carCode)">
+                  <div class="w-6 h-6 flex items-center justify-center">
+                    <i class="ri-delete-bin-line"></i>
                   </div>
-                </td>
-              </tr>
-              <tr>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CAR-003</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">16-08-2025</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">MASTER CARD</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">DEBIT CARD</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">WCA-001</td>
-                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <div class="flex justify-end space-x-2">
-                    <button class="text-green-600 hover:text-gray-500">
-                      <div class="w-6 h-6 flex items-center justify-center">
-                        <i class="ri-edit-line"></i>
-                      </div>
-                    </button>
-                    <button class="text-red-600 hover:text-red-500">
-                      <div class="w-6 h-6 flex items-center justify-center">
-                        <i class="ri-delete-bin-line"></i>
-                      </div>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CAR-004</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">16-08-2025</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">VISA</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">DEBIT CARD</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">WCA-001</td>
-                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <div class="flex justify-end space-x-2">
-                    <button class="text-green-600 hover:text-gray-500">
-                      <div class="w-6 h-6 flex items-center justify-center">
-                        <i class="ri-edit-line"></i>
-                      </div>
-                    </button>
-                    <button class="text-red-600 hover:text-red-500">
-                      <div class="w-6 h-6 flex items-center justify-center">
-                        <i class="ri-delete-bin-line"></i>
-                      </div>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CAR-005</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">16-08-2025</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">MASTER CARD</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CREDIT CARD</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">WCA-001</td>
-                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <div class="flex justify-end space-x-2">
-                    <button class="text-green-600 hover:text-gray-500">
-                      <div class="w-6 h-6 flex items-center justify-center">
-                        <i class="ri-edit-line"></i>
-                      </div>
-                    </button>
-                    <button class="text-red-600 hover:text-red-500">
-                      <div class="w-6 h-6 flex items-center justify-center">
-                        <i class="ri-delete-bin-line"></i>
-                      </div>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <!-- Card Type Content-->
-      <div id="cards-tab-type" class="cards-tab-content hidden p-6">
-        <div class="flex justify-between items-center mb-6">
-          <h3 class="text-lg font-medium text-gray-900">Card Type Management</h3>
-          <button id="btn-add-card" (click)="toggleForm('card-type')"
-            class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
-            <i class="ri-add-line mr-1"></i> Add Card Type </button>
-        </div>
-        <div class="overflow-x-auto">
-          <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
-              <tr>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Type Code</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Type Identifier</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Type Label</th>
-                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions</th>
-              </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-              <tr>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CTY-001</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">111</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">CREDIT CARD</td>
-                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <div class="flex justify-end space-x-2">
-                    <button class="text-green-600 hover:text-gray-500">
-                      <div class="w-6 h-6 flex items-center justify-center">
-                        <i class="ri-edit-line"></i>
-                      </div>
-                    </button>
-                    <button class="text-red-600 hover:text-red-500">
-                      <div class="w-6 h-6 flex items-center justify-center">
-                        <i class="ri-delete-bin-line"></i>
-                      </div>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CTY-002</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">112</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">DEBIT CARD</td>
-                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <div class="flex justify-end space-x-2">
-                    <button class="text-green-600 hover:text-gray-500">
-                      <div class="w-6 h-6 flex items-center justify-center">
-                        <i class="ri-edit-line"></i>
-                      </div>
-                    </button>
-                    <button class="text-red-600 hover:text-red-500">
-                      <div class="w-6 h-6 flex items-center justify-center">
-                        <i class="ri-delete-bin-line"></i>
-                      </div>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <!-- Card List Content-->
-      <div id="cards-tab-list" class="cards-tab-content hidden p-6">
-        <div class="flex justify-between items-center mb-6">
-          <h3 class="text-lg font-medium text-gray-900">Card List Management</h3>
-          <button id="btn-add-card" (click)="toggleForm('card-list')"
-            class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
-            <i class="ri-add-line mr-1"></i> Add Card List </button>
-        </div>
-        <div class="overflow-x-auto">
-          <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
-              <tr>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  List Code</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  List Identifier</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  List Label</th>
-                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions</th>
-              </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-              <tr>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CLI-001</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">15001</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">MASTERCARD</td>
-                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <div class="flex justify-end space-x-2">
-                    <button class="text-green-600 hover:text-gray-500">
-                      <div class="w-6 h-6 flex items-center justify-center">
-                        <i class="ri-edit-line"></i>
-                      </div>
-                    </button>
-                    <button class="text-red-600 hover:text-red-500">
-                      <div class="w-6 h-6 flex items-center justify-center">
-                        <i class="ri-delete-bin-line"></i>
-                      </div>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CLI-002</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">15002</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">VISA</td>
-                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <div class="flex justify-end space-x-2">
-                    <button class="text-green-600 hover:text-gray-500">
-                      <div class="w-6 h-6 flex items-center justify-center">
-                        <i class="ri-edit-line"></i>
-                      </div>
-                    </button>
-                    <button class="text-red-600 hover:text-red-500">
-                      <div class="w-6 h-6 flex items-center justify-center">
-                        <i class="ri-delete-bin-line"></i>
-                      </div>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
+
+      <!-- Card Type Content -->
+  <div id="cards-tab-type" class="cards-tab-content hidden p-6">
+    <div class="flex justify-between items-center mb-6">
+      <h3 class="text-lg font-medium text-gray-900">Card Type Management</h3>
+      <button id="btn-add-card-type" (click)="toggleForm('card-type')"
+        class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+        <i class="ri-add-line mr-1"></i> Add Card Type
+      </button>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type Code</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type Identifier</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type Label</th>
+            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          <tr *ngFor="let cardType of cardTypesList">
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ cardType.ctypCode }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ cardType.ctypIden }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ cardType.ctypLabe }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+              <div class="flex justify-end space-x-2">
+                <button class="text-green-600 hover:text-gray-500" (click)="editCardType(cardType)">
+                  <div class="w-6 h-6 flex items-center justify-center">
+                    <i class="ri-edit-line"></i>
+                  </div>
+                </button>
+                <button class="text-red-600 hover:text-red-500" (click)="deleteCardType(cardType.ctypCode)">
+                  <div class="w-6 h-6 flex items-center justify-center">
+                    <i class="ri-delete-bin-line"></i>
+                  </div>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+    <!-- Card List Content -->
+  <div id="cards-tab-list" class="cards-tab-content hidden p-6">
+    <div class="flex justify-between items-center mb-6">
+      <h3 class="text-lg font-medium text-gray-900">Card List Management</h3>
+      <button id="btn-add-card-list" (click)="toggleForm('card-list')"
+        class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+        <i class="ri-add-line mr-1"></i> Add Card List
+      </button>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">List Code</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">List Identifier</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">List Label</th>
+            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          <tr *ngFor="let cardList of cardListsList">
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ cardList.cliCode }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ cardList.cliIden }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ cardList.cliLabe }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+              <div class="flex justify-end space-x-2">
+                <button class="text-green-600 hover:text-gray-500" (click)="editCardList(cardList)">
+                  <div class="w-6 h-6 flex items-center justify-center">
+                    <i class="ri-edit-line"></i>
+                  </div>
+                </button>
+                <button class="text-red-600 hover:text-red-500" (click)="deleteCardList(cardList.cliCode)">
+                  <div class="w-6 h-6 flex items-center justify-center">
+                    <i class="ri-delete-bin-line"></i>
+                  </div>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  </div>
+
+    </div>
+  
 
   <!-- Account Section -->
   <div id="tab-accounts" class="tab-content hidden space-y-6">
@@ -2087,80 +1965,89 @@
       </div>
     </div>
   </div>
-  <!-- Create Cards Modal -->
-  <div *ngIf="isCardFormVisible" id="create-card-modal" class="bg-white rounded-lg shadow-xl w-full max-w-2xl">
-    <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
-      <h3 class="text-lg font-semibold text-gray-800">Create New Card</h3>
-      <button (click)="closeForm('create-card')" id="close-create-wallet" class="text-gray-400 hover:text-gray-500">
-        <div class="w-6 h-6 flex items-center justify-center">
-          <i class="ri-close-line ri-lg"></i>
-        </div>
-      </button>
-    </div>
-    <form id="create-wallet-form" class="p-6">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Identifier</label>
-          <input type="text" id="walLabe" name="walLabe"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-            placeholder="Identifier">
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Label</label>
-          <input type="text" id="walLabe" name="walLabe"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-            placeholder="Label">
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">List</label>
-          <div class="relative">
-            <select id="walFinId" name="walFinId"
+<!-- Create Card Modal -->
+  <div *ngIf="isCardFormVisible" id="create-card-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl">
+      <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+        <h3 class="text-lg font-semibold text-gray-800">{{ isCardEditMode ? 'Edit Card' : 'Create New Card' }}</h3>
+        <button (click)="closeForm('create-card')" id="close-create-card" class="text-gray-400 hover:text-gray-500">
+          <div class="w-6 h-6 flex items-center justify-center">
+            <i class="ri-close-line ri-lg"></i>
+          </div>
+        </button>
+      </div>
+      <form id="create-card-form" class="p-6" (ngSubmit)="saveCard()">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Identifier</label>
+            <input type="text" [(ngModel)]="newCard.carIden" name="carIden" required
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+              placeholder="Identifier">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Label</label>
+            <input type="text" [(ngModel)]="newCard.carLabe" name="carLabe" required
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+              placeholder="Label">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Card Number</label>
+            <input type="text" [(ngModel)]="newCard.carNumb" name="carNumb" required
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+              placeholder="Card Number">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Expiry Date (DD-MM-YYYY)</label>
+            <input type="text" [ngModel]="formatDate(newCard.carExpiryDate)" name="carExpiryDate" required
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+              placeholder="DD-MM-YYYY" (ngModelChange)="newCard.carExpiryDate = parseDate($event)">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">List</label>
+            <select [(ngModel)]="newCard.cardList!.cliCode" name="cliCode" required
               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
               <option value="">Pick a List</option>
-              <option value="1">MASTERCARD</option>
-              <option value="2">VISA</option>
+              <option *ngFor="let cardList of cardListsList" [value]="cardList.cliCode">{{ cardList.cliLabe || cardList.cliIden }}</option>
             </select>
           </div>
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Type</label>
-          <div class="relative">
-            <select id="customer" name="customer"
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Type</label>
+            <select [(ngModel)]="newCard.cardType!.ctypCode" name="ctypCode" required
               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
-              <option value="">pick a type</option>
-              <option value="1">CREDIT CARD</option>
-              <option value="2">DEBIT CARD</option>
+              <option value="">Pick a Type</option>
+              <option *ngFor="let cardType of cardTypesList" [value]="cardType.ctypCode">{{ cardType.ctypLabe || cardType.ctypIden }}</option>
             </select>
           </div>
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Wallet</label>
-          <div class="relative">
-            <select id="walletStatus" name="walletStatus"
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">EMV Data</label>
+            <input type="text" [(ngModel)]="newCard.carEmvData" name="carEmvData"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+              placeholder="EMV Data (Optional)">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Wallet</label>
+            <select [(ngModel)]="newCard.cardList!.wallet!.walIden" name="walIden" required
               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
-              <option value="">pick a wallet</option>
-              <option value="active">WAL-001</option>
-              <option value="inactive">WAL-002</option>
-              <option value="suspended">WAL-003</option>
+              <option value="">Pick a Wallet</option>
+              <option *ngFor="let wallet of walletsList" [value]="wallet.walIden">{{ wallet.walLabe || wallet.walIden }}</option>
             </select>
           </div>
         </div>
-      </div>
-    </form>
-    <div class="px-6 py-4 border-t border-gray-200 flex justify-end space-x-3">
-      <button (click)="closeForm('create-card')" id="cancel-create-wallet"
-        class="px-4 py-2 border border-gray-300 text-gray-700 rounded-button hover:bg-gray-50 transition text-sm whitespace-nowrap">Cancel</button>
-      <button id="submit-create-wallet"
-        class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 transition text-sm whitespace-nowrap">Create
-        Card</button>
+        <div class="px-6 py-4 border-t border-gray-200 flex justify-end space-x-3">
+          <button type="button" (click)="closeForm('create-card')" id="cancel-create-card"
+            class="px-4 py-2 border border-gray-300 text-gray-700 rounded-button hover:bg-gray-50 transition text-sm whitespace-nowrap">Cancel</button>
+          <button type="submit" id="submit-create-card"
+            class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 transition text-sm whitespace-nowrap">{{ isCardEditMode ? 'Update Card' : 'Create Card' }}</button>
+        </div>
+      </form>
     </div>
   </div>
-  <!-- Add card Type Modal -->
-  <div *ngIf="isCardTypeVisible" id="add-type-modal"
-    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+
+  <!-- Add Card Type Modal -->
+  <div *ngIf="isCardTypeVisible" id="add-type-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
     <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
       <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-        <h3 class="text-lg font-medium text-gray-900">Add Card Type</h3>
+        <h3 class="text-lg font-medium text-gray-900">{{ isCardTypeEditMode ? 'Edit Card Type' : 'Add Card Type' }}</h3>
         <button id="close-type-modal" (click)="closeForm('card-type')" class="text-gray-400 hover:text-gray-500">
           <div class="w-6 h-6 flex items-center justify-center">
             <i class="ri-close-line"></i>
@@ -2168,72 +2055,78 @@
         </button>
       </div>
       <div class="p-6">
-        <form id="add-type-form">
+        <form id="add-type-form" (ngSubmit)="saveCardType()">
           <div class="space-y-4">
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Identifier</label>
-              <input type="text" id="walLabe" name="walLabe"
+              <input type="text" [(ngModel)]="newCardType.ctypIden" name="ctypIden" required
                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
                 placeholder="Identifier">
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Type Label</label>
-              <input type="text"
+              <input type="text" [(ngModel)]="newCardType.ctypLabe" name="ctypLabe" required
                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-                placeholder="Label" required>
+                placeholder="Label">
             </div>
           </div>
           <div class="mt-6 flex justify-end space-x-3">
             <button type="button" (click)="closeForm('card-type')" id="cancel-add-type"
               class="px-4 py-2 border border-gray-300 rounded-button text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">Cancel</button>
-            <button type="submit"
-              class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 whitespace-nowrap">Add
-              Type</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-  <!-- Add card list Modal -->
-  <div *ngIf="isCardListVisible" id="add-type-modal"
-    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-    <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
-      <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-        <h3 class="text-lg font-medium text-gray-900">Add Card List</h3>
-        <button id="close-type-modal" (click)="closeForm('card-list')" class="text-gray-400 hover:text-gray-500">
-          <div class="w-6 h-6 flex items-center justify-center">
-            <i class="ri-close-line"></i>
-          </div>
-        </button>
-      </div>
-      <div class="p-6">
-        <form id="add-type-form">
-          <div class="space-y-4">
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Identifier</label>
-              <input type="text" id="walLabe" name="walLabe"
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-                placeholder="Identifier">
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">List Label</label>
-              <input type="text"
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-                placeholder="Label" required>
-            </div>
-          </div>
-          <div class="mt-6 flex justify-end space-x-3">
-            <button type="button" (click)="closeForm('card-list')" id="cancel-add-type"
-              class="px-4 py-2 border border-gray-300 rounded-button text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">Cancel</button>
-            <button type="submit"
-              class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 whitespace-nowrap">Add
-              List</button>
+            <button type="submit" id="submit-add-type"
+              class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 whitespace-nowrap">{{ isCardTypeEditMode ? 'Update Type' : 'Add Type' }}</button>
           </div>
         </form>
       </div>
     </div>
   </div>
 
+
+  <!-- Add Card List Modal -->
+  <div *ngIf="isCardListVisible" id="add-list-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
+      <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+        <h3 class="text-lg font-medium text-gray-900">{{ isCardListEditMode ? 'Edit Card List' : 'Add Card List' }}</h3>
+        <button id="close-list-modal" (click)="closeForm('card-list')" class="text-gray-400 hover:text-gray-500">
+          <div class="w-6 h-6 flex items-center justify-center">
+            <i class="ri-close-line"></i>
+          </div>
+        </button>
+      </div>
+      <div class="p-6">
+        <form id="add-list-form" (ngSubmit)="saveCardList()">
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Identifier</label>
+              <input type="text" [(ngModel)]="newCardList.cliIden" name="cliIden" required
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                placeholder="Identifier">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">List Label</label>
+              <input type="text" [(ngModel)]="newCardList.cliLabe" name="cliLabe" required
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                placeholder="Label">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Wallet</label>
+              <select [(ngModel)]="newCardList.wallet!.walIden" name="walIden" required
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
+                <option value="">Pick a Wallet</option>
+                <option *ngFor="let wallet of walletsList" [value]="wallet.walIden">{{ wallet.walLabe || wallet.walIden }}</option>
+              </select>
+            </div>
+          </div>
+          <div class="mt-6 flex justify-end space-x-3">
+            <button type="button" (click)="closeForm('card-list')" id="cancel-add-list"
+              class="px-4 py-2 border border-gray-300 rounded-button text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+            <button type="submit" id="submit-add-list"
+              class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 whitespace-nowrap">{{ isCardListEditMode ? 'Update List' : 'Add List' }}</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
   <!-- Create account Modal -->
   <div *ngIf="isAccountFormVisible" id="create-card-modal" class="bg-white rounded-lg shadow-xl w-full max-w-2xl">
     <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">

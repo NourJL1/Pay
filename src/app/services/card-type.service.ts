@@ -1,46 +1,66 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment';
+import { Observable, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { CardType } from '../entities/card-type';
-
-
+import { environment } from '../../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CardTypeService {
-
-private apiUrl = `${environment.apiUrl}/api/card-types`;
-
-  private httpOptions = {
-    headers: new HttpHeaders({'Content-Type': 'application/json'}),
-  };
+  private apiUrl = `${environment.apiUrl}/api/card-types`;
 
   constructor(private http: HttpClient) {}
 
-  findAll(): Observable<CardType[]> {
-    return this.http.get<CardType[]>(this.apiUrl);
+  private getHeaders(isPublic: boolean = false): HttpHeaders {
+    const token = localStorage.getItem('authToken');
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Accept': 'application/json' // Explicitly request JSON response
+    });
+
+    if (!isPublic && token) {
+      headers = headers.set('Authorization', `Bearer ${token}`);
+      const role = localStorage.getItem('role') || 'CUSTOMER';
+      headers = headers.set('X-Roles', `ROLE_${role.toUpperCase()}`);
+    }
+
+    return headers;
   }
 
-  findById(id: number): Observable<CardType> {
-    return this.http.get<CardType>(`${this.apiUrl}/${id}`);
+  findAll(): Observable<CardType[]> {
+    return this.http.get(this.apiUrl, { headers: this.getHeaders(true), responseType: 'json' }).pipe(
+      map((response: any) => (response as CardType[]).map(cardType => new CardType(cardType))),
+      catchError(error => {
+        console.error('findAll: Error:', error);
+        return throwError(() => new Error(`Failed to fetch card types: ${error.status} ${error.statusText || 'Unknown error'}`));
+      })
+    );
   }
 
   save(cardType: CardType): Observable<CardType> {
-    if (cardType.ctypCode) {
-      // If id exists, update
-      return this.http.put<CardType>(`${this.apiUrl}/${cardType.ctypCode}`, cardType, this.httpOptions);
-    } else {
-      // Else, create
-      return this.http.post<CardType>(this.apiUrl, cardType, this.httpOptions);
-    }
+    const url = cardType.ctypCode ? `${this.apiUrl}/${cardType.ctypCode}` : this.apiUrl;
+    const method = cardType.ctypCode ? 'put' : 'post';
+    return this.http.request<CardType>(method, url, {
+      body: cardType,
+      headers: this.getHeaders(true),
+      responseType: 'json'
+    }).pipe(
+      map(savedCardType => new CardType(savedCardType)),
+      catchError(error => {
+        console.error('save: Error:', error);
+        return throwError(() => new Error(`Failed to save card type: ${error.status} ${error.statusText || 'Unknown error'}`));
+      })
+    );
   }
 
-  deleteById(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`, this.httpOptions);
+  deleteById(ctypCode: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${ctypCode}`, { headers: this.getHeaders(true), responseType: 'json' }).pipe(
+      catchError(error => {
+        console.error('deleteById: Error:', error);
+        return throwError(() => new Error(`Failed to delete card type: ${error.status} ${error.statusText || 'Unknown error'}`));
+      })
+    );
   }
-
-  searchCardTypes(word: string): Observable<CardType[]> {
-    return this.http.get<CardType[]>(`${this.apiUrl}/search?word=${word}`);
-  }}
+}
