@@ -43,13 +43,13 @@ export class WalletMngComponent implements OnInit {
   isWalletTypeEditMode: boolean = false;
   isWalletTypeVisible: boolean = false;
 
-  cardsList: Card[] = [];
+    cardsList: Card[] = [];
   newCard: Card = new Card({ cardList: new CardList({ wallet: new Wallet() }), cardType: new CardType() });
   selectedCard: Card | null = null;
   isCardEditMode: boolean = false;
   isCardFormVisible: boolean = false;
 
-  cardTypesList: CardType[] = [];
+    cardTypesList: CardType[] = [];
   newCardType: CardType = new CardType();
   selectedCardType: CardType | null = null;
   isCardTypeEditMode: boolean = false;
@@ -509,51 +509,47 @@ export class WalletMngComponent implements OnInit {
     this.errorMessage = null;
     console.log('saveCardList: Saving card list:', this.newCardList);
     if (!this.newCardList.cliIden || !this.newCardList.cliLabe || !this.newCardList.wallet?.walIden) {
-      this.errorMessage = null;
-      console.log('saveCardList: Saving card list:', this.newCardList);
-      if (!this.newCardList.cliIden || !this.newCardList.cliLabe || !this.newCardList.wallet?.walIden) {
-        this.showErrorMessage('Please fill in all required fields: Identifier, Label, and Wallet.');
-        return;
-      }
-      if (this.isCardListEditMode && this.selectedCardList?.cliCode) {
-        this.cardListService.update(this.selectedCardList.cliCode, this.newCardList).subscribe({
-          next: (updatedCardList: CardList) => {
-            console.log('saveCardList: Card list updated:', updatedCardList);
-            const index = this.cardListsList.findIndex(l => l.cliCode === updatedCardList.cliCode);
-            if (index !== -1) {
-              this.cardListsList[index] = updatedCardList;
-              this.cardListsList = [...this.cardListsList];
-            }
-            this.newCardList = new CardList({ wallet: new Wallet() });
-            this.selectedCardList = null;
-            this.isCardListEditMode = false;
-            this.isCardListVisible = false;
-            this.showSuccessMessage('Card list updated successfully');
-            this.cdr.detectChanges();
-          },
-          error: (error: HttpErrorResponse) => {
-            const message = error.status ? `Failed to update card list: ${error.status} ${error.statusText}` : 'Failed to update card list: Server error';
-            this.showErrorMessage(message);
-            console.error('Error updating card list:', error);
+      this.showErrorMessage('Please fill in all required fields: Identifier, Label, and Wallet.');
+      return;
+    }
+    if (this.isCardListEditMode && this.selectedCardList?.cliCode) {
+      this.cardListService.update(this.selectedCardList.cliCode, this.newCardList).subscribe({
+        next: (updatedCardList: CardList) => {
+          console.log('saveCardList: Card list updated:', updatedCardList);
+          const index = this.cardListsList.findIndex(l => l.cliCode === updatedCardList.cliCode);
+          if (index !== -1) {
+            this.cardListsList[index] = updatedCardList;
+            this.cardListsList = [...this.cardListsList];
           }
-        });
-      } else {
-        this.cardListService.create(this.newCardList).subscribe({
-          next: (createdCardList: CardList) => {
-            console.log('saveCardList: Card list created:', createdCardList);
-            this.cardListsList.push(createdCardList);
-            this.newCardList = new CardList({ wallet: new Wallet() });
-            this.isCardListVisible = false;
-            this.showSuccessMessage('Card list added successfully');
-            this.cdr.detectChanges();
-          },
-          error: (error: HttpErrorResponse) => {
-            const message = error.status ? `Failed to create card list: ${error.status} ${error.statusText}` : 'Failed to create card list: Server error';
-            this.showErrorMessage(message);
-            console.error('Error creating card list:', error);
-          }
-        });
-      }
+          this.newCardList = new CardList({ wallet: new Wallet() });
+          this.selectedCardList = null;
+          this.isCardListEditMode = false;
+          this.isCardListVisible = false;
+          this.showSuccessMessage('Card list updated successfully');
+          this.cdr.detectChanges();
+        },
+        error: (error: HttpErrorResponse) => {
+          const message = error.status ? `Failed to update card list: ${error.status} ${error.statusText}` : 'Failed to update card list: Server error';
+          this.showErrorMessage(message);
+          console.error('Error updating card list:', error);
+        }
+      });
+    } else {
+      this.cardListService.create(this.newCardList).subscribe({
+        next: (createdCardList: CardList) => {
+          console.log('saveCardList: Card list created:', createdCardList);
+          this.cardListsList.push(createdCardList);
+          this.newCardList = new CardList({ wallet: new Wallet() });
+          this.isCardListVisible = false;
+          this.showSuccessMessage('Card list added successfully');
+          this.cdr.detectChanges();
+        },
+        error: (error: HttpErrorResponse) => {
+          const message = error.status ? `Failed to create card list: ${error.status} ${error.statusText}` : 'Failed to create card list: Server error';
+          this.showErrorMessage(message);
+          console.error('Error creating card list:', error);
+        }
+      });
     }
   }
 

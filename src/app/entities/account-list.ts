@@ -6,10 +6,12 @@ export class AccountList {
      aliCode?: number;
   aliIden?: string;
   aliLabe?: string;
-  wallet?: Wallet;
+  wallet?: Wallet | null;
   accounts?: Account[];
 
   constructor(init?: Partial<AccountList>) {
     Object.assign(this, init);
   }
 }
+
+
