@@ -16,6 +16,8 @@ import { CardListService } from '../../../services/card-list.service';
 import { CardList } from '../../../entities/card-list';
 import { WalletService } from '../../../services/wallet.service';
 import { Wallet } from '../../../entities/wallet';
+import { AccountTypeService } from '../../../services/account-type.service';
+import { AccountType } from '../../../entities/account-type';
 
 @Component({
   selector: 'app-wallet-mng',
@@ -60,13 +62,18 @@ export class WalletMngComponent implements OnInit {
   isCardListVisible: boolean = false;
 
   walletsList: Wallet[] = [];
+  accountTypesList: AccountType[] = [];
+  newAccountType: AccountType = new AccountType();
+  selectedAccountType: AccountType | null = null;
+  isAccountTypeEditMode: boolean = false;
+  isAccountTypeVisible: boolean = false;
+
   errorMessage: string | null = null;
   successMessage: string | null = null;
 
   isWalletFormVisible: boolean = false;
   isWalletDetailsVisible: boolean = false;
   isAccountFormVisible: boolean = false;
-  isAccountTypeVisible: boolean = false;
   isAccountListVisible: boolean = false;
 
   constructor(
@@ -77,6 +84,7 @@ export class WalletMngComponent implements OnInit {
     private cardTypeService: CardTypeService,
     private cardListService: CardListService,
     private walletService: WalletService,
+    private accountTypeService: AccountTypeService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -89,6 +97,7 @@ export class WalletMngComponent implements OnInit {
     this.loadCardTypes();
     this.loadCardLists();
     this.loadWallets();
+    this.loadAccountTypes();
   }
 
   private getHttpOptions(): { headers: HttpHeaders } {
@@ -102,6 +111,105 @@ export class WalletMngComponent implements OnInit {
       headers = headers.set('Authorization', `Bearer ${token}`);
     }
     return { headers };
+  }
+
+  // Load account types
+  loadAccountTypes(): void {
+    this.errorMessage = null;
+    console.log('loadAccountTypes: Fetching account types...');
+    this.accountTypeService.getAll().subscribe({
+      next: (accountTypes: AccountType[]) => {
+        console.log('loadAccountTypes: Account types received:', accountTypes);
+        this.accountTypesList = accountTypes;
+        this.cdr.detectChanges();
+      },
+      error: (error: HttpErrorResponse) => {
+        const message = error.status ? `Failed to load account types: ${error.status} ${error.statusText}` : 'Failed to load account types: Server error';
+        this.showErrorMessage(message);
+        console.error('Error loading account types:', error);
+      }
+    });
+  }
+
+  // Save account type
+  saveAccountType(): void {
+    this.errorMessage = null;
+    console.log('saveAccountType: Saving account type:', this.newAccountType);
+    if (!this.newAccountType.atyIden || !this.newAccountType.atyLabe || !this.newAccountType.atyFinId) {
+      this.showErrorMessage('Please fill in all required fields: Type Identifier, Type Label, and Financial Institution ID.');
+      return;
+    }
+    if (this.isAccountTypeEditMode && this.selectedAccountType?.atyCode) {
+      this.accountTypeService.update(this.selectedAccountType.atyCode, this.newAccountType).subscribe({
+        next: (updatedAccountType: AccountType) => {
+          console.log('saveAccountType: Account type updated:', updatedAccountType);
+          const index = this.accountTypesList.findIndex(t => t.atyCode === updatedAccountType.atyCode);
+          if (index !== -1) {
+            this.accountTypesList[index] = updatedAccountType;
+            this.accountTypesList = [...this.accountTypesList];
+          }
+          this.newAccountType = new AccountType();
+          this.selectedAccountType = null;
+          this.isAccountTypeEditMode = false;
+          this.isAccountTypeVisible = false;
+          this.showSuccessMessage('Account type updated successfully');
+          this.cdr.detectChanges();
+        },
+        error: (error: HttpErrorResponse) => {
+          const message = error.status ? `Failed to update account type: ${error.status} ${error.statusText}` : 'Failed to update account type: Server error';
+          this.showErrorMessage(message);
+          console.error('Error updating account type:', error);
+        }
+      });
+    } else {
+      this.accountTypeService.create(this.newAccountType).subscribe({
+        next: (createdAccountType: AccountType) => {
+          console.log('saveAccountType: Account type created:', createdAccountType);
+          this.accountTypesList.push(createdAccountType);
+          this.newAccountType = new AccountType();
+          this.isAccountTypeVisible = false;
+          this.showSuccessMessage('Account type added successfully');
+          this.cdr.detectChanges();
+        },
+        error: (error: HttpErrorResponse) => {
+          const message = error.status ? `Failed to create account type: ${error.status} ${error.statusText}` : 'Failed to create account type: Server error';
+          this.showErrorMessage(message);
+          console.error('Error creating account type:', error);
+        }
+      });
+    }
+  }
+
+  // Edit account type
+  editAccountType(accountType: AccountType): void {
+    this.errorMessage = null;
+    console.log('editAccountType: Editing account type:', accountType);
+    this.selectedAccountType = accountType;
+    this.newAccountType = { ...accountType };
+    this.isAccountTypeEditMode = true;
+    this.isAccountTypeVisible = true;
+    this.cdr.detectChanges();
+  }
+
+  // Delete account type
+  deleteAccountType(atyCode: number | undefined): void {
+    this.errorMessage = null;
+    console.log('deleteAccountType: atyCode:', atyCode);
+    if (atyCode && confirm('Are you sure you want to delete this account type?')) {
+      this.accountTypeService.delete(atyCode).subscribe({
+        next: () => {
+          console.log('deleteAccountType: Success, atyCode:', atyCode);
+          this.accountTypesList = this.accountTypesList.filter(t => t.atyCode !== atyCode);
+          this.showSuccessMessage('Account type deleted successfully');
+          this.cdr.detectChanges();
+        },
+        error: (error: HttpErrorResponse) => {
+          const message = error.status ? `Failed to delete account type: ${error.status} ${error.statusText}` : 'Failed to delete account type: Server error';
+          this.showErrorMessage(message);
+          console.error('Error deleting account type:', error);
+        }
+      });
+    }
   }
 
   // Load wallet statuses
@@ -401,47 +509,51 @@ export class WalletMngComponent implements OnInit {
     this.errorMessage = null;
     console.log('saveCardList: Saving card list:', this.newCardList);
     if (!this.newCardList.cliIden || !this.newCardList.cliLabe || !this.newCardList.wallet?.walIden) {
-      this.showErrorMessage('Please fill in all required fields: Identifier, Label, and Wallet.');
-      return;
-    }
-    if (this.isCardListEditMode && this.selectedCardList?.cliCode) {
-      this.cardListService.update(this.selectedCardList.cliCode, this.newCardList).subscribe({
-        next: (updatedCardList: CardList) => {
-          console.log('saveCardList: Card list updated:', updatedCardList);
-          const index = this.cardListsList.findIndex(l => l.cliCode === updatedCardList.cliCode);
-          if (index !== -1) {
-            this.cardListsList[index] = updatedCardList;
-            this.cardListsList = [...this.cardListsList];
+      this.errorMessage = null;
+      console.log('saveCardList: Saving card list:', this.newCardList);
+      if (!this.newCardList.cliIden || !this.newCardList.cliLabe || !this.newCardList.wallet?.walIden) {
+        this.showErrorMessage('Please fill in all required fields: Identifier, Label, and Wallet.');
+        return;
+      }
+      if (this.isCardListEditMode && this.selectedCardList?.cliCode) {
+        this.cardListService.update(this.selectedCardList.cliCode, this.newCardList).subscribe({
+          next: (updatedCardList: CardList) => {
+            console.log('saveCardList: Card list updated:', updatedCardList);
+            const index = this.cardListsList.findIndex(l => l.cliCode === updatedCardList.cliCode);
+            if (index !== -1) {
+              this.cardListsList[index] = updatedCardList;
+              this.cardListsList = [...this.cardListsList];
+            }
+            this.newCardList = new CardList({ wallet: new Wallet() });
+            this.selectedCardList = null;
+            this.isCardListEditMode = false;
+            this.isCardListVisible = false;
+            this.showSuccessMessage('Card list updated successfully');
+            this.cdr.detectChanges();
+          },
+          error: (error: HttpErrorResponse) => {
+            const message = error.status ? `Failed to update card list: ${error.status} ${error.statusText}` : 'Failed to update card list: Server error';
+            this.showErrorMessage(message);
+            console.error('Error updating card list:', error);
           }
-          this.newCardList = new CardList({ wallet: new Wallet() });
-          this.selectedCardList = null;
-          this.isCardListEditMode = false;
-          this.isCardListVisible = false;
-          this.showSuccessMessage('Card list updated successfully');
-          this.cdr.detectChanges();
-        },
-        error: (error: HttpErrorResponse) => {
-          const message = error.status ? `Failed to update card list: ${error.status} ${error.statusText}` : 'Failed to update card list: Server error';
-          this.showErrorMessage(message);
-          console.error('Error updating card list:', error);
-        }
-      });
-    } else {
-      this.cardListService.create(this.newCardList).subscribe({
-        next: (createdCardList: CardList) => {
-          console.log('saveCardList: Card list created:', createdCardList);
-          this.cardListsList.push(createdCardList);
-          this.newCardList = new CardList({ wallet: new Wallet() });
-          this.isCardListVisible = false;
-          this.showSuccessMessage('Card list added successfully');
-          this.cdr.detectChanges();
-        },
-        error: (error: HttpErrorResponse) => {
-          const message = error.status ? `Failed to create card list: ${error.status} ${error.statusText}` : 'Failed to create card list: Server error';
-          this.showErrorMessage(message);
-          console.error('Error creating card list:', error);
-        }
-      });
+        });
+      } else {
+        this.cardListService.create(this.newCardList).subscribe({
+          next: (createdCardList: CardList) => {
+            console.log('saveCardList: Card list created:', createdCardList);
+            this.cardListsList.push(createdCardList);
+            this.newCardList = new CardList({ wallet: new Wallet() });
+            this.isCardListVisible = false;
+            this.showSuccessMessage('Card list added successfully');
+            this.cdr.detectChanges();
+          },
+          error: (error: HttpErrorResponse) => {
+            const message = error.status ? `Failed to create card list: ${error.status} ${error.statusText}` : 'Failed to create card list: Server error';
+            this.showErrorMessage(message);
+            console.error('Error creating card list:', error);
+          }
+        });
+      }
     }
   }
 
@@ -785,6 +897,9 @@ export class WalletMngComponent implements OnInit {
         break;
       case 'account-type':
         this.isAccountTypeVisible = true;
+        this.isAccountTypeEditMode = false;
+        this.newAccountType = new AccountType();
+        this.selectedAccountType = null;
         break;
       case 'account-list':
         this.isAccountListVisible = true;
@@ -843,6 +958,9 @@ export class WalletMngComponent implements OnInit {
         break;
       case 'account-type':
         this.isAccountTypeVisible = false;
+        this.newAccountType = new AccountType();
+        this.selectedAccountType = null;
+        this.isAccountTypeEditMode = false;
         break;
       case 'account-list':
         this.isAccountListVisible = false;
