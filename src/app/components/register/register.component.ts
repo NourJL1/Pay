@@ -62,7 +62,10 @@ export class RegisterComponent {
   customer: Customer = new Customer();
   wallet: Wallet = new Wallet()
 
-  currentStep = 1;
+  currentStep = 3;
+  isLoading: boolean = false;
+  isOtpLoading: boolean = false;
+
   countries: Country[] = [];
   cities: City[] = [];
   files: File[] = []
@@ -80,7 +83,7 @@ export class RegisterComponent {
     localStorage.clear()
 
     //this.customer.identity = new CustomerIdentity()
-    
+
 
     this.countryService.getAll().subscribe(
       {
@@ -120,23 +123,18 @@ export class RegisterComponent {
 
     //this.customer.identity!.customerDocListe!.cdlLabe = this.customer.username + '-' + this.customer.identity!.customerIdentityType!.citLabe
     this.customer.identity!.customerDocListe!.cdlLabe = this.customer.identity?.customerIdentityType?.citLabe + '-' + this.customer.username
-    this.customer.identity!.customerDocListe!.cdlIden = 'CDL' + Math.round(Math.random()*10000)
+    this.customer.identity!.customerDocListe!.cdlIden = 'CDL' + Math.round(Math.random() * 10000)
 
-    this.customer.role = {id: 1, name: 'CUSTOMER'}
-
-    console.log(this.customer)
+    this.customer.role = { id: 1, name: 'CUSTOMER' }
 
     this.customerService.register(this.customer).subscribe({
       next: (customer: Customer) => {
-        
-         console.log(this.customerDocs)
 
-        for(let i=0; i< this.customerDocs.length; i++)
-        {
+        for (let i = 0; i < this.customerDocs.length; i++) {
           this.customerDocs[i].customerDocListe = customer.identity?.customerDocListe
           this.customerDocService.create(this.customerDocs[i], this.files[i]).subscribe({
-            next: () => {console.log("docs succ")},
-            error: (err) => {console.log(err)}
+            next: () => { console.log("docs succ") },
+            error: (err) => { console.log(err) }
           })
         }
 
@@ -154,28 +152,24 @@ export class RegisterComponent {
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
-    //console.log(input.files)
     if (input.files && input.files.length > 0) {
       Array.from(input.files).forEach((file => {
         const matchedDocType = this.docTypes.find(dt => dt.dtyLabe === file.type)
-        
-         this.customerDocs.push(new CustomerDoc({
-            cdoIden: 'CDO' + Math.round(Math.random()*10000),
-            cdoLabe: file.name,
-            docType: matchedDocType,
-            //customerDocListe: this.customer.identity?.customerDocListe
-          }))
 
-          this.files.push(file)
+        this.customerDocs.push(new CustomerDoc({
+          cdoIden: 'CDO' + Math.round(Math.random() * 10000),
+          cdoLabe: file.name,
+          docType: matchedDocType,
+        }))
 
-          //this.customer.identity!.customerDocListe!.customerDocs?.push(customerDoc) 
+        this.files.push(file)
+
+        //this.customer.identity!.customerDocListe!.customerDocs?.push(customerDoc) 
       }))
     }
   }
 
   goToNextStep() {
-
-    console.log(this.customer)
 
     // Step 1: Choosing a wallet type
     /* if (this.currentStep === 1) {
@@ -301,16 +295,18 @@ export class RegisterComponent {
       return;
     }
 
-    this.customerService.sendEmail(this.customer.cusMailAddress, "TOTP").subscribe(
-      {
-        next: (Result: any) => {
-          if (Result.message == 'success')
-            this.otpSent = true;
-        },
-        error: (err) => {
-          console.error('OTP mailing Failed: ', err);
-        }
-      });
+    this.isOtpLoading = true
+
+    this.customerService.sendEmail(this.customer.cusMailAddress, "TOTP").subscribe({
+      next: (Result: any) => {
+        if (Result.message == 'success')
+          this.otpSent = true;
+        this.isOtpLoading = false
+      },
+      error: (err) => {
+        console.error('OTP mailing Failed: ', err);
+      }
+    });
   }
 
   verifyOtp() {

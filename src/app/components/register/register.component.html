@@ -23,7 +23,7 @@
       {{ successMessage }}
     </div>
 
-    <form #form="ngForm" class="space-y-6">
+    <form #registerForm="ngForm" class="space-y-6">
       <!-- Step 1 - Wallet Type -->
       <!-- <div *ngIf="currentStep === 1" class="step">
         <h3 class="text-lg font-medium mb-4">Choose Wallet Type:</h3>
@@ -95,14 +95,9 @@
 
         <div class="form-field">
           <label class="form-label">Phone Number:</label>
-          <ngx-intl-tel-input
-  [formControl]="phoneForm.controls.phone"
-  name="cusPhoneNbr"
-  [preferredCountries]="['tn', 'us', 'gb']"
-  [enablePlaceholder]="true"
-  [separateDialCode]="true"
-  required>
-</ngx-intl-tel-input>
+          <ngx-intl-tel-input [formControl]="phoneForm.controls.phone" name="cusPhoneNbr"
+            [preferredCountries]="['tn', 'us', 'gb']" [enablePlaceholder]="true" [separateDialCode]="true" required>
+          </ngx-intl-tel-input>
 
 
         </div>
@@ -111,17 +106,23 @@
       <!-- Step 3 -  Email & OTP -->
       <div *ngIf="currentStep === 3" class="step">
         <div class="form-field">
-          <label class="form-label">Email:</label>
-          <div class="flex gap-2">
-            <input class="form-input flex-1" [(ngModel)]="customer.cusMailAddress" name="cusMailAddress" type="email"
-              required #email="ngModel" email [disabled]="otpSent">
-            <button *ngIf="!otpSent" class="btn primary" type="button" (click)="sendOtp()" [disabled]="email.invalid">
-              Send OTP
-            </button>
+          <div class="p-2">
+            <label class="form-label">Email:</label>
+            <div class="flex gap-2">
+              <input class="form-input flex-1" [(ngModel)]="customer.cusMailAddress" name="cusMailAddress" type="email"
+                required #email="ngModel" email [disabled]="otpSent">
+              <button *ngIf="!otpSent" class="btn primary" [disabled]="!customer.cusMailAddress || isOtpLoading"
+                type="button" (click)="sendOtp()" [disabled]="email.invalid">
+                Send OTP
+              </button>
+            </div>
+            <div *ngIf="email.invalid && email.touched" class="error-message">
+              <div *ngIf="email.errors?.['required']">Email is required</div>
+              <div *ngIf="email.errors?.['email']">Invalid email format</div>
+            </div>
           </div>
-          <div *ngIf="email.invalid && email.touched" class="error-message">
-            <div *ngIf="email.errors?.['required']">Email is required</div>
-            <div *ngIf="email.errors?.['email']">Invalid email format</div>
+          <div *ngIf="isOtpLoading" class="flex justify-center">
+            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
           </div>
         </div>
 
@@ -186,13 +187,21 @@
 
     <!-- Navigation Buttons -->
     <div class="flex justify-between mt-8">
+
+
+      <div *ngIf="isLoading" class="flex justify-center">
+        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+
+
       <button class="btn secondary" (click)="goToPreviousStep()" [disabled]="currentStep === 1">
         Back
       </button>
       <button *ngIf="currentStep < 5" class="btn primary" (click)="goToNextStep()">
         Next
       </button>
-      <button *ngIf="currentStep === 5" class="btn primary" (click)="onSubmit()">
+      <button *ngIf="currentStep === 5" [disabled]="!registerForm.form.valid || isLoading" class="btn primary"
+        (click)="onSubmit()">
         Submit
       </button>
     </div>

@@ -34,9 +34,6 @@ export class CustomerDocService {
     const formData = new FormData()
     formData.append('customerDoc', JSON.stringify(customerDoc))
     formData.append('file', file)
-    for (let [key, value] of formData.entries()) {
-      console.log(key, value);
-    }
     return this.http.post<CustomerDoc>(this.apiUrl, formData);
   }
 
