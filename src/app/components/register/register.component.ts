@@ -62,7 +62,7 @@ export class RegisterComponent {
   customer: Customer = new Customer();
   wallet: Wallet = new Wallet()
 
-  currentStep = 3;
+  currentStep = 1;
   isLoading: boolean = false;
   isOtpLoading: boolean = false;
 
