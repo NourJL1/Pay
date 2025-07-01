@@ -920,7 +920,7 @@
     <form id="add-wotm-form" class="p-6" (ngSubmit)="selectedWotm ? updateWotm() : addWotm()" #feeForm="ngForm">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label for="wallet" class="block text-sm font-medium text-gray-700 mb-1">Identifier</label>
+          <label for="wallet" class="block text-sm font-medium text-gray-700 mb-1">Wallet</label>
           <select [(ngModel)]="newWotm.wallet" name="wallet"
                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
                 required>
@@ -981,72 +981,64 @@
 
   <div *ngIf="isWcotmVisible" id="add-wcotm-modal" class="bg-white rounded-lg shadow-xl w-full max-w-md">
     <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-      <h3 class="text-lg font-medium text-gray-900">{{ selectedFee ? 'Edit Fee' : 'Add Fee' }}</h3>
-      <button id="close-type-modal" (click)="closeForm('fee')" class="text-gray-400 hover:text-gray-500">
+      <h3 class="text-lg font-medium text-gray-900">{{ selectedWcotm ? 'Edit Wallet Category Operation Type Map' : 'Add Wallet Category Operation Type Map' }}</h3>
+      <button id="close-type-modal" (click)="closeForm('operation-wcotm')" class="text-gray-400 hover:text-gray-500">
         <div class="w-6 h-6 flex items-center justify-center">
           <i class="ri-close-line"></i>
         </div>
       </button>
     </div>
-    <form id="add-type-form" class="p-6" (ngSubmit)="selectedFee ? updateFee() : addFee()" #feeForm="ngForm">
+    <form id="add-wcotm-form" class="p-6" (ngSubmit)="selectedWcotm ? updateWcotm() : addWcotm()" #feeForm="ngForm">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label for="feeIden" class="block text-sm font-medium text-gray-700 mb-1">Identifier</label>
-          <input type="text" id="feeIden" name="feeIden" [(ngModel)]="newFee.feeIden"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-            placeholder="Identifier" required>
+          <label for="wallet" class="block text-sm font-medium text-gray-700 mb-1">Wallet Category</label>
+          <select [(ngModel)]="newWcotm.walletCategory" name="wallet"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                required>
+                <option value="">Select Wallet</option>
+                <option *ngFor="let wallet of walletsList" [value]="wallet.walIden">{{ wallet.walLabe || wallet.walIden }}</option>
+              </select>
         </div>
         <div>
-          <label for="feeLabel" class="block text-sm font-medium text-gray-700 mb-1">Fee Label</label>
-          <input type="text" id="feeLabel" name="feeLabel" [(ngModel)]="newFee.feeLabel"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-            placeholder="Label" required>
+          <label for="operationType" class="block text-sm font-medium text-gray-700 mb-1">Operation Type</label>
+          <select [(ngModel)]="newWcotm.operationType" name="operationType"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                required>
+                <option value="">Select Type</option>
+                <option *ngFor="let type of operationTypesList" [value]="newWcotm.operationType">{{ type.optLabe || type.optIden }}</option>
+              </select>
         </div>
         <div>
-          <label for="feeMinLimit" class="block text-sm font-medium text-gray-700 mb-1">Min</label>
-          <input type="number" id="feeMinLimit" name="feeMinLimit" [(ngModel)]="newFee.feeMinLimit"
+          <label for="limitMax" class="block text-sm font-medium text-gray-700 mb-1">Max Limit</label>
+          <input type="number" id="limitMax" name="limitMax" [(ngModel)]="newWcotm.limitMax"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-            placeholder="Minimum amount" required min="0">
+            placeholder="Minimum limit" required min="0">
         </div>
         <div>
-          <label for="feeMaxLimit" class="block text-sm font-medium text-gray-700 mb-1">Max</label>
-          <input type="number" id="feeMaxLimit" name="feeMaxLimit" [(ngModel)]="newFee.feeMaxLimit"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-            placeholder="Maximum Amount" required min="0">
-        </div>
+          <label for="periodicity" class="block text-sm font-medium text-gray-700 mb-1">Periodicity</label>
+          <select [(ngModel)]="newWcotm.periodicity" name="periodicity"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                required>
+                <option value="">Select periodicity</option>
+                <option *ngFor="let periodicity of periodicitiesList" [value]="newWcotm.periodicity">{{ periodicity.perLabe }}</option>
+              </select>
+        </div> 
         <div>
-          <label for="feeAmount" class="block text-sm font-medium text-gray-700 mb-1">Fee Amount</label>
-          <input type="number" id="feeAmount" name="feeAmount" [(ngModel)]="newFee.feeAmount"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-            placeholder="Amount" required min="0">
-        </div>
-        <div>
-          <label for="feePercentage" class="block text-sm font-medium text-gray-700 mb-1">Percentage</label>
-          <input type="text" id="feePercentage" name="feePercentage" [(ngModel)]="newFee.feePercentage"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-            placeholder="Percentage" required>
-        </div>
-        <div>
-          <label for="feeMaxAmount" class="block text-sm font-medium text-gray-700 mb-1">Max Fee Amount</label>
-          <input type="number" id="feeMaxAmount" name="feeMaxAmount" [(ngModel)]="newFee.feeMaxAmount"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-            placeholder="Maximum fee amount" required min="0">
-        </div>
-        <div>
-          <label for="financialInstitutionId" class="block text-sm font-medium text-gray-700 mb-1">Financial Institution
-            ID</label>
-          <input type="number" id="financialInstitutionId" name="financialInstitutionId"
-            [(ngModel)]="newFee.financialInstitutionId"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-            placeholder="Financial Institution ID" required min="1">
+          <label for="fees" class="block text-sm font-medium text-gray-700 mb-1">Fees</label>
+          <select [(ngModel)]="newWcotm.fees" name="fees"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                required>
+                <option value="">Select fees</option>
+                <option *ngFor="let fee of feesList" [value]="newWcotm.fees">{{ fee.feeLabel || fee.feeIden }}</option>
+              </select>
         </div>
       </div>
       <div class="mt-6 flex justify-end space-x-3">
-        <button type="button" (click)="closeForm('fee')" id="cancel-add-type"
+        <button type="button" (click)="closeForm('operation-wcotm')" id="cancel-add-wcotm"
           class="px-4 py-2 border border-gray-300 rounded-button text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">Cancel</button>
         <button type="submit" [disabled]="feeForm.invalid"
           class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 whitespace-nowrap">
-          {{ selectedFee ? 'Update Fee' : 'Add Fee' }}
+          {{ selectedWcotm ? 'Update Mapping' : 'Add Mapping' }}
         </button>
       </div>
     </form>
