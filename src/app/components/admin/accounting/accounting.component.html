@@ -212,67 +212,68 @@
         </div>
       </div>
       <!-- Fee Rule Content -->
-<div id="fees-tab-rule" class="fees-tab-content p-6 hidden">
-  <div class="flex justify-between items-center mb-6">
-    <h3 class="text-lg font-medium text-gray-900">Fee Rules Management</h3>
-    <button (click)="toggleForm('fee-rule')"
-      class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
-      <i class="ri-add-line mr-1"></i> Add Fee Rule
-    </button>
-  </div>
-  <div class="overflow-x-auto">
-    <table class="min-w-full divide-y divide-gray-200">
-      <thead class="bg-gray-50">
-        <tr>
-          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-            Rule Code
-          </th>
-          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-            Rule Identifier
-          </th>
-          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-            Rule Name
-          </th>
-          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-            Primary Amount
-          </th>
-          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-            Fee Amount
-          </th>
-          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-            TVA
-          </th>
-          <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-            Actions
-          </th>
-        </tr>
-      </thead>
-      <tbody class="bg-white divide-y divide-gray-200">
-        <tr *ngFor="let rule of feeRulesList">
-          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ rule.fruCode }}</td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ rule.fruIden }}</td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ rule.fruLabe }}</td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ rule.fruPrimaryAmount }}</td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ rule.fruFeesAmount }}</td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ rule.fruTva?.vatRate ? rule.fruTva.vatRate + '%' : 'N/A' }}</td>
-          <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-            <div class="flex justify-end space-x-2">
-              <button class="text-green-600 hover:text-gray-500" (click)="editFeeRule(rule)">
-                <div class="w-6 h-6 flex items-center justify-center">
-                  <i class="ri-edit-line"></i>
-                </div>
-              </button>
-              <button class="text-red-600 hover:text-red-500" (click)="deleteFeeRule(rule.fruCode)">
-                <div class="w-6 h-6 flex items-center justify-center">
-                  <i class="ri-delete-bin-line"></i>
-                </div>
-              </button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+      <div id="fees-tab-rule" class="fees-tab-content p-6 hidden">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-lg font-medium text-gray-900">Fee Rules Management</h3>
+          <button (click)="toggleForm('fee-rule')"
+            class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+            <i class="ri-add-line mr-1"></i> Add Fee Rule
+          </button>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Rule Code
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Rule Identifier
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Rule Name
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Primary Amount
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Fee Amount
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  TVA
+                </th>
+                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <tr *ngFor="let rule of feeRulesList">
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ rule.fruCode }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ rule.fruIden }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ rule.fruLabe }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ rule.fruPrimaryAmount }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ rule.fruFeesAmount }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ rule.fruTva!.vatRate ?
+                  rule.fruTva.vatRate + '%' : 'N/A' }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <div class="flex justify-end space-x-2">
+                    <button class="text-green-600 hover:text-gray-500" (click)="editFeeRule(rule)">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-edit-line"></i>
+                      </div>
+                    </button>
+                    <button class="text-red-600 hover:text-red-500" (click)="deleteFeeRule(rule.fruCode)">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-delete-bin-line"></i>
+                      </div>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
@@ -286,115 +287,260 @@
           <button id="operations-type" (click)="showTab('type', 'operations')"
             class="operations-tab-button relative px-4 py-3 text-sm active font-medium text-primary">Operation
             Types</button>
-          <button id="operations-mapping" (click)="showTab('mapping', 'operations')"
-            class="operations-tab-button relative px-4 py-3 text-sm text-gray-500">Operations Mapping</button>
+          <button id="operations-walletMapping" (click)="showTab('wotm', 'operations')"
+            class="operations-tab-button relative px-4 py-3 text-sm text-gray-500">Wallet - Operation Type
+            Mapping</button>
+          <button id="operations-walletCategoryMapping" (click)="showTab('wcotm', 'operations')"
+            class="operations-tab-button relative px-4 py-3 text-sm text-gray-500">Wallet Category - Operation Type
+            Mapping</button>
           <button id="operations-periodicity" (click)="showTab('periodicity', 'operations')"
             class="operations-tab-button relative px-4 py-3 text-sm text-gray-500">Periodicity</button>
         </nav>
       </div>
 
       <!-- Operation type Content -->
-<div id="operations-tab-type" class="operations-tab-content p-6">
-  <div class="flex justify-between items-center mb-6">
-    <h3 class="text-lg font-medium text-gray-900">Operation Type Management</h3>
-    <button id="btn-add-status" (click)="toggleForm('operation-type')"
-      class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
-      <i class="ri-add-line mr-1"></i> Add Operation Type
-    </button>
-  </div>
-  <div class="overflow-x-auto">
-    <table class="min-w-full divide-y divide-gray-200">
-      <thead class="bg-gray-50">
-        <tr>
-          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-            Type Code
-          </th>
-          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-            Type Identifier
-          </th>
-          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-            Type Name
-          </th>
-          <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-            Actions
-          </th>
-        </tr>
-      </thead>
-      <tbody class="bg-white divide-y divide-gray-200">
-        <tr *ngFor="let operationType of operationTypesList">
-          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ operationType.optCode }}</td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ operationType.optIden }}</td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ operationType.optLabe }}</td>
-          <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-            <div class="flex justify-end space-x-2">
-              <button (click)="editOperationType(operationType)" class="text-green-600 hover:text-gray-500">
-                <div class="w-6 h-6 flex items-center justify-center">
-                  <i class="ri-edit-line"></i>
-                </div>
-              </button>
-              <button (click)="deleteOperationType(operationType.optCode)" class="text-red-600 hover:text-red-500">
-                <div class="w-6 h-6 flex items-center justify-center">
-                  <i class="ri-delete-bin-line"></i>
-                </div>
-              </button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
+      <div id="operations-tab-type" class="operations-tab-content p-6">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-lg font-medium text-gray-900">Operation Type Management</h3>
+          <button id="btn-add-status" (click)="toggleForm('operation-type')"
+            class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+            <i class="ri-add-line mr-1"></i> Add Operation Type
+          </button>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Type Code
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Type Identifier
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Type Name
+                </th>
+                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <tr *ngFor="let operationType of operationTypesList">
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ operationType.optCode }}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ operationType.optIden }}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ operationType.optLabe }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <div class="flex justify-end space-x-2">
+                    <button (click)="editOperationType(operationType)" class="text-green-600 hover:text-gray-500">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-edit-line"></i>
+                      </div>
+                    </button>
+                    <button (click)="deleteOperationType(operationType.optCode)"
+                      class="text-red-600 hover:text-red-500">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-delete-bin-line"></i>
+                      </div>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- wallet mapping Content -->
+      <div id="operations-tab-wotm" class="operations-tab-content hidden p-6">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-lg font-medium text-gray-900">Wallet - Operation Type Mapping</h3>
+          <button id="btn-add-status" (click)="toggleForm('operation-wotm')"
+            class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+            <i class="ri-add-line mr-1"></i> Add Wallet - Operation Type Mapping
+          </button>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Mapping Code
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Wallet
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Operation Type
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Max Limit
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Disp Amount
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Periodicity
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Fees
+                </th>
+                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <tr *ngFor="let wotm of wotmList">
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ wotm.wotmCode }}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ wotm.wallet.walLabe }}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ wotm.operationType.optLabe }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ wotm.wotmLimitMax }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ wotm.wotmDispAmount }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ wotm.fees.feeLabel }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <!-- <div class="flex justify-end space-x-2">
+                    <button (click)="editOperationType(operationType)" class="text-green-600 hover:text-gray-500">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-edit-line"></i>
+                      </div>
+                    </button>
+                    <button (click)="deleteOperationType(operationType.optCode)"
+                      class="text-red-600 hover:text-red-500">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-delete-bin-line"></i>
+                      </div>
+                    </button>
+                  </div> -->
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- wallet category mapping Content -->
+      <div id="operations-tab-wcotm" class="operations-tab-content hidden p-6">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-lg font-medium text-gray-900">Wallet - Operation Type Mapping</h3>
+          <button id="btn-add-status" (click)="toggleForm('operation-wcotm')"
+            class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+            <i class="ri-add-line mr-1"></i> Add Wallet Category - Operation Type Mapping
+          </button>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Mapping Code
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Wallet Category
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Operation Type
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Max Limit
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Periodicity
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Fees
+                </th>
+                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <tr *ngFor="let wcotm of wcotmList">
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ wcotm.id }}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ wcotm.walletCategory?.wcaLabe }}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ wcotm.operationType?.optLabe }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ wcotm.limitMax }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ wcotm.periodicity?.perLabe }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ wcotm.fees?.feeLabel }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <!-- <div class="flex justify-end space-x-2">
+                    <button (click)="editOperationType(operationType)" class="text-green-600 hover:text-gray-500">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-edit-line"></i>
+                      </div>
+                    </button>
+                    <button (click)="deleteOperationType(operationType.optCode)"
+                      class="text-red-600 hover:text-red-500">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-delete-bin-line"></i>
+                      </div>
+                    </button>
+                  </div> -->
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
       <!-- Periodicity Content -->
-<div id="operations-tab-periodicity" class="operations-tab-content p-6 hidden">
-  <div class="flex justify-between items-center mb-6">
-    <h3 class="text-lg font-medium text-gray-900">Periodicity Management</h3>
-    <button id="btn-add-status" (click)="toggleForm('operation-periodicity')"
-      class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
-      <i class="ri-add-line mr-1"></i> Add Periodicity
-    </button>
-  </div>
-  <div class="overflow-x-auto">
-    <table class="min-w-full divide-y divide-gray-200">
-      <thead class="bg-gray-50">
-        <tr>
-          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-            Code
-          </th>
-          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-            Identifier
-          </th>
-          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-            Name
-          </th>
-          <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-            Actions
-          </th>
-        </tr>
-      </thead>
-      <tbody class="bg-white divide-y divide-gray-200" *ngFor="let periodicity of periodicitiesList">
-        <tr>
-          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ periodicity.perCode }}</td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ periodicity.perIden }}</td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ periodicity.perLabe }}</td>
-          <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-            <div class="flex justify-end space-x-2">
-              <button class="text-green-600 hover:text-gray-500" (click)="editPeriodicity(periodicity)">
-                <div class="w-6 h-6 flex items-center justify-center">
-                  <i class="ri-edit-line"></i>
-                </div>
-              </button>
-              <button class="text-red-600 hover:text-red-500" (click)="deletePeriodicity(periodicity.perCode)">
-                <div class="w-6 h-6 flex items-center justify-center">
-                  <i class="ri-delete-bin-line"></i>
-                </div>
-              </button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
+      <div id="operations-tab-periodicity" class="operations-tab-content p-6 hidden">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-lg font-medium text-gray-900">Periodicity Management</h3>
+          <button id="btn-add-status" (click)="toggleForm('operation-periodicity')"
+            class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+            <i class="ri-add-line mr-1"></i> Add Periodicity
+          </button>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Code
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Identifier
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Name
+                </th>
+                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200" *ngFor="let periodicity of periodicitiesList">
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ periodicity.perCode }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ periodicity.perIden }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ periodicity.perLabe }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <div class="flex justify-end space-x-2">
+                    <button class="text-green-600 hover:text-gray-500" (click)="editPeriodicity(periodicity)">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-edit-line"></i>
+                      </div>
+                    </button>
+                    <button class="text-red-600 hover:text-red-500" (click)="deletePeriodicity(periodicity.perCode)">
+                      <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-delete-bin-line"></i>
+                      </div>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
 </main>
@@ -524,8 +670,7 @@
     class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
     <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
       <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-        <h3 class="text-lg font-medium text-gray-900">{{ selectedFeeRuleType ? 'Edit Fee Rule Type' : 'Add Fee Rule
-          Type' }}</h3>
+        <h3 class="text-lg font-medium text-gray-900">{{ selectedFeeRuleType ? 'Edit Fee Rule Type' : 'Add Fee Rule Type' }}</h3>
         <button id="close-type-modal" (click)="closeForm('fee-rule-type')" class="text-gray-400 hover:text-gray-500">
           <div class="w-6 h-6 flex items-center justify-center">
             <i class="ri-close-line"></i>
@@ -617,7 +762,8 @@
                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
                 required>
                 <option value="">Select Wallet</option>
-                <option *ngFor="let wallet of walletsList" [value]="wallet.walIden">{{ wallet.walLabe || wallet.walIden }}</option>
+                <option *ngFor="let wallet of walletsList" [value]="wallet.walIden">{{ wallet.walLabe || wallet.walIden
+                  }}</option>
               </select>
             </div>
             <div>
@@ -632,7 +778,8 @@
                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
                 required>
                 <option value="">Select Wallet</option>
-                <option *ngFor="let wallet of walletsList" [value]="wallet.walIden">{{ wallet.walLabe || wallet.walIden }}</option>
+                <option *ngFor="let wallet of walletsList" [value]="wallet.walIden">{{ wallet.walLabe || wallet.walIden
+                  }}</option>
               </select>
             </div>
             <div>
@@ -675,7 +822,8 @@
                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
                 required>
                 <option value="">Select VAT Rate</option>
-                <option *ngFor="let vat of vatRatesList" [value]="vat.vatCode">{{ vat.vatLabe }} ({{ vat.vatRate }}%)</option>
+                <option *ngFor="let vat of vatRatesList" [value]="vat.vatCode">{{ vat.vatLabe }} ({{ vat.vatRate }}%)
+                </option>
               </select>
             </div>
           </div>
@@ -695,108 +843,254 @@
   </div>
 
   <!-- Add/Edit Operation Type Modal -->
-<div *ngIf="isOperationTypeVisible" id="add-type-modal"
-  class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-  <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
+  <div *ngIf="isOperationTypeVisible" id="add-type-modal"
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
+      <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+        <h3 class="text-lg font-medium text-gray-900">{{ selectedOperationType ? 'Edit Operation Type' : 'Add Operation Type' }}</h3>
+        <button id="close-type-modal" (click)="closeForm('operation-type')" class="text-gray-400 hover:text-gray-500">
+          <div class="w-6 h-6 flex items-center justify-center">
+            <i class="ri-close-line"></i>
+          </div>
+        </button>
+      </div>
+      <div class="p-6">
+        <form id="operation-type-form" (ngSubmit)="selectedOperationType ? updateOperationType() : addOperationType()">
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Identifier</label>
+              <input type="text" id="optIden" name="optIden" [(ngModel)]="newOperationType.optIden"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                placeholder="Identifier" required>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Operation Type Label</label>
+              <input type="text" id="optLabe" name="optLabe" [(ngModel)]="newOperationType.optLabe"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                placeholder="Label" required>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Fee Schema Identifier</label>
+              <input type="number" id="optFscIden" name="optFscIden" [(ngModel)]="newOperationType.optFscIden"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                placeholder="Fee Schema Identifier" required>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Fee Schema Label</label>
+              <input type="text" id="optFscLab" name="optFscLab" [(ngModel)]="newOperationType.optFscLab"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                placeholder="Fee Schema Label" required>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Fee Schema</label>
+              <select id="feeSchema" name="feeSchema" [(ngModel)]="newOperationType.feeSchema.fscCode"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                required>
+                <option value="" disabled selected>Select Fee Schema</option>
+                <option *ngFor="let schema of feeSchemasList" [value]="schema.fscCode">
+                  {{ schema.fscLabe }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="mt-6 flex justify-end space-x-3">
+            <button type="button" (click)="closeForm('operation-type')" id="cancel-add-type"
+              class="px-4 py-2 border border-gray-300 rounded-button text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">
+              Cancel
+            </button>
+            <button type="submit"
+              class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 whitespace-nowrap">
+              {{ selectedOperationType ? 'Update Type' : 'Add Type' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="isWotmVisible" id="add-wotm-modal" class="bg-white rounded-lg shadow-xl w-full max-w-md">
     <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-      <h3 class="text-lg font-medium text-gray-900">{{ selectedOperationType ? 'Edit Operation Type' : 'Add Operation Type' }}</h3>
-      <button id="close-type-modal" (click)="closeForm('operation-type')" class="text-gray-400 hover:text-gray-500">
+      <h3 class="text-lg font-medium text-gray-900">{{ selectedWotm ? 'Edit Wallet Operation Type Map' : 'Add Wallet Operation Type Map' }}</h3>
+      <button id="close-type-modal" (click)="closeForm('operation-wotm')" class="text-gray-400 hover:text-gray-500">
         <div class="w-6 h-6 flex items-center justify-center">
           <i class="ri-close-line"></i>
         </div>
       </button>
     </div>
-    <div class="p-6">
-      <form id="operation-type-form" (ngSubmit)="selectedOperationType ? updateOperationType() : addOperationType()">
-        <div class="space-y-4">
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Identifier</label>
-            <input type="text" id="optIden" name="optIden" [(ngModel)]="newOperationType.optIden"
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-              placeholder="Identifier" required>
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Operation Type Label</label>
-            <input type="text" id="optLabe" name="optLabe" [(ngModel)]="newOperationType.optLabe"
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-              placeholder="Label" required>
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Fee Schema Identifier</label>
-            <input type="number" id="optFscIden" name="optFscIden" [(ngModel)]="newOperationType.optFscIden"
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-              placeholder="Fee Schema Identifier" required>
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Fee Schema Label</label>
-            <input type="text" id="optFscLab" name="optFscLab" [(ngModel)]="newOperationType.optFscLab"
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-              placeholder="Fee Schema Label" required>
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Fee Schema</label>
-            <select id="feeSchema" name="feeSchema" [(ngModel)]="newOperationType.feeSchema.fscCode"
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-              required>
-              <option value="" disabled selected>Select Fee Schema</option>
-              <option *ngFor="let schema of feeSchemasList" [value]="schema.fscCode">
-                {{ schema.fscLabe }}
-              </option>
-            </select>
-          </div>
+    <form id="add-wotm-form" class="p-6" (ngSubmit)="selectedWotm ? updateWotm() : addWotm()" #feeForm="ngForm">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label for="wallet" class="block text-sm font-medium text-gray-700 mb-1">Identifier</label>
+          <select [(ngModel)]="newWotm.wallet" name="wallet"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                required>
+                <option value="">Select Wallet</option>
+                <option *ngFor="let wallet of walletsList" [value]="wallet.walIden">{{ wallet.walLabe || wallet.walIden }}</option>
+              </select>
         </div>
-        <div class="mt-6 flex justify-end space-x-3">
-          <button type="button" (click)="closeForm('operation-type')" id="cancel-add-type"
-            class="px-4 py-2 border border-gray-300 rounded-button text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">
-            Cancel
-          </button>
-          <button type="submit"
-            class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 whitespace-nowrap">
-            {{ selectedOperationType ? 'Update Type' : 'Add Type' }}
-          </button>
+        <div>
+          <label for="operationType" class="block text-sm font-medium text-gray-700 mb-1">Operation Type</label>
+          <select [(ngModel)]="newWotm.operationType" name="operationType"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                required>
+                <option value="">Select Type</option>
+                <option *ngFor="let type of operationTypesList" [value]="newWotm.operationType">{{ type.optLabe || type.optIden }}</option>
+              </select>
         </div>
-      </form>
-    </div>
+        <div>
+          <label for="wotmLimitMax" class="block text-sm font-medium text-gray-700 mb-1">Max Limit</label>
+          <input type="number" id="wotmLimitMax" name="wotmLimitMax" [(ngModel)]="newWotm.wotmLimitMax"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+            placeholder="Minimum limit" required min="0">
+        </div>
+        <div>
+          <label for="wotmDispAmount" class="block text-sm font-medium text-gray-700 mb-1">Disp Amount</label>
+          <input type="number" id="wotmDispAmount" name="wotmDispAmount" [(ngModel)]="newWotm.wotmDispAmount"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+            placeholder="Disp Amount" required min="0">
+        </div>
+        <div>
+          <label for="periodicity" class="block text-sm font-medium text-gray-700 mb-1">Periodicity</label>
+          <select [(ngModel)]="newWotm.periodicity" name="periodicity"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                required>
+                <option value="">Select periodicity</option>
+                <option *ngFor="let periodicity of periodicitiesList" [value]="newWotm.periodicity">{{ periodicity.perLabe }}</option>
+              </select>
+        </div> 
+        <div>
+          <label for="fees" class="block text-sm font-medium text-gray-700 mb-1">Fees</label>
+          <select [(ngModel)]="newWotm.fees" name="fees"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                required>
+                <option value="">Select fees</option>
+                <option *ngFor="let fee of feesList" [value]="newWotm.fees">{{ fee.feeLabel || fee.feeIden }}</option>
+              </select>
+        </div>
+      </div>
+      <div class="mt-6 flex justify-end space-x-3">
+        <button type="button" (click)="closeForm('operation-wotm')" id="cancel-add-wotm"
+          class="px-4 py-2 border border-gray-300 rounded-button text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+        <button type="submit" [disabled]="feeForm.invalid"
+          class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 whitespace-nowrap">
+          {{ selectedWotm ? 'Update Mapping' : 'Add Mapping' }}
+        </button>
+      </div>
+    </form>
   </div>
-</div>
+
+  <div *ngIf="isWcotmVisible" id="add-wcotm-modal" class="bg-white rounded-lg shadow-xl w-full max-w-md">
+    <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+      <h3 class="text-lg font-medium text-gray-900">{{ selectedFee ? 'Edit Fee' : 'Add Fee' }}</h3>
+      <button id="close-type-modal" (click)="closeForm('fee')" class="text-gray-400 hover:text-gray-500">
+        <div class="w-6 h-6 flex items-center justify-center">
+          <i class="ri-close-line"></i>
+        </div>
+      </button>
+    </div>
+    <form id="add-type-form" class="p-6" (ngSubmit)="selectedFee ? updateFee() : addFee()" #feeForm="ngForm">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label for="feeIden" class="block text-sm font-medium text-gray-700 mb-1">Identifier</label>
+          <input type="text" id="feeIden" name="feeIden" [(ngModel)]="newFee.feeIden"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+            placeholder="Identifier" required>
+        </div>
+        <div>
+          <label for="feeLabel" class="block text-sm font-medium text-gray-700 mb-1">Fee Label</label>
+          <input type="text" id="feeLabel" name="feeLabel" [(ngModel)]="newFee.feeLabel"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+            placeholder="Label" required>
+        </div>
+        <div>
+          <label for="feeMinLimit" class="block text-sm font-medium text-gray-700 mb-1">Min</label>
+          <input type="number" id="feeMinLimit" name="feeMinLimit" [(ngModel)]="newFee.feeMinLimit"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+            placeholder="Minimum amount" required min="0">
+        </div>
+        <div>
+          <label for="feeMaxLimit" class="block text-sm font-medium text-gray-700 mb-1">Max</label>
+          <input type="number" id="feeMaxLimit" name="feeMaxLimit" [(ngModel)]="newFee.feeMaxLimit"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+            placeholder="Maximum Amount" required min="0">
+        </div>
+        <div>
+          <label for="feeAmount" class="block text-sm font-medium text-gray-700 mb-1">Fee Amount</label>
+          <input type="number" id="feeAmount" name="feeAmount" [(ngModel)]="newFee.feeAmount"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+            placeholder="Amount" required min="0">
+        </div>
+        <div>
+          <label for="feePercentage" class="block text-sm font-medium text-gray-700 mb-1">Percentage</label>
+          <input type="text" id="feePercentage" name="feePercentage" [(ngModel)]="newFee.feePercentage"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+            placeholder="Percentage" required>
+        </div>
+        <div>
+          <label for="feeMaxAmount" class="block text-sm font-medium text-gray-700 mb-1">Max Fee Amount</label>
+          <input type="number" id="feeMaxAmount" name="feeMaxAmount" [(ngModel)]="newFee.feeMaxAmount"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+            placeholder="Maximum fee amount" required min="0">
+        </div>
+        <div>
+          <label for="financialInstitutionId" class="block text-sm font-medium text-gray-700 mb-1">Financial Institution
+            ID</label>
+          <input type="number" id="financialInstitutionId" name="financialInstitutionId"
+            [(ngModel)]="newFee.financialInstitutionId"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+            placeholder="Financial Institution ID" required min="1">
+        </div>
+      </div>
+      <div class="mt-6 flex justify-end space-x-3">
+        <button type="button" (click)="closeForm('fee')" id="cancel-add-type"
+          class="px-4 py-2 border border-gray-300 rounded-button text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+        <button type="submit" [disabled]="feeForm.invalid"
+          class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 whitespace-nowrap">
+          {{ selectedFee ? 'Update Fee' : 'Add Fee' }}
+        </button>
+      </div>
+    </form>
+  </div>
 
   <!-- Add Periodicity Modal -->
-<div *ngIf="isPeriodicityVisible" id="add-periodicity-modal"
-  class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-  <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
-    <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-      <h3 class="text-lg font-medium text-gray-900">{{ selectedPeriodicity ? 'Edit Periodicity' : 'Add Periodicity' }}</h3>
-      <button id="close-type-modal" (click)="closeForm('operation-periodicity')"
-        class="text-gray-400 hover:text-gray-500">
-        <div class="w-6 h-6 flex items-center justify-center">
-          <i class="ri-close-line"></i>
-        </div>
-      </button>
-    </div>
-    <div class="p-6">
-      <form id="periodicity-form" (ngSubmit)="selectedPeriodicity ? updatePeriodicity() : addPeriodicity()">
-        <div class="space-y-4">
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Identifier</label>
-            <input type="text" id="perIden" name="perIden" [(ngModel)]="newPeriodicity.perIden"
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-              placeholder="Identifier" required>
+  <div *ngIf="isPeriodicityVisible" id="add-periodicity-modal"
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
+      <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+        <h3 class="text-lg font-medium text-gray-900">{{ selectedPeriodicity ? 'Edit Periodicity' : 'Add Periodicity' }}
+        </h3>
+        <button id="close-type-modal" (click)="closeForm('operation-periodicity')"
+          class="text-gray-400 hover:text-gray-500">
+          <div class="w-6 h-6 flex items-center justify-center">
+            <i class="ri-close-line"></i>
           </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Periodicity Label</label>
-            <input type="text" id="perLabe" name="perLabe" [(ngModel)]="newPeriodicity.perLabe"
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-              placeholder="Periodicity" required>
+        </button>
+      </div>
+      <div class="p-6">
+        <form id="periodicity-form" (ngSubmit)="selectedPeriodicity ? updatePeriodicity() : addPeriodicity()">
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Identifier</label>
+              <input type="text" id="perIden" name="perIden" [(ngModel)]="newPeriodicity.perIden"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                placeholder="Identifier" required>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Periodicity Label</label>
+              <input type="text" id="perLabe" name="perLabe" [(ngModel)]="newPeriodicity.perLabe"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                placeholder="Periodicity" required>
+            </div>
           </div>
-        </div>
-        <div class="mt-6 flex justify-end space-x-3">
-          <button type="button" (click)="closeForm('operation-periodicity')" id="cancel-add-type"
-            class="px-4 py-2 border border-gray-300 rounded-button text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">Cancel</button>
-          <button type="submit"
-            class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 whitespace-nowrap">{{ selectedPeriodicity ? 'Update Periodicity' : 'Add Periodicity' }}</button>
-        </div>
-      </form>
+          <div class="mt-6 flex justify-end space-x-3">
+            <button type="button" (click)="closeForm('operation-periodicity')" id="cancel-add-type"
+              class="px-4 py-2 border border-gray-300 rounded-button text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+            <button type="submit"
+              class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 whitespace-nowrap">{{
+              selectedPeriodicity ? 'Update Periodicity' : 'Add Periodicity' }}</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
-</div>
 </div>

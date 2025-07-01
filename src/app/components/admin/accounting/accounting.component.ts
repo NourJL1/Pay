@@ -18,6 +18,10 @@ import { VatRateService } from '../../../services/vat-rate.service';
 import { VatRate } from '../../../entities/vat-rate';
 import { WalletService } from '../../../services/wallet.service';
 import { Wallet } from '../../../entities/wallet';
+import { WalletOperationTypeMap } from '../../../entities/wallet-operation-type-map';
+import { WalletCategoryOperationTypeMap } from '../../../entities/wallet-category-operation-type-map';
+import { WalletCategoryOperationTypeMapService } from '../../../services/wallet-category-operation-type-map.service';
+import { WalletOperationTypeMapService } from '../../../services/wallet-operation-type-map.service';
 
 @Component({
   selector: 'app-accounting',
@@ -47,6 +51,17 @@ export class AccountingComponent implements OnInit {
   selectedPeriodicity: Periodicity | null = null;
   vatRatesList: VatRate[] = [];
   walletsList: Wallet[] = [];
+
+  
+  wotmList: WalletOperationTypeMap[] = []
+  newWotm: WalletOperationTypeMap = new WalletOperationTypeMap()
+  selectedWotm?: WalletOperationTypeMap | null = null
+
+  wcotmList: WalletCategoryOperationTypeMap[] = []
+  newWcotm: WalletCategoryOperationTypeMap = new WalletCategoryOperationTypeMap()
+  selectedWcotm?: WalletCategoryOperationTypeMap | null = null
+
+
   successMessage: string | null = null;
   errorMessage: string | null = null;
 
@@ -55,7 +70,8 @@ export class AccountingComponent implements OnInit {
   isFeeRuleVisible: boolean = false;
   isFeeRuleTypeVisible: boolean = false;
   isOperationTypeVisible: boolean = false;
-  isOperationMappingVisible: boolean = false;
+  isWotmVisible: boolean = false;
+  isWcotmVisible: boolean = false;
   isPeriodicityVisible: boolean = false;
 
   constructor(
@@ -64,6 +80,8 @@ export class AccountingComponent implements OnInit {
     private feeRuleTypeService: FeeRuleTypeService,
     private feeRuleService: FeeRuleService,
     private operationTypeService: OperationTypeService,
+    private wotmService: WalletOperationTypeMapService,
+    private wcotmService: WalletCategoryOperationTypeMapService,
     private periodicityService: PeriodicityService,
     private vatRateService: VatRateService,
     private walletService: WalletService,
@@ -77,6 +95,8 @@ export class AccountingComponent implements OnInit {
     this.loadFeeRuleTypes();
     this.loadFeeRules();
     this.loadOperationTypes();
+    this.loadWalletOperationTypeMap()
+    this.loadWalletCategoryOperationTypeMap()
     this.loadPeriodicities();
     this.loadVatRates();
     this.loadWallets();
@@ -171,6 +191,36 @@ export class AccountingComponent implements OnInit {
       error: (err: any) => {
         console.error('loadOperationTypes: Error:', err.status, err.message);
         this.showErrorMessage('Failed to load operation types.');
+      }
+    });
+  }
+
+  loadWalletOperationTypeMap(): void {
+    console.log('loadWalletOperationTypeMap: Fetching ...');
+    this.wotmService.getAll().subscribe({
+      next: (data: WalletOperationTypeMap[]) => {
+        console.log('loadOperationTypes: wallet operation type map received:', data);
+        this.wotmList = data;
+        this.cdr.detectChanges();
+      },
+      error: (err: any) => {
+        console.error('loadWalletOperationTypeMap: Error:', err.status, err.message);
+        this.showErrorMessage('Failed to load wallet operation type map.');
+      }
+    });
+  }
+
+  loadWalletCategoryOperationTypeMap(): void {
+    console.log('loadWalletCategoryOperationTypeMap: Fetching ...');
+    this.wotmService.getAll().subscribe({
+      next: (data: WalletCategoryOperationTypeMap[]) => {
+        console.log('loadWalletOperationTypeMap: Wallet xategory operation type map received:', data);
+        this.wcotmList = data;
+        this.cdr.detectChanges();
+      },
+      error: (err: any) => {
+        console.error('loadWalletOperationTypeMap: Error:', err.status, err.message);
+        this.showErrorMessage('Failed to load wallet operation type map.');
       }
     });
   }
@@ -591,6 +641,164 @@ export class AccountingComponent implements OnInit {
     }
   }
 
+  addWotm(): void {
+    console.log('addWotm: Adding wotm:', this.newWotm);
+    if (!this.newWotm.wallet || !this.newWotm.operationType || !this.newWotm.wotmLimitMax || !this.newWotm.periodicity || !this.newWotm.fees) {
+      this.showErrorMessage('Please fill in all required fields, including Fee Schema.');
+      return;
+    }
+    this.wotmService.create(this.newWotm).subscribe({
+      next: (createdWotm: WalletOperationTypeMap) => {
+        console.log('addWotm: wotm added:', createdWotm);
+        this.wotmList = [...this.wotmList, createdWotm];
+        this.newWotm = new WalletOperationTypeMap();
+        this.isWotmVisible = false;
+        this.showSuccessMessage('Mapping added successfully');
+        this.cdr.detectChanges();
+      },
+      error: (err: any) => {
+        console.error('addWotm: Error:', err.status, err.error);
+        this.showErrorMessage('Failed to add mapping: ' + (err.error?.message || 'Please check the form.'));
+      }
+    });
+  }
+
+  editWotm(wotm: WalletOperationTypeMap): void {
+    console.log('editWotm: mapping object:', wotm);
+    this.selectedWotm = wotm;
+    this.newWotm = { ...wotm }
+    this.isWotmVisible = true;
+    this.cdr.detectChanges();
+  }
+
+  updateWotm(): void {
+    console.log('addWotm: Adding wotm:', this.newWotm);
+    if (!this.newWotm.wallet || !this.newWotm.operationType || !this.newWotm.wotmLimitMax || !this.newWotm.periodicity || !this.newWotm.fees) {
+      this.showErrorMessage('Please fill in all required fields, including Fee Schema.');
+      return;
+    }
+    if (this.selectedWotm?.wotmCode) {
+      this.wotmService.update(this.selectedWotm.wotmCode, this.newWotm).subscribe({
+        next: (updatedWotm: WalletOperationTypeMap) => {
+          console.log('updateWotm: Mapping updated:', updatedWotm);
+          const index = this.wotmList.findIndex(wotm => wotm.wotmCode === updatedWotm.wotmCode);
+          if (index !== -1) {
+            this.wotmList[index] = updatedWotm;
+            this.wotmList = [...this.wotmList];
+          }
+          this.newWotm = new WalletOperationTypeMap();
+          this.selectedWotm = null;
+          this.isWotmVisible = false;
+          this.showSuccessMessage('Mapping type updated successfully');
+          this.cdr.detectChanges();
+        },
+        error: (err: any) => {
+          console.error('updateWotm: Error:', err.status, err.error);
+          this.showErrorMessage('Failed to update Mapping: ' + (err.error?.message || 'Please try again.'));
+        }
+      });
+    } else {
+      this.showErrorMessage('No mapping selected for update.');
+    }
+  }
+
+  deleteWotm(wotmCode: number | undefined): void {
+    console.log('deleteOperationType: wotm:', wotmCode);
+    if (wotmCode && confirm('Are you sure you want to delete this mapping?')) {
+      this.wotmService.delete(wotmCode).subscribe({
+        next: () => {
+          console.log('deleteOperationType: Success, wotmCode:', wotmCode);
+          this.wotmList = this.wotmList.filter(wotm => wotm.wotmCode !== wotmCode);
+          this.showSuccessMessage('Mapping deleted successfully');
+          this.cdr.detectChanges();
+        },
+        error: (err: any) => {
+          console.error('deleteMapping: Error:', err.status, err.message, err.error);
+          this.showErrorMessage('Failed to delete mapping: ' + (err.error?.message || 'Please try again.'));
+        }
+      });
+    }
+  }
+
+  addWcotm(): void {
+    console.log('addWcotm: Adding wcotm:', this.newWcotm);
+    if (!this.newWcotm.walletCategory || !this.newWcotm.operationType || !this.newWcotm.limitMax || !this.newWcotm.periodicity || !this.newWcotm.fees) {
+      this.showErrorMessage('Please fill in all required fields, including Fee Schema.');
+      return;
+    }
+    this.wcotmService.create(this.newWcotm).subscribe({
+      next: (createdWcotm: WalletCategoryOperationTypeMap) => {
+        console.log('addWcotm: wcotm added:', createdWcotm);
+        this.wcotmList = [...this.wcotmList, createdWcotm];
+        this.newWcotm = new WalletCategoryOperationTypeMap();
+        this.isWcotmVisible = false;
+        this.showSuccessMessage('Mapping added successfully');
+        this.cdr.detectChanges();
+      },
+      error: (err: any) => {
+        console.error('addWcotm: Error:', err.status, err.error);
+        this.showErrorMessage('Failed to add mapping: ' + (err.error?.message || 'Please check the form.'));
+      }
+    });
+  }
+
+  editWcotm(wcotm: WalletOperationTypeMap): void {
+    console.log('editWcotm: mapping object:', wcotm);
+    this.selectedWcotm = wcotm;
+    this.newWcotm = { ...wcotm }
+    this.isWcotmVisible = true;
+    this.cdr.detectChanges();
+  }
+
+  updateWcotm(): void {
+    console.log('addWcotm: Adding wcotm:', this.newWcotm);
+    if (!this.newWcotm.walletCategory || !this.newWcotm.operationType || !this.newWcotm.limitMax || !this.newWcotm.periodicity || !this.newWcotm.fees) {
+      this.showErrorMessage('Please fill in all required fields, including Fee Schema.');
+      return;
+    }
+    if (this.selectedWcotm?.id) {
+      this.wcotmService.update(this.selectedWcotm.id, this.newWcotm).subscribe({
+        next: (updatedWcotm: WalletCategoryOperationTypeMap) => {
+          console.log('updateWcotm: Mapping updated:', updatedWcotm);
+          const index = this.wcotmList.findIndex(wcotm => wcotm.id === updatedWcotm.id);
+          if (index !== -1) {
+            this.wcotmList[index] = updatedWcotm;
+            this.wcotmList = [...this.wcotmList];
+          }
+          this.newWcotm = new WalletCategoryOperationTypeMap();
+          this.selectedWcotm = null;
+          this.isWcotmVisible = false;
+          this.showSuccessMessage('Mapping type updated successfully');
+          this.cdr.detectChanges();
+        },
+        error: (err: any) => {
+          console.error('updateWcotm: Error:', err.status, err.error);
+          this.showErrorMessage('Failed to update Mapping: ' + (err.error?.message || 'Please try again.'));
+        }
+      });
+    } else {
+      this.showErrorMessage('No mapping selected for update.');
+    }
+  }
+
+  deleteWcotm(wcotmCode: number | undefined): void {
+    console.log('deleteOperationType: wcotm:', wcotmCode);
+    if (wcotmCode && confirm('Are you sure you want to delete this mapping?')) {
+      this.wcotmService.delete(wcotmCode).subscribe({
+        next: () => {
+          console.log('deleteOperationType: Success, wcotmCode:', wcotmCode);
+          this.wcotmList = this.wcotmList.filter(wcotm => wcotm.id !== wcotmCode);
+          this.showSuccessMessage('Mapping deleted successfully');
+          this.cdr.detectChanges();
+        },
+        error: (err: any) => {
+          console.error('deleteMapping: Error:', err.status, err.message, err.error);
+          this.showErrorMessage('Failed to delete mapping: ' + (err.error?.message || 'Please try again.'));
+        }
+      });
+    }
+  }
+
   addPeriodicity(): void {
     console.log('addPeriodicity: Adding periodicity:', this.newPeriodicity);
     if (!this.newPeriodicity.perIden || !this.newPeriodicity.perLabe) {
@@ -741,8 +949,11 @@ export class AccountingComponent implements OnInit {
       case 'operation-type':
         this.isOperationTypeVisible = true;
         break;
-      case 'operation-mapping':
-        this.isOperationMappingVisible = true;
+      case 'operation-wotm':
+        this.isWotmVisible = true;
+        break;
+      case 'operation-wcotm':
+        this.isWcotmVisible = true;
         break;
       case 'operation-periodicity':
         this.isPeriodicityVisible = true;
@@ -779,8 +990,11 @@ export class AccountingComponent implements OnInit {
         this.selectedOperationType = null;
         this.isOperationTypeVisible = false;
         break;
-      case 'operation-mapping':
-        this.isOperationMappingVisible = false;
+      case 'operation-wotm':
+        this.isWotmVisible = false;
+        break;
+      case 'operation-wcotm':
+        this.isWcotmVisible = false;
         break;
       case 'operation-periodicity':
         this.newPeriodicity = new Periodicity();
@@ -798,7 +1012,8 @@ export class AccountingComponent implements OnInit {
       this.isFeeRuleVisible ||
       this.isFeeRuleTypeVisible ||
       this.isOperationTypeVisible ||
-      this.isOperationMappingVisible ||
+      this.isWotmVisible ||
+      this.isWcotmVisible ||
       this.isPeriodicityVisible
     );
   }
