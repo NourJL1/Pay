@@ -9,9 +9,9 @@ import { environment } from '../../environments/environment';
 })
 export class CustomerDocService {
 
-private apiUrl = `${environment.apiUrl}/api/customer-doc`;
+  private apiUrl = `${environment.apiUrl}/api/customer-doc`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   private httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
@@ -25,8 +25,19 @@ private apiUrl = `${environment.apiUrl}/api/customer-doc`;
     return this.http.get<CustomerDoc>(`${this.apiUrl}/${id}`);
   }
 
-  create(customerDoc: CustomerDoc): Observable<CustomerDoc> {
+  /* create(customerDoc: CustomerDoc): Observable<CustomerDoc> {
     return this.http.post<CustomerDoc>(this.apiUrl, customerDoc, this.httpOptions);
+  } */
+
+  create(customerDoc: CustomerDoc, file: File) {
+
+    const formData = new FormData()
+    formData.append('customerDoc', JSON.stringify(customerDoc))
+    formData.append('file', file)
+    for (let [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
+    return this.http.post<CustomerDoc>(this.apiUrl, formData);
   }
 
   update(id: number, customerDoc: CustomerDoc): Observable<CustomerDoc> {
@@ -39,4 +50,5 @@ private apiUrl = `${environment.apiUrl}/api/customer-doc`;
 
   search(word: string): Observable<CustomerDoc[]> {
     return this.http.get<CustomerDoc[]>(`${this.apiUrl}/search?word=${word}`);
-  }}
+  }
+}

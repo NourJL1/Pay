@@ -16,6 +16,7 @@ import { ProfilingComponent } from './components/admin/profiling/profiling.compo
 import { CustomerMngComponent } from './components/admin/customer-mng/customer-mng.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { PendingComponent } from './components/wallet/pending/pending.component';
+import { WalletFormComponent } from './components/wallet-form/wallet-form.component';
 
 export const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -52,5 +53,6 @@ export const routes: Routes = [
       {path: 'profiling', component: ProfilingComponent},
       {path: 'customers', component: CustomerMngComponent},
     ]
-}
+  },
+  { path: 'wallet-form', component: WalletFormComponent }
 ];

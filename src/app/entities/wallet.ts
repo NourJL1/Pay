@@ -32,6 +32,9 @@ export class Wallet {
   walletOperationTypeMappings?: WalletOperationTypeMap[];
 
   constructor(init?: Partial<Wallet>) {
+    this.walEffBal = 0
+    this.walLogicBalance = 0
+    this.walSpecificBalance = 0
     Object.assign(this, init);
   }
 }

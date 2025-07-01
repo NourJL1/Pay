@@ -35,6 +35,13 @@ export class Customer {
     return this.cusMidName ? this.cusFirstName + ' ' + this.cusMidName + ' ' + this.cusLastName : this.cusFirstName + ' ' + this.cusLastName 
   }
 
+  constructor(init?: Partial<Customer>) {
+    this.identity = new CustomerIdentity()
+    //this.wallets = []
+
+    Object.assign(this, init);
+  }
+
   /* constructor(
     cusCode: number,
     cusFirstName: string,

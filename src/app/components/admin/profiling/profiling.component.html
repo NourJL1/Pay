@@ -3,6 +3,17 @@
         <h1 class="text-xl font-semibold text-gray-800">Users Profiling Management</h1>
     </div>
 </div>
+
+<!-- Tabs -->
+<div class="bg-white border-b">
+    <div class="px-6 flex">
+        <button class="tab-button px-4 py-3 text-sm active font-medium text-primary" (click)="showTab('overview')"
+            id="overview">Overview</button>
+        <button class="tab-button px-4 py-3 text-sm text-gray-500" (click)="showTab('settings')"
+            id="settings">Settings</button>
+    </div>
+</div>
+
 <main class="flex-1 overflow-y-auto p-6 custom-scrollbar">
     <div class="overflow-x-auto">
         <table class="min-w-full divide-y divide-gray-200">

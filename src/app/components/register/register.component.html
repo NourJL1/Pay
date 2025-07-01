@@ -10,7 +10,7 @@
 
     <!-- Step Indicator -->
     <div class="flex justify-between mb-8">
-      <span *ngFor="let step of [1,2,3,4,5,6]" [class]="'step-indicator ' + (currentStep === step ? 'active' : '')">
+      <span *ngFor="let step of [1,2,3,4,5]" [class]="'step-indicator ' + (currentStep === step ? 'active' : '')">
         Step {{step}}
       </span>
     </div>
@@ -25,13 +25,13 @@
 
     <form #form="ngForm" class="space-y-6">
       <!-- Step 1 - Wallet Type -->
-      <div *ngIf="currentStep === 1" class="step">
+      <!-- <div *ngIf="currentStep === 1" class="step">
         <h3 class="text-lg font-medium mb-4">Choose Wallet Type:</h3>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div *ngFor="let type of walletTypes"
-            [class]="'wallet-card ' + (selectedWalletType === type ? 'selected' : '')"
-            (click)="selectedWalletType = type">
-            <input type="radio" name="selectedWalletType" [value]="type" [(ngModel)]="selectedWalletType" hidden>
+            [class]="'wallet-card ' + (wallet.walletType === type ? 'selected' : '')"
+            (click)="wallet.walletType = type">
+            <input type="radio" name="selectedWalletType" [value]="type" [(ngModel)]="wallet.walletType" hidden>
             <h4 class="font-semibold">
               <span *ngIf="type.wtyCode === 1">👤</span>
               <span *ngIf="type.wtyCode === 2">🧑‍💼</span>
@@ -45,10 +45,10 @@
             </p>
           </div>
         </div>
-      </div>
+      </div> -->
 
-      <!-- Step 2 - Personal Info -->
-      <div *ngIf="currentStep === 2" class="step space-y-4">
+      <!-- Step 1 - Personal Info -->
+      <div *ngIf="currentStep === 1" class="step space-y-4">
         <div class="form-field">
           <label class="form-label">First Name:</label>
           <input class="form-input" [(ngModel)]="customer.cusFirstName" name="cusFirstName" type="text" required>
@@ -70,8 +70,8 @@
         </div>
       </div>
 
-      <!-- Step 3 - Location -->
-      <div *ngIf="currentStep === 3" class="step space-y-4">
+      <!-- Step 2 - Location & Phone -->
+      <div *ngIf="currentStep === 2" class="step space-y-4">
         <h3 class="text-lg font-medium">Select Your Address</h3>
         <div class="form-field">
           <label class="form-label">Address:</label>
@@ -108,8 +108,8 @@
         </div>
       </div>
 
-      <!-- Step 4 - Phone -->
-      <div *ngIf="currentStep === 4" class="step">
+      <!-- Step 3 -  Email & OTP -->
+      <div *ngIf="currentStep === 3" class="step">
         <div class="form-field">
           <label class="form-label">Email:</label>
           <div class="flex gap-2">
@@ -143,9 +143,8 @@
         </div>
       </div>
 
-      <!-- Step 5 - Email & OTP -->
-      <div *ngIf="currentStep === 5" class="step space-y-4">
-        <!-- Password Section -->
+      <!-- Step 4 - Password Section-->
+      <div *ngIf="currentStep === 4" class="step space-y-4">
         <div class="form-field">
           <label class="form-label">Password:</label>
           <input class="form-input" [(ngModel)]="customer.cusMotDePasse" name="cusMotDePasse" type="password" required
@@ -163,23 +162,26 @@
         </div>
       </div>
 
-      <!-- Step 6 - KYC -->
-      <!-- <div *ngIf="currentStep === 6" class="step space-y-4">
+      <!-- Step 5 - KYC -->
+      <div *ngIf="currentStep === 5" class="step space-y-4">
         <div class="form-field">
           <label class="form-label">Identification Type:</label>
-          <select class="form-input" [(ngModel)]="CUSTOMER.identificationType" name="idType">
-            <option value="CIN">ID Card</option>
-            <option value="PASSPORT">Passport</option>
-            <option value="CARTE_SEJOUR">Carte Séjour</option>
+          <select class="form-input" [(ngModel)]="customer.identity!.customerIdentityType" name="customerIdentityType">
+            <option *ngFor="let cit of identityTypes" [ngValue]="cit">{{cit.citLabe}}</option>
           </select>
         </div>
 
         <div class="form-field">
-          <label class="form-label">Upload ID Files (recto, verso):</label>
-          <input type="file" class="form-input p-2" multiple (change)="onFileSelected($event)"
-            accept=".jpg,.jpeg,.png,.pdf">
+          <label class="form-label">Identity Number:</label>
+          <input type="text" class="form-input p-2 " [(ngModel)]="customer.identity!.cidNum" name="cidNum">
         </div>
-      </div> -->
+
+        <div class="form-field">
+          <label class="form-label">Upload ID Files (max 10M):</label>
+          <input type="file" class="form-input p-2" multiple (change)="onFileSelected($event)"
+            [accept]="allowedDocTypes">
+        </div>
+      </div>
     </form>
 
     <!-- Navigation Buttons -->
@@ -187,10 +189,10 @@
       <button class="btn secondary" (click)="goToPreviousStep()" [disabled]="currentStep === 1">
         Back
       </button>
-      <button *ngIf="currentStep < 6" class="btn primary" (click)="goToNextStep()">
+      <button *ngIf="currentStep < 5" class="btn primary" (click)="goToNextStep()">
         Next
       </button>
-      <button *ngIf="currentStep === 6" class="btn primary" (click)="onSubmit()">
+      <button *ngIf="currentStep === 5" class="btn primary" (click)="onSubmit()">
         Submit
       </button>
     </div>

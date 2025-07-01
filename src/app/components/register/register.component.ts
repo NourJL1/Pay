@@ -15,6 +15,15 @@ import { WalletType } from '../../entities/wallet-type';
 import { WalletTypeService } from '../../services/wallet-type.service';
 import { Role } from '../../entities/role';
 import { WalletService } from '../../services/wallet.service';
+import { CustomerIdentityTypeService } from '../../services/customer-identity-type.service';
+import { CustomerIdentityType } from '../../entities/customer-identity-type';
+import { CustomerIdentityService } from '../../services/customer-identity.service';
+import { CustomerIdentity } from '../../entities/customer-identity';
+import { Wallet } from '../../entities/wallet';
+import { DocTypeService } from '../../services/doc-type.service';
+import { DocType } from '../../entities/doc-type';
+import { CustomerDoc } from '../../entities/customer-doc';
+import { CustomerDocService } from '../../services/customer-doc.service';
 
 interface PhoneNumber {
   internationalNumber: string;
@@ -45,37 +54,198 @@ export class RegisterComponent {
     private countryService: CountryService,
     private cityService: CityService,
     private walletService: WalletService,
-    private walletTypeService: WalletTypeService,
+    private customerIdentityTypeService: CustomerIdentityTypeService,
+    private customerDocService: CustomerDocService,
+    private docTypeService: DocTypeService,
     private router: Router) { }
 
+  customer: Customer = new Customer();
+  wallet: Wallet = new Wallet()
+
+  currentStep = 1;
+  countries: Country[] = [];
+  cities: City[] = [];
+  files: File[] = []
+  customerDocs: CustomerDoc[] = [];
+  identityTypes: CustomerIdentityType[] = []
+  docTypes: DocType[] = []
+  allowedDocTypes: string[] = []
+  walletTypes: WalletType[] = []
+  phoneCode: string = ''
+
+  selectedCountryCode: string | null = null;
+
   ngOnInit(): void {
+
     localStorage.clear()
-    this.walletTypeService.getAll().subscribe(
-      {
-        next: (types: WalletType[]) => {
-          this.walletTypes = types;
-        },
-        error: (err) => {
-          console.log(err)
-        }
-      }
-    );
+
+    //this.customer.identity = new CustomerIdentity()
+    
 
     this.countryService.getAll().subscribe(
       {
-        next: (countries: Country[]) => {
-          this.countries = countries;
+        next: (countries: Country[]) => { this.countries = countries; },
+        error: (err) => { console.log(err) }
+      }
+    );
+
+    this.customerIdentityTypeService.getAll().subscribe(
+      {
+        next: (identityTypes: CustomerIdentityType[]) => { this.identityTypes = identityTypes; },
+        error: (err) => { console.log(err) }
+      }
+    );
+
+    this.docTypeService.getAll().subscribe(
+      {
+        next: (docTypes: DocType[]) => {
+          this.docTypes = docTypes;
+          this.allowedDocTypes = docTypes.map(type => type.dtyLabe!)
         },
-        error: (err) => {
-          console.log(err)
-        }
+        error: (err) => { console.log(err) }
       }
     );
   }
 
+  onSubmit(): void {
+    // First validate the current step (step 5)
+    if (this.currentStep === 5) {
+      if (!this.customer.identity!.cidNum || !this.customer.identity!.customerIdentityType || this.customerDocs.length <= 0) {
+        this.errorMessage = 'Please select an identification type.';
+        return;
+      }
+    }
+
+    //this.customer.role = new Role(this.wallet.walletType?.wtyCode!, this.wallet.walletType?.wtyLabe!);
+
+    //this.customer.identity!.customerDocListe!.cdlLabe = this.customer.username + '-' + this.customer.identity!.customerIdentityType!.citLabe
+    this.customer.identity!.customerDocListe!.cdlLabe = this.customer.identity?.customerIdentityType?.citLabe + '-' + this.customer.username
+    this.customer.identity!.customerDocListe!.cdlIden = 'CDL' + Math.round(Math.random()*10000)
+
+    this.customer.role = {id: 1, name: 'CUSTOMER'}
+
+    console.log(this.customer)
+
+    this.customerService.register(this.customer).subscribe({
+      next: (customer: Customer) => {
+        
+         console.log(this.customerDocs)
+
+        for(let i=0; i< this.customerDocs.length; i++)
+        {
+          this.customerDocs[i].customerDocListe = customer.identity?.customerDocListe
+          this.customerDocService.create(this.customerDocs[i], this.files[i]).subscribe({
+            next: () => {console.log("docs succ")},
+            error: (err) => {console.log(err)}
+          })
+        }
+
+        this.successMessage = 'Registration successful!';
+        this.errorMessage = '';
+        setTimeout(() => this.router.navigate(['/wallet-form']), 2000);
+      },
+      error: (error) => {
+        console.error('Registration error:', error);
+        this.errorMessage = 'Registration failed. Please try again.\n';
+        this.successMessage = '';
+      },
+    });
+  }
+
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    //console.log(input.files)
+    if (input.files && input.files.length > 0) {
+      Array.from(input.files).forEach((file => {
+        const matchedDocType = this.docTypes.find(dt => dt.dtyLabe === file.type)
+        
+         this.customerDocs.push(new CustomerDoc({
+            cdoIden: 'CDO' + Math.round(Math.random()*10000),
+            cdoLabe: file.name,
+            docType: matchedDocType,
+            //customerDocListe: this.customer.identity?.customerDocListe
+          }))
+
+          this.files.push(file)
+
+          //this.customer.identity!.customerDocListe!.customerDocs?.push(customerDoc) 
+      }))
+    }
+  }
+
+  goToNextStep() {
+
+    console.log(this.customer)
+
+    // Step 1: Choosing a wallet type
+    /* if (this.currentStep === 1) {
+      if (!this.wallet.walletType) {
+        this.errorMessage = 'Please choose a wallet type.';
+        return;
+      }
+    } */
+
+    // Step 1: Validate Full Name and Username
+    if (this.currentStep === 1) {
+      if (!this.customer.cusFirstName?.trim() || !this.customer.cusLastName?.trim() || !this.customer.username?.trim()) {
+        this.errorMessage = 'Please fill in both Full Name and Username.';
+        return;
+      }
+    }
+
+    // Step 2: Validate Full Name and Username
+    if (this.currentStep === 2) {
+      if (!this.customer.cusAddress?.trim() || !this.customer.country || !this.customer.city) {
+        this.errorMessage = 'Please provide you address.';
+        return;
+      }
+      const phoneControl = this.phoneForm.get('phone');
+
+      if (!phoneControl?.value) {
+        this.errorMessage = 'Please enter a phone number.';
+        return;
+      }
+
+      // Check if the control is invalid
+      if (phoneControl.invalid) {
+        this.errorMessage = 'Please enter a valid phone number.';
+        return;
+      }
+
+      const phoneValue = phoneControl.value as PhoneNumber;
+      this.customer.cusPhoneNbr = phoneValue.e164Number;
+    }
+
+    // Step 3: In the goToNextStep method, update the phone validation part:
+    if (this.currentStep === 3) {
+
+      if (!this.customer.cusMailAddress?.trim() || !this.otpVerified) {
+        this.errorMessage = 'Please enter and verify your email.';
+        return;
+      }
+    }
+
+    // Step 4: Validate Email and Password
+    if (this.currentStep === 4) {
+      if (!this.customer.cusMotDePasse?.trim() || this.customer.cusMotDePasse != this.confirm) {
+        this.errorMessage = 'Please enter your password.';
+        return;
+      }
+    }
+
+    // Clear any previous error and go to the next step
+    this.errorMessage = '';
+    this.currentStep++;
+  }
+
+  goToPreviousStep() {
+    if (this.currentStep > 1) {
+      this.currentStep--;
+    }
+  }
+
 
   onCountryChange(): void {
-    //console.log(this.customer.country)
     this.selectedCountryCode = this.customer.country?.ctrIden!
 
     this.cityService.getByCountry(this.customer.country!).subscribe(
@@ -90,38 +260,12 @@ export class RegisterComponent {
     );
   }
 
-  currentStep = 1;
-  countries: Country[] = [];
-  cities: City[] = [];
-  phoneCode: string = ''
-
-  walletTypes: WalletType[] = []
-  selectedWalletType?: WalletType
-  selectedCountryCode: string | null = null;
-
   phoneForm = new FormGroup({
     phone: new FormControl<PhoneNumber | null>(null, [
       Validators.required,
       this.validatePhoneNumber
     ])
   });
-
-  /* selectedCountry: string[] = [];
-  countryISO = CountryISO;
-  SearchCountryField = SearchCountryField;
-  preferredCountries: CountryISO[] = [
-    CountryISO.Tunisia, // Added Tunisia since you're using +216
-    CountryISO.UnitedStates,
-    CountryISO.UnitedKingdom
-  ]; */
-
-
-  /*   searchCountryField = [
-      SearchCountryField.Iso2,
-      SearchCountryField.Name
-    ]; */
-
-  customer: Customer = new Customer();
 
 
   errorMessage: string = '';
@@ -145,85 +289,6 @@ export class RegisterComponent {
       return { invalidNumber: true };
     }
     return null;
-  }
-
-  goToNextStep() {
-
-    console.log(this.customer)
-
-    // Step 1: Choosing a wallet type
-    if (this.currentStep === 1) {
-      if (!this.selectedWalletType) {
-        this.errorMessage = 'Please choose a wallet type.';
-        return;
-      }
-    }
-
-    // Step 2: Validate Full Name and Username
-    if (this.currentStep === 2) {
-      if (!this.customer.cusFirstName?.trim() || !this.customer.cusLastName?.trim() || !this.customer.username?.trim()) {
-        this.errorMessage = 'Please fill in both Full Name and Username.';
-        return;
-      }
-    }
-
-    // Step 2: Validate Full Name and Username
-    if (this.currentStep === 3) {
-      if (!this.customer.cusAddress?.trim() || !this.customer.country || !this.customer.city) {
-        this.errorMessage = 'Please provide you address.';
-        return;
-      }
-      const phoneControl = this.phoneForm.get('phone');
-
-      if (!phoneControl?.value) {
-        this.errorMessage = 'Please enter a phone number.';
-        return;
-      }
-
-      // Check if the control is invalid
-      if (phoneControl.invalid) {
-        this.errorMessage = 'Please enter a valid phone number.';
-        return;
-      }
-
-      const phoneValue = phoneControl.value as PhoneNumber;
-      this.customer.cusPhoneNbr = phoneValue.e164Number;
-    }
-
-    // In the goToNextStep method, update the phone validation part:
-    if (this.currentStep === 4) {
-
-      if (!this.customer.cusMailAddress?.trim()) {
-        this.errorMessage = 'Please enter your email.';
-        return;
-      }
-    }
-
-    // Step 5: Validate Email and Password
-    if (this.currentStep === 5) {
-      if (!this.customer.cusMotDePasse?.trim() || this.customer.cusMotDePasse != this.confirm) {
-        this.errorMessage = 'Please enter your password.';
-        return;
-      }
-    }
-
-    // Clear any previous error and go to the next step
-    this.errorMessage = '';
-    this.currentStep++;
-  }
-
-  goToPreviousStep() {
-    if (this.currentStep > 1) {
-      this.currentStep--;
-    }
-  }
-
-  onFileSelected(event: Event): void {
-    const fileInput = event.target as HTMLInputElement;
-    if (fileInput.files && fileInput.files.length > 0) {
-      const file = fileInput.files[0];
-      console.log(file);
-    }
   }
 
   goHome(): void {
@@ -266,51 +331,4 @@ export class RegisterComponent {
       }
     });
   }
-
-
-
-  onSubmit(): void {
-    // First validate the current step (step 6)
-    /* if (this.currentStep === 6) {
-      if (!this.CUSTOMER.identificationType) {
-        this.errorMessage = 'Please select an identification type.';
-        return;
-      }
-    } */
-
-    // Split fullname into first, middle, and last names
-    /* const nameParts = this.CUSTOMER.fullname.trim().split(' ');
-    this.CUSTOMER.cusFirstName = nameParts[0] || '';
-    this.CUSTOMER.cusMidName = nameParts.length > 2 ? nameParts.slice(1, -1).join(' ') : '';
-    this.CUSTOMER.cusLastName = nameParts.length > 1 ? nameParts[nameParts.length - 1] : '';
-
-    // Then handle phone number validation if we're coming from step 4
-    if (this.phoneForm.invalid) {
-      this.errorMessage = 'Please enter a valid phone number.';
-      return;
-    }
-
-    const phoneValue = this.phoneForm.get('phone')?.value as PhoneNumber;
-    this.customer.cusPhoneNbr = phoneValue.e164Number; */
-
-    console.log(this.customer)
-
-    this.customer.role = new Role(this.selectedWalletType?.wtyCode!, this.selectedWalletType?.wtyLabe!);
-
-    this.customerService.register(this.customer).subscribe({
-      next: () => {
-        this.successMessage = 'Registration successful!';
-        this.errorMessage = '';
-        setTimeout(() => this.router.navigate(['/login']), 2000);
-      },
-      error: (error) => {
-        console.error('Registration error:', error);
-        this.errorMessage = 'Registration failed. Please try again.';
-        this.successMessage = '';
-      },
-    });
-
-    //this.walletService.
-  }
-
 }
