@@ -58,6 +58,9 @@ export class WalletService {
       })
     );
   }
+  getActiveWalletCount(): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}/count/active`, { headers: this.getHeaders() });
+  }
 
   getWalletStatus(): Observable<WalletStatus> {
     const cusCode = localStorage.getItem('cusCode');

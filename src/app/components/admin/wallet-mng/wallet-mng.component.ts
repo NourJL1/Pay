@@ -43,13 +43,13 @@ export class WalletMngComponent implements OnInit {
   isWalletTypeEditMode: boolean = false;
   isWalletTypeVisible: boolean = false;
 
-    cardsList: Card[] = [];
+  cardsList: Card[] = [];
   newCard: Card = new Card({ cardList: new CardList({ wallet: new Wallet() }), cardType: new CardType() });
   selectedCard: Card | null = null;
   isCardEditMode: boolean = false;
   isCardFormVisible: boolean = false;
 
-    cardTypesList: CardType[] = [];
+  cardTypesList: CardType[] = [];
   newCardType: CardType = new CardType();
   selectedCardType: CardType | null = null;
   isCardTypeEditMode: boolean = false;
@@ -76,6 +76,10 @@ export class WalletMngComponent implements OnInit {
   isAccountFormVisible: boolean = false;
   isAccountListVisible: boolean = false;
 
+  walletCount: number = 0;
+  lastUpdated: Date | null = null;
+  activeWalletCount: number = 0;
+
   constructor(
     private walletStatusService: WalletStatusService,
     private walletCategoryService: WalletCategoryService,
@@ -98,6 +102,7 @@ export class WalletMngComponent implements OnInit {
     this.loadCardLists();
     this.loadWallets();
     this.loadAccountTypes();
+    this.loadWalletStats();
   }
 
   private getHttpOptions(): { headers: HttpHeaders } {
@@ -111,6 +116,58 @@ export class WalletMngComponent implements OnInit {
       headers = headers.set('Authorization', `Bearer ${token}`);
     }
     return { headers };
+  }
+
+  loadActiveWalletCount(): void {
+    this.errorMessage = null;
+    console.log('loadActiveWalletCount: Fetching active wallet count...');
+    this.walletService.getActiveWalletCount().subscribe({
+      next: (count: number) => {
+        console.log('loadActiveWalletCount: Active wallet count received:', count);
+        this.activeWalletCount = count;
+        this.cdr.detectChanges();
+      },
+      error: (error: HttpErrorResponse) => {
+        const message = error.status ? `Failed to load active wallet count: ${error.status} ${error.statusText}` : 'Failed to load active wallet count: Server error';
+        this.showErrorMessage(message);
+        console.error('Error loading active wallet count:', error);
+      }
+    });
+  }
+
+  loadWalletStats(): void {
+    this.errorMessage = null;
+    console.log('loadWalletStats: Fetching wallet count and last updated date...');
+    this.walletService.getWalletCount().subscribe({
+      next: (count: number) => {
+        console.log('loadWalletStats: Wallet count received:', count);
+        this.walletCount = count;
+        this.cdr.detectChanges();
+      },
+      error: (error: HttpErrorResponse) => {
+        const message = error.status ? `Failed to load wallet count: ${error.status} ${error.statusText}` : 'Failed to load wallet count: Server error';
+        this.showErrorMessage(message);
+        console.error('Error loading wallet count:', error);
+      }
+    });
+
+    this.walletService.getAll().subscribe({
+      next: (wallets: Wallet[]) => {
+        const latestWallet = wallets.reduce((latest, wallet) => {
+          const walletDate = wallet.lastUpdatedDate ? new Date(wallet.lastUpdatedDate) : null;
+          if (!latest || !walletDate) return latest;
+          return walletDate > latest ? walletDate : latest;
+        }, null as Date | null);
+        this.lastUpdated = latestWallet;
+        console.log('loadWalletStats: Last updated date:', this.lastUpdated);
+        this.cdr.detectChanges();
+      },
+      error: (error: HttpErrorResponse) => {
+        const message = error.status ? `Failed to load wallets for last updated date: ${error.status} ${error.statusText}` : 'Failed to load wallets: Server error';
+        this.showErrorMessage(message);
+        console.error('Error loading wallets for last updated date:', error);
+      }
+    });
   }
 
   // Load account types

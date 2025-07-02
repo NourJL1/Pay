@@ -32,11 +32,11 @@
       <div
         class="bg-gradient-to-br from-primary to-accent-primary rounded-lg shadow-lg p-5 text-white gradient-card transform hover:scale-105 transition-all duration-300">
         <div class="flex items-center justify-between">
-          <div>
-            <div class="text-sm font-medium opacity-90">Total Wallets</div>
-            <div class="text-2xl font-bold mt-1">4,328</div>
-            <div class="text-xs opacity-75 mt-1">Updated just now</div>
-          </div>
+        <div class="">
+    <div class="text-sm font-medium opacity-90">Total Wallets</div>
+    <div class="text-2xl font-bold mt-1">{{ walletCount }}</div>
+    <div class="text-xs opacity-75 mt-1">Updated {{ lastUpdated | date:'short' }}</div>
+  </div>
           <div class="w-12 h-12 flex items-center justify-center bg-white bg-opacity-20 rounded-full backdrop-blur-sm">
             <i class="ri-wallet-3-line ri-lg"></i>
           </div>
@@ -80,8 +80,8 @@
         <div class="flex items-center justify-between">
           <div>
             <div class="text-sm font-medium opacity-90">Active Wallets</div>
-            <div class="text-2xl font-bold mt-1">3,754</div>
-            <div class="text-xs opacity-75 mt-1">Real-time data</div>
+    <div class="text-2xl font-bold mt-1">{{ activeWalletCount }}</div>
+    <div class="text-xs opacity-75 mt-1">Real-time data</div>
           </div>
           <div class="w-12 h-12 flex items-center justify-center bg-white bg-opacity-20 rounded-full backdrop-blur-sm">
             <i class="ri-check-line ri-lg"></i>
