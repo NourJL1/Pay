@@ -1145,7 +1145,7 @@
       </div>
     </div>
   </div>
-
+</main>
 
 <!-- Modals -->
 <div *ngIf="isAnyModalVisible" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 ">
@@ -1209,9 +1209,7 @@
             <select id="walletStatus" name="walletStatus"
               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
               <option value="">Select status</option>
-              <option value="active">Actif</option>
-              <option value="inactive">Inactif</option>
-              <option value="suspended">Suspended</option>
+              <option *ngFor="let status of walletStatuses" [value]="status">{{status.wstLabe}}</option>
             </select>
           </div>
         </div>
@@ -1221,9 +1219,7 @@
             <select id="walletType" name="walletType"
               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
               <option value="">Select type</option>
-              <option value="personal">Personal</option>
-              <option value="business">Professionnal</option>
-              <option value="corporate">Entreprise</option>
+              <option *ngFor="let type of walletTypesList" [value]="type">{{ type.wtyLabe }}</option>
             </select>
           </div>
         </div>
@@ -1233,9 +1229,7 @@
             <select id="walletCategory" name="walletCategory"
               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
               <option value="">Select category</option>
-              <option value="standard">Standard</option>
-              <option value="premium">Premium</option>
-              <option value="vip">VIP</option>
+              <option *ngFor="let category of walletCategories" [value]="category">{{category.wcaLabe}}</option>
             </select>
           </div>
         </div>
@@ -1825,8 +1819,7 @@
     class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
     <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
       <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-        <h3 class="text-lg font-medium text-gray-900">{{isStatusEditMode ? 'Edit Wallet Status' : 'Add Wallet
-          Status'}}</h3>
+        <h3 class="text-lg font-medium text-gray-900">{{isStatusEditMode ? 'Edit Wallet Status' : 'Add Wallet Status'}}</h3>
         <button id="close-status-modal" (click)="closeForm('wallet-status')" class="text-gray-400 hover:text-gray-500">
           <div class="w-6 h-6 flex items-center justify-center">
             <i class="ri-close-line"></i>
@@ -1865,8 +1858,7 @@
     class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
     <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
       <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-        <h3 class="text-lg font-medium text-gray-900">{{ isWalletTypeEditMode ? 'Edit Wallet Type' : 'Add Wallet
-          Type' }}</h3>
+        <h3 class="text-lg font-medium text-gray-900">{{ isWalletTypeEditMode ? 'Edit Wallet Type' : 'Add Wallet Type' }}</h3>
         <button id="close-type-modal" (click)="closeForm('wallet-type')" class="text-gray-400 hover:text-gray-500">
           <div class="w-6 h-6 flex items-center justify-center">
             <i class="ri-close-line"></i>
@@ -1908,8 +1900,7 @@
     class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
     <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
       <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-        <h3 class="text-lg font-medium text-gray-900">{{isCategoryEditMode ? 'Edit Wallet Category' : 'Add Wallet
-          Category'}}</h3>
+        <h3 class="text-lg font-medium text-gray-900">{{isCategoryEditMode ? 'Edit Wallet Category' : 'Add Wallet Category'}}</h3>
         <button id="close-category-modal" (click)="closeForm('wallet-category')"
           class="text-gray-400 hover:text-gray-500">
           <div class="w-6 h-6 flex items-center justify-center">

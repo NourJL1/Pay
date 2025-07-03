@@ -19,12 +19,17 @@ import { PendingComponent } from './components/wallet/pending/pending.component'
 import { WalletFormComponent } from './components/wallet-form/wallet-form.component';
 
 export const routes: Routes = [
+
+  // Redirects
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'pending', component: PendingComponent},
+  { path: 'wallet-form', component: WalletFormComponent },
   {
     path: 'wallet',
     component: WalletComponent,
@@ -37,9 +42,6 @@ export const routes: Routes = [
     canActivate: [AuthGuard, walletStatusGuard],
     data: { requiredStatus: 'ACTIVE' }
   },
-
-  // Redirects
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
   {path: 'admin', 
     component: SideNavComponent, 
     canActivate: [AuthGuard],
@@ -53,6 +55,5 @@ export const routes: Routes = [
       {path: 'profiling', component: ProfilingComponent},
       {path: 'customers', component: CustomerMngComponent},
     ]
-  },
-  { path: 'wallet-form', component: WalletFormComponent }
+  }
 ];

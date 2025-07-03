@@ -24,6 +24,7 @@ import { DocTypeService } from '../../services/doc-type.service';
 import { DocType } from '../../entities/doc-type';
 import { CustomerDoc } from '../../entities/customer-doc';
 import { CustomerDocService } from '../../services/customer-doc.service';
+import { loadavg } from 'node:os';
 
 interface PhoneNumber {
   internationalNumber: string;
@@ -62,7 +63,7 @@ export class RegisterComponent {
   customer: Customer = new Customer();
   wallet: Wallet = new Wallet()
 
-  currentStep = 1;
+  currentStep = 5;
   isLoading: boolean = false;
   isOtpLoading: boolean = false;
 
@@ -103,7 +104,7 @@ export class RegisterComponent {
       {
         next: (docTypes: DocType[]) => {
           this.docTypes = docTypes;
-          this.allowedDocTypes = docTypes.map(type => type.dtyLabe!)
+          this.allowedDocTypes = docTypes.map(type => type.dtyIden!)
         },
         error: (err) => { console.log(err) }
       }
@@ -119,6 +120,7 @@ export class RegisterComponent {
       }
     }
 
+    this.isLoading = true
     //this.customer.role = new Role(this.wallet.walletType?.wtyCode!, this.wallet.walletType?.wtyLabe!);
 
     //this.customer.identity!.customerDocListe!.cdlLabe = this.customer.username + '-' + this.customer.identity!.customerIdentityType!.citLabe
@@ -138,9 +140,10 @@ export class RegisterComponent {
           })
         }
 
+        this.isLoading = false
         this.successMessage = 'Registration successful!';
         this.errorMessage = '';
-        setTimeout(() => this.router.navigate(['/wallet-form']), 2000);
+        setTimeout(() => this.router.navigate(['/login']), 2000);
       },
       error: (error) => {
         console.error('Registration error:', error);

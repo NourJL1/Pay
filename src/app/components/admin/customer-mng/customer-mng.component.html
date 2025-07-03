@@ -41,7 +41,7 @@
                         <i class="ri-download-2-line"></i>
                     </div> Export Data
                 </button>
-                <button (click)="toggleForm('create-customer')" id="newSchemaBtn"
+                <button (click)="toggleForm('customer-add')" id="newSchemaBtn"
                     class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
                     <div class="w-4 h-4 mr-2 flex items-center justify-center">
                         <i class="ri-add-line"></i>
@@ -169,7 +169,7 @@
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                             <div class="flex items-center justify-end space-x-2">
-                                <button (click)="toggleForm('customer-details'); selectedCustomer=customer"
+                                <button (click)="selectedCustomer=customer; toggleForm('customer-details')"
                                     class="text-blue-600 hover:text-gray-500">
                                     <i class="ri-eye-line"></i>
                                 </button>
@@ -252,6 +252,10 @@
                     <button id="settings-identityType" (click)="showTab('identityType', 'settings')"
                         class="settings-tab-button relative px-4 py-3 text-sm text-gray-500">Customer Identity
                         Type</button>
+
+                    <button id="settings-docType" (click)="showTab('docType', 'settings')"
+                        class="settings-tab-button relative px-4 py-3 text-sm text-gray-500">Document
+                        Type</button>
                     <button id="settings-country" (click)="showTab('country', 'settings')"
                         class="settings-tab-button relative px-4 py-3 text-sm text-gray-500">Country </button>
                     <button id="settings-city" (click)="showTab('city', 'settings')"
@@ -315,7 +319,7 @@
             <div id="settings-tab-identityType" class="settings-tab-content hidden p-6">
                 <div class="flex justify-between items-center mb-6">
                     <h3 class="text-lg font-medium text-gray-900">Identity Type Management</h3>
-                    <button id="btn-add-status" (click)="toggleForm('customer-identityType')"
+                    <button id="btn-add-identityType" (click)="toggleForm('customer-identityType')"
                         class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
                         <i class="ri-add-line mr-1"></i> Add Identity Type </button>
                 </div>
@@ -328,7 +332,7 @@
                                     Code</th>
                                 <th scope="col"
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Status Identifier</th>
+                                    Identifier</th>
                                 <th scope="col"
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Label</th>
@@ -338,7 +342,7 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            <tr *ngFor="let type of types">
+                            <tr *ngFor="let type of identityTypes">
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                     {{type.citCode}}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
@@ -354,6 +358,59 @@
                                         </button>
                                         <button (click)="deleteIdentityType(type)"
                                             class="text-red-600 hover:text-red-500">
+                                            <div class="w-6 h-6 flex items-center justify-center">
+                                                <i class="ri-delete-bin-line"></i>
+                                            </div>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- DocType -->
+            <div id="settings-tab-docType" class="settings-tab-content hidden p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-lg font-medium text-gray-900">Document Type Management</h3>
+                    <button id="btn-add-docType" (click)="toggleForm('docType')"
+                        class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+                        <i class="ri-add-line mr-1"></i> Add Document Type </button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Code</th>
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Identifier</th>
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Label</th>
+                                <th scope="col"
+                                    class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr *ngFor="let type of docTypes">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                    {{type.dtyCode}}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                    {{type.dtyIden}}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{type.dtyLabe}}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <div class="flex justify-end space-x-2"><!-- 
+                                        <button (click)="editDocType(type)"
+                                            class="text-green-600 hover:text-gray-500">
+                                            <div class="w-6 h-6 flex items-center justify-center">
+                                                <i class="ri-edit-line"></i>
+                                            </div>
+                                        </button> -->
+                                        <button (click)="deleteDocType(type)" class="text-red-600 hover:text-red-500">
                                             <div class="w-6 h-6 flex items-center justify-center">
                                                 <i class="ri-delete-bin-line"></i>
                                             </div>
@@ -454,7 +511,8 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                     {{city.ctyIden}}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{city.ctyLabe}}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{city.country!.ctrLabe}}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{city.country!.ctrLabe}}
+                                </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     <div class="flex justify-end space-x-2">
                                         <!-- <button class="text-green-600 hover:text-gray-500">
@@ -480,6 +538,109 @@
 
 <!-- Modals -->
 <div *ngIf="isAnyModalVisible" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 ">
+
+    <!-- add customer -->
+    <div *ngIf="isAddCustomerVisible" id="create-customer-modal" class="bg-white rounded-lg shadow-xl w-full max-w-2xl">
+        <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+            <h3 class="text-lg font-semibold text-gray-800">Add New Customer</h3>
+            <button (click)="closeForm('customer-add')" id="close-create-customer"
+                class="text-gray-400 hover:text-gray-500">
+                <div class="w-6 h-6 flex items-center justify-center">
+                    <i class="ri-close-line ri-lg"></i>
+                </div>
+            </button>
+        </div>
+        <form id="create-customer-form" class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="form-field">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">First Name:</label>
+                    <input
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                        [(ngModel)]="customerForm.cusFirstName" name="cusFirstName" type="text" required>
+                </div>
+
+                <div class="form-field">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Middle Name (Optional):</label>
+                    <input
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                        [(ngModel)]="customerForm.cusMidName" name="cusMidName" type="text">
+                </div>
+
+                <div class="form-field">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Last Name:</label>
+                    <input
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                        [(ngModel)]="customerForm.cusLastName" name="cusLastName" type="text" required>
+                </div>
+
+                <div class="form-field">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Username:</label>
+                    <input
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                        [(ngModel)]="customerForm.username" name="username" type="text" required>
+                </div>
+
+                <div class="form-field">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Email:</label>
+                    <input
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                        [(ngModel)]="customerForm.cusMailAddress" name="cusMailAddress" type="email" required
+                        #email="ngModel" email>
+                </div>
+
+                <div class="form-field">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Password:</label>
+                    <input
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                        [(ngModel)]="customerForm.cusMotDePasse" name="cusMotDePasse" type="password" required>
+                </div>
+
+                <div class="form-field">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Address:</label>
+                    <input
+                        class=" w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                        [(ngModel)]="customerForm.cusAddress" name="cusAddress" type="text" required>
+
+                </div>
+
+                <div class="form-field">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Country:</label>
+                    <select
+                        class=" w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                        [(ngModel)]="customerForm.country" name="country" (change)="onCountryChange()">
+                        <option *ngFor="let country of countries" [ngValue]="country">{{ country.ctrLabe }}</option>
+                    </select>
+                </div>
+
+                <div class="form-field">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">City:</label>
+                    <select
+                        class=" w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                        [(ngModel)]="customerForm.city" name="city">
+                        <option *ngFor="let city of cities" [ngValue]="city">{{ city.ctyLabe }}</option>
+                    </select>
+                </div>
+
+                <div class="form-field">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Phone Number:</label>
+                    <!-- <ngx-intl-tel-input [formControl]=" phoneForm.controls.phone" name="cusPhoneNbr"
+                        [preferredCountries]="['tn', 'us', 'gb']" [enablePlaceholder]="true" [separateDialCode]="true"
+                        required>
+                    </ngx-intl-tel-input> -->
+
+
+                </div>
+            </div>
+        </form>
+        <div class="px-6 py-4 border-t border-gray-200 flex justify-end space-x-3">
+            <button (click)="closeForm('customer-add')" id="cancel-create-customer"
+                class="px-4 py-2 border border-gray-300 text-gray-700 rounded-button hover:bg-gray-50 transition text-sm whitespace-nowrap">Cancel</button>
+            <button id="submit-create-customer"
+                class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">Create
+                Customer</button>
+        </div>
+    </div>
+
     <!-- customer Detail Modal -->
     <div *ngIf="isUserDetailsVisible" id="customer-detail-modal"
         class="bg-white rounded-lg shadow-xl w-full max-w-4xl h-[90vh] overflow-hidden">
@@ -495,7 +656,7 @@
             <div class="flex flex-col md:flex-row md:space-x-6">
                 <div class="mb-6 md:mb-0 md:w-1/3">
                     <!-- customer main info -->
-                    <div class="md:h-2/3 bg-gray-50 p-4 rounded-lg">
+                    <div class="bg-gray-50 p-4 rounded-lg">
                         <div class="text-center mb-4">
                             <div
                                 class="w-20 h-20 mx-auto bg-primary bg-opacity-10 rounded-full flex items-center justify-center text-primary">
@@ -511,13 +672,13 @@
                         </div>
                     </div>
                     <!-- Wallet Information -->
-                    <div class="md:h-1/3 mt-6 bg-white p-5 rounded-lg border border-gray-100 shadow-sm">
+                    <!-- <div class="md:h-1/3 mt-6 bg-white p-5 rounded-lg border border-gray-100 shadow-sm">
                         <h5 class="text-sm font-semibold text-gray-700 mb-4 flex items-center">
                             <i class="ri-wallet-3-line text-gray-500 mr-2"></i>
                             Wallet Information
                         </h5>
 
-                        <!-- <div class="flex items-center">
+                        <div class="flex items-center">
                             <div
                                 class="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center text-blue-500">
                                 <i class="ri-wallet-3-line text-xl"></i>
@@ -538,8 +699,8 @@
                                         Active </span>
                                 </div>
                             </div>
-                        </div> -->
-                    </div>
+                        </div>
+                    </div> -->
                 </div>
                 <div class="md:w-2/3">
                     <div class="mb-6">
@@ -661,6 +822,10 @@
 
                         <!-- documents -->
                         <div id="details-tab-documents" class="details-tab-content hidden p-4">
+                            <div>
+                                <h4>{{ selectedCustomer?.identity?.customerIdentityType?.citLabe }}:
+                                    {{selectedCustomer?.identity?.cidNum}}</h4>
+                            </div>
                             <div class="flex justify-between items-center mb-4">
                                 <h3 class="text-lg font-semibold text-gray-800">Customer Documents</h3>
                                 <div class="text-xs text-gray-500">
@@ -679,7 +844,7 @@
                                             <i class="ri-id-card-line"></i>
                                         </div>
                                         <div>
-                                            <div class="font-medium text-gray-800">CIN</div>
+                                            <div class="font-medium text-gray-800">doc1</div>
                                             <div class="text-xs text-gray-500">PDF • 2.4 MB • Added 15 Jan 2023
                                             </div>
                                         </div>
@@ -691,6 +856,27 @@
                                         </button>
                                     </div>
                                 </div>
+                                <!-- <div *ngFor="let doc of selectedCustomer?.identity?.customerDocListe?.customerDocs"
+                                class="document-item group flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
+                                    (click)="previewDocument('pdf')">
+                                    <div class="flex items-center">
+                                        <div
+                                            class="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center text-blue-500 mr-3">
+                                            <i class="ri-id-card-line"></i>
+                                        </div>
+                                        <div>
+                                            <div class="font-medium text-gray-800">{{doc.cdoLabe}}</div>
+                                            <div class="text-xs text-gray-500">{{doc.docType?.dtyLabe}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="flex items-center space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <button class="p-1 text-gray-500 hover:text-blue-500" title="Preview">
+                                            <i class="ri-eye-line"></i>
+                                        </button>
+                                    </div>
+                                </div> -->
 
                                 <!-- Document Item 2 -->
                                 <div class="document-item group flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
@@ -701,7 +887,7 @@
                                             <i class="ri-passport-line"></i>
                                         </div>
                                         <div>
-                                            <div class="font-medium text-gray-800">Passport</div>
+                                            <div class="font-medium text-gray-800">doc2</div>
                                             <div class="text-xs text-gray-500">PDF • 1.1 MB • Added 10 Jan 2023
                                             </div>
                                         </div>
@@ -723,7 +909,7 @@
                                             <i class="ri-file-text-line"></i>
                                         </div>
                                         <div>
-                                            <div class="font-medium text-gray-800">Address Proof</div>
+                                            <div class="font-medium text-gray-800">doc3</div>
                                             <div class="text-xs text-gray-500">PDF • 1.1 MB • Added 10 Jan 2023
                                             </div>
                                         </div>
@@ -954,7 +1140,8 @@
         class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
         <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
             <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-                <h3 class="text-lg font-medium text-gray-900">{{ selectedStatus ? 'Edit Customer Status' : 'Add Customer Status' }}</h3>
+                <h3 class="text-lg font-medium text-gray-900">{{ selectedStatus ? 'Edit Customer Status' : 'Add Customer
+                    Status' }}</h3>
                 <button id="close-status-modal" (click)="closeForm('customer-status')"
                     class="text-gray-400 hover:text-gray-500">
                     <div class="w-6 h-6 flex items-center justify-center">
@@ -1005,7 +1192,8 @@
                 </button>
             </div>
             <div class="p-6">
-                <form id="add-status-form">
+                <form (ngSubmit)="selectedStatus ? updateIdentityType() : addIdentityType()" #IdentityTypeForm="ngForm"
+                    id="identityType-form">
                     <div class="space-y-4">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Identity Type Identifier</label>
@@ -1033,6 +1221,57 @@
         </div>
     </div>
 
+    <!-- Add Doc Type Modal -->
+    <div *ngIf="isDocTypeVisible" id="add-documentType-modal"
+        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
+            <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+                <h3 class="text-lg font-medium text-gray-900">{{ selectedDocType ? 'Edit Document Type' :
+                    'Add Document Type' }}</h3>
+                <button id="close-status-modal" (click)="closeForm('docType')"
+                    class="text-gray-400 hover:text-gray-500">
+                    <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-close-line"></i>
+                    </div>
+                </button>
+            </div>
+            <div class="p-6">
+                <form (ngSubmit)="selectedStatus ? updateDocType() : addDocType()" #DocTypeForm="ngForm"
+                    id="docType-form">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Document Type Identifier</label>
+                            <select
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                                [(ngModel)]="docTypeForm" name="docType" required="">
+                                <option *ngFor="let docType of docTypeList" [ngValue]="docType">{{ docType.dtyIden }}
+                                </option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Document Type Label</label>
+
+                            <select
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                                [(ngModel)]="docTypeForm" name="dtyLabe" required="">
+                                <option *ngFor="let docType of docTypeList" [ngValue]="docType">{{ docType.dtyLabe }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mt-6 flex justify-end space-x-3">
+                        <button type="button" (click)="closeForm('docType')" id="cancel-add-status"
+                            class="px-4 py-2 border border-gray-300 rounded-button text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+                        <button type="submit"
+                            class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 whitespace-nowrap">{{
+                            selectedDocType ? 'Edit Document Type' : 'Add Document Type'
+                            }}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- Add Country Modal -->
     <div *ngIf="isCountryVisible" id="add-country-modal"
         class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -1051,7 +1290,6 @@
                     <div class="space-y-4">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Country Identifier</label>
-
                             <select
                                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
                                 [(ngModel)]="countryForm" name="country" required="">

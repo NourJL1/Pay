@@ -287,10 +287,10 @@
           <button id="operations-type" (click)="showTab('type', 'operations')"
             class="operations-tab-button relative px-4 py-3 text-sm active font-medium text-primary">Operation
             Types</button>
-          <button id="operations-walletMapping" (click)="showTab('wotm', 'operations')"
+          <button id="operations-wotm" (click)="showTab('wotm', 'operations')"
             class="operations-tab-button relative px-4 py-3 text-sm text-gray-500">Wallet - Operation Type
             Mapping</button>
-          <button id="operations-walletCategoryMapping" (click)="showTab('wcotm', 'operations')"
+          <button id="operations-wcotm" (click)="showTab('wcotm', 'operations')"
             class="operations-tab-button relative px-4 py-3 text-sm text-gray-500">Wallet Category - Operation Type
             Mapping</button>
           <button id="operations-periodicity" (click)="showTab('periodicity', 'operations')"
@@ -517,8 +517,8 @@
                 </th>
               </tr>
             </thead>
-            <tbody class="bg-white divide-y divide-gray-200" *ngFor="let periodicity of periodicitiesList">
-              <tr>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <tr *ngFor="let periodicity of periodicitiesList">
                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ periodicity.perCode }}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ periodicity.perIden }}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ periodicity.perLabe }}</td>

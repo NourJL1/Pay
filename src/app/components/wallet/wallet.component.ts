@@ -10,7 +10,7 @@ import { Subscription, interval, switchMap } from 'rxjs';
   standalone: true,
   templateUrl: './wallet.component.html',
   styleUrls: ['./wallet.component.css'],
-  imports: [CommonModule, RouterOutlet, RouterModule] 
+  imports: [CommonModule, RouterOutlet, RouterModule]
 })
 export class WalletComponent implements OnInit, OnDestroy {
   wallet: any = null;
@@ -22,7 +22,7 @@ export class WalletComponent implements OnInit, OnDestroy {
     private http: HttpClient,
     private router: Router,
     private walletService: WalletService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.loadWallet();
@@ -43,7 +43,7 @@ export class WalletComponent implements OnInit, OnDestroy {
   loadWallet() {
     this.loading = true;
     this.error = null;
-    
+
     const userId = localStorage.getItem('userId');
     if (!userId) {
       this.error = 'User not authenticated';
@@ -81,7 +81,7 @@ export class WalletComponent implements OnInit, OnDestroy {
     //localStorage.removeItem('userId');
     //localStorage.removeItem('authToken');
     localStorage.clear()
-    
+
     // Redirect to login page
     this.router.navigate(['/home']);
   }

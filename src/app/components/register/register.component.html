@@ -177,23 +177,32 @@
           <input type="text" class="form-input p-2 " [(ngModel)]="customer.identity!.cidNum" name="cidNum">
         </div>
 
-        <div class="form-field">
+        <!-- <div class="form-field">
           <label class="form-label">Upload ID Files (max 10M):</label>
           <input type="file" class="form-input p-2" multiple (change)="onFileSelected($event)"
             [accept]="allowedDocTypes">
-        </div>
+        </div> -->
+        <div>
+              <h3 class="text-md font-medium text-gray-900 mb-4">Upload New Document</h3>
+              <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                <div class="w-16 h-16 mx-auto bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                  <i class="ri-upload-2-line text-gray-400 ri-2x"></i>
+                </div>
+                <h4 class="text-sm font-medium text-gray-900 mb-1">Drag and drop your files here</h4>
+                <p class="text-xs text-gray-500 mb-4">or</p>
+                <button class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 text-sm font-medium !rounded-button whitespace-nowrap">Browse Files</button>
+                <p class="text-xs text-gray-500 mt-4">Supported formats: PDF, JPG, PNG (Max size: 10MB)</p>
+              </div>
+            </div>
       </div>
     </form>
 
+    <div *ngIf="isLoading" class="flex justify-center">
+      <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+    </div>
+
     <!-- Navigation Buttons -->
     <div class="flex justify-between mt-8">
-
-
-      <div *ngIf="isLoading" class="flex justify-center">
-        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-      </div>
-
-
       <button class="btn secondary" (click)="goToPreviousStep()" [disabled]="currentStep === 1">
         Back
       </button>
