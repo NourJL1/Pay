@@ -14,6 +14,10 @@ export class PendingComponent {
 logout() {
   localStorage.clear()
   this.router.navigate(['/home'])
-}
+}/* 
+
+  goHome(): void {
+    this.router.navigate(['/home']);
+  } */
 
 }

@@ -1,6 +1,6 @@
 <div class="bg-white flex flex-col items-center justify-center min-h-screen p-4">
-    <div #container class="max-w-md w-full mx-auto bg-white rounded-lg shadow-lg p-8 text-center">
-    <h1 class="font-['Pacifico'] text-4xl mb-6 text-secondary">logo</h1>
+    <!-- Removed the container div and moved its contents directly here -->
+    <img src="../../../../assets/logo.png" alt="App Logo" class="w-16 h-16 object-contain mx-auto mb-6">
     
     <div class="spinner mx-auto mb-8"></div>
     
@@ -22,26 +22,26 @@
         </div>
     </div>
     
-    <div class="mb-8">
+    <div class="mb-8 max-w-md w-full">
         <p class="text-gray-700 mb-2 text-sm font-medium">Verification progress</p>
         <div class="progress-bar">
             <div class="progress-fill" style="width: 40%"></div>
         </div>
     </div>
     
-    <div class="flex items-center justify-center mb-8">
+    <div class="flex items-center justify-center mb-8 max-w-md w-full">
         <div class="w-8 h-8 flex items-center justify-center text-primary mr-3">
             <i class="ri-time-line ri-lg"></i>
         </div>
         <p class="text-gray-700">Estimated completion: <span class="font-medium">2-3 business days</span></p>
     </div>
     
-    <div class="bg-gray-50 rounded p-4 mb-6">
+    <div class="bg-gray-50 rounded p-4 mb-6 max-w-md w-full">
         <h3 class="font-medium text-secondary mb-2">What happens next?</h3>
         <p class="text-gray-600 text-sm">Once your account is verified, you'll receive an email notification and can start using your wallet immediately.</p>
     </div>
     
-    <div class="border-t pt-6">
+    <div class="border-t pt-6 max-w-md w-full">
         <div class="flex flex-col sm:flex-row gap-3 justify-center">
             <button (click)="logout()" class="flex items-center justify-center gap-2 px-4 py-2 bg-primary text-white hover:bg-red-600 transition-colors !rounded-button whitespace-nowrap">
                Logout
@@ -49,9 +49,3 @@
         </div>
     </div>
 </div>
-</div>
-
-<!-- <footer class="mt-8 text-center text-gray-500 text-sm">
-    <p>© 2025 logo Financial Services. All rights reserved.</p>
-    <p class="mt-1">Last updated: May 8, 2025</p>
-</footer> -->

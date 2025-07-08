@@ -73,11 +73,6 @@
       <!-- Step 2 - Location & Phone -->
       <div *ngIf="currentStep === 2" class="step space-y-4">
         <h3 class="text-lg font-medium">Select Your Address</h3>
-        <div class="form-field">
-          <label class="form-label">Address:</label>
-          <input class="form-input" [(ngModel)]="customer.cusAddress" name="cusAddress" type="text" required>
-
-        </div>
 
         <div class="form-field">
           <label class="form-label">Country:</label>
@@ -91,6 +86,11 @@
           <select class="form-input" [(ngModel)]="customer.city" name="city">
             <option *ngFor="let city of cities" [ngValue]="city">{{ city.ctyLabe }}</option>
           </select>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">Address:</label>
+          <input class="form-input" [(ngModel)]="customer.cusAddress" name="cusAddress" type="text" required>
         </div>
 
         <div class="form-field">
@@ -110,7 +110,7 @@
             <label class="form-label">Email:</label>
             <div class="flex gap-2">
               <input class="form-input flex-1" [(ngModel)]="customer.cusMailAddress" name="cusMailAddress" type="email"
-                required #email="ngModel" email [disabled]="otpSent">
+                required #email="ngModel" email>
               <button *ngIf="!otpSent" class="btn primary" [disabled]="!customer.cusMailAddress || isOtpLoading"
                 type="button" (click)="sendOtp()" [disabled]="email.invalid">
                 Send OTP
@@ -183,17 +183,24 @@
             [accept]="allowedDocTypes">
         </div> -->
         <div>
-              <h3 class="text-md font-medium text-gray-900 mb-4">Upload New Document</h3>
-              <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
-                <div class="w-16 h-16 mx-auto bg-gray-100 rounded-full flex items-center justify-center mb-4">
-                  <i class="ri-upload-2-line text-gray-400 ri-2x"></i>
-                </div>
-                <h4 class="text-sm font-medium text-gray-900 mb-1">Drag and drop your files here</h4>
-                <p class="text-xs text-gray-500 mb-4">or</p>
-                <button class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 text-sm font-medium !rounded-button whitespace-nowrap">Browse Files</button>
-                <p class="text-xs text-gray-500 mt-4">Supported formats: PDF, JPG, PNG (Max size: 10MB)</p>
-              </div>
+          <h3 class="text-md font-medium text-gray-900 mb-4">Upload ID Files</h3>
+          <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+            <div class="w-16 h-16 mx-auto bg-gray-100 rounded-full flex items-center justify-center mb-4">
+              <i class="ri-upload-2-line text-gray-400 ri-2x"></i>
             </div>
+            <!-- <h4 class="text-sm font-medium text-gray-900 mb-1">Drag and drop your files here</h4>
+            <p class="text-xs text-gray-500 mb-4">or</p> -->
+            <!-- Hidden file input triggered by the button -->
+            <input type="file" id="fileInput" class="hidden" multiple (change)="onFileSelected($event)"
+              [accept]="allowedDocTypes">
+
+            <label for="fileInput"
+              class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 text-sm font-medium !rounded-button whitespace-nowrap cursor-pointer inline-block">
+              Browse Files
+            </label>
+            <p class="text-xs text-gray-500 mt-4">(Max size: 10MB)</p>
+          </div>
+        </div>
       </div>
     </form>
 

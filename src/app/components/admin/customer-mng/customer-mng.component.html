@@ -1,183 +1,176 @@
-<div class="flex items-center justify-between px-6 py-3 bg-white border-b">
-    <div class="flex items-center">
+<div class="flex flex-col bg-white rounded-xl shadow-lg mb-6 overflow-hidden">
+    <!-- Header Section -->
+    <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
         <h1 class="text-xl font-semibold text-gray-800">Customer Management</h1>
     </div>
-</div>
-<!-- Tabs -->
-<div class="bg-white border-b">
-    <div class="px-6 flex">
-        <button class="tab-button px-4 py-3 text-sm active font-medium text-primary" (click)="showTab('overview')"
-            id="overview">Overview</button>
-        <button class="tab-button px-4 py-3 text-sm text-gray-500" (click)="showTab('settings')"
-            id="settings">Settings</button>
-    </div>
-</div>
 
-<!-- main content -->
-<main class="flex-1 overflow-y-auto p-6 custom-scrollbar">
-
-    <!-- Notification Area for Success and Error Messages -->
-    <div *ngIf="successMessage" class="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50">
-        {{ successMessage }}
-        <button (click)="clearMessage()" class="ml-2 text-white hover:text-gray-200">
-            <i class="ri-close-line"></i>
+    <!-- Tabs Section -->
+    <div class="flex border-b border-gray-200">
+        <button
+            class="tab-button px-6 py-3 text-sm font-medium text-primary border-b-2 border-primary transition-colors"
+            (click)="showTab('overview')" id="overview">
+            Overview
+        </button>
+        <button class="tab-button px-6 py-3 text-sm text-gray-500 transition-colors" (click)="showTab('settings')"
+            id="settings">
+            Settings
         </button>
     </div>
-    <div *ngIf="errorMessage" class="fixed top-4 right-4 bg-red-500 text-white px-4 py-2 rounded-lg shadow-lg z-50">
-        {{ errorMessage }}
-        <button (click)="clearMessage()" class="ml-2 text-white hover:text-gray-200">
-            <i class="ri-close-line"></i>
-        </button>
-    </div>
+</div>
 
-    <!-- overview content -->
-    <div id="tab-overview" class="tab-content bg-white rounded shadow mb-6  rounded-lg">
-        <div class="p-4 flex justify-between items-center">
-            <h2 class="text-lg font-medium">Customer Management</h2>
-            <div class="flex items-center space-x-3">
-                <button
-                    class="flex items-center px-3 py-2 border border-gray-300 rounded-button text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">
-                    <div class="w-4 h-4 mr-2 flex items-center justify-center">
-                        <i class="ri-download-2-line"></i>
-                    </div> Export Data
-                </button>
-                <button (click)="toggleForm('customer-add')" id="newSchemaBtn"
-                    class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
-                    <div class="w-4 h-4 mr-2 flex items-center justify-center">
-                        <i class="ri-add-line"></i>
-                    </div> New customer
-                </button>
-            </div>
+<!-- Notification Area for Success and Error Messages -->
+<div *ngIf="successMessage" class="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50">
+    {{ successMessage }}
+    <button (click)="clearMessage()" class="ml-2 text-white hover:text-gray-200">
+        <i class="ri-close-line"></i>
+    </button>
+</div>
+<div *ngIf="errorMessage" class="fixed top-4 right-4 bg-red-500 text-white px-4 py-2 rounded-lg shadow-lg z-50">
+    {{ errorMessage }}
+    <button (click)="clearMessage()" class="ml-2 text-white hover:text-gray-200">
+        <i class="ri-close-line"></i>
+    </button>
+</div>
+
+<!-- overview content -->
+<div id="tab-overview" class="tab-content">
+    <!-- Header Section -->
+    <div
+        class="p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white rounded-xl shadow-lg mb-6">
+        <div class="mb-4 sm:mb-0">
+            <h2 class="text-2xl font-semibold text-gray-800">
+                Customer Management
+            </h2>
         </div>
+        <div class="flex items-center space-x-3 w-full sm:w-auto">
+            <button
+                class="flex items-center px-4 py-2.5 border border-gray-200 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap transition duration-200 hover:shadow-lg">
+                <i class="ri-download-2-line mr-2"></i> Export Data
+            </button>
+            <button (click)="toggleForm('customer-add')" id="newSchemaBtn"
+                class="flex items-center px-4 py-2.5 bg-primary text-white rounded-lg text-sm font-medium hover:bg-opacity-90 whitespace-nowrap transition duration-200 hover:shadow-lg">
+                <i class="ri-add-line mr-2"></i> New Customer
+            </button>
+        </div>
+    </div>
 
-        <!-- Filters -->
-        <header class="bg-white shadow-sm z-10">
-            <div class="px-6 py-3 bg-white border-t border-b flex flex-wrap items-center gap-3">
-                <div class="flex flex-wrap gap-4">
-                    <div class="w-full sm:w-auto">
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
-                        <div class="relative">
-                            <select
-                                class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary rounded-lg sm:text-sm">
-                                <option value="">All Statuses</option>
-                                <option *ngFor="let status of statuses" [value]="status">{{status.ctsLabe}}</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="w-full sm:w-auto">
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Country</label>
-                        <div class="relative">
-                            <select
-                                class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary rounded-lg sm:text-sm">
-                                <option value="">select country</option>
-                                <option *ngFor="let country of countries" [value]="country">{{country.ctrLabe}}</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="w-full sm:w-auto">
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Cities</label>
-                        <div class="relative">
-                            <select
-                                class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary rounded-lg sm:text-sm">
-                                <option value="">select city</option>
-                                <option *ngFor="let city of cities" [value]="city">{{city.ctyLabe}}</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- Search Input -->
-                    <div class="w-full sm:flex-1 sm:min-w-[300px]">
-                        <label class="block text-sm font-medium text-gray-700 mb-1 sr-only">Search</label>
-                        <div class="relative">
-                            <input type="text" placeholder="Search Username, Email, or codes..."
-                                class="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg text-sm focus:ring-primary focus:border-primary">
-                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                <i class="ri-search-line text-gray-400"></i>
-                            </div>
-                        </div>
-                    </div>
+    <!-- Filters -->
+    <div class="bg-white rounded-lg shadow-lg p-4 mb-6">
+        <div class="flex flex-col md:flex-row gap-4">
+            <!-- Search -->
+            <div class="relative flex-grow">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="ri-search-line text-gray-400"></i>
+                </div>
+                <input type="text" placeholder="Search..."
+                    class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm" />
+            </div>
+            <div class="w-full sm:w-auto">
+                <div class="relative">
+                    <select
+                        class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary rounded-lg sm:text-sm">
+                        <option value="">All Statuses</option>
+                        <option *ngFor="let status of statuses" [value]="status">
+                            {{ status.ctsLabe }}
+                        </option>
+                    </select>
                 </div>
             </div>
-        </header>
+            <div class="w-full sm:w-auto">
+                <div class="relative">
+                    <select
+                        class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary rounded-lg sm:text-sm">
+                        <option value="">select country</option>
+                        <option *ngFor="let country of countries" [value]="country">
+                            {{ country.ctrLabe }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="w-full sm:w-auto">
+                <div class="relative">
+                    <select
+                        class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary rounded-lg sm:text-sm">
+                        <option value="">select city</option>
+                        <option *ngFor="let city of cities" [value]="city">
+                            {{ city.ctyLabe }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <!-- Table Section -->
+    <div class="bg-white rounded-xl shadow-lg overflow-hidden">
         <!-- Table -->
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
-                    <tr>
+                <thead>
+                    <tr class="border-b border-gray-200">
                         <th scope="col"
-                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            <input type="checkbox">
+                            class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                            Customer Code
                         </th>
                         <th scope="col"
-                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            <div class="flex items-center">
-                                <span>customer Code</span>
-                            </div>
+                            class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                            Identifier
                         </th>
                         <th scope="col"
-                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            <div class="flex items-center">
-                                <span>Identifier</span>
-                            </div>
-                        </th>
-
-                        <th scope="col"
-                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            <div class="flex items-center">
-                                <span>Username</span>
-                            </div>
+                            class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                            Username
                         </th>
                         <th scope="col"
-                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            <div class="flex items-center">
-                                <span>Name</span>
-                            </div>
+                            class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                            Name
                         </th>
                         <th scope="col"
-                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            <div class="flex items-center">
-                                <span>Status</span>
-                            </div>
+                            class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                            Status
                         </th>
                         <th scope="col"
-                            class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Actions </th>
+                            class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                            Actions
+                        </th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
-                    <tr *ngFor="let customer of customers" class="hover:bg-gray-50 cursor-pointer" data-customer-id="1">
+                    <tr *ngFor="let customer of customers" class="hover:bg-gray-50 transition duration-150">
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <input type="checkbox">
+                            <div class="text-sm font-medium text-gray-900">
+                                {{ customer.cusCode }}
+                            </div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm font-medium text-gray-900">{{customer.cusCode}}</div>
+                            <div class="text-sm text-gray-900">{{ customer.cusIden }}</div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-900">{{customer.cusIden}}</div>
-                        </td>
-
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-900">{{customer.username}}</div>
+                            <div class="text-sm text-gray-900">{{ customer.username }}</div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-900">{{customer.fullName}}</div>
+                            <div class="text-sm text-gray-900">{{ customer.fullName }}</div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full status-active">
-                                {{customer.status?.ctsLabe}} </span>
+                            <span
+                                class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                {{ customer.status?.ctsLabe }}
+                            </span>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            <div class="flex items-center justify-end space-x-2">
-                                <button (click)="selectedCustomer=customer; toggleForm('customer-details')"
-                                    class="text-blue-600 hover:text-gray-500">
-                                    <i class="ri-eye-line"></i>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <div class="flex items-center justify-end space-x-3">
+                                <button (click)="
+                      selectedCustomer = customer;
+                      toggleForm('customer-details')
+                    " class="text-blue-600 hover:text-blue-800 transition duration-150 p-1 rounded hover:bg-blue-50">
+                                    <i class="ri-eye-line text-lg"></i>
                                 </button>
-                                <button class="text-green-600 hover:text-gray-500">
-                                    <i class="ri-edit-line"></i>
+                                <button
+                                    class="text-green-600 hover:text-green-800 transition duration-150 p-1 rounded hover:bg-green-50">
+                                    <i class="ri-edit-line text-lg"></i>
                                 </button>
-                                <button (click)="deleteCustomer(customer)" class="text-red-600 hover:text-gray-500">
-                                    <i class="ri-delete-bin-line"></i>
+                                <button (click)="deleteCustomer(customer)"
+                                    class="text-red-600 hover:text-red-800 transition duration-150 p-1 rounded hover:bg-red-50">
+                                    <i class="ri-delete-bin-line text-lg"></i>
                                 </button>
                             </div>
                         </td>
@@ -185,128 +178,125 @@
                 </tbody>
             </table>
         </div>
+
         <!-- Pagination -->
-        <div class="px-6 py-4 flex items-center justify-between border-t border-gray-200">
-            <div class="flex-1 flex justify-between sm:hidden">
-                <button
-                    class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-                    Previous </button>
-                <button
-                    class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-                    Next </button>
+        <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between">
+            <div class="flex items-center text-sm text-gray-500">
+                <span>Showing 1-10 of ...</span>
             </div>
-            <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-                <div>
-                    <p class="text-sm text-gray-700"> Showing <span class="font-medium">1</span> to <span
-                            class="font-medium">5</span> of <span class="font-medium">42</span> results </p>
-                </div>
-                <div>
-                    <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-                        <button
-                            class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                            <span class="sr-only">Previous</span>
-                            <div class="w-5 h-5 flex items-center justify-center">
-                                <i class="ri-arrow-left-s-line"></i>
-                            </div>
-                        </button>
-                        <button
-                            class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
-                            1 </button>
-                        <button
-                            class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-primary text-sm font-medium text-white">
-                            2 </button>
-                        <button
-                            class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
-                            3 </button>
-                        <span
-                            class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
-                            ... </span>
-                        <button
-                            class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
-                            8 </button>
-                        <button
-                            class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
-                            9 </button>
-                        <button
-                            class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                            <span class="sr-only">Next</span>
-                            <div class="w-5 h-5 flex items-center justify-center">
-                                <i class="ri-arrow-right-s-line"></i>
-                            </div>
-                        </button>
-                    </nav>
-                </div>
+            <div class="flex items-center gap-1">
+                <button
+                    class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled>
+                    <i class="ri-arrow-left-s-line"></i>
+                </button>
+                <button
+                    class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-primary text-white hover:bg-primary/90">1</button>
+                <button
+                    class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">2</button>
+                <button
+                    class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">3</button>
+                <button
+                    class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-500 hover:bg-gray-50">
+                    <i class="ri-arrow-right-s-line"></i>
+                </button>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- settings content -->
-    <div id="tab-settings" class="tab-content hidden">
-        <div class="bg-white rounded-lg shadow">
-            <!-- Settings Tabs -->
-            <div class="border-b border-gray-200">
-                <nav class="flex -mb-px">
-                    <button id="settings-status" (click)="showTab('status', 'settings')"
-                        class="settings-tab-button relative px-4 py-3 text-sm active font-medium text-primary">Customer
-                        Status</button>
-                    <button id="settings-identityType" (click)="showTab('identityType', 'settings')"
-                        class="settings-tab-button relative px-4 py-3 text-sm text-gray-500">Customer Identity
-                        Type</button>
-
-                    <button id="settings-docType" (click)="showTab('docType', 'settings')"
-                        class="settings-tab-button relative px-4 py-3 text-sm text-gray-500">Document
-                        Type</button>
-                    <button id="settings-country" (click)="showTab('country', 'settings')"
-                        class="settings-tab-button relative px-4 py-3 text-sm text-gray-500">Country </button>
-                    <button id="settings-city" (click)="showTab('city', 'settings')"
-                        class="settings-tab-button relative px-4 py-3 text-sm text-gray-500">City </button>
-                </nav>
-            </div>
-
-            <!-- Status -->
-            <div id="settings-tab-status" class="settings-tab-content p-6">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-lg font-medium text-gray-900">Customer Status Management</h3>
+<!-- settings content -->
+<div id="tab-settings" class="tab-content hidden">
+    <!-- Settings Tabs -->
+    <div class="mb-6 flex flex-wrap gap-2">
+        <button id="settings-status" (click)="showTab('status', 'settings')"
+            class="settings-tab-button shadow-lg px-4 py-3 text-sm rounded-lg bg-white font-medium text-primary border-b-2 border-primary transition-colors">
+            Customer Status</button>
+        <button id="settings-identityType" (click)="showTab('identityType', 'settings')"
+            class="settings-tab-button shadow-lg px-4 py-3 text-sm rounded-lg bg-white text-gray-500 transition-colors">
+            Identity Type</button>
+        <button id="settings-docType" (click)="showTab('docType', 'settings')"
+            class="settings-tab-button shadow-lg px-4 py-3 text-sm rounded-lg bg-white text-gray-500 transition-colors">
+            Document Type</button>
+        <button id="settings-country" (click)="showTab('country', 'settings')"
+            class="settings-tab-button shadow-lg px-4 py-3 text-sm rounded-lg bg-white text-gray-500 transition-colors">
+            Country</button>
+        <button id="settings-city" (click)="showTab('city', 'settings')"
+            class="settings-tab-button shadow-lg px-4 py-3 text-sm rounded-lg bg-white text-gray-500 transition-colors">
+            City</button>
+    </div>
+    <div class="overflow-hidden my-6">
+        <!-- Status -->
+        <div id="settings-tab-status" class="settings-tab-content">
+            <!-- Header Section -->
+            <div class="bg-white rounded-lg shadow-lg p-4 mb-6">
+                <div class="flex flex-col md:flex-row gap-4">
+                    <div class="relative flex-grow">
+                        <h2 class="text-2xl font-semibold text-gray-800">
+                            Customer Status Management
+                        </h2>
+                    </div>
+                    <!-- Search -->
+                    <div class="relative flex-grow">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="ri-search-line text-gray-400"></i>
+                        </div>
+                        <input type="text" placeholder="Search..."
+                            class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm" />
+                    </div>
                     <button id="btn-add-status" (click)="toggleForm('customer-status');"
                         class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
                         <i class="ri-add-line mr-1"></i> Add Status </button>
                 </div>
+            </div>
+
+            <!-- Table Section -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                <!-- Table -->
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
-                            <tr>
+                        <thead>
+                            <tr class="border-b border-gray-200">
                                 <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Status Code</th>
+                                    class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                                    Code
+                                </th>
                                 <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Status Identifier</th>
+                                    class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                                    Identifier
+                                </th>
                                 <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Status Label</th>
+                                    class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                                    Label
+                                </th>
                                 <th scope="col"
-                                    class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Actions</th>
+                                    class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                                    Actions
+                                </th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            <tr *ngFor="let status of statuses">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                    {{status.ctsCode}}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                    {{status.ctsIden}}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{status.ctsLabe}}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <div class="flex justify-end space-x-2">
-                                        <button (click)="editStatus(status)" class="text-green-600 hover:text-gray-500">
-                                            <div class="w-6 h-6 flex items-center justify-center">
-                                                <i class="ri-edit-line"></i>
-                                            </div>
+                            <tr *ngFor="let status of statuses" class="hover:bg-gray-50 transition duration-150">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-gray-900">{{ status.ctsCode }}
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">{{ status.ctsIden }}</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">{{ status.ctsLabe }}
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    <div class="flex items-center justify-end space-x-3">
+                                        <button (click)="editStatus(status)"
+                                            class="text-green-600 hover:text-green-800 transition duration-150 p-1 rounded hover:bg-green-50">
+                                            <i class="ri-edit-line text-lg"></i>
                                         </button>
-                                        <button (click)="deleteStatus(status)" class="text-red-600 hover:text-red-500">
-                                            <div class="w-6 h-6 flex items-center justify-center">
-                                                <i class="ri-delete-bin-line"></i>
-                                            </div>
+                                        <button (click)="deleteStatus(status)"
+                                            class="text-red-600 hover:text-red-800 transition duration-150 p-1 rounded hover:bg-red-50">
+                                            <i class="ri-delete-bin-line text-lg"></i>
                                         </button>
                                     </div>
                                 </td>
@@ -314,53 +304,103 @@
                         </tbody>
                     </table>
                 </div>
+
+                <!-- Pagination -->
+                <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between">
+                    <div class="flex items-center text-sm text-gray-500">
+                        <span>Showing 1-10 of ...</span>
+                    </div>
+                    <div class="flex items-center gap-1">
+                        <button
+                            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                            disabled>
+                            <i class="ri-arrow-left-s-line"></i>
+                        </button>
+                        <button
+                            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-primary text-white hover:bg-primary/90">1</button>
+                        <button
+                            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">2</button>
+                        <button
+                            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">3</button>
+                        <button
+                            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-500 hover:bg-gray-50">
+                            <i class="ri-arrow-right-s-line"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
-            <!-- IdentityType -->
-            <div id="settings-tab-identityType" class="settings-tab-content hidden p-6">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-lg font-medium text-gray-900">Identity Type Management</h3>
+        </div>
+        <!-- IdentityType -->
+        <div id="settings-tab-identityType" class="settings-tab-content hidden">
+            <!-- Header Section -->
+            <div class="bg-white rounded-lg shadow-lg p-4 mb-6">
+                <div class="flex flex-col md:flex-row gap-4">
+                    <div class="relative flex-grow">
+                        <h2 class="text-2xl font-semibold text-gray-800">
+                            Identity Type Management
+                        </h2>
+                    </div>
+                    <!-- Search -->
+                    <div class="relative flex-grow">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="ri-search-line text-gray-400"></i>
+                        </div>
+                        <input type="text" placeholder="Search..."
+                            class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm" />
+                    </div>
                     <button id="btn-add-identityType" (click)="toggleForm('customer-identityType')"
                         class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
                         <i class="ri-add-line mr-1"></i> Add Identity Type </button>
                 </div>
+            </div>
+
+            <!-- Table Section -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                <!-- Table -->
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
-                            <tr>
+                        <thead>
+                            <tr class="border-b border-gray-200">
                                 <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Code</th>
+                                    class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                                    Code
+                                </th>
                                 <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Identifier</th>
+                                    class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                                    Identifier
+                                </th>
                                 <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Label</th>
+                                    class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                                    Label
+                                </th>
                                 <th scope="col"
-                                    class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Actions</th>
+                                    class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                                    Actions
+                                </th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            <tr *ngFor="let type of identityTypes">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                    {{type.citCode}}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                    {{type.citIden}}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{type.citLabe}}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <div class="flex justify-end space-x-2">
+                            <tr *ngFor="let type of identityTypes" class="hover:bg-gray-50 transition duration-150">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-gray-900">{{ type.citCode }}
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">{{ type.citIden }}</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">{{ type.citLabe }}
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    <div class="flex items-center justify-end space-x-3">
                                         <button (click)="editIdentityType(type)"
-                                            class="text-green-600 hover:text-gray-500">
-                                            <div class="w-6 h-6 flex items-center justify-center">
-                                                <i class="ri-edit-line"></i>
-                                            </div>
+                                            class="text-green-600 hover:text-green-800 transition duration-150 p-1 rounded hover:bg-green-50">
+                                            <i class="ri-edit-line text-lg"></i>
                                         </button>
                                         <button (click)="deleteIdentityType(type)"
-                                            class="text-red-600 hover:text-red-500">
-                                            <div class="w-6 h-6 flex items-center justify-center">
-                                                <i class="ri-delete-bin-line"></i>
-                                            </div>
+                                            class="text-red-600 hover:text-red-800 transition duration-150 p-1 rounded hover:bg-red-50">
+                                            <i class="ri-delete-bin-line text-lg"></i>
                                         </button>
                                     </div>
                                 </td>
@@ -368,52 +408,99 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
-            <!-- DocType -->
-            <div id="settings-tab-docType" class="settings-tab-content hidden p-6">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-lg font-medium text-gray-900">Document Type Management</h3>
-                    <button id="btn-add-docType" (click)="toggleForm('docType')"
-                        class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
-                        <i class="ri-add-line mr-1"></i> Add Document Type </button>
+
+                <!-- Pagination -->
+                <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between">
+                    <div class="flex items-center text-sm text-gray-500">
+                        <span>Showing 1-10 of ...</span>
+                    </div>
+                    <div class="flex items-center gap-1">
+                        <button
+                            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                            disabled>
+                            <i class="ri-arrow-left-s-line"></i>
+                        </button>
+                        <button
+                            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-primary text-white hover:bg-primary/90">1</button>
+                        <button
+                            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">2</button>
+                        <button
+                            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">3</button>
+                        <button
+                            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-500 hover:bg-gray-50">
+                            <i class="ri-arrow-right-s-line"></i>
+                        </button>
+                    </div>
                 </div>
+            </div>
+        </div>
+        <!-- DocType -->
+        <div id="settings-tab-docType" class="settings-tab-content hidden">
+            <!-- Header Section -->
+            <div class="bg-white rounded-lg shadow-lg p-4 mb-6">
+                <div class="flex flex-col md:flex-row gap-4">
+                    <div class="relative flex-grow">
+                        <h2 class="text-2xl font-semibold text-gray-800">
+                            Document Type Management
+                        </h2>
+                    </div>
+                    <!-- Search -->
+                    <div class="relative flex-grow">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="ri-search-line text-gray-400"></i>
+                        </div>
+                        <input type="text" placeholder="Search..."
+                            class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm" />
+                    </div>
+                    <button id="btn-add-docType" (click)="toggleForm('docType');"
+                        class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+                        <i class="ri-add-line mr-1"></i> Add Type </button>
+                </div>
+            </div>
+
+            <!-- Table Section -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                <!-- Table -->
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
-                            <tr>
+                        <thead>
+                            <tr class="border-b border-gray-200">
                                 <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Code</th>
+                                    class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                                    Code
+                                </th>
                                 <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Identifier</th>
+                                    class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                                    Identifier
+                                </th>
                                 <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Label</th>
+                                    class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                                    Label
+                                </th>
                                 <th scope="col"
-                                    class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Actions</th>
+                                    class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                                    Actions
+                                </th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            <tr *ngFor="let type of docTypes">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                    {{type.dtyCode}}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                    {{type.dtyIden}}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{type.dtyLabe}}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <div class="flex justify-end space-x-2"><!-- 
-                                        <button (click)="editDocType(type)"
-                                            class="text-green-600 hover:text-gray-500">
-                                            <div class="w-6 h-6 flex items-center justify-center">
-                                                <i class="ri-edit-line"></i>
-                                            </div>
-                                        </button> -->
-                                        <button (click)="deleteDocType(type)" class="text-red-600 hover:text-red-500">
-                                            <div class="w-6 h-6 flex items-center justify-center">
-                                                <i class="ri-delete-bin-line"></i>
-                                            </div>
+                            <tr *ngFor="let type of docTypes" class="hover:bg-gray-50 transition duration-150">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-gray-900">{{ type.dtyCode }}
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">{{ type.dtyIden }}</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">{{ type.dtyLabe }}
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    <div class="flex items-center justify-end space-x-3">
+                                        <button (click)="deleteDocType(type)"
+                                            class="text-red-600 hover:text-red-800 transition duration-150 p-1 rounded hover:bg-red-50">
+                                            <i class="ri-delete-bin-line text-lg"></i>
                                         </button>
                                     </div>
                                 </td>
@@ -421,52 +508,99 @@
                         </tbody>
                     </table>
                 </div>
+
+                <!-- Pagination -->
+                <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between">
+                    <div class="flex items-center text-sm text-gray-500">
+                        <span>Showing 1-10 of ...</span>
+                    </div>
+                    <div class="flex items-center gap-1">
+                        <button
+                            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                            disabled>
+                            <i class="ri-arrow-left-s-line"></i>
+                        </button>
+                        <button
+                            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-primary text-white hover:bg-primary/90">1</button>
+                        <button
+                            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">2</button>
+                        <button
+                            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">3</button>
+                        <button
+                            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-500 hover:bg-gray-50">
+                            <i class="ri-arrow-right-s-line"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
-            <!-- country -->
-            <div id="settings-tab-country" class="settings-tab-content hidden p-6">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-lg font-medium text-gray-900">Countries Management</h3>
-                    <button id="btn-add-status" (click)="toggleForm('country')"
+        </div>
+        <!-- country -->
+        <div id="settings-tab-country" class="settings-tab-content hidden">
+            <!-- Header Section -->
+            <div class="bg-white rounded-lg shadow-lg p-4 mb-6">
+                <div class="flex flex-col md:flex-row gap-4">
+                    <div class="relative flex-grow">
+                        <h2 class="text-2xl font-semibold text-gray-800">
+                            Country Management
+                        </h2>
+                    </div>
+                    <!-- Search -->
+                    <div class="relative flex-grow">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="ri-search-line text-gray-400"></i>
+                        </div>
+                        <input type="text" placeholder="Search..."
+                            class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm" />
+                    </div>
+                    <button id="btn-add-country" (click)="toggleForm('country');"
                         class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
                         <i class="ri-add-line mr-1"></i> Add Country </button>
                 </div>
+            </div>
+
+            <!-- Table Section -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                <!-- Table -->
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
-                            <tr>
+                        <thead>
+                            <tr class="border-b border-gray-200">
                                 <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Country Code</th>
+                                    class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                                    Code
+                                </th>
                                 <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Country Identifier</th>
+                                    class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                                    Identifier
+                                </th>
                                 <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Country Label</th>
+                                    class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                                    Label
+                                </th>
                                 <th scope="col"
-                                    class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Actions</th>
+                                    class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                                    Actions
+                                </th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            <tr *ngFor="let country of countries">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                    {{country.ctrCode}}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                    {{country.ctrIden}}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{country.ctrLabe}}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <div class="flex justify-end space-x-2">
-                                        <!-- <button class="text-green-600 hover:text-gray-500">
-                                            <div class="w-6 h-6 flex items-center justify-center">
-                                                <i class="ri-edit-line"></i>
-                                            </div>
-                                        </button> -->
+                            <tr *ngFor="let country of countries" class="hover:bg-gray-50 transition duration-150">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-gray-900">{{ country.ctrCode }}
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">{{ country.ctrIden }}</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">{{ country.ctrLabe }}
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    <div class="flex items-center justify-end space-x-3">
                                         <button (click)="deleteCountry(country)"
-                                            class="text-red-600 hover:text-red-500">
-                                            <div class="w-6 h-6 flex items-center justify-center">
-                                                <i class="ri-delete-bin-line"></i>
-                                            </div>
+                                            class="text-red-600 hover:text-red-800 transition duration-150 p-1 rounded hover:bg-red-50">
+                                            <i class="ri-delete-bin-line text-lg"></i>
                                         </button>
                                     </div>
                                 </td>
@@ -474,73 +608,140 @@
                         </tbody>
                     </table>
                 </div>
+
+                <!-- Pagination -->
+                <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between">
+                    <div class="flex items-center text-sm text-gray-500">
+                        <span>Showing 1-10 of ...</span>
+                    </div>
+                    <div class="flex items-center gap-1">
+                        <button
+                            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                            disabled>
+                            <i class="ri-arrow-left-s-line"></i>
+                        </button>
+                        <button
+                            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-primary text-white hover:bg-primary/90">1</button>
+                        <button
+                            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">2</button>
+                        <button
+                            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">3</button>
+                        <button
+                            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-500 hover:bg-gray-50">
+                            <i class="ri-arrow-right-s-line"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
-            <!-- city -->
-            <div id="settings-tab-city" class="settings-tab-content hidden p-6">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-lg font-medium text-gray-900">City Management</h3>
-                    <button id="btn-add-status" (click)="toggleForm('city')"
+        </div>
+        <!-- city -->
+        <div id="settings-tab-city" class="settings-tab-content hidden">
+            <!-- Header Section -->
+            <div class="bg-white rounded-lg shadow-lg p-4 mb-6">
+                <div class="flex flex-col md:flex-row gap-4">
+                    <div class="relative flex-grow">
+                        <h2 class="text-2xl font-semibold text-gray-800">
+                            City Management
+                        </h2>
+                    </div>
+                    <!-- Search -->
+                    <div class="relative flex-grow">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="ri-search-line text-gray-400"></i>
+                        </div>
+                        <input type="text" placeholder="Search..."
+                            class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm" />
+                    </div>
+                    <button id="btn-add-city" (click)="toggleForm('city');"
                         class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
                         <i class="ri-add-line mr-1"></i> Add City </button>
                 </div>
+            </div>
+            <!-- Table Section -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                <!-- Table -->
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
-                            <tr>
+                        <thead>
+                            <tr class="border-b border-gray-200">
                                 <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    City Code</th>
+                                    class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                                    Status Code
+                                </th>
                                 <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    City Identifier</th>
+                                    class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                                    Identifier
+                                </th>
                                 <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    City Label</th>
+                                    class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                                    Label
+                                </th>
                                 <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    City Country</th>
-                                <th scope="col"
-                                    class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Actions</th>
+                                    class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                                    Actions
+                                </th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            <tr *ngFor="let city of cities">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                    {{city.ctyCode}}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                    {{city.ctyIden}}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{city.ctyLabe}}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{city.country!.ctrLabe}}
+                            <tr *ngFor="let city of cities" class="hover:bg-gray-50 transition duration-150">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-gray-900">
+                                        {{ city.ctyCode }}
+                                    </div>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <div class="flex justify-end space-x-2">
-                                        <!-- <button class="text-green-600 hover:text-gray-500">
-                                            <div class="w-6 h-6 flex items-center justify-center">
-                                                <i class="ri-edit-line"></i>
-                                            </div>
-                                        </button> -->
-                                        <button (click)="deleteCity(city)" class="text-red-600 hover:text-red-500">
-                                            <div class="w-6 h-6 flex items-center justify-center">
-                                                <i class="ri-delete-bin-line"></i>
-                                            </div>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">{{ city.ctyIden }}</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">
+                                        {{ city.ctyLabe }}
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    <div class="flex items-center justify-end space-x-3">
+                                        <button (click)="deleteCity(city)"
+                                            class="text-red-600 hover:text-red-800 transition duration-150 p-1 rounded hover:bg-red-50">
+                                            <i class="ri-delete-bin-line text-lg"></i>
                                         </button>
                                     </div>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
+                </div>
+
+                <!-- Pagination -->
+                <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between">
+                    <div class="flex items-center text-sm text-gray-500">
+                        <span>Showing 1-10 of ...</span>
+                    </div>
+                    <div class="flex items-center gap-1">
+                        <button
+                            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                            disabled>
+                            <i class="ri-arrow-left-s-line"></i>
+                        </button>
+                        <button
+                            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-primary text-white hover:bg-primary/90">1</button>
+                        <button
+                            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">2</button>
+                        <button
+                            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">3</button>
+                        <button
+                            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-500 hover:bg-gray-50">
+                            <i class="ri-arrow-right-s-line"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</main>
+</div>
 
 <!-- Modals -->
-<div *ngIf="isAnyModalVisible" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 ">
-
+<div *ngIf="isAnyModalVisible" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
     <!-- add customer -->
-    <div *ngIf="isAddCustomerVisible" id="create-customer-modal" class="bg-white rounded-lg shadow-xl w-full max-w-2xl">
+    <div *ngIf="isAddCustomerVisible" id="create-customer-modal" class="bg-white rounded-lg shadow-lg w-full max-w-2xl">
         <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
             <h3 class="text-lg font-semibold text-gray-800">Add New Customer</h3>
             <button (click)="closeForm('customer-add')" id="close-create-customer"
@@ -556,28 +757,28 @@
                     <label class="block text-sm font-medium text-gray-700 mb-1">First Name:</label>
                     <input
                         class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-                        [(ngModel)]="customerForm.cusFirstName" name="cusFirstName" type="text" required>
+                        [(ngModel)]="customerForm.cusFirstName" name="cusFirstName" type="text" required />
                 </div>
 
                 <div class="form-field">
                     <label class="block text-sm font-medium text-gray-700 mb-1">Middle Name (Optional):</label>
                     <input
                         class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-                        [(ngModel)]="customerForm.cusMidName" name="cusMidName" type="text">
+                        [(ngModel)]="customerForm.cusMidName" name="cusMidName" type="text" />
                 </div>
 
                 <div class="form-field">
                     <label class="block text-sm font-medium text-gray-700 mb-1">Last Name:</label>
                     <input
                         class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-                        [(ngModel)]="customerForm.cusLastName" name="cusLastName" type="text" required>
+                        [(ngModel)]="customerForm.cusLastName" name="cusLastName" type="text" required />
                 </div>
 
                 <div class="form-field">
                     <label class="block text-sm font-medium text-gray-700 mb-1">Username:</label>
                     <input
                         class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-                        [(ngModel)]="customerForm.username" name="username" type="text" required>
+                        [(ngModel)]="customerForm.username" name="username" type="text" required />
                 </div>
 
                 <div class="form-field">
@@ -585,39 +786,42 @@
                     <input
                         class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
                         [(ngModel)]="customerForm.cusMailAddress" name="cusMailAddress" type="email" required
-                        #email="ngModel" email>
+                        #email="ngModel" email />
                 </div>
 
                 <div class="form-field">
                     <label class="block text-sm font-medium text-gray-700 mb-1">Password:</label>
                     <input
                         class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-                        [(ngModel)]="customerForm.cusMotDePasse" name="cusMotDePasse" type="password" required>
+                        [(ngModel)]="customerForm.cusMotDePasse" name="cusMotDePasse" type="password" required />
                 </div>
 
                 <div class="form-field">
                     <label class="block text-sm font-medium text-gray-700 mb-1">Address:</label>
                     <input
-                        class=" w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-                        [(ngModel)]="customerForm.cusAddress" name="cusAddress" type="text" required>
-
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                        [(ngModel)]="customerForm.cusAddress" name="cusAddress" type="text" required />
                 </div>
 
                 <div class="form-field">
                     <label class="block text-sm font-medium text-gray-700 mb-1">Country:</label>
                     <select
-                        class=" w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
                         [(ngModel)]="customerForm.country" name="country" (change)="onCountryChange()">
-                        <option *ngFor="let country of countries" [ngValue]="country">{{ country.ctrLabe }}</option>
+                        <option *ngFor="let country of countries" [ngValue]="country">
+                            {{ country.ctrLabe }}
+                        </option>
                     </select>
                 </div>
 
                 <div class="form-field">
                     <label class="block text-sm font-medium text-gray-700 mb-1">City:</label>
                     <select
-                        class=" w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
                         [(ngModel)]="customerForm.city" name="city">
-                        <option *ngFor="let city of cities" [ngValue]="city">{{ city.ctyLabe }}</option>
+                        <option *ngFor="let city of cities" [ngValue]="city">
+                            {{ city.ctyLabe }}
+                        </option>
                     </select>
                 </div>
 
@@ -627,23 +831,24 @@
                         [preferredCountries]="['tn', 'us', 'gb']" [enablePlaceholder]="true" [separateDialCode]="true"
                         required>
                     </ngx-intl-tel-input> -->
-
-
                 </div>
             </div>
         </form>
         <div class="px-6 py-4 border-t border-gray-200 flex justify-end space-x-3">
             <button (click)="closeForm('customer-add')" id="cancel-create-customer"
-                class="px-4 py-2 border border-gray-300 text-gray-700 rounded-button hover:bg-gray-50 transition text-sm whitespace-nowrap">Cancel</button>
+                class="px-4 py-2 border border-gray-300 text-gray-700 rounded-button hover:bg-gray-50 transition text-sm whitespace-nowrap">
+                Cancel
+            </button>
             <button id="submit-create-customer"
-                class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">Create
-                Customer</button>
+                class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+                Create Customer
+            </button>
         </div>
     </div>
 
     <!-- customer Detail Modal -->
     <div *ngIf="isUserDetailsVisible" id="customer-detail-modal"
-        class="bg-white rounded-lg shadow-xl w-full max-w-4xl h-[90vh] overflow-hidden">
+        class="bg-white rounded-lg shadow-lg w-full max-w-4xl h-[90vh] overflow-hidden">
         <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
             <h3 class="text-lg font-semibold text-gray-800">Customer Details</h3>
             <button id="close-customer-detail" class="text-gray-400 hover:text-gray-500">
@@ -652,7 +857,7 @@
                 </div>
             </button>
         </div>
-        <div class="p-6 custom-scrollbar" style="height: calc(90vh - 130px);">
+        <div class="p-6 custom-scrollbar" style="height: calc(90vh - 130px)">
             <div class="flex flex-col md:flex-row md:space-x-6">
                 <div class="mb-6 md:mb-0 md:w-1/3">
                     <!-- customer main info -->
@@ -662,17 +867,22 @@
                                 class="w-20 h-20 mx-auto bg-primary bg-opacity-10 rounded-full flex items-center justify-center text-primary">
                                 <i class="ri-contacts-line ri-2x"></i>
                             </div>
-                            <h4 class="text-lg font-semibold mt-2">{{selectedCustomer?.fullName}}</h4>
-                            <p class="text-sm text-gray-500">{{selectedCustomer?.username}}</p>
+                            <h4 class="text-lg font-semibold mt-2">
+                                {{ selectedCustomer?.fullName }}
+                            </h4>
+                            <p class="text-sm text-gray-500">
+                                {{ selectedCustomer?.username }}
+                            </p>
                         </div>
                         <div class="mt-6 space-y-2">
                             <button
                                 class="w-full px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 transition text-sm whitespace-nowrap">
-                                Change Status </button>
+                                Change Status
+                            </button>
                         </div>
                     </div>
                     <!-- Wallet Information -->
-                    <!-- <div class="md:h-1/3 mt-6 bg-white p-5 rounded-lg border border-gray-100 shadow-sm">
+                    <div class="md:h-1/3 mt-6 bg-white p-5 rounded-lg border border-gray-100 shadow-lg">
                         <h5 class="text-sm font-semibold text-gray-700 mb-4 flex items-center">
                             <i class="ri-wallet-3-line text-gray-500 mr-2"></i>
                             Wallet Information
@@ -700,19 +910,21 @@
                                 </div>
                             </div>
                         </div>
-                    </div> -->
+                    </div>
                 </div>
                 <div class="md:w-2/3">
                     <div class="mb-6">
                         <div class="flex border-b border-gray-200">
-                            <button class="details-tab-button  px-4 py-3 text-sm active font-medium text-primary"
-                                id="details-basic-info" (click)="showTab('basic-info','details')"> Basic Info
+                            <button class="details-tab-button px-4 py-3 text-sm active font-medium text-primary"
+                                id="details-basic-info" (click)="showTab('basic-info', 'details')">
+                                Basic Info
                             </button>
-                            <button class="details-tab-button  px-4 py-3 text-sm text-gray-500" id="details-documents"
-                                (click)="showTab('documents','details')"> Documents
+                            <button class="details-tab-button px-4 py-3 text-sm text-gray-500" id="details-documents"
+                                (click)="showTab('documents', 'details')">
+                                Documents
                             </button>
                             <button class="details-tab-button px-4 py-3 text-sm text-gray-500"
-                                id="details-relationships" (click)="showTab('relationships','details')">
+                                id="details-relationships" (click)="showTab('relationships', 'details')">
                                 Relationships
                             </button>
                         </div>
@@ -732,10 +944,10 @@
                                     <div class="space-y-4">
                                         <div class="flex items-start">
                                             <div>
-                                                <label class="block text-xs text-gray-500 mb-1">Customer
-                                                    Code</label>
+                                                <label class="block text-xs text-gray-500 mb-1">Customer Code</label>
                                                 <div class="text-sm font-medium text-gray-800">
-                                                    {{selectedCustomer?.cusCode}}</div>
+                                                    {{ selectedCustomer?.cusCode }}
+                                                </div>
                                             </div>
                                         </div>
 
@@ -743,7 +955,8 @@
                                             <div>
                                                 <label class="block text-xs text-gray-500 mb-1">Identifier</label>
                                                 <div class="text-sm font-medium text-gray-800">
-                                                    {{selectedCustomer?.cusIden}}</div>
+                                                    {{ selectedCustomer?.cusIden }}
+                                                </div>
                                             </div>
                                         </div>
 
@@ -751,7 +964,8 @@
                                             <div>
                                                 <label class="block text-xs text-gray-500 mb-1">Full Name</label>
                                                 <div class="text-sm font-medium text-gray-800">
-                                                    {{selectedCustomer?.fullName}}</div>
+                                                    {{ selectedCustomer?.fullName }}
+                                                </div>
                                             </div>
                                         </div>
 
@@ -759,7 +973,8 @@
                                             <div>
                                                 <label class="block text-xs text-gray-500 mb-1">Username</label>
                                                 <div class="text-sm font-medium text-gray-800">
-                                                    {{selectedCustomer?.username}}</div>
+                                                    {{ selectedCustomer?.username }}
+                                                </div>
                                             </div>
                                         </div>
 
@@ -768,7 +983,8 @@
                                                 <label class="block text-xs text-gray-500 mb-1">Status</label>
                                                 <span
                                                     class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                                    {{selectedCustomer?.status?.ctsLabe}} </span>
+                                                    {{ selectedCustomer?.status?.ctsLabe }}
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
@@ -787,7 +1003,8 @@
                                             <div>
                                                 <label class="block text-xs text-gray-500 mb-1">Email</label>
                                                 <div class="text-sm font-medium text-gray-800">
-                                                    {{selectedCustomer?.cusMailAddress}}</div>
+                                                    {{ selectedCustomer?.cusMailAddress }}
+                                                </div>
                                             </div>
                                         </div>
 
@@ -796,7 +1013,8 @@
                                             <div>
                                                 <label class="block text-xs text-gray-500 mb-1">Phone</label>
                                                 <div class="text-sm font-medium text-gray-800">
-                                                    {{selectedCustomer?.cusPhoneNbr}}</div>
+                                                    {{ selectedCustomer?.cusPhoneNbr }}
+                                                </div>
                                             </div>
                                         </div>
 
@@ -806,12 +1024,14 @@
                                                 <label class="block text-xs text-gray-500 mb-1">Address</label>
                                                 <div class="space-y-1">
                                                     <div class="text-sm font-medium text-gray-800">
-                                                        {{selectedCustomer?.cusAddress}}
+                                                        {{ selectedCustomer?.cusAddress }}
                                                     </div>
                                                     <div class="text-sm font-medium text-gray-800">
-                                                        {{selectedCustomer?.city?.ctyLabe}}</div>
+                                                        {{ selectedCustomer?.city?.ctyLabe }}
+                                                    </div>
                                                     <div class="text-sm font-medium text-gray-800">
-                                                        {{selectedCustomer?.country?.ctrLabe}} </div>
+                                                        {{ selectedCustomer?.country?.ctrLabe }}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -823,11 +1043,16 @@
                         <!-- documents -->
                         <div id="details-tab-documents" class="details-tab-content hidden p-4">
                             <div>
-                                <h4>{{ selectedCustomer?.identity?.customerIdentityType?.citLabe }}:
-                                    {{selectedCustomer?.identity?.cidNum}}</h4>
+                                <h4>
+                                    {{
+                                    selectedCustomer?.identity?.customerIdentityType?.citLabe
+                                    }}: {{ selectedCustomer?.identity?.cidNum }}
+                                </h4>
                             </div>
                             <div class="flex justify-between items-center mb-4">
-                                <h3 class="text-lg font-semibold text-gray-800">Customer Documents</h3>
+                                <h3 class="text-lg font-semibold text-gray-800">
+                                    Customer Documents
+                                </h3>
                                 <div class="text-xs text-gray-500">
                                     <i class="ri-lock-line mr-1"></i> Confidential Access Only
                                 </div>
@@ -845,7 +1070,8 @@
                                         </div>
                                         <div>
                                             <div class="font-medium text-gray-800">doc1</div>
-                                            <div class="text-xs text-gray-500">PDF • 2.4 MB • Added 15 Jan 2023
+                                            <div class="text-xs text-gray-500">
+                                                PDF • 2.4 MB • Added 15 Jan 2023
                                             </div>
                                         </div>
                                     </div>
@@ -888,7 +1114,8 @@
                                         </div>
                                         <div>
                                             <div class="font-medium text-gray-800">doc2</div>
-                                            <div class="text-xs text-gray-500">PDF • 1.1 MB • Added 10 Jan 2023
+                                            <div class="text-xs text-gray-500">
+                                                PDF • 1.1 MB • Added 10 Jan 2023
                                             </div>
                                         </div>
                                     </div>
@@ -910,7 +1137,8 @@
                                         </div>
                                         <div>
                                             <div class="font-medium text-gray-800">doc3</div>
-                                            <div class="text-xs text-gray-500">PDF • 1.1 MB • Added 10 Jan 2023
+                                            <div class="text-xs text-gray-500">
+                                                PDF • 1.1 MB • Added 10 Jan 2023
                                             </div>
                                         </div>
                                     </div>
@@ -927,7 +1155,9 @@
                             <div id="document-preview"
                                 class="hidden mt-6 border border-gray-200 rounded-lg bg-white p-4">
                                 <div class="flex justify-between items-center mb-4">
-                                    <h4 id="preview-title" class="font-medium text-gray-800">Preview: File</h4>
+                                    <h4 id="preview-title" class="font-medium text-gray-800">
+                                        Preview: File
+                                    </h4>
                                     <button (click)="closePreview()" class="text-gray-500 hover:text-gray-700">
                                         <i class="ri-close-line"></i>
                                     </button>
@@ -936,17 +1166,17 @@
                                     <!-- PDF viewer or image preview would go here -->
                                     <div class="w-full h-full">
                                         <img id="image" class="hidden doc-frame top-0 left-0 w-full h-full"
-                                            src="../../../../../assets/PASSPORT.jpg">
+                                            src="../../../../../assets/PASSPORT.jpg" />
                                         <iframe id="pdf" class="hidden doc-frame top-0 left-0 w-full h-full"
-                                            style="min-height: 400px;"
+                                            style="min-height: 400px"
                                             src="../../../../../assets/Diagramme de classe G wallet.pdf"></iframe>
                                         <div id="error" class="hidden doc-frame text-center">
                                             <i class="ri-file-text-line text-4xl text-gray-300 mb-2"></i>
                                             <p class="text-gray-500">Document preview</p>
-                                            <p class="text-xs text-gray-400 mt-2">Actual content would be displayed
-                                                here
-                                                for
-                                                authorized users</p>
+                                            <p class="text-xs text-gray-400 mt-2">
+                                                Actual content would be displayed here for authorized
+                                                users
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
@@ -956,102 +1186,32 @@
                             </div>
                         </div>
 
-
                         <!-- relationships -->
                         <div id="details-tab-relationships" class="details-tab-content hidden">
-                            <!-- <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                    <h5 class="text-sm font-semibold text-gray-700 mb-3">Linked Cards</h5>
-                                    <div class="border border-gray-200 rounded-lg overflow-hidden">
-                                        <div class="p-4 bg-gray-50 border-b border-gray-200">
-                                            <div class="flex items-center">
-                                                <div
-                                                    class="w-10 h-10 flex items-center justify-center bg-blue-100 text-blue-500 rounded">
-                                                    <i class="ri-bank-card-line"></i>
-                                                </div>
-                                                <div class="ml-3">
-                                                    <div class="text-sm font-medium">Visa Platinum</div>
-                                                    <div class="text-xs text-gray-500">**** **** **** 4582</div>
-                                                </div>
-                                                <div class="ml-auto">
-                                                    <span
-                                                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                                        Active </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="p-4">
-                                            <div class="flex justify-between mb-2">
-                                                <span class="text-xs text-gray-500">Card Holder</span>
-                                                <span class="text-xs font-medium">Michael Johnson</span>
-                                            </div>
-                                            <div class="flex justify-between mb-2">
-                                                <span class="text-xs text-gray-500">Expiry Date</span>
-                                                <span class="text-xs font-medium">05/25</span>
-                                            </div>
-                                            <div class="flex justify-between">
-                                                <span class="text-xs text-gray-500">Linked Date</span>
-                                                <span class="text-xs font-medium">2023-01-15</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <h5 class="text-sm font-semibold text-gray-700 mb-3">Associated Accounts</h5>
-                                    <div class="border border-gray-200 rounded-lg overflow-hidden">
-                                        <div class="p-4 bg-gray-50 border-b border-gray-200">
-                                            <div class="flex items-center">
-                                                <div
-                                                    class="w-10 h-10 flex items-center justify-center bg-green-100 text-green-500 rounded">
-                                                    <i class="ri-bank-line"></i>
-                                                </div>
-                                                <div class="ml-3">
-                                                    <div class="text-sm font-medium">Checking Account</div>
-                                                    <div class="text-xs text-gray-500">AC-78542-001</div>
-                                                </div>
-                                                <div class="ml-auto">
-                                                    <span
-                                                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                                        Primary </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="p-4">
-                                            <div class="flex justify-between mb-2">
-                                                <span class="text-xs text-gray-500">Account Number</span>
-                                                <span class="text-xs font-medium">**** **** 4567</span>
-                                            </div>
-                                            <div class="flex justify-between mb-2">
-                                                <span class="text-xs text-gray-500">Bank</span>
-                                                <span class="text-xs font-medium">UIB Bank</span>
-                                            </div>
-                                            <div class="flex justify-between">
-                                                <span class="text-xs text-gray-500">Linked Date</span>
-                                                <span class="text-xs font-medium">2023-01-15</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> -->
                             <div>
-                                <h5 class="text-sm font-semibold text-gray-700 mb-3">Customer Relationships</h5>
+                                <h5 class="text-sm font-semibold text-gray-700 mb-3">
+                                    Customer Relationships
+                                </h5>
                                 <div class="border border-gray-200 rounded-lg overflow-hidden">
                                     <table class="min-w-full divide-y divide-gray-200">
                                         <thead class="bg-gray-50">
                                             <tr>
                                                 <th scope="col"
                                                     class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                    code </th>
+                                                    code
+                                                </th>
                                                 <th scope="col"
                                                     class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                    Full Name </th>
+                                                    Full Name
+                                                </th>
                                                 <th scope="col"
                                                     class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                                     email
                                                 </th>
                                                 <th scope="col"
                                                     class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                    Status </th>
+                                                    Status
+                                                </th>
                                             </tr>
                                         </thead>
                                         <tbody class="bg-white divide-y divide-gray-200">
@@ -1068,7 +1228,8 @@
                                                 <td class="px-4 py-3 whitespace-nowrap">
                                                     <span
                                                         class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                                        Active </span>
+                                                        Active
+                                                    </span>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -1084,7 +1245,8 @@
                                                 <td class="px-4 py-3 whitespace-nowrap">
                                                     <span
                                                         class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                                        Active </span>
+                                                        Active
+                                                    </span>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -1100,7 +1262,8 @@
                                                 <td class="px-4 py-3 whitespace-nowrap">
                                                     <span
                                                         class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                                        Active </span>
+                                                        Active
+                                                    </span>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -1116,7 +1279,8 @@
                                                 <td class="px-4 py-3 whitespace-nowrap">
                                                     <span
                                                         class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                                        Active </span>
+                                                        Active
+                                                    </span>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -1131,17 +1295,19 @@
         <div class="px-6 py-4 border-t border-gray-200 flex justify-end">
             <button (click)="closeForm('customer-details')" id="close-customer-detail-btn"
                 class="px-4 py-2 border border-gray-300 text-gray-700 rounded-button hover:bg-gray-50 transition text-sm whitespace-nowrap">
-                Close </button>
+                Close
+            </button>
         </div>
     </div>
 
     <!-- Add Status Modal -->
     <div *ngIf="isCustomerStatusVisible" id="add-status-modal"
         class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
+        <div class="bg-white rounded-lg shadow-lg w-full max-w-md">
             <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-                <h3 class="text-lg font-medium text-gray-900">{{ selectedStatus ? 'Edit Customer Status' : 'Add Customer
-                    Status' }}</h3>
+                <h3 class="text-lg font-medium text-gray-900">
+                    {{ selectedStatus ? "Edit Customer Status" : "Add Customer Status" }}
+                </h3>
                 <button id="close-status-modal" (click)="closeForm('customer-status')"
                     class="text-gray-400 hover:text-gray-500">
                     <div class="w-6 h-6 flex items-center justify-center">
@@ -1156,21 +1322,24 @@
                             <label class="block text-sm font-medium text-gray-700 mb-1">Status Identifier</label>
                             <input type="text" [(ngModel)]="statusForm.ctsIden" name="ctsIden"
                                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-                                placeholder="Identifier" required>
+                                placeholder="Identifier" required />
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Status Label</label>
                             <input type="text" [(ngModel)]="statusForm.ctsLabe" name="ctsLabe"
                                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-                                placeholder="Label" required>
+                                placeholder="Label" required />
                         </div>
                     </div>
                     <div class="mt-6 flex justify-end space-x-3">
                         <button type="button" (click)="closeForm('customer-status')" id="cancel-add-status"
-                            class="px-4 py-2 border border-gray-300 rounded-button text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+                            class="px-4 py-2 border border-gray-300 rounded-button text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">
+                            Cancel
+                        </button>
                         <button type="submit"
-                            class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 whitespace-nowrap">{{
-                            selectedStatus ? 'Update Customer Status' : 'Add Customer Status' }}</button>
+                            class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 whitespace-nowrap">
+                            {{ selectedStatus ? "Update Customer Status" : "Add Customer Status" }}
+                        </button>
                     </div>
                 </form>
             </div>
@@ -1180,10 +1349,15 @@
     <!-- Add Identity Type Modal -->
     <div *ngIf="isCustomerIdentityTypeVisible" id="add-identityType-modal"
         class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
+        <div class="bg-white rounded-lg shadow-lg w-full max-w-md">
             <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-                <h3 class="text-lg font-medium text-gray-900">{{ selectedIdentityType ? 'Edit Customer Identity Type' :
-                    'Add Customer Identity Type' }}</h3>
+                <h3 class="text-lg font-medium text-gray-900">
+                    {{
+                    selectedIdentityType
+                    ? "Edit Customer Identity Type"
+                    : "Add Customer Identity Type"
+                    }}
+                </h3>
                 <button id="close-status-modal" (click)="closeForm('customer-identityType')"
                     class="text-gray-400 hover:text-gray-500">
                     <div class="w-6 h-6 flex items-center justify-center">
@@ -1199,22 +1373,24 @@
                             <label class="block text-sm font-medium text-gray-700 mb-1">Identity Type Identifier</label>
                             <input type="text" [(ngModel)]="identityTypeForm.citIden" name="citIden"
                                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-                                placeholder="Identifier" required>
+                                placeholder="Identifier" required />
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Identity Type Label</label>
                             <input type="text" [(ngModel)]="identityTypeForm.citLabe" name="citLabe"
                                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-                                placeholder="Label" required>
+                                placeholder="Label" required />
                         </div>
                     </div>
                     <div class="mt-6 flex justify-end space-x-3">
                         <button type="button" (click)="closeForm('customer-identityType')" id="cancel-add-status"
-                            class="px-4 py-2 border border-gray-300 rounded-button text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+                            class="px-4 py-2 border border-gray-300 rounded-button text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">
+                            Cancel
+                        </button>
                         <button type="submit"
-                            class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 whitespace-nowrap">{{
-                            selectedIdentityType ? 'Edit Customer Identity Type' : 'Add Customer Identity Type'
-                            }}</button>
+                            class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 whitespace-nowrap">
+                            {{ selectedIdentityType ? "Edit Customer Identity Type" : "Add Customer Identity Type" }}
+                        </button>
                     </div>
                 </form>
             </div>
@@ -1224,10 +1400,11 @@
     <!-- Add Doc Type Modal -->
     <div *ngIf="isDocTypeVisible" id="add-documentType-modal"
         class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
+        <div class="bg-white rounded-lg shadow-lg w-full max-w-md">
             <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-                <h3 class="text-lg font-medium text-gray-900">{{ selectedDocType ? 'Edit Document Type' :
-                    'Add Document Type' }}</h3>
+                <h3 class="text-lg font-medium text-gray-900">
+                    {{ selectedDocType ? "Edit Document Type" : "Add Document Type" }}
+                </h3>
                 <button id="close-status-modal" (click)="closeForm('docType')"
                     class="text-gray-400 hover:text-gray-500">
                     <div class="w-6 h-6 flex items-center justify-center">
@@ -1244,7 +1421,8 @@
                             <select
                                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
                                 [(ngModel)]="docTypeForm" name="docType" required="">
-                                <option *ngFor="let docType of docTypeList" [ngValue]="docType">{{ docType.dtyIden }}
+                                <option *ngFor="let docType of docTypeList" [ngValue]="docType">
+                                    {{ docType.dtyIden }}
                                 </option>
                             </select>
                         </div>
@@ -1254,18 +1432,21 @@
                             <select
                                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
                                 [(ngModel)]="docTypeForm" name="dtyLabe" required="">
-                                <option *ngFor="let docType of docTypeList" [ngValue]="docType">{{ docType.dtyLabe }}
+                                <option *ngFor="let docType of docTypeList" [ngValue]="docType">
+                                    {{ docType.dtyLabe }}
                                 </option>
                             </select>
                         </div>
                     </div>
                     <div class="mt-6 flex justify-end space-x-3">
                         <button type="button" (click)="closeForm('docType')" id="cancel-add-status"
-                            class="px-4 py-2 border border-gray-300 rounded-button text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+                            class="px-4 py-2 border border-gray-300 rounded-button text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">
+                            Cancel
+                        </button>
                         <button type="submit"
-                            class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 whitespace-nowrap">{{
-                            selectedDocType ? 'Edit Document Type' : 'Add Document Type'
-                            }}</button>
+                            class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 whitespace-nowrap">
+                            {{ selectedDocType ? "Edit Document Type" : "Add Document Type" }}
+                        </button>
                     </div>
                 </form>
             </div>
@@ -1275,7 +1456,7 @@
     <!-- Add Country Modal -->
     <div *ngIf="isCountryVisible" id="add-country-modal"
         class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
+        <div class="bg-white rounded-lg shadow-lg w-full max-w-md">
             <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
                 <h3 class="text-lg font-medium text-gray-900">Add Country</h3>
                 <button id="close-status-modal" (click)="closeForm('country')"
@@ -1293,7 +1474,8 @@
                             <select
                                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
                                 [(ngModel)]="countryForm" name="country" required="">
-                                <option *ngFor="let country of countryList" [ngValue]="country">{{ country.ctrIden }}
+                                <option *ngFor="let country of countryList" [ngValue]="country">
+                                    {{ country.ctrIden }}
                                 </option>
                             </select>
                         </div>
@@ -1303,17 +1485,21 @@
                             <select
                                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
                                 [(ngModel)]="countryForm" name="ctrLabe" required="">
-                                <option *ngFor="let country of countryList" [ngValue]="country">{{ country.ctrLabe }}
+                                <option *ngFor="let country of countryList" [ngValue]="country">
+                                    {{ country.ctrLabe }}
                                 </option>
                             </select>
                         </div>
                     </div>
                     <div class="mt-6 flex justify-end space-x-3">
                         <button type="button" (click)="closeForm('country')" id="cancel-add-status"
-                            class="px-4 py-2 border border-gray-300 rounded-button text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+                            class="px-4 py-2 border border-gray-300 rounded-button text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">
+                            Cancel
+                        </button>
                         <button type="submit"
-                            class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 whitespace-nowrap">Add
-                            Country</button>
+                            class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 whitespace-nowrap">
+                            Add Country
+                        </button>
                     </div>
                 </form>
             </div>
@@ -1323,7 +1509,7 @@
     <!-- Add City Modal -->
     <div *ngIf="isCityVisible" id="add-city-modal"
         class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
+        <div class="bg-white rounded-lg shadow-lg w-full max-w-md">
             <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
                 <h3 class="text-lg font-medium text-gray-900">Add City</h3>
                 <button id="close-status-modal" (click)="closeForm('city')" class="text-gray-400 hover:text-gray-500">
@@ -1339,14 +1525,15 @@
                             <label class="block text-sm font-medium text-gray-700 mb-1">City Identifier</label>
                             <input type="text" [(ngModel)]="cityForm.ctyIden" name="ctrIden"
                                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-                                placeholder="Identifier" required>
+                                placeholder="Identifier" required />
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Country</label>
                             <select required (change)="onCountryChange()"
                                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
                                 [(ngModel)]="cityForm.country" name="country">
-                                <option *ngFor="let country of countries" [ngValue]="country">{{ country.ctrLabe }}
+                                <option *ngFor="let country of countries" [ngValue]="country">
+                                    {{ country.ctrLabe }}
                                 </option>
                             </select>
                         </div>
@@ -1355,16 +1542,21 @@
                             <select required
                                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
                                 [(ngModel)]="cityForm.ctyLabe" name="ctyLabe">
-                                <option *ngFor="let city of cityList" [ngValue]="city">{{ city }}</option>
+                                <option *ngFor="let city of cityList" [ngValue]="city">
+                                    {{ city }}
+                                </option>
                             </select>
                         </div>
                     </div>
                     <div class="mt-6 flex justify-end space-x-3">
                         <button type="button" (click)="closeForm('city')" id="cancel-add-status"
-                            class="px-4 py-2 border border-gray-300 rounded-button text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+                            class="px-4 py-2 border border-gray-300 rounded-button text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">
+                            Cancel
+                        </button>
                         <button type="submit"
-                            class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 whitespace-nowrap">Add
-                            City</button>
+                            class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 whitespace-nowrap">
+                            Add City
+                        </button>
                     </div>
                 </form>
             </div>

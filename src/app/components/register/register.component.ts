@@ -63,7 +63,7 @@ export class RegisterComponent {
   customer: Customer = new Customer();
   wallet: Wallet = new Wallet()
 
-  currentStep = 5;
+  currentStep = 1;
   isLoading: boolean = false;
   isOtpLoading: boolean = false;
 
@@ -164,10 +164,7 @@ export class RegisterComponent {
           cdoLabe: file.name,
           docType: matchedDocType,
         }))
-
         this.files.push(file)
-
-        //this.customer.identity!.customerDocListe!.customerDocs?.push(customerDoc) 
       }))
     }
   }
@@ -190,7 +187,7 @@ export class RegisterComponent {
       }
     }
 
-    // Step 2: Validate Full Name and Username
+    // Step 2: location and phone number validation
     if (this.currentStep === 2) {
       if (!this.customer.cusAddress?.trim() || !this.customer.country || !this.customer.city) {
         this.errorMessage = 'Please provide you address.';
@@ -213,13 +210,17 @@ export class RegisterComponent {
       this.customer.cusPhoneNbr = phoneValue.e164Number;
     }
 
-    // Step 3: In the goToNextStep method, update the phone validation part:
+    // Step 3: email validation
     if (this.currentStep === 3) {
 
       if (!this.customer.cusMailAddress?.trim() || !this.otpVerified) {
         this.errorMessage = 'Please enter and verify your email.';
         return;
       }
+
+      
+      this.successMessage = ""
+      this.errorMessage = ""
     }
 
     // Step 4: Validate Email and Password
@@ -323,6 +324,13 @@ export class RegisterComponent {
       next: (verif: boolean) => {
         this.otpVerified = verif; // Direct assignment (no .valueOf needed)
         console.log('OTP Verification Result:', verif);
+
+        if (!verif)
+          this.errorMessage = 'OTP verification failed. Please try again.';
+        else {
+          this.errorMessage = '';
+          this.successMessage = 'OTP verified successfully!';
+        }
       },
       error: (err) => {
         console.error('OTP Verification Failed:', err);

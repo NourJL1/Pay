@@ -473,7 +473,7 @@ export class CustomerMngComponent {
 
     // Reset all buttons and contents
     tabButtons.forEach(btn => {
-      btn.classList.remove('active', 'text-primary', 'font-medium');
+      btn.classList.remove('active', 'text-primary', 'font-medium', 'border-b-2', 'border-primary', 'transition-colors');
       btn.classList.add('text-gray-500');
     });
 
@@ -481,7 +481,7 @@ export class CustomerMngComponent {
 
     // Activate the clicked button and show its tab content
     const activeButton = tabType ? document.getElementById(tabType + '-' + tabId) : document.getElementById(tabId);
-    activeButton?.classList.add('active', 'text-primary', 'font-medium');
+    activeButton?.classList.add('active', 'text-primary', 'font-medium', 'border-b-2', 'border-primary', 'transition-colors');
     activeButton?.classList.remove('text-gray-500');
 
     const activeId = tabType ? `${tabType}-tab-${tabId}` : `tab-${tabId}`;

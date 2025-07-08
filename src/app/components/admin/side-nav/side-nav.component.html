@@ -3,7 +3,7 @@
     <aside id="sidebar"
         class="sidebar bg-secondary text-white flex flex-col h-screen fixed left-0 z-10 w-64 bg-white border-r border-gray-300">
         <!-- Logo -->
-        <div class="h-20 p-4 flex justify-center">
+        <div class="h-20 p-4 flex justify-center border-b">
             <div class="flex items-center nav-item">
                 <div class="w-8 h-8 bg-primary text-white mx-auto">
                     <img src="../../../../../assets/logo.png">
@@ -19,7 +19,7 @@
         <nav class="flex-1 px-4 py-6">
             <ul class="space-y-2">
                 <li>
-                    <a routerLink="/admin/dashboard" routerLinkActive="bg-primary bg-opacity-90 text-white"
+                    <a routerLink="/admin/dashboard" routerLinkActive="bg-primary bg-opacity-90 !text-white"
                         [routerLinkActiveOptions]="{ exact: true }"
                         class="nav-item flex items-center p-3 text-gray-600 rounded transition-all">
                         <div class="w-6 h-6 flex items-center justify-center">
@@ -29,7 +29,7 @@
                     </a>
                 </li>
                 <li>
-                    <a routerLink="/admin/wallets" routerLinkActive="bg-primary bg-opacity-90 text-white"
+                    <a routerLink="/admin/wallets" routerLinkActive="bg-primary bg-opacity-90 !text-white"
                         [routerLinkActiveOptions]="{ exact: true }"
                         class="nav-item flex items-center p-3 text-gray-600 rounded transition-all">
                         <div class="w-6 h-6 flex items-center justify-center">
@@ -39,7 +39,7 @@
                     </a>
                 </li>
                 <li>
-                    <a routerLink="/admin/accounting" routerLinkActive="bg-primary bg-opacity-90 text-white"
+                    <a routerLink="/admin/accounting" routerLinkActive="bg-primary bg-opacity-90 !text-white"
                         [routerLinkActiveOptions]="{ exact: true }"
                         class="nav-item flex items-center p-3 text-gray-600 rounded transition-all">
                         <div class="w-6 h-6 flex items-center justify-center">
@@ -49,8 +49,8 @@
                     </a>
                 </li>
 
-                 <li>
-                    <a routerLink="/admin/customers" routerLinkActive="bg-primary bg-opacity-90 text-white"
+                <li>
+                    <a routerLink="/admin/customers" routerLinkActive="bg-primary bg-opacity-90 !text-white"
                         [routerLinkActiveOptions]="{ exact: true }"
                         class="nav-item flex items-center p-3 text-gray-600 rounded transition-all">
                         <div class="w-6 h-6 flex items-center justify-center">
@@ -61,7 +61,7 @@
                 </li>
 
                 <li>
-                    <a routerLink="/admin/profiling" routerLinkActive="bg-primary bg-opacity-90 text-white"
+                    <a routerLink="/admin/profiling" routerLinkActive="bg-primary bg-opacity-90 !text-white"
                         [routerLinkActiveOptions]="{ exact: true }"
                         class="nav-item flex items-center p-3 text-gray-600 rounded transition-all">
                         <div class="w-6 h-6 flex items-center justify-center">
@@ -70,9 +70,9 @@
                         <span class="ml-3">Users Profiling</span>
                     </a>
                 </li>
-                
+
                 <li>
-                    <a routerLink="/admin/" routerLinkActive="bg-primary bg-opacity-90 text-white"
+                    <a routerLink="/admin/" routerLinkActive="bg-primary bg-opacity-90 !text-white"
                         [routerLinkActiveOptions]="{ exact: true }"
                         class="nav-item flex items-center p-3 text-gray-600 rounded transition-all">
                         <div class="w-6 h-6 flex items-center justify-center">
@@ -116,7 +116,7 @@
     <!-- Main Content -->
     <main id="mainContent" class="main-content ml-[260px] bg-gray-50 flex flex-col min-h-screen">
         <!-- Header -->
-        <header class="flex justify-between items-center border-b px-6 py-4 bg-white">
+        <header class="flex justify-between items-center border-b px-6 py-4 bg-white shadow-lg">
             <div>
                 <h1 class="text-2xl font-bold text-gray-900">Dashboard</h1>
                 <p class="text-gray-600">Welcome back, {{username}}</p>
@@ -126,19 +126,15 @@
 
                 <!-- Language -->
                 <div class="d-flex align-items-center">
-                <div class="lang-switch d-flex align-items-center me-3">
-                    <span class="ri-global-line fs-5 me-2"></span>
-                    <select>
-                        <option>EN</option>
-                        <option>FR</option>
-                        <option>ES</option>
-                    </select>
+                    <div class="lang-switch d-flex align-items-center me-3">
+                        <span class="ri-global-line fs-5 me-2"></span>
+                        <select>
+                            <option>EN</option>
+                            <option>FR</option>
+                            <option>ES</option>
+                        </select>
+                    </div>
                 </div>
-                <label class="d-flex align-items-center">
-                    <input type="checkbox" id="themeSwitch">
-                    <span class="custom-switch"></span>
-                </label>
-            </div>
 
                 <!-- Notifications -->
                 <div class="relative">
@@ -149,12 +145,12 @@
                         <span class="absolute top-0 right-0 w-2 h-2 bg-primary rounded-full"></span>
                     </button>
                 </div>
-
-
             </div>
         </header>
         <!-- main content -->
-        <router-outlet></router-outlet>
+        <div class="flex-1 overflow-y-auto p-6 custom-scrollbar">
+            <router-outlet></router-outlet>
+        </div>
         <!-- footer -->
         <footer class="mt-auto text-center text-sm text-gray-500 mx-4 py-4 border-t border-gray-200">
             &copy; {{ currentYear }} UIB. All rights reserved.
