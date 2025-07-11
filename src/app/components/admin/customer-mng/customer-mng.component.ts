@@ -22,6 +22,11 @@ import { DocTypeService } from '../../../services/doc-type.service';
   styleUrl: './customer-mng.component.css'
 })
 export class CustomerMngComponent {
+allowedDocTypes: any;
+onFileSelected($event: Event) {
+throw new Error('Method not implemented.');
+}
+confirm: any;
 
   constructor(
     private http: HttpClient,
@@ -360,6 +365,7 @@ export class CustomerMngComponent {
   //city methods
 
   addCity() {
+    this.cityForm.ctyIden = this.cityForm.country?.ctrIden + '-' + 
     console.log(this.cityForm)
 
     this.cityService.create(this.cityForm).subscribe({

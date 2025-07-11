@@ -27,6 +27,10 @@ import { AccountType } from '../../../entities/account-type';
   standalone: true
 })
 export class WalletMngComponent implements OnInit {
+
+  addCard: boolean = false;
+  addAccount: boolean = false;
+
   walletStatuses: WalletStatus[] = [];
   isWalletStatusVisible: boolean = false;
   selectedStatus: WalletStatus = new WalletStatus();

@@ -4,7 +4,7 @@ import { Country } from './country'; // Adjust the path as needed
 export class City {
 
     ctyCode?: number;
-  ctyIden?: number;
+  ctyIden?: string;
   ctyLabe?: string;
   country?: Country;
 

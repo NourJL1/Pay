@@ -6,7 +6,7 @@ import { Periodicity } from './periodicity';
 
 export class WalletCategoryOperationTypeMap {
 
-     id?: number;
+  id?: number;
 
   operationType?: OperationType;
 
@@ -17,20 +17,6 @@ export class WalletCategoryOperationTypeMap {
   fees?: Fees;
 
   periodicity?: Periodicity;
-
-  feeIden?: number;
-
-  feeLabel?: string;
-
-  feeMinLimit?: number;
-
-  feeAmount?: number;
-
-  feeMaxLimit?: number;
-
-  feePercentage?: string;
-
-  feeMaxAmount?: number;
 
   financialInstitutionId?: number;
 

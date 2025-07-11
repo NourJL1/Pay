@@ -741,7 +741,8 @@
 <!-- Modals -->
 <div *ngIf="isAnyModalVisible" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
     <!-- add customer -->
-    <div *ngIf="isAddCustomerVisible" id="create-customer-modal" class="bg-white rounded-lg shadow-lg w-full max-w-2xl">
+    <div *ngIf="isAddCustomerVisible" id="create-customer-modal"
+        class="bg-white rounded-lg shadow-lg w-full max-w-2xl h-[90vh] flex flex-col">
         <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
             <h3 class="text-lg font-semibold text-gray-800">Add New Customer</h3>
             <button (click)="closeForm('customer-add')" id="close-create-customer"
@@ -751,86 +752,253 @@
                 </div>
             </button>
         </div>
-        <form id="create-customer-form" class="p-6">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="form-field">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">First Name:</label>
-                    <input
-                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-                        [(ngModel)]="customerForm.cusFirstName" name="cusFirstName" type="text" required />
+        <form id="create-customer-form" class="p-6 space-y-8 overflow-y-auto">
+            <!-- Personal Information Section -->
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                <div class="flex items-center mb-5">
+                    <div class="w-1.5 h-6 bg-primary rounded-full mr-3"></div>
+                    <h4 class="text-lg font-semibold text-gray-900">Personal Information</h4>
                 </div>
 
-                <div class="form-field">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Middle Name (Optional):</label>
-                    <input
-                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-                        [(ngModel)]="customerForm.cusMidName" name="cusMidName" type="text" />
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div class="form-field">
+                        <label class="form-label flex items-center">
+                            First Name
+                            <span class="text-primary ml-1">*</span>
+                        </label>
+                        <div class="relative">
+                            <input class="form-input pl-10" [(ngModel)]="customerForm.cusFirstName" name="cusFirstName"
+                                type="text" required>
+                            <i
+                                class="ri-user-line absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        </div>
+                    </div>
+
+                    <div class="form-field">
+                        <label class="form-label">Middle Name (Optional)</label>
+                        <div class="relative">
+                            <input class="form-input pl-10" [(ngModel)]="customerForm.cusMidName" name="cusMidName"
+                                type="text">
+                            <i
+                                class="ri-user-2-line absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        </div>
+                    </div>
+
+                    <div class="form-field">
+                        <label class="form-label flex items-center">
+                            Last Name
+                            <span class="text-primary ml-1">*</span>
+                        </label>
+                        <div class="relative">
+                            <input class="form-input pl-10" [(ngModel)]="customerForm.cusLastName" name="cusLastName"
+                                type="text" required>
+                            <i
+                                class="ri-user-3-line absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        </div>
+                    </div>
+
+                    <div class="form-field">
+                        <label class="form-label flex items-center">
+                            Username
+                            <span class="text-primary ml-1">*</span>
+                        </label>
+                        <div class="relative">
+                            <input class="form-input pl-10" [(ngModel)]="customerForm.username" name="username"
+                                type="text" required>
+                            <i class="ri-at-line absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Information Section -->
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                <div class="flex items-center mb-5">
+                    <div class="w-1.5 h-6 bg-primary rounded-full mr-3"></div>
+                    <h4 class="text-lg font-semibold text-gray-900">Contact Information</h4>
                 </div>
 
-                <div class="form-field">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Last Name:</label>
-                    <input
-                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-                        [(ngModel)]="customerForm.cusLastName" name="cusLastName" type="text" required />
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div class="form-field">
+                        <label class="form-label flex items-center">
+                            Email
+                            <span class="text-primary ml-1">*</span>
+                        </label>
+                        <div class="relative">
+                            <input class="form-input pl-10" [(ngModel)]="customerForm.cusMailAddress"
+                                name="cusMailAddress" type="email" required>
+                            <i
+                                class="ri-mail-line absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        </div>
+                    </div>
+
+                    <div class="form-field">
+                        <label class="form-label flex items-center">
+                            Phone Number
+                            <span class="text-primary ml-1">*</span>
+                        </label>
+                        <!-- Phone input would go here -->
+                        <div class="relative">
+                            <input class="form-input pl-10" type="tel" [(ngModel)]="customerForm.cusPhoneNbr"
+                                name="cusPhoneNumber" required>
+                            <i
+                                class="ri-phone-line absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Location Information Section -->
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                <div class="flex items-center mb-5">
+                    <div class="w-1.5 h-6 bg-primary rounded-full mr-3"></div>
+                    <h4 class="text-lg font-semibold text-gray-900">Location Information</h4>
                 </div>
 
-                <div class="form-field">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Username:</label>
-                    <input
-                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-                        [(ngModel)]="customerForm.username" name="username" type="text" required />
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div class="form-field">
+                        <label class="form-label flex items-center">
+                            Country
+                            <span class="text-primary ml-1">*</span>
+                        </label>
+                        <div class="relative">
+                            <select class="form-input pl-10" [(ngModel)]="customerForm.country" name="country"
+                                (change)="onCountryChange()">
+                                <option value="" disabled selected>Select country</option>
+                                <option *ngFor="let country of countries" [ngValue]="country">{{ country.ctrLabe }}
+                                </option>
+                            </select>
+                            <i class="ri-earth-line absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        </div>
+                    </div>
+
+                    <div class="form-field">
+                        <label class="form-label flex items-center">
+                            City
+                            <span class="text-primary ml-1">*</span>
+                        </label>
+                        <div class="relative">
+                            <select class="form-input pl-10" [(ngModel)]="customerForm.city" name="city">
+                                <option value="" disabled selected>Select city</option>
+                                <option *ngFor="let city of cities" [ngValue]="city">{{ city.ctyLabe }}</option>
+                            </select>
+                            <i class="ri-map-pin-line absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        </div>
+                    </div>
+
+                    <div class="form-field md:col-span-2">
+                        <label class="form-label flex items-center">
+                            Address
+                            <span class="text-primary ml-1">*</span>
+                        </label>
+                        <div class="relative">
+                            <input class="form-input pl-10" [(ngModel)]="customerForm.cusAddress" name="cusAddress"
+                                type="text" required>
+                            <i
+                                class="ri-home-4-line absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Security Section -->
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                <div class="flex items-center mb-5">
+                    <div class="w-1.5 h-6 bg-primary rounded-full mr-3"></div>
+                    <h4 class="text-lg font-semibold text-gray-900">Security</h4>
                 </div>
 
-                <div class="form-field">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Email:</label>
-                    <input
-                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-                        [(ngModel)]="customerForm.cusMailAddress" name="cusMailAddress" type="email" required
-                        #email="ngModel" email />
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div class="form-field">
+                        <label class="form-label flex items-center">
+                            Password
+                            <span class="text-primary ml-1">*</span>
+                        </label>
+                        <div class="relative">
+                            <input class="form-input pl-10 pr-10" [(ngModel)]="customerForm.cusMotDePasse"
+                                name="cusMotDePasse" type="password" required minlength="6">
+                            <i class="ri-lock-line absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">Minimum 6 characters</p>
+                    </div>
+
+                    <div class="form-field">
+                        <label class="form-label flex items-center">
+                            Confirm Password
+                            <span class="text-primary ml-1">*</span>
+                        </label>
+                        <div class="relative">
+                            <input class="form-input pl-10 pr-10" [(ngModel)]="confirm" name="confirm" type="password"
+                                required minlength="6">
+                            <i class="ri-lock-line absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KYC Verification Section -->
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                <div class="flex items-center mb-5">
+                    <div class="w-1.5 h-6 bg-primary rounded-full mr-3"></div>
+                    <h4 class="text-lg font-semibold text-gray-900">KYC Verification</h4>
                 </div>
 
-                <div class="form-field">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Password:</label>
-                    <input
-                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-                        [(ngModel)]="customerForm.cusMotDePasse" name="cusMotDePasse" type="password" required />
-                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div class="form-field">
+                        <label class="form-label flex items-center">
+                            Identification Type
+                            <span class="text-primary ml-1">*</span>
+                        </label>
+                        <div class="relative">
+                            <select class="form-input pl-10" [(ngModel)]="customerForm.identity!.customerIdentityType"
+                                name="customerIdentityType">
+                                <option value="" disabled selected>Select ID type</option>
+                                <option *ngFor="let cit of identityTypes" [ngValue]="cit">{{cit.citLabe}}</option>
+                            </select>
+                            <i class="ri-id-card-line absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        </div>
+                    </div>
 
-                <div class="form-field">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Address:</label>
-                    <input
-                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-                        [(ngModel)]="customerForm.cusAddress" name="cusAddress" type="text" required />
-                </div>
+                    <div class="form-field">
+                        <label class="form-label flex items-center">
+                            Identity Number
+                            <span class="text-primary ml-1">*</span>
+                        </label>
+                        <div class="relative">
+                            <input class="form-input pl-10" [(ngModel)]="customerForm.identity!.cidNum" name="cidNum"
+                                type="text">
+                            <i class="ri-fingerprint-line absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        </div>
+                    </div>
 
-                <div class="form-field">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Country:</label>
-                    <select
-                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-                        [(ngModel)]="customerForm.country" name="country" (change)="onCountryChange()">
-                        <option *ngFor="let country of countries" [ngValue]="country">
-                            {{ country.ctrLabe }}
-                        </option>
-                    </select>
-                </div>
-
-                <div class="form-field">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">City:</label>
-                    <select
-                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-                        [(ngModel)]="customerForm.city" name="city">
-                        <option *ngFor="let city of cities" [ngValue]="city">
-                            {{ city.ctyLabe }}
-                        </option>
-                    </select>
-                </div>
-
-                <div class="form-field">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Phone Number:</label>
-                    <!-- <ngx-intl-tel-input [formControl]=" phoneForm.controls.phone" name="cusPhoneNbr"
-                        [preferredCountries]="['tn', 'us', 'gb']" [enablePlaceholder]="true" [separateDialCode]="true"
-                        required>
-                    </ngx-intl-tel-input> -->
+                    <div class="form-field md:col-span-2">
+                        <label class="form-label flex items-center">
+                            ID Documents
+                            <span class="text-primary ml-1">*</span>
+                        </label>
+                        <div class="border-2 border-dashed border-gray-200 rounded-xl p-6 text-center bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer"
+                            (click)="documentInput.click()">
+                            <div
+                                class="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                                <i class="ri-upload-cloud-2-line text-primary text-2xl"></i>
+                            </div>
+                            <h4 class="text-sm font-medium text-gray-900 mb-1">Click to upload documents</h4>
+                            <p class="text-xs text-gray-500">PNG, JPG, PDF (Max 10MB each)</p>
+                            <input #documentInput type="file" class="hidden" multiple (change)="onFileSelected($event)"
+                                [accept]="allowedDocTypes">
+                        </div>
+                        <!-- <div *ngIf="uploadedFiles.length > 0" class="mt-3 space-y-2">
+          <div *ngFor="let file of uploadedFiles" class="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
+            <div class="flex items-center">
+              <i class="ri-file-text-line text-gray-500 mr-2"></i>
+              <span class="text-sm text-gray-700 truncate max-w-xs">{{ file.name }}</span>
+            </div>
+            <button class="text-gray-400 hover:text-red-500" (click)="removeFile(file)">
+              <i class="ri-close-line"></i>
+            </button>
+          </div>
+        </div> -->
+                    </div>
                 </div>
             </div>
         </form>
@@ -912,7 +1080,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="md:w-2/3">
+                <div class="md:w-2/3 h-[90vh] flex flex-col">
                     <div class="mb-6">
                         <div class="flex border-b border-gray-200">
                             <button class="details-tab-button px-4 py-3 text-sm active font-medium text-primary"
@@ -930,7 +1098,7 @@
                         </div>
                     </div>
 
-                    <div class="overflow-y-auto h-[400px]">
+                    <div class="overflow-y-auto">
                         <!-- basic info -->
                         <div id="details-tab-basic-info" class="details-tab-content">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
