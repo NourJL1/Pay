@@ -137,6 +137,11 @@ export class CustomerService {
       "code": code
     })
   }
+
+  search(criteria: any)
+  {
+    return this.http.get<Customer[]>(`${this.apiUrl}/search`)
+  }
 }
 
 export { Customer };

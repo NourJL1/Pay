@@ -1,1151 +1,1295 @@
-<div class="flex items-center justify-between px-6 py-3 bg-white border-b">
-  <div class="flex items-center">
+<div class="flex flex-col bg-white rounded-xl shadow-lg mb-6 overflow-hidden">
+  <!-- Header Section -->
+  <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
     <h1 class="text-xl font-semibold text-gray-800">Wallet Management</h1>
   </div>
-</div>
-<!-- Success/Error Messages -->
-  <div *ngIf="successMessage" class="fixed top-4 right-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded shadow-lg" role="alert">
-    <span class="block sm:inline">{{ successMessage }}</span>
-  </div>
-  <div *ngIf="errorMessage" class="fixed top-4 right-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded shadow-lg" role="alert">
-    <span class="block sm:inline">{{ errorMessage }}</span>
-  </div>
-<!-- Tabs -->
-<div class="bg-white border-b">
-  <div class="px-6 flex">
-    <button class="tab-button px-4 py-3 text-sm active font-medium text-primary" (click)="showTab('overview')"
-      id="overview">Overview</button>
-    <button class="tab-button px-4 py-3 text-sm text-gray-500" (click)="showTab('wallets')"
+
+  <!-- Tabs Section -->
+  <div class="flex border-b border-gray-200">
+    <button class="tab-button px-6 py-3 text-sm font-medium text-primary border-b-2 border-primary transition-colors"
+      (click)="showTab('overview')" id="overview">Overview</button>
+    <button class="tab-button px-6 py-3 text-sm text-gray-500 transition-colors" (click)="showTab('wallets')"
       id="wallets">Wallets</button>
-    <button class="tab-button px-4 py-3 text-sm text-gray-500" (click)="showTab('settings')"
+    <button class="tab-button px-6 py-3 text-sm text-gray-500 transition-colors" (click)="showTab('settings')"
       id="settings">Settings</button>
-    <button class="tab-button px-4 py-3 text-sm text-gray-500" (click)="showTab('cards')" id="cards">Cards</button>
-    <button class="tab-button px-4 py-3 text-sm text-gray-500" (click)="showTab('accounts')"
+    <button class="tab-button px-6 py-3 text-sm text-gray-500 transition-colors" (click)="showTab('cards')"
+      id="cards">Cards</button>
+    <button class="tab-button px-6 py-3 text-sm text-gray-500 transition-colors" (click)="showTab('accounts')"
       id="cards">Accounts</button>
   </div>
 </div>
-<main class="flex-1 overflow-y-auto p-6 custom-scrollbar">
-  <!-- Dashboard Content -->
-  <div id="tab-overview" class="tab-content">
-    <!-- Stats Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-      <div
-        class="bg-gradient-to-br from-primary to-accent-primary rounded-lg shadow-lg p-5 text-white gradient-card transform hover:scale-105 transition-all duration-300">
-        <div class="flex items-center justify-between">
+
+<!-- Success/Error Messages -->
+<div *ngIf="successMessage"
+  class="fixed top-4 right-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded shadow-lg"
+  role="alert">
+  <span class="block sm:inline">{{ successMessage }}</span>
+</div>
+<div *ngIf="errorMessage"
+  class="fixed top-4 right-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded shadow-lg" role="alert">
+  <span class="block sm:inline">{{ errorMessage }}</span>
+</div>
+
+<!-- Dashboard Content -->
+<div id="tab-overview" class="tab-content">
+  <!-- Stats Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+    <div
+      class="bg-gradient-to-br from-primary to-accent-primary rounded-lg shadow-lg p-5 text-white gradient-card transform hover:scale-105 transition-all duration-300">
+      <div class="flex items-center justify-between">
         <div class="">
-    <div class="text-sm font-medium opacity-90">Total Wallets</div>
-    <div class="text-2xl font-bold mt-1">{{ walletCount }}</div>
-    <div class="text-xs opacity-75 mt-1">Updated {{ lastUpdated | date:'short' }}</div>
-  </div>
-          <div class="w-12 h-12 flex items-center justify-center bg-white bg-opacity-20 rounded-full backdrop-blur-sm">
-            <i class="ri-wallet-3-line ri-lg"></i>
-          </div>
+          <div class="text-sm font-medium opacity-90">Total Wallets</div>
+          <div class="text-2xl font-bold mt-1">{{ walletCount }}</div>
+          <div class="text-xs opacity-75 mt-1">Updated {{ lastUpdated | date:'short' }}</div>
         </div>
-        <div class="mt-4 flex items-center text-xs">
-          <span class="flex items-center bg-white bg-opacity-20 px-2 py-1 rounded-full backdrop-blur-sm">
-            <i class="ri-arrow-up-s-line"></i>
-            <span class="ml-1">12.5%</span>
-          </span>
-          <span class="ml-2 opacity-80">Since last month</span>
-        </div>
-        <div class="mt-3 h-1 bg-white bg-opacity-20 rounded-full">
-          <div class="h-1 bg-white rounded-full" style="width: 75%"></div>
+        <div class="w-12 h-12 flex items-center justify-center bg-white bg-opacity-20 rounded-full backdrop-blur-sm">
+          <i class="ri-wallet-3-line ri-lg"></i>
         </div>
       </div>
-      <div
-        class="bg-gradient-to-br from-secondary from-accent-secondary to-accent-tertiary rounded-lg shadow-lg p-5 text-white gradient-card transform hover:scale-105 transition-all duration-300">
-        <div class="flex items-center justify-between">
-          <div>
-            <div class="text-sm font-medium opacity-90">Total Balance</div>
-            <div class="text-2xl font-bold mt-1">$7,842,391</div>
-            <div class="text-xs opacity-75 mt-1">Last updated: 5 mins ago</div>
-          </div>
-          <div class="w-12 h-12 flex items-center justify-center bg-white bg-opacity-20 rounded-full backdrop-blur-sm">
-            <i class="ri-money-dollar-circle-line ri-lg"></i>
-          </div>
-        </div>
-        <div class="mt-4 flex items-center text-xs">
-          <span class="flex items-center bg-white bg-opacity-20 px-2 py-1 rounded-full backdrop-blur-sm">
-            <i class="ri-arrow-up-s-line"></i>
-            <span class="ml-1">8.3%</span>
-          </span>
-          <span class="ml-2 opacity-80">Since last month</span>
-        </div>
-        <div class="mt-3 h-1 bg-white bg-opacity-20 rounded-full">
-          <div class="h-1 bg-white rounded-full" style="width: 83%"></div>
-        </div>
+      <div class="mt-4 flex items-center text-xs">
+        <span class="flex items-center bg-white bg-opacity-20 px-2 py-1 rounded-full backdrop-blur-sm">
+          <i class="ri-arrow-up-s-line"></i>
+          <span class="ml-1">12.5%</span>
+        </span>
+        <span class="ml-2 opacity-80">Since last month</span>
       </div>
-      <div
-        class="bg-gradient-to-br from-green-400 to-emerald-600 rounded-lg shadow-lg p-5 text-white gradient-card transform hover:scale-105 transition-all duration-300">
-        <div class="flex items-center justify-between">
-          <div>
-            <div class="text-sm font-medium opacity-90">Active Wallets</div>
-    <div class="text-2xl font-bold mt-1">{{ activeWalletCount }}</div>
-    <div class="text-xs opacity-75 mt-1">Real-time data</div>
-          </div>
-          <div class="w-12 h-12 flex items-center justify-center bg-white bg-opacity-20 rounded-full backdrop-blur-sm">
-            <i class="ri-check-line ri-lg"></i>
-          </div>
-        </div>
-        <div class="mt-4 flex items-center text-xs">
-          <span class="flex items-center bg-white bg-opacity-20 px-2 py-1 rounded-full backdrop-blur-sm">
-            <i class="ri-arrow-up-s-line"></i>
-            <span class="ml-1">5.2%</span>
-          </span>
-          <span class="ml-2 opacity-80">Since last month</span>
-        </div>
-        <div class="mt-3 h-1 bg-white bg-opacity-20 rounded-full">
-          <div class="h-1 bg-white rounded-full" style="width: 92%"></div>
-        </div>
-      </div>
-      <div
-        class="bg-gradient-to-br from-blue-400 to-indigo-600 rounded-lg shadow-lg p-5 text-white gradient-card transform hover:scale-105 transition-all duration-300">
-        <div class="flex items-center justify-between">
-          <div>
-            <div class="text-sm font-medium opacity-90">Recent Operations</div>
-            <div class="text-2xl font-bold mt-1">1,287</div>
-            <div class="text-xs opacity-75 mt-1">Last 24 hours</div>
-          </div>
-          <div class="w-12 h-12 flex items-center justify-center bg-white bg-opacity-20 rounded-full backdrop-blur-sm">
-            <i class="ri-history-line ri-lg"></i>
-          </div>
-        </div>
-        <div class="mt-4 flex items-center text-xs">
-          <span class="flex items-center bg-white bg-opacity-20 px-2 py-1 rounded-full backdrop-blur-sm">
-            <i class="ri-arrow-down-s-line"></i>
-            <span class="ml-1">3.1%</span>
-          </span>
-          <span class="ml-2 opacity-80">Since yesterday</span>
-        </div>
-        <div class="mt-3 h-1 bg-white bg-opacity-20 rounded-full">
-          <div class="h-1 bg-white rounded-full" style="width: 65%"></div>
-        </div>
+      <div class="mt-3 h-1 bg-white bg-opacity-20 rounded-full">
+        <div class="h-1 bg-white rounded-full" style="width: 75%"></div>
       </div>
     </div>
-    <!-- Charts Section -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-      <div class="bg-white rounded shadow p-5">
-        <div class="flex items-center justify-between mb-4">
-          <h3 class="text-lg font-semibold text-gray-800">Wallet Distribution</h3>
-          <div class="dropdown">
-            <button class="flex items-center text-sm text-gray-500 hover:text-gray-700">
-              <span>This Month</span>
-              <div class="w-5 h-5 flex items-center justify-center ml-1">
-                <i class="ri-arrow-down-s-line"></i>
-              </div>
-            </button>
-            <div class="dropdown-content">
-              <a href="#" class="text-sm">This Week</a>
-              <a href="#" class="text-sm">This Month</a>
-              <a href="#" class="text-sm">This Year</a>
-              <a href="#" class="text-sm">Custom Range</a>
-            </div>
-          </div>
+    <div
+      class="bg-gradient-to-br from-secondary from-accent-secondary to-accent-tertiary rounded-lg shadow-lg p-5 text-white gradient-card transform hover:scale-105 transition-all duration-300">
+      <div class="flex items-center justify-between">
+        <div>
+          <div class="text-sm font-medium opacity-90">Total Balance</div>
+          <div class="text-2xl font-bold mt-1">$7,842,391</div>
+          <div class="text-xs opacity-75 mt-1">Last updated: 5 mins ago</div>
         </div>
-        <div id="wallet-distribution-chart" class="h-64"></div>
+        <div class="w-12 h-12 flex items-center justify-center bg-white bg-opacity-20 rounded-full backdrop-blur-sm">
+          <i class="ri-money-dollar-circle-line ri-lg"></i>
+        </div>
       </div>
-      <div class="bg-white rounded shadow p-5">
-        <div class="flex items-center justify-between mb-4">
-          <h3 class="text-lg font-semibold text-gray-800">Balance Trends</h3>
-          <div class="dropdown">
-            <button class="flex items-center text-sm text-gray-500 hover:text-gray-700">
-              <span>Last 30 Days</span>
-              <div class="w-5 h-5 flex items-center justify-center ml-1">
-                <i class="ri-arrow-down-s-line"></i>
-              </div>
-            </button>
-            <div class="dropdown-content">
-              <a href="#" class="text-sm">Last 7 Days</a>
-              <a href="#" class="text-sm">Last 30 Days</a>
-              <a href="#" class="text-sm">Last 90 Days</a>
-              <a href="#" class="text-sm">Custom Range</a>
-            </div>
-          </div>
+      <div class="mt-4 flex items-center text-xs">
+        <span class="flex items-center bg-white bg-opacity-20 px-2 py-1 rounded-full backdrop-blur-sm">
+          <i class="ri-arrow-up-s-line"></i>
+          <span class="ml-1">8.3%</span>
+        </span>
+        <span class="ml-2 opacity-80">Since last month</span>
+      </div>
+      <div class="mt-3 h-1 bg-white bg-opacity-20 rounded-full">
+        <div class="h-1 bg-white rounded-full" style="width: 83%"></div>
+      </div>
+    </div>
+    <div
+      class="bg-gradient-to-br from-green-400 to-emerald-600 rounded-lg shadow-lg p-5 text-white gradient-card transform hover:scale-105 transition-all duration-300">
+      <div class="flex items-center justify-between">
+        <div>
+          <div class="text-sm font-medium opacity-90">Active Wallets</div>
+          <div class="text-2xl font-bold mt-1">{{ activeWalletCount }}</div>
+          <div class="text-xs opacity-75 mt-1">Real-time data</div>
         </div>
-        <div id="balance-trends-chart" class="h-64"></div>
+        <div class="w-12 h-12 flex items-center justify-center bg-white bg-opacity-20 rounded-full backdrop-blur-sm">
+          <i class="ri-check-line ri-lg"></i>
+        </div>
+      </div>
+      <div class="mt-4 flex items-center text-xs">
+        <span class="flex items-center bg-white bg-opacity-20 px-2 py-1 rounded-full backdrop-blur-sm">
+          <i class="ri-arrow-up-s-line"></i>
+          <span class="ml-1">5.2%</span>
+        </span>
+        <span class="ml-2 opacity-80">Since last month</span>
+      </div>
+      <div class="mt-3 h-1 bg-white bg-opacity-20 rounded-full">
+        <div class="h-1 bg-white rounded-full" style="width: 92%"></div>
+      </div>
+    </div>
+    <div
+      class="bg-gradient-to-br from-blue-400 to-indigo-600 rounded-lg shadow-lg p-5 text-white gradient-card transform hover:scale-105 transition-all duration-300">
+      <div class="flex items-center justify-between">
+        <div>
+          <div class="text-sm font-medium opacity-90">Recent Operations</div>
+          <div class="text-2xl font-bold mt-1">1,287</div>
+          <div class="text-xs opacity-75 mt-1">Last 24 hours</div>
+        </div>
+        <div class="w-12 h-12 flex items-center justify-center bg-white bg-opacity-20 rounded-full backdrop-blur-sm">
+          <i class="ri-history-line ri-lg"></i>
+        </div>
+      </div>
+      <div class="mt-4 flex items-center text-xs">
+        <span class="flex items-center bg-white bg-opacity-20 px-2 py-1 rounded-full backdrop-blur-sm">
+          <i class="ri-arrow-down-s-line"></i>
+          <span class="ml-1">3.1%</span>
+        </span>
+        <span class="ml-2 opacity-80">Since yesterday</span>
+      </div>
+      <div class="mt-3 h-1 bg-white bg-opacity-20 rounded-full">
+        <div class="h-1 bg-white rounded-full" style="width: 65%"></div>
       </div>
     </div>
   </div>
-  <!-- Wallet Management Section -->
-  <div id="tab-wallets" class="tab-content hidden bg-white rounded shadow mb-6  rounded-lg">
-    <div class="p-4 flex justify-between items-center">
-      <h2 class="text-lg font-medium">Wallet Management</h2>
-      <div class="flex items-center space-x-3">
-        <button
-          class="flex items-center px-3 py-2 border border-gray-300 rounded-button text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">
-          <div class="w-4 h-4 mr-2 flex items-center justify-center">
-            <i class="ri-download-2-line"></i>
-          </div> Export Data
-        </button>
-        <button (click)="toggleForm('create-wallet')" id="newSchemaBtn"
-          class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
-          <div class="w-4 h-4 mr-2 flex items-center justify-center">
-            <i class="ri-add-line"></i>
-          </div> New Wallet
-        </button>
-      </div>
-    </div>
-
-    <!-- Filters -->
-    <header class="bg-white shadow-sm z-10">
-      <div class="px-6 py-3 bg-white border-t border-b flex flex-wrap items-center gap-3">
-        <div class="flex flex-wrap gap-4">
-          <div class="w-full sm:w-auto">
-            <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
-            <div class="relative">
-              <select
-                class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary rounded-lg sm:text-sm">
-                <option value="">All Statuses</option>
-                <option value="active">Active</option>
-                <option value="inactive">Inactive</option>
-                <option value="suspended">Suspended</option>
-                <option value="closed">Closed</option>
-              </select>
+  <!-- Charts Section -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+    <div class="bg-white rounded shadow p-5">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-semibold text-gray-800">Wallet Distribution</h3>
+        <div class="dropdown">
+          <button class="flex items-center text-sm text-gray-500 hover:text-gray-700">
+            <span>This Month</span>
+            <div class="w-5 h-5 flex items-center justify-center ml-1">
+              <i class="ri-arrow-down-s-line"></i>
             </div>
-          </div>
-          <div class="w-full sm:w-auto">
-            <label class="block text-sm font-medium text-gray-700 mb-1">Type</label>
-            <div class="relative">
-              <select
-                class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary rounded-lg sm:text-sm">
-                <option value="">All Types</option>
-                <option value="personal">Personal</option>
-                <option value="business">Business</option>
-                <option value="premium">Premium</option>
-              </select>
-            </div>
-          </div>
-          <div class="w-full sm:w-auto">
-            <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
-            <div class="relative">
-              <select
-                class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary rounded-lg sm:text-sm">
-                <option value="">All Categories</option>
-                <option value="standard">Standard</option>
-                <option value="savings">Savings</option>
-                <option value="investment">Investment</option>
-              </select>
-            </div>
-          </div>
-          <div class="w-full sm:w-auto">
-            <label class="block text-sm font-medium text-gray-700 mb-1">Balance Range</label>
-            <div class="flex items-center space-x-2">
-              <input type="number" placeholder="Min"
-                class="w-24 pl-3 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary text-sm">
-              <span class="text-gray-500">-</span>
-              <input type="number" placeholder="Max"
-                class="w-24 pl-3 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary text-sm">
-            </div>
-          </div>
-          <div class="w-full sm:w-auto">
-            <label class="block text-sm font-medium text-gray-700 mb-1">Date Range</label>
-            <div class="flex items-center space-x-2">
-              <input type="date" placeholder="Min"
-                class="w-24 pl-3 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary text-sm">
-              <span class="text-gray-500">-</span>
-              <input type="date" placeholder="Max"
-                class="w-24 pl-3 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary text-sm">
-            </div>
-          </div>
-          <div class="relative flex-grow max-w-md">
-            <input type="text" placeholder="Search schemas, operations, or codes..."
-              class="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-button text-sm">
-            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-              <i class="ri-search-line text-gray-400"></i>
-            </div>
+          </button>
+          <div class="dropdown-content">
+            <a href="#" class="text-sm">This Week</a>
+            <a href="#" class="text-sm">This Month</a>
+            <a href="#" class="text-sm">This Year</a>
+            <a href="#" class="text-sm">Custom Range</a>
           </div>
         </div>
       </div>
-    </header>
+      <div id="wallet-distribution-chart" class="h-64"></div>
+    </div>
+    <div class="bg-white rounded shadow p-5">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-semibold text-gray-800">Balance Trends</h3>
+        <div class="dropdown">
+          <button class="flex items-center text-sm text-gray-500 hover:text-gray-700">
+            <span>Last 30 Days</span>
+            <div class="w-5 h-5 flex items-center justify-center ml-1">
+              <i class="ri-arrow-down-s-line"></i>
+            </div>
+          </button>
+          <div class="dropdown-content">
+            <a href="#" class="text-sm">Last 7 Days</a>
+            <a href="#" class="text-sm">Last 30 Days</a>
+            <a href="#" class="text-sm">Last 90 Days</a>
+            <a href="#" class="text-sm">Custom Range</a>
+          </div>
+        </div>
+      </div>
+      <div id="balance-trends-chart" class="h-64"></div>
+    </div>
+  </div>
+</div>
 
+<!-- Wallet Management Section -->
+<div id="tab-wallets" class="tab-content hidden">
+  <!-- Header Section -->
+  <div
+    class="p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white rounded-xl shadow mb-6">
+    <div class="mb-4 sm:mb-0">
+      <h2 class="text-2xl font-semibold text-gray-800">
+        Wallet Management
+      </h2>
+    </div>
+    <div class="flex items-center space-x-3 w-full sm:w-auto">
+      <button
+        class="flex items-center px-4 py-2.5 border border-gray-200 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap transition duration-200 hover:shadow-sm">
+        <i class="ri-download-2-line mr-2"></i> Export Data
+      </button>
+      <button (click)="toggleForm('create-wallet')"
+        class="flex items-center px-4 py-2.5 bg-primary text-white rounded-lg text-sm font-medium hover:bg-opacity-90 whitespace-nowrap transition duration-200 hover:shadow-sm">
+        <i class="ri-add-line mr-2"></i> New Wallet
+      </button>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="bg-white rounded-lg shadow p-4 mb-6">
+    <div class="flex flex-col md:flex-row gap-4">
+      <!-- Search -->
+      <div class="relative flex-grow">
+        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <i class="ri-search-line text-gray-400"></i>
+        </div>
+        <input type="text" placeholder="Search..."
+          class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm" />
+      </div>
+      <div class="w-full sm:w-auto">
+        <div class="relative">
+          <select
+            class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary rounded-lg sm:text-sm">
+            <option value="">All Statuses</option>
+            <option *ngFor="let status of walletStatuses" [value]="status">
+              {{ status.wstLabe }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="w-full sm:w-auto">
+        <div class="relative">
+          <select
+            class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary rounded-lg sm:text-sm">
+            <option value="">All Types</option>
+            <option *ngFor="let type of walletTypesList" [value]="type">
+              {{ type.wtyLabe }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="w-full sm:w-auto">
+        <div class="relative">
+          <select
+            class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary rounded-lg sm:text-sm">
+            <option value="">All Categories</option>
+            <option *ngFor="let category of walletCategories" [value]="category">
+              {{ category.wcaLabe }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Table Section -->
+  <div class="bg-white rounded-xl shadow overflow-hidden">
     <!-- Table -->
     <div class="overflow-x-auto">
       <table class="min-w-full divide-y divide-gray-200">
-        <thead class="bg-gray-50">
-          <tr>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              <input type="checkbox">
+        <thead>
+          <tr class="border-b border-gray-200">
+            <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+              Wallet Code
             </th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              <div class="flex items-center">
-                <span>Wallet Code</span>
-              </div>
+            <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+              Identifier
             </th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              <div class="flex items-center">
-                <span>Identifier</span>
-              </div>
+            <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+              Name
             </th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              <div class="flex items-center">
-                <span>Name</span>
-              </div>
+            <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+              Effective Balance
             </th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              <div class="flex items-center">
-                <span>Effective Balance</span>
-              </div>
+            <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+              Status
             </th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              <div class="flex items-center">
-                <span>Status</span>
-              </div>
+            <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+              Type
             </th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              <div class="flex items-center">
-                <span>Type</span>
-              </div>
+            <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+              Last Updated
             </th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              <div class="flex items-center">
-                <span>Last Updated</span>
-              </div>
+            <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+              Actions
             </th>
-            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Actions </th>
           </tr>
         </thead>
         <tbody class="bg-white divide-y divide-gray-200">
-          <tr (click)="toggleForm('wallet-details')" class="hover:bg-gray-50 cursor-pointer" data-wallet-id="1">
+          <tr *ngFor="let wallet of walletsList" class="hover:bg-gray-50 transition duration-150 cursor-pointer"
+            (click)="toggleForm('wallet-details')">
             <td class="px-6 py-4 whitespace-nowrap">
-              <input type="checkbox">
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm font-medium text-gray-900">W-10045</div>
+              <div class="text-sm font-medium text-gray-900">{{ wallet.walCode }}</div>
             </td>
             <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm text-gray-900">PERS-WALLET-2845</div>
+              <div class="text-sm text-gray-900">{{ wallet.walIden }}</div>
             </td>
             <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm text-gray-900">Michael Johnson's Personal</div>
+              <div class="text-sm text-gray-900">{{ wallet.walLabe }}</div>
             </td>
             <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm text-gray-900">$12,458.32</div>
+              <div class="text-sm text-gray-900">{{ wallet.walEffBal| currency }}</div>
             </td>
             <td class="px-6 py-4 whitespace-nowrap">
-              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full status-active"> Active </span>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm text-gray-900">Personal</div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm text-gray-500">2023-05-21 14:32</div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-              <div class="flex items-center justify-end space-x-2">
-                <button (click)="toggleForm('wallet-details')" class="text-blue-600 hover:text-gray-500">
-                  <i class="ri-eye-line"></i>
-                </button>
-                <button class="text-green-600 hover:text-gray-500">
-                  <i class="ri-edit-line"></i>
-                </button>
-                <button class="text-red-600 hover:text-gray-500">
-                  <i class="ri-delete-bin-line"></i>
-                </button>
-              </div>
-            </td>
-          </tr>
-          <tr class="hover:bg-gray-50 cursor-pointer" data-wallet-id="2">
-            <td class="px-6 py-4 whitespace-nowrap">
-              <input type="checkbox">
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm font-medium text-gray-900">W-10046</div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm text-gray-900">CORP-WALLET-3721</div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm text-gray-900">TechSolutions Inc.</div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm text-gray-900">$145,782.65</div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full status-active"> Active </span>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm text-gray-900">Corporate</div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm text-gray-500">2023-05-20 09:15</div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-              <div class="flex items-center justify-end space-x-2">
-                <button (click)="toggleForm('wallet-details')" class="text-blue-600 hover:text-gray-500">
-                  <i class="ri-eye-line"></i>
-                </button>
-                <button class="text-green-600 hover:text-gray-500">
-                  <i class="ri-edit-line"></i>
-                </button>
-                <button class="text-red-600 hover:text-gray-500">
-                  <i class="ri-delete-bin-line"></i>
-                </button>
-              </div>
-            </td>
-          </tr>
-          <tr class="hover:bg-gray-50 cursor-pointer" data-wallet-id="3">
-            <td class="px-6 py-4 whitespace-nowrap">
-              <input type="checkbox">
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm font-medium text-gray-900">W-10047</div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm text-gray-900">PERS-WALLET-4582</div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm text-gray-900">Sarah Williams's Savings</div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm text-gray-900">$5,872.41</div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full status-suspended"> Suspended
+              <span
+                class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                {{ wallet.walletStatus?.wstLabe }}
               </span>
             </td>
             <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm text-gray-900">Savings</div>
+              <div class="text-sm text-gray-900">{{ wallet.walletType }}</div>
             </td>
             <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm text-gray-500">2023-05-19 16:48</div>
+              <div class="text-sm text-gray-500">{{ wallet.lastUpdatedDate | date:'short' }}</div>
             </td>
-            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-              <div class="flex items-center justify-end space-x-2">
-                <button (click)="toggleForm('wallet-details')" class="text-blue-600 hover:text-gray-500">
-                  <i class="ri-eye-line"></i>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+              <div class="flex items-center justify-end space-x-3">
+                <button (click)="selectedWallet = wallet; toggleForm('wallet-details')"
+                  class="text-blue-600 hover:text-blue-800 transition duration-150 p-1 rounded hover:bg-blue-50">
+                  <i class="ri-eye-line text-lg"></i>
                 </button>
-                <button class="text-green-600 hover:text-gray-500">
-                  <i class="ri-edit-line"></i>
-                </button>
-                <button class="text-red-600 hover:text-gray-500">
-                  <i class="ri-delete-bin-line"></i>
-                </button>
-              </div>
-            </td>
-          </tr>
-          <tr class="hover:bg-gray-50 cursor-pointer" data-wallet-id="4">
-            <td class="px-6 py-4 whitespace-nowrap">
-              <input type="checkbox">
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm font-medium text-gray-900">W-10048</div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm text-gray-900">BUS-WALLET-1298</div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm text-gray-900">Global Traders LLC</div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm text-gray-900">$87,321.09</div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full status-inactive"> Inactive
-              </span>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm text-gray-900">Business</div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm text-gray-500">2023-05-18 11:23</div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-              <div class="flex items-center justify-end space-x-2">
-                <button (click)="toggleForm('wallet-details')" class="text-blue-600 hover:text-gray-500">
-                  <i class="ri-eye-line"></i>
-                </button>
-                <button class="text-green-600 hover:text-gray-500">
-                  <i class="ri-edit-line"></i>
-                </button>
-                <button class="text-red-600 hover:text-gray-500">
-                  <i class="ri-delete-bin-line"></i>
-                </button>
-              </div>
-            </td>
-          </tr>
-          <tr class="hover:bg-gray-50 cursor-pointer" data-wallet-id="5">
-            <td class="px-6 py-4 whitespace-nowrap">
-              <input type="checkbox">
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm font-medium text-gray-900">W-10049</div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm text-gray-900">PERS-WALLET-7625</div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm text-gray-900">Robert Chen's Primary</div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm text-gray-900">$3,456.78</div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full status-error"> Error </span>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm text-gray-900">Personal</div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm text-gray-500">2023-05-17 08:52</div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-              <div class="flex items-center justify-end space-x-2">
-                <button (click)="toggleForm('wallet-details')" class="text-blue-600 hover:text-gray-500">
-                  <i class="ri-eye-line"></i>
-                </button>
-                <button class="text-green-600 hover:text-gray-500">
-                  <i class="ri-edit-line"></i>
-                </button>
-                <button class="text-red-600 hover:text-gray-500">
-                  <i class="ri-delete-bin-line"></i>
-                </button>
+                <!-- <button (click)="editWallet(wallet); "
+                                class="text-green-600 hover:text-green-800 transition duration-150 p-1 rounded hover:bg-green-50">
+                                <i class="ri-edit-line text-lg"></i>
+                            </button>
+                            <button (click)="deleteWallet(wallet.walCode); "
+                                class="text-red-600 hover:text-red-800 transition duration-150 p-1 rounded hover:bg-red-50">
+                                <i class="ri-delete-bin-line text-lg"></i>
+                            </button> -->
               </div>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
+
     <!-- Pagination -->
-    <div class="px-6 py-4 flex items-center justify-between border-t border-gray-200">
-      <div class="flex-1 flex justify-between sm:hidden">
+    <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between">
+      <div class="flex items-center text-sm text-gray-500">
+        <span>Showing 1-10 of ...</span>
+      </div>
+      <div class="flex items-center gap-1">
         <button
-          class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-          Previous </button>
+          class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+          disabled>
+          <i class="ri-arrow-left-s-line"></i>
+        </button>
         <button
-          class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-          Next </button>
-      </div>
-      <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-        <div>
-          <p class="text-sm text-gray-700"> Showing <span class="font-medium">1</span> to <span
-              class="font-medium">5</span> of <span class="font-medium">42</span> results </p>
-        </div>
-        <div>
-          <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-            <button
-              class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-              <span class="sr-only">Previous</span>
-              <div class="w-5 h-5 flex items-center justify-center">
-                <i class="ri-arrow-left-s-line"></i>
-              </div>
-            </button>
-            <button
-              class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
-              1 </button>
-            <button
-              class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-primary text-sm font-medium text-white">
-              2 </button>
-            <button
-              class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
-              3 </button>
-            <span
-              class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
-              ... </span>
-            <button
-              class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
-              8 </button>
-            <button
-              class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
-              9 </button>
-            <button
-              class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-              <span class="sr-only">Next</span>
-              <div class="w-5 h-5 flex items-center justify-center">
-                <i class="ri-arrow-right-s-line"></i>
-              </div>
-            </button>
-          </nav>
-        </div>
+          class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-primary text-white hover:bg-primary/90">1</button>
+        <button
+          class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">2</button>
+        <button
+          class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">3</button>
+        <button
+          class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-500 hover:bg-gray-50">
+          <i class="ri-arrow-right-s-line"></i>
+        </button>
       </div>
     </div>
-  </div>
-
-  <!-- Settings Section -->
-  <div id="tab-settings" class="tab-content hidden space-y-6">
-    <!-- Settings Tabs -->
-    <div class="bg-white rounded-lg shadow">
-      <div class="border-b border-gray-200">
-        <nav class="flex -mb-px">
-          <button id="settings-status" (click)="showTab('status', 'settings')"
-            class="settings-tab-button relative px-4 py-3 text-sm active font-medium text-primary">Wallet
-            Status</button>
-          <button id="settings-type" (click)="showTab('type', 'settings')"
-            class="settings-tab-button relative px-4 py-3 text-sm text-gray-500">Wallet
-            Type</button>
-          <button id="settings-category" (click)="showTab('category', 'settings')"
-            class="settings-tab-button relative px-4 py-3 text-sm text-gray-500">Wallet
-            Category</button>
-        </nav>
-      </div>
-      <!-- Wallet Status Content -->
-      <div id="settings-tab-status" class="settings-tab-content p-6">
-        <div class="flex justify-between items-center mb-6">
-          <h3 class="text-lg font-medium text-gray-900">Wallet Status Management</h3>
-          <button id="btn-add-status" (click)="toggleForm('wallet-status')"
-            class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
-            <i class="ri-add-line mr-1"></i> Add Status
-          </button>
-        </div>
-        <div *ngIf="errorMessage" class="mb-4 p-4 bg-red-100 text-red-700 rounded-lg">
-          {{ errorMessage }}
-        </div>
-        <div class="overflow-x-auto">
-          <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
-              <tr>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Status Code</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Status Identifier</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Status Label</th>
-                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions</th>
-              </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-              <tr *ngFor="let status of walletStatuses">
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{status.wstCode}}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{status.wstIden}}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{status.wstLabe}}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <div class="flex justify-end space-x-2">
-                    <button class="text-green-600 hover:text-gray-500" (click)="editStatus(status)">
-                      <div class="w-6 h-6 flex items-center justify-center">
-                        <i class="ri-edit-line"></i>
-                      </div>
-                    </button>
-                    <button class="text-red-600 hover:text-red-500" (click)="deleteStatus(status.wstCode)">
-                      <div class="w-6 h-6 flex items-center justify-center">
-                        <i class="ri-delete-bin-line"></i>
-                      </div>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <!-- Wallet Type Content -->
-      <div id="settings-tab-type" class="settings-tab-content p-6 hidden">
-        <div class="flex justify-between items-center mb-6">
-          <h3 class="text-lg font-medium text-gray-900">Wallet Type Management</h3>
-          <button id="btn-add-type" (click)="toggleForm('wallet-type')"
-            class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
-            <i class="ri-add-line mr-1"></i> Add Type
-          </button>
-        </div>
-        <div class="overflow-x-auto">
-          <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
-              <tr>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Type Code
-                </th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Type Identifier
-                </th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Type Label
-                </th>
-                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-              <tr *ngFor="let type of walletTypesList">
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ type.wtyCode }}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ type.wtyIden }}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ type.wtyLabe }}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <div class="flex justify-end space-x-2">
-                    <button (click)="editWalletType(type)" class="text-green-600 hover:text-gray-500">
-                      <div class="w-6 h-6 flex items-center justify-center">
-                        <i class="ri-edit-line"></i>
-                      </div>
-                    </button>
-                    <button (click)="deleteWalletType(type.wtyCode)" class="text-red-600 hover:text-red-500">
-                      <div class="w-6 h-6 flex items-center justify-center">
-                        <i class="ri-delete-bin-line"></i>
-                      </div>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <!-- Wallet Category Content -->
-      <div id="settings-tab-category" class="settings-tab-content p-6 hidden">
-        <div class="flex justify-between items-center mb-6">
-          <h3 class="text-lg font-medium text-gray-900">Wallet Category Management</h3>
-          <button id="btn-add-category" (click)="toggleForm('wallet-category')"
-            class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
-            <i class="ri-add-line mr-1"></i> Add Category
-          </button>
-        </div>
-        <div *ngIf="errorMessage" class="mb-4 p-4 bg-red-100 text-red-700 rounded-lg">
-          {{ errorMessage }}
-        </div>
-        <div class="overflow-x-auto">
-          <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
-              <tr>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Category Code</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Category Identifier</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Category Label</th>
-                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions</th>
-              </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-              <tr *ngFor="let category of walletCategories">
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{category.wcaCode}}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{category.wcaIden}}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{category.wcaLabe}}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <div class="flex justify-end space-x-2">
-                    <button class="text-green-600 hover:text-gray-500" (click)="editCategory(category)">
-                      <div class="w-6 h-6 flex items-center justify-center">
-                        <i class="ri-edit-line"></i>
-                      </div>
-                    </button>
-                    <button class="text-red-600 hover:text-red-500" (click)="deleteCategory(category.wcaCode!)">
-                      <div class="w-6 h-6 flex items-center justify-center">
-                        <i class="ri-delete-bin-line"></i>
-                      </div>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- Cards Section -->
-  <div id="tab-cards" class="tab-content hidden space-y-6">
-    <!-- Cards Tabs -->
-    <div class="bg-white rounded-lg shadow">
-      <div class="border-b border-gray-200">
-        <nav class="flex -mb-px">
-          <button id="cards-overview" (click)="showTab('overview', 'cards')"
-            class="cards-tab-button px-4 py-3 text-sm active font-medium text-primary">Cards Overview</button>
-          <button id="cards-type" (click)="showTab('type', 'cards')"
-            class="cards-tab-button relative px-4 py-3 text-sm text-gray-500">Card Type</button>
-          <button id="cards-list" (click)="showTab('list', 'cards')"
-            class="cards-tab-button relative px-4 py-3 text-sm text-gray-500">Card List</button>
-        </nav>
-      </div>
-      <!-- Cards Content -->
-  <div id="cards-tab-overview" class="cards-tab-content p-6">
-    <div class="flex justify-between items-center mb-6">
-      <h3 class="text-lg font-medium text-gray-900">Cards Management</h3>
-      <button id="btn-add-card" (click)="toggleForm('create-card')" class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
-        <i class="ri-add-line mr-1"></i> Add Card
-      </button>
-    </div>
-    <div class="overflow-x-auto">
-      <table class="min-w-full divide-y divide-gray-200">
-        <thead class="bg-gray-50">
-          <tr>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Label</th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Expiry Date</th>
-            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">List</th>
-            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">EMV</th>
-            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-          </tr>
-        </thead>
-        <tbody class="bg-white divide-y divide-gray-200">
-          <tr *ngFor="let card of cardsList">
-            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ card.carLabe || card.carIden }}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ formatDate(card.carExpiryDate) }}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ card.cardList?.cliLabe || 'N/A' }}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ card.cardType?.ctypLabe || 'N/A' }}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ card.carEmvData || 'N/A' }}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-              <div class="flex justify-end space-x-2">
-                <button class="text-green-600 hover:text-gray-500" (click)="editCard(card)">
-                  <div class="w-6 h-6 flex items-center justify-center">
-                    <i class="ri-edit-line"></i>
-                  </div>
-                </button>
-                <button class="text-red-600 hover:text-red-500" (click)="deleteCard(card.carCode)">
-                  <div class="w-6 h-6 flex items-center justify-center">
-                    <i class="ri-delete-bin-line"></i>
-                  </div>
-                </button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-      <!-- Card Type Content -->
-  <div id="cards-tab-type" class="cards-tab-content hidden p-6">
-    <div class="flex justify-between items-center mb-6">
-      <h3 class="text-lg font-medium text-gray-900">Card Type Management</h3>
-      <button id="btn-add-card-type" (click)="toggleForm('card-type')"
-        class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
-        <i class="ri-add-line mr-1"></i> Add Card Type
-      </button>
-    </div>
-    <div class="overflow-x-auto">
-      <table class="min-w-full divide-y divide-gray-200">
-        <thead class="bg-gray-50">
-          <tr>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type Code</th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type Identifier</th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type Label</th>
-            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-          </tr>
-        </thead>
-        <tbody class="bg-white divide-y divide-gray-200">
-          <tr *ngFor="let cardType of cardTypesList">
-            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ cardType.ctypCode }}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ cardType.ctypIden }}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ cardType.ctypLabe }}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-              <div class="flex justify-end space-x-2">
-                <button class="text-green-600 hover:text-gray-500" (click)="editCardType(cardType)">
-                  <div class="w-6 h-6 flex items-center justify-center">
-                    <i class="ri-edit-line"></i>
-                  </div>
-                </button>
-                <button class="text-red-600 hover:text-red-500" (click)="deleteCardType(cardType.ctypCode)">
-                  <div class="w-6 h-6 flex items-center justify-center">
-                    <i class="ri-delete-bin-line"></i>
-                  </div>
-                </button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-
-    <!-- Card List Content -->
-  <div id="cards-tab-list" class="cards-tab-content hidden p-6">
-    <div class="flex justify-between items-center mb-6">
-      <h3 class="text-lg font-medium text-gray-900">Card List Management</h3>
-      <button id="btn-add-card-list" (click)="toggleForm('card-list')"
-        class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
-        <i class="ri-add-line mr-1"></i> Add Card List
-      </button>
-    </div>
-    <div class="overflow-x-auto">
-      <table class="min-w-full divide-y divide-gray-200">
-        <thead class="bg-gray-50">
-          <tr>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">List Code</th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">List Identifier</th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">List Label</th>
-            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-          </tr>
-        </thead>
-        <tbody class="bg-white divide-y divide-gray-200">
-          <tr *ngFor="let cardList of cardListsList">
-            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ cardList.cliCode }}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ cardList.cliIden }}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ cardList.cliLabe }}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-              <div class="flex justify-end space-x-2">
-                <button class="text-green-600 hover:text-gray-500" (click)="editCardList(cardList)">
-                  <div class="w-6 h-6 flex items-center justify-center">
-                    <i class="ri-edit-line"></i>
-                  </div>
-                </button>
-                <button class="text-red-600 hover:text-red-500" (click)="deleteCardList(cardList.cliCode)">
-                  <div class="w-6 h-6 flex items-center justify-center">
-                    <i class="ri-delete-bin-line"></i>
-                  </div>
-                </button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-    </div>
-  </div>
-
-  <!-- Account Section -->
-  <div id="tab-accounts" class="tab-content hidden space-y-6">
-    <!-- account Tabs -->
-    <div class="bg-white rounded-lg shadow">
-      <div class="border-b border-gray-200">
-        <nav class="flex -mb-px">
-          <button id="accounts-overview" (click)="showTab('overview', 'accounts')"
-            class="accounts-tab-button px-4 py-3 text-sm active font-medium text-primary">Accounts Overview</button>
-          <button id="accounts-type" (click)="showTab('type', 'accounts')"
-            class="accounts-tab-button relative px-4 py-3 text-sm text-gray-500">Account Type</button>
-          <button id="accounts-list" (click)="showTab('list', 'accounts')"
-            class="accounts-tab-button relative px-4 py-3 text-sm text-gray-500">Account List</button>
-        </nav>
-      </div>
-      <!-- accounts Content-->
-      <div id="accounts-tab-overview" class="accounts-tab-content p-6">
-        <div class="flex justify-between items-center mb-6">
-          <h3 class="text-lg font-medium text-gray-900">Accounts Management</h3>
-          <button id="btn-add-account" (click)="toggleForm('create-account')"
-            class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
-            <i class="ri-add-line mr-1"></i> Add Account </button>
-        </div>
-        <div class="overflow-x-auto">
-          <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
-              <tr>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  CODE</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  BANK</th>
-                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  List</th>
-                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Type</th>
-                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  action</th>
-              </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-              <tr>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">ACC-001</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">UIB</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CHECKING</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">INDIVIDUAL</td>
-                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <div class="flex justify-end space-x-2">
-                    <button class="text-green-600 hover:text-gray-500">
-                      <div class="w-6 h-6 flex items-center justify-center">
-                        <i class="ri-edit-line"></i>
-                      </div>
-                    </button>
-                    <button class="text-red-600 hover:text-red-500">
-                      <div class="w-6 h-6 flex items-center justify-center">
-                        <i class="ri-delete-bin-line"></i>
-                      </div>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">ACC-002</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">UIB</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">SAVINGS</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">INDIVIDUAL</td>
-                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <div class="flex justify-end space-x-2">
-                    <button class="text-green-600 hover:text-gray-500">
-                      <div class="w-6 h-6 flex items-center justify-center">
-                        <i class="ri-edit-line"></i>
-                      </div>
-                    </button>
-                    <button class="text-red-600 hover:text-red-500">
-                      <div class="w-6 h-6 flex items-center justify-center">
-                        <i class="ri-delete-bin-line"></i>
-                      </div>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">ACC-003</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">UIB</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CHECKING</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">BUSINESS</td>
-                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <div class="flex justify-end space-x-2">
-                    <button class="text-green-600 hover:text-gray-500">
-                      <div class="w-6 h-6 flex items-center justify-center">
-                        <i class="ri-edit-line"></i>
-                      </div>
-                    </button>
-                    <button class="text-red-600 hover:text-red-500">
-                      <div class="w-6 h-6 flex items-center justify-center">
-                        <i class="ri-delete-bin-line"></i>
-                      </div>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">ACC-004/td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">UIB</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CHECKING</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">INDIVIDUAL</td>
-                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <div class="flex justify-end space-x-2">
-                    <button class="text-green-600 hover:text-gray-500">
-                      <div class="w-6 h-6 flex items-center justify-center">
-                        <i class="ri-edit-line"></i>
-                      </div>
-                    </button>
-                    <button class="text-red-600 hover:text-red-500">
-                      <div class="w-6 h-6 flex items-center justify-center">
-                        <i class="ri-delete-bin-line"></i>
-                      </div>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">ACC-005</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">UIB</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">SAVINGS</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">INDIVIDUAL</td>
-                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <div class="flex justify-end space-x-2">
-                    <button class="text-green-600 hover:text-gray-500">
-                      <div class="w-6 h-6 flex items-center justify-center">
-                        <i class="ri-edit-line"></i>
-                      </div>
-                    </button>
-                    <button class="text-red-600 hover:text-red-500">
-                      <div class="w-6 h-6 flex items-center justify-center">
-                        <i class="ri-delete-bin-line"></i>
-                      </div>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    <!-- account Type Content-->
-<div id="accounts-tab-type" class="accounts-tab-content hidden p-6">
-  <div class="flex justify-between items-center mb-6">
-    <h3 class="text-lg font-medium text-gray-900">Account Type Management</h3>
-    <button id="btn-add-account" (click)="toggleForm('account-type')"
-      class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
-      <i class="ri-add-line mr-1"></i> Add Account Type
-    </button>
-  </div>
-  <div class="overflow-x-auto">
-    <table class="min-w-full divide-y divide-gray-200">
-      <thead class="bg-gray-50">
-        <tr>
-          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-            Type Code
-          </th>
-          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-            Type Identifier
-          </th>
-          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-            Type Label
-          </th>
-          <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-            Actions
-          </th>
-        </tr>
-      </thead>
-      <tbody class="bg-white divide-y divide-gray-200">
-        <tr *ngFor="let accountType of accountTypesList">
-          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ accountType.atyCode }}</td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ accountType.atyIden }}</td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ accountType.atyLabe }}</td>
-          <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-            <div class="flex justify-end space-x-2">
-              <button class="text-green-600 hover:text-gray-500" (click)="editAccountType(accountType)">
-                <div class="w-6 h-6 flex items-center justify-center">
-                  <i class="ri-edit-line"></i>
-                </div>
-              </button>
-              <button class="text-red-600 hover:text-red-500" (click)="deleteAccountType(accountType.atyCode)">
-                <div class="w-6 h-6 flex items-center justify-center">
-                  <i class="ri-delete-bin-line"></i>
-                </div>
-              </button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
   </div>
 </div>
-      <!-- account List Content-->
-      <div id="accounts-tab-list" class="accounts-tab-content hidden p-6">
-        <div class="flex justify-between items-center mb-6">
-          <h3 class="text-lg font-medium text-gray-900">Account List Management</h3>
-          <button id="btn-add-account" (click)="toggleForm('account-list')"
-            class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
-            <i class="ri-add-line mr-1"></i> Add Account List </button>
+
+<!-- Settings Section -->
+<div id="tab-settings" class="tab-content hidden space-y-6">
+  <!-- Settings Tabs -->
+  <div class="mb-6 flex flex-wrap gap-2">
+    <button id="settings-status" (click)="showTab('status', 'settings')"
+      class="settings-tab-button shadow-lg px-4 py-3 text-sm rounded-lg bg-white font-medium text-primary border-b-2 border-primary transition-colors">
+      Status</button>
+    <button id="settings-type" (click)="showTab('type', 'settings')"
+      class="settings-tab-button shadow-lg px-4 py-3 text-sm rounded-lg bg-white text-gray-500 transition-colors">
+      Type</button>
+    <button id="settings-category" (click)="showTab('category', 'settings')"
+      class="settings-tab-button shadow-lg px-4 py-3 text-sm rounded-lg bg-white text-gray-500 transition-colors">
+      Category</button>
+  </div>
+  <!-- Wallet Status Content -->
+  <div id="settings-tab-status" class="settings-tab-content">
+    <!-- Header Section -->
+    <div class="bg-white rounded-lg shadow p-4 mb-6">
+      <div class="flex flex-col md:flex-row gap-4">
+        <div class="relative flex-grow">
+          <h2 class="text-2xl font-semibold text-gray-800">
+            Wallet Status Management
+          </h2>
         </div>
-        <div class="overflow-x-auto">
-          <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
-              <tr>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  List Code</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  List Identifier</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  List Label</th>
-                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions</th>
-              </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-              <tr>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">ALI-001</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">18001</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">CHECKING</td>
-                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <div class="flex justify-end space-x-2">
-                    <button class="text-green-600 hover:text-gray-500">
-                      <div class="w-6 h-6 flex items-center justify-center">
-                        <i class="ri-edit-line"></i>
-                      </div>
-                    </button>
-                    <button class="text-red-600 hover:text-red-500">
-                      <div class="w-6 h-6 flex items-center justify-center">
-                        <i class="ri-delete-bin-line"></i>
-                      </div>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">ALI-002</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">18002</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">SAVINGS</td>
-                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <div class="flex justify-end space-x-2">
-                    <button class="text-green-600 hover:text-gray-500">
-                      <div class="w-6 h-6 flex items-center justify-center">
-                        <i class="ri-edit-line"></i>
-                      </div>
-                    </button>
-                    <button class="text-red-600 hover:text-red-500">
-                      <div class="w-6 h-6 flex items-center justify-center">
-                        <i class="ri-delete-bin-line"></i>
-                      </div>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        <!-- Search -->
+        <div class="relative flex-grow">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <i class="ri-search-line text-gray-400"></i>
+          </div>
+          <input type="text" placeholder="Search..."
+            class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm" />
+        </div>
+        <button id="btn-add-status" (click)="toggleForm('wallet-status')"
+          class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+          <i class="ri-add-line mr-1"></i> Add Status
+        </button>
+      </div>
+    </div>
+    <!-- Table Section -->
+    <div class="bg-white rounded-xl shadow overflow-hidden">
+      <!-- Table -->
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead>
+            <tr class="border-b border-gray-200">
+              <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                Status Code
+              </th>
+              <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                Status Identifier
+              </th>
+              <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                Status Label
+              </th>
+              <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr *ngFor="let status of walletStatuses" class="hover:bg-gray-50 transition duration-150">
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm font-medium text-gray-900">{{ status.wstCode }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900">{{ status.wstIden }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900">{{ status.wstLabe }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                <div class="flex items-center justify-end space-x-3">
+                  <button (click)="editStatus(status)"
+                    class="text-green-600 hover:text-green-800 transition duration-150 p-1 rounded hover:bg-green-50">
+                    <i class="ri-edit-line text-lg"></i>
+                  </button>
+                  <button (click)="deleteStatus(status.wstCode)"
+                    class="text-red-600 hover:text-red-800 transition duration-150 p-1 rounded hover:bg-red-50">
+                    <i class="ri-delete-bin-line text-lg"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between">
+        <div class="flex items-center text-sm text-gray-500">
+          <span>Showing 1-{{walletStatuses.length}} of {{walletStatuses.length}} statuses</span>
+        </div>
+        <div class="flex items-center gap-1">
+          <button
+            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled>
+            <i class="ri-arrow-left-s-line"></i>
+          </button>
+          <button
+            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-primary text-white hover:bg-primary/90">1</button>
+          <button
+            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">2</button>
+          <button
+            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-500 hover:bg-gray-50">
+            <i class="ri-arrow-right-s-line"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Wallet Type Content -->
+  <div id="settings-tab-type" class="settings-tab-content hidden">
+    <!-- Header Section -->
+    <div class="bg-white rounded-lg shadow p-4 mb-6">
+      <div class="flex flex-col md:flex-row gap-4">
+        <div class="relative flex-grow">
+          <h2 class="text-2xl font-semibold text-gray-800">
+            Wallet Type Management
+          </h2>
+        </div>
+        <!-- Search -->
+        <div class="relative flex-grow">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <i class="ri-search-line text-gray-400"></i>
+          </div>
+          <input type="text" placeholder="Search..."
+            class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm" />
+        </div>
+        <button id="btn-add-type" (click)="toggleForm('wallet-type')"
+          class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+          <i class="ri-add-line mr-1"></i> Add Type
+        </button>
+      </div>
+    </div>
+    <!-- Table Section -->
+    <div class="bg-white rounded-xl shadow overflow-hidden">
+      <!-- Table -->
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead>
+            <tr class="border-b border-gray-200">
+              <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                Type Code
+              </th>
+              <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                Type Identifier
+              </th>
+              <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                Type Label
+              </th>
+              <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr *ngFor="let type of walletTypesList" class="hover:bg-gray-50 transition duration-150">
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm font-medium text-gray-900">{{ type.wtyCode }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900">{{ type.wtyIden }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900">{{ type.wtyLabe }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                <div class="flex items-center justify-end space-x-3">
+                  <button (click)="editWalletType(type)"
+                    class="text-green-600 hover:text-green-800 transition duration-150 p-1 rounded hover:bg-green-50">
+                    <i class="ri-edit-line text-lg"></i>
+                  </button>
+                  <button (click)="deleteWalletType(type.wtyCode)"
+                    class="text-red-600 hover:text-red-800 transition duration-150 p-1 rounded hover:bg-red-50">
+                    <i class="ri-delete-bin-line text-lg"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between">
+        <div class="flex items-center text-sm text-gray-500">
+          <span>Showing 1-{{walletTypesList.length}} of {{walletTypesList.length}} wallet types</span>
+        </div>
+        <div class="flex items-center gap-1">
+          <button
+            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled>
+            <i class="ri-arrow-left-s-line"></i>
+          </button>
+          <button
+            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-primary text-white hover:bg-primary/90">1</button>
+          <button
+            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">2</button>
+          <button
+            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-500 hover:bg-gray-50">
+            <i class="ri-arrow-right-s-line"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Wallet Category Content -->
+  <div id="settings-tab-category" class="settings-tab-content hidden">
+    <!-- Header Section -->
+    <div class="bg-white rounded-lg shadow p-4 mb-6">
+      <div class="flex flex-col md:flex-row gap-4">
+        <div class="relative flex-grow">
+          <h2 class="text-2xl font-semibold text-gray-800">
+            Wallet Category Management
+          </h2>
+        </div>
+        <!-- Search -->
+        <div class="relative flex-grow">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <i class="ri-search-line text-gray-400"></i>
+          </div>
+          <input type="text" placeholder="Search..."
+            class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm" />
+        </div>
+        <button id="btn-add-category" (click)="toggleForm('wallet-category')"
+          class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+          <i class="ri-add-line mr-1"></i> Add Category
+        </button>
+      </div>
+    </div>
+    <!-- Table Section -->
+    <div class="bg-white rounded-xl shadow overflow-hidden">
+      <!-- Table -->
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead>
+            <tr class="border-b border-gray-200">
+              <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                Category Code
+              </th>
+              <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                Category Identifier
+              </th>
+              <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                Category Label
+              </th>
+              <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr *ngFor="let category of walletCategories" class="hover:bg-gray-50 transition duration-150">
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm font-medium text-gray-900">{{ category.wcaCode }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900">{{ category.wcaIden }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900">{{ category.wcaLabe }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                <div class="flex items-center justify-end space-x-3">
+                  <button (click)="editCategory(category)"
+                    class="text-green-600 hover:text-green-800 transition duration-150 p-1 rounded hover:bg-green-50">
+                    <i class="ri-edit-line text-lg"></i>
+                  </button>
+                  <button (click)="deleteCategory(category.wcaCode!)"
+                    class="text-red-600 hover:text-red-800 transition duration-150 p-1 rounded hover:bg-red-50">
+                    <i class="ri-delete-bin-line text-lg"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between">
+        <div class="flex items-center text-sm text-gray-500">
+          <span>Showing 1-{{walletCategories.length}} of {{walletCategories.length}} categories</span>
+        </div>
+        <div class="flex items-center gap-1">
+          <button
+            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled>
+            <i class="ri-arrow-left-s-line"></i>
+          </button>
+          <button
+            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-primary text-white hover:bg-primary/90">1</button>
+          <button
+            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">2</button>
+          <button
+            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-500 hover:bg-gray-50">
+            <i class="ri-arrow-right-s-line"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Cards Section -->
+<div id="tab-cards" class="tab-content hidden space-y-6">
+  <!-- Cards Tabs -->
+  <div class="mb-6 flex flex-wrap gap-2">
+    <button id="cards-overview" (click)="showTab('overview', 'cards')"
+      class="cards-tab-button shadow-lg px-4 py-3 text-sm rounded-lg bg-white font-medium text-primary border-b-2 border-primary transition-colors">
+      Cards Overview</button>
+    <button id="cards-type" (click)="showTab('type', 'cards')"
+      class="cards-tab-button shadow-lg px-4 py-3 text-sm rounded-lg bg-white text-gray-500 transition-colors">
+      Cards Type</button>
+    <button id="cards-list" (click)="showTab('list', 'cards')"
+      class="cards-tab-button shadow-lg px-4 py-3 text-sm rounded-lg bg-white text-gray-500 transition-colors">
+      Card List</button>
+  </div>
+  <!-- Cards Content -->
+  <div id="cards-tab-overview" class="cards-tab-content">
+    <!-- Header Section -->
+    <div class="bg-white rounded-lg shadow p-4 mb-6">
+      <div class="flex flex-col md:flex-row gap-4">
+        <div class="relative flex-grow">
+          <h2 class="text-2xl font-semibold text-gray-800">
+            Cards Management
+          </h2>
+        </div>
+        <!-- Search -->
+        <div class="relative flex-grow">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <i class="ri-search-line text-gray-400"></i>
+          </div>
+          <input type="text" placeholder="Search cards..."
+            class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm" />
+        </div>
+        <button id="btn-add-card" (click)="toggleForm('create-card')"
+          class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+          <i class="ri-add-line mr-1"></i> Add Card
+        </button>
+      </div>
+    </div>
+    <!-- Table Section -->
+    <div class="bg-white rounded-xl shadow overflow-hidden">
+      <!-- Table -->
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead>
+            <tr class="border-b border-gray-200">
+              <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                Label
+              </th>
+              <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                Expiry Date
+              </th>
+              <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                List
+              </th>
+              <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                Type
+              </th>
+              <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                EMV
+              </th>
+              <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr *ngFor="let card of cardsList" class="hover:bg-gray-50 transition duration-150">
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm font-medium text-gray-900">{{ card.carLabe || card.carIden }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-500">{{ formatDate(card.carExpiryDate) }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900">{{ card.cardList?.cliLabe || 'N/A' }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900">{{ card.cardType?.ctypLabe || 'N/A' }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900">{{ card.carEmvData || 'N/A' }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                <div class="flex items-center justify-end space-x-3">
+                  <button (click)="editCard(card)"
+                    class="text-green-600 hover:text-green-800 transition duration-150 p-1 rounded hover:bg-green-50">
+                    <i class="ri-edit-line text-lg"></i>
+                  </button>
+                  <button (click)="deleteCard(card.carCode)"
+                    class="text-red-600 hover:text-red-800 transition duration-150 p-1 rounded hover:bg-red-50">
+                    <i class="ri-delete-bin-line text-lg"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between">
+        <div class="flex items-center text-sm text-gray-500">
+          <span>Showing 1-10 of ...</span>
+        </div>
+        <div class="flex items-center gap-1">
+          <button
+            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled>
+            <i class="ri-arrow-left-s-line"></i>
+          </button>
+          <button
+            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-primary text-white hover:bg-primary/90">1</button>
+          <button
+            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">2</button>
+          <button
+            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">3</button>
+          <button
+            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-500 hover:bg-gray-50">
+            <i class="ri-arrow-right-s-line"></i>
+          </button>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- Card Type Content -->
+  <div id="cards-tab-type" class="cards-tab-content hidden">
+    <!-- Header Section -->
+    <div class="bg-white rounded-lg shadow p-4 mb-6">
+      <div class="flex flex-col md:flex-row gap-4">
+        <div class="relative flex-grow">
+          <h2 class="text-2xl font-semibold text-gray-800">
+            Card Type Management
+          </h2>
+        </div>
+        <!-- Search -->
+        <div class="relative flex-grow">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <i class="ri-search-line text-gray-400"></i>
+          </div>
+          <input type="text" placeholder="Search card types..."
+            class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm" />
+        </div>
+        <button id="btn-add-card-type" (click)="toggleForm('card-type')"
+          class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+          <i class="ri-add-line mr-1"></i> Add Card Type
+        </button>
+      </div>
+    </div>
+    <!-- Table Section -->
+    <div class="bg-white rounded-xl shadow overflow-hidden">
+      <!-- Table -->
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead>
+            <tr class="border-b border-gray-200">
+              <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                Type Code
+              </th>
+              <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                Type Identifier
+              </th>
+              <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                Type Label
+              </th>
+              <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr *ngFor="let cardType of cardTypesList" class="hover:bg-gray-50 transition duration-150">
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm font-medium text-gray-900">{{ cardType.ctypCode }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900">{{ cardType.ctypIden }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900">{{ cardType.ctypLabe }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                <div class="flex items-center justify-end space-x-3">
+                  <button (click)="editCardType(cardType)"
+                    class="text-green-600 hover:text-green-800 transition duration-150 p-1 rounded hover:bg-green-50">
+                    <i class="ri-edit-line text-lg"></i>
+                  </button>
+                  <button (click)="deleteCardType(cardType.ctypCode)"
+                    class="text-red-600 hover:text-red-800 transition duration-150 p-1 rounded hover:bg-red-50">
+                    <i class="ri-delete-bin-line text-lg"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between">
+        <div class="flex items-center text-sm text-gray-500">
+          <span>Showing 1-10 of {{cardTypesList.length}} card types</span>
+        </div>
+        <div class="flex items-center gap-1">
+          <button
+            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled>
+            <i class="ri-arrow-left-s-line"></i>
+          </button>
+          <button
+            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-primary text-white hover:bg-primary/90">1</button>
+          <button
+            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">2</button>
+          <button
+            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">3</button>
+          <button
+            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-500 hover:bg-gray-50">
+            <i class="ri-arrow-right-s-line"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card List Content -->
+  <div id="cards-tab-list" class="cards-tab-content hidden">
+    <!-- Header Section -->
+    <div class="bg-white rounded-lg shadow p-4 mb-6">
+      <div class="flex flex-col md:flex-row gap-4">
+        <div class="relative flex-grow">
+          <h2 class="text-2xl font-semibold text-gray-800">
+            Card List Management
+          </h2>
+        </div>
+        <!-- Search -->
+        <div class="relative flex-grow">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <i class="ri-search-line text-gray-400"></i>
+          </div>
+          <input type="text" placeholder="Search card lists..."
+            class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm" />
+        </div>
+        <button id="btn-add-card-list" (click)="toggleForm('card-list')"
+          class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+          <i class="ri-add-line mr-1"></i> Add Card List
+        </button>
+      </div>
+    </div>
+    <!-- Table Section -->
+    <div class="bg-white rounded-xl shadow overflow-hidden">
+      <!-- Table -->
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead>
+            <tr class="border-b border-gray-200">
+              <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                List Code
+              </th>
+              <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                List Identifier
+              </th>
+              <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                List Label
+              </th>
+              <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr *ngFor="let cardList of cardListsList" class="hover:bg-gray-50 transition duration-150">
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm font-medium text-gray-900">{{ cardList.cliCode }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900">{{ cardList.cliIden }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900">{{ cardList.cliLabe }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                <div class="flex items-center justify-end space-x-3">
+                  <button (click)="editCardList(cardList)"
+                    class="text-green-600 hover:text-green-800 transition duration-150 p-1 rounded hover:bg-green-50">
+                    <i class="ri-edit-line text-lg"></i>
+                  </button>
+                  <button (click)="deleteCardList(cardList.cliCode)"
+                    class="text-red-600 hover:text-red-800 transition duration-150 p-1 rounded hover:bg-red-50">
+                    <i class="ri-delete-bin-line text-lg"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between">
+        <div class="flex items-center text-sm text-gray-500">
+          <span>Showing 1-10 of {{cardListsList.length}} lists</span>
+        </div>
+        <div class="flex items-center gap-1">
+          <button
+            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled>
+            <i class="ri-arrow-left-s-line"></i>
+          </button>
+          <button
+            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-primary text-white hover:bg-primary/90">1</button>
+          <button
+            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">2</button>
+          <button
+            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">3</button>
+          <button
+            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-500 hover:bg-gray-50">
+            <i class="ri-arrow-right-s-line"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Account Section -->
+<div id="tab-accounts" class="tab-content hidden space-y-6">
+  <!-- account Tabs -->
+  <div class="mb-6 flex flex-wrap gap-2">
+    <button id="accounts-overview" (click)="showTab('overview', 'accounts')"
+      class="accounts-tab-button shadow-lg px-4 py-3 text-sm rounded-lg bg-white font-medium text-primary border-b-2 border-primary transition-colors">
+      Accounts Overview</button>
+    <button id="accounts-type" (click)="showTab('type', 'accounts')"
+      class="accounts-tab-button shadow-lg px-4 py-3 text-sm rounded-lg bg-white text-gray-500 transition-colors">
+      Accounts Type</button>
+    <button id="accounts-list" (click)="showTab('list', 'accounts')"
+      class=" accounts-tab-button shadow-lg px-4 py-3 text-sm rounded-lg bg-white text-gray-500 transition-colors">
+      Accounts List</button>
+  </div>
+  <!-- accounts Content-->
+  <div id="accounts-tab-overview" class="accounts-tab-content">
+    <!-- Header Section -->
+    <div class="bg-white rounded-lg shadow p-4 mb-6">
+      <div class="flex flex-col md:flex-row gap-4">
+        <div class="relative flex-grow">
+          <h2 class="text-2xl font-semibold text-gray-800">
+            Accounts Management
+          </h2>
+        </div>
+        <!-- Search -->
+        <div class="relative flex-grow">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <i class="ri-search-line text-gray-400"></i>
+          </div>
+          <input type="text" placeholder="Search accounts..."
+            class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm" />
+        </div>
+        <button id="btn-add-account" (click)="toggleForm('create-account')"
+          class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+          <i class="ri-add-line mr-1"></i> Add Account
+        </button>
+      </div>
+    </div>
+    <!-- Table Section -->
+    <div class="bg-white rounded-xl shadow overflow-hidden">
+      <!-- Table -->
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead>
+            <tr class="border-b border-gray-200">
+              <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                Code
+              </th>
+              <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                Bank
+              </th>
+              <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                List
+              </th>
+              <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                Type
+              </th>
+              <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr class="hover:bg-gray-50 transition duration-150">
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm font-medium text-gray-900">1</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900">UIB</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900">CHEKINGS</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900">...</div>
+              </td>
+              <!-- <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <div class="flex items-center justify-end space-x-3">
+                            <button (click)="editAccount(account)"
+                                class="text-green-600 hover:text-green-800 transition duration-150 p-1 rounded hover:bg-green-50">
+                                <i class="ri-edit-line text-lg"></i>
+                            </button>
+                            <button (click)="deleteAccount(account.accCode)"
+                                class="text-red-600 hover:text-red-800 transition duration-150 p-1 rounded hover:bg-red-50">
+                                <i class="ri-delete-bin-line text-lg"></i>
+                            </button>
+                        </div>
+                    </td> -->
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between">
+        <div class="flex items-center text-sm text-gray-500">
+          <span>Showing 1-5 of ...</span>
+        </div>
+        <div class="flex items-center gap-1">
+          <button
+            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled>
+            <i class="ri-arrow-left-s-line"></i>
+          </button>
+          <button
+            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-primary text-white hover:bg-primary/90">1</button>
+          <button
+            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">2</button>
+          <button
+            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">3</button>
+          <button
+            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-500 hover:bg-gray-50">
+            <i class="ri-arrow-right-s-line"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- account Type Content-->
+  <div id="accounts-tab-type" class="accounts-tab-content hidden">
+    <!-- Header Section -->
+    <div class="bg-white rounded-lg shadow p-4 mb-6">
+      <div class="flex flex-col md:flex-row gap-4">
+        <div class="relative flex-grow">
+          <h2 class="text-2xl font-semibold text-gray-800">
+            Account Type Management
+          </h2>
+        </div>
+        <!-- Search -->
+        <div class="relative flex-grow">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <i class="ri-search-line text-gray-400"></i>
+          </div>
+          <input type="text" placeholder="Search account types..."
+            class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm" />
+        </div>
+        <button id="btn-add-account" (click)="toggleForm('account-type')"
+          class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+          <i class="ri-add-line mr-1"></i> Add Account Type
+        </button>
+      </div>
+    </div>
+
+    <!-- Table Section -->
+    <div class="bg-white rounded-xl shadow overflow-hidden">
+      <!-- Table -->
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead>
+            <tr class="border-b border-gray-200">
+              <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                Type Code
+              </th>
+              <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                Type Identifier
+              </th>
+              <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                Type Label
+              </th>
+              <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr *ngFor="let accountType of accountTypesList" class="hover:bg-gray-50 transition duration-150">
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm font-medium text-gray-900">{{ accountType.atyCode }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900">{{ accountType.atyIden }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900">{{ accountType.atyLabe }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                <div class="flex items-center justify-end space-x-3">
+                  <button (click)="editAccountType(accountType)"
+                    class="text-green-600 hover:text-green-800 transition duration-150 p-1 rounded hover:bg-green-50">
+                    <i class="ri-edit-line text-lg"></i>
+                  </button>
+                  <button (click)="deleteAccountType(accountType.atyCode)"
+                    class="text-red-600 hover:text-red-800 transition duration-150 p-1 rounded hover:bg-red-50">
+                    <i class="ri-delete-bin-line text-lg"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between">
+        <div class="flex items-center text-sm text-gray-500">
+          <span>Showing 1-10 of {{accountTypesList.length}} account types</span>
+        </div>
+        <div class="flex items-center gap-1">
+          <button
+            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled>
+            <i class="ri-arrow-left-s-line"></i>
+          </button>
+          <button
+            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-primary text-white hover:bg-primary/90">1</button>
+          <button
+            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">2</button>
+          <button
+            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">3</button>
+          <button
+            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-500 hover:bg-gray-50">
+            <i class="ri-arrow-right-s-line"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- account List Content-->
+  <div id="accounts-tab-list" class="accounts-tab-content hidden">
+    <!-- Header Section -->
+    <div class="bg-white rounded-lg shadow p-4 mb-6">
+      <div class="flex flex-col md:flex-row gap-4">
+        <div class="relative flex-grow">
+          <h2 class="text-2xl font-semibold text-gray-800">
+            Account List Management
+          </h2>
+        </div>
+        <!-- Search -->
+        <div class="relative flex-grow">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <i class="ri-search-line text-gray-400"></i>
+          </div>
+          <input type="text" placeholder="Search account lists..."
+            class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm" />
+        </div>
+        <button id="btn-add-account" (click)="toggleForm('account-list')"
+          class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+          <i class="ri-add-line mr-1"></i> Add Account List
+        </button>
+      </div>
+    </div>
+    <!-- Table Section -->
+    <div class="bg-white rounded-xl shadow overflow-hidden">
+      <!-- Table -->
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead>
+            <tr class="border-b border-gray-200">
+              <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                List Code
+              </th>
+              <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                List Identifier
+              </th>
+              <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                List Label
+              </th>
+              <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr class="hover:bg-gray-50 transition duration-150">
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm font-medium text-gray-900">1</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900">1</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900">SAVINGS</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                <!-- <div class="flex items-center justify-end space-x-3">
+                  <button (click)="editAccountList(accountList)"
+                    class="text-green-600 hover:text-green-800 transition duration-150 p-1 rounded hover:bg-green-50">
+                    <i class="ri-edit-line text-lg"></i>
+                  </button>
+                  <button (click)="deleteAccountList(accountList.code)"
+                    class="text-red-600 hover:text-red-800 transition duration-150 p-1 rounded hover:bg-red-50">
+                    <i class="ri-delete-bin-line text-lg"></i>
+                  </button>
+                </div> -->
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between">
+        <div class="flex items-center text-sm text-gray-500">
+          <span>Showing 1-10 ...</span>
+        </div>
+        <div class="flex items-center gap-1">
+          <button
+            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled>
+            <i class="ri-arrow-left-s-line"></i>
+          </button>
+          <button
+            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-primary text-white hover:bg-primary/90">1</button>
+          <button
+            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">2</button>
+          <button
+            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-500 hover:bg-gray-50">
+            <i class="ri-arrow-right-s-line"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- Modals -->
 <div *ngIf="isAnyModalVisible" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 ">
@@ -1209,9 +1353,7 @@
             <select id="walletStatus" name="walletStatus"
               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
               <option value="">Select status</option>
-              <option value="active">Actif</option>
-              <option value="inactive">Inactif</option>
-              <option value="suspended">Suspended</option>
+              <option *ngFor="let status of walletStatuses" [value]="status">{{status.wstLabe}}</option>
             </select>
           </div>
         </div>
@@ -1221,9 +1363,7 @@
             <select id="walletType" name="walletType"
               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
               <option value="">Select type</option>
-              <option value="personal">Personal</option>
-              <option value="business">Professionnal</option>
-              <option value="corporate">Entreprise</option>
+              <option *ngFor="let type of walletTypesList" [value]="type">{{ type.wtyLabe }}</option>
             </select>
           </div>
         </div>
@@ -1233,9 +1373,7 @@
             <select id="walletCategory" name="walletCategory"
               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
               <option value="">Select category</option>
-              <option value="standard">Standard</option>
-              <option value="premium">Premium</option>
-              <option value="vip">VIP</option>
+              <option *ngFor="let category of walletCategories" [value]="category">{{category.wcaLabe}}</option>
             </select>
           </div>
         </div>
@@ -1825,8 +1963,8 @@
     class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
     <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
       <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-        <h3 class="text-lg font-medium text-gray-900">{{isStatusEditMode ? 'Edit Wallet Status' : 'Add Wallet
-          Status'}}</h3>
+        <h3 class="text-lg font-medium text-gray-900">{{isStatusEditMode ? 'Edit Wallet Status' : 'Add Wallet Status'}}
+        </h3>
         <button id="close-status-modal" (click)="closeForm('wallet-status')" class="text-gray-400 hover:text-gray-500">
           <div class="w-6 h-6 flex items-center justify-center">
             <i class="ri-close-line"></i>
@@ -1865,8 +2003,8 @@
     class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
     <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
       <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-        <h3 class="text-lg font-medium text-gray-900">{{ isWalletTypeEditMode ? 'Edit Wallet Type' : 'Add Wallet
-          Type' }}</h3>
+        <h3 class="text-lg font-medium text-gray-900">{{ isWalletTypeEditMode ? 'Edit Wallet Type' : 'Add Wallet Type'
+          }}</h3>
         <button id="close-type-modal" (click)="closeForm('wallet-type')" class="text-gray-400 hover:text-gray-500">
           <div class="w-6 h-6 flex items-center justify-center">
             <i class="ri-close-line"></i>
@@ -1950,8 +2088,9 @@
       </div>
     </div>
   </div>
-<!-- Create Card Modal -->
-  <div *ngIf="isCardFormVisible" id="create-card-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <!-- Create Card Modal -->
+  <div *ngIf="isCardFormVisible" id="create-card-modal"
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
     <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl">
       <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
         <h3 class="text-lg font-semibold text-gray-800">{{ isCardEditMode ? 'Edit Card' : 'Create New Card' }}</h3>
@@ -1992,7 +2131,8 @@
             <select [(ngModel)]="newCard.cardList!.cliCode" name="cliCode" required
               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
               <option value="">Pick a List</option>
-              <option *ngFor="let cardList of cardListsList" [value]="cardList.cliCode">{{ cardList.cliLabe || cardList.cliIden }}</option>
+              <option *ngFor="let cardList of cardListsList" [value]="cardList.cliCode">{{ cardList.cliLabe ||
+                cardList.cliIden }}</option>
             </select>
           </div>
           <div>
@@ -2000,7 +2140,8 @@
             <select [(ngModel)]="newCard.cardType!.ctypCode" name="ctypCode" required
               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
               <option value="">Pick a Type</option>
-              <option *ngFor="let cardType of cardTypesList" [value]="cardType.ctypCode">{{ cardType.ctypLabe || cardType.ctypIden }}</option>
+              <option *ngFor="let cardType of cardTypesList" [value]="cardType.ctypCode">{{ cardType.ctypLabe ||
+                cardType.ctypIden }}</option>
             </select>
           </div>
           <div>
@@ -2014,7 +2155,8 @@
             <select [(ngModel)]="newCard.cardList!.wallet!.walIden" name="walIden" required
               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
               <option value="">Pick a Wallet</option>
-              <option *ngFor="let wallet of walletsList" [value]="wallet.walIden">{{ wallet.walLabe || wallet.walIden }}</option>
+              <option *ngFor="let wallet of walletsList" [value]="wallet.walIden">{{ wallet.walLabe || wallet.walIden }}
+              </option>
             </select>
           </div>
         </div>
@@ -2022,14 +2164,16 @@
           <button type="button" (click)="closeForm('create-card')" id="cancel-create-card"
             class="px-4 py-2 border border-gray-300 text-gray-700 rounded-button hover:bg-gray-50 transition text-sm whitespace-nowrap">Cancel</button>
           <button type="submit" id="submit-create-card"
-            class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 transition text-sm whitespace-nowrap">{{ isCardEditMode ? 'Update Card' : 'Create Card' }}</button>
+            class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 transition text-sm whitespace-nowrap">{{
+            isCardEditMode ? 'Update Card' : 'Create Card' }}</button>
         </div>
       </form>
     </div>
   </div>
 
   <!-- Add Card Type Modal -->
-  <div *ngIf="isCardTypeVisible" id="add-type-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div *ngIf="isCardTypeVisible" id="add-type-modal"
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
     <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
       <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
         <h3 class="text-lg font-medium text-gray-900">{{ isCardTypeEditMode ? 'Edit Card Type' : 'Add Card Type' }}</h3>
@@ -2059,7 +2203,8 @@
             <button type="button" (click)="closeForm('card-type')" id="cancel-add-type"
               class="px-4 py-2 border border-gray-300 rounded-button text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">Cancel</button>
             <button type="submit" id="submit-add-type"
-              class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 whitespace-nowrap">{{ isCardTypeEditMode ? 'Update Type' : 'Add Type' }}</button>
+              class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 whitespace-nowrap">{{
+              isCardTypeEditMode ? 'Update Type' : 'Add Type' }}</button>
           </div>
         </form>
       </div>
@@ -2068,7 +2213,8 @@
 
 
   <!-- Add Card List Modal -->
-  <div *ngIf="isCardListVisible" id="add-list-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div *ngIf="isCardListVisible" id="add-list-modal"
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
     <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
       <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
         <h3 class="text-lg font-medium text-gray-900">{{ isCardListEditMode ? 'Edit Card List' : 'Add Card List' }}</h3>
@@ -2098,7 +2244,8 @@
               <select [(ngModel)]="newCardList.wallet!.walIden" name="walIden" required
                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
                 <option value="">Pick a Wallet</option>
-                <option *ngFor="let wallet of walletsList" [value]="wallet.walIden">{{ wallet.walLabe || wallet.walIden }}</option>
+                <option *ngFor="let wallet of walletsList" [value]="wallet.walIden">{{ wallet.walLabe || wallet.walIden
+                  }}</option>
               </select>
             </div>
           </div>
@@ -2106,7 +2253,8 @@
             <button type="button" (click)="closeForm('card-list')" id="cancel-add-list"
               class="px-4 py-2 border border-gray-300 rounded-button text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">Cancel</button>
             <button type="submit" id="submit-add-list"
-              class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 whitespace-nowrap">{{ isCardListEditMode ? 'Update List' : 'Add List' }}</button>
+              class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 whitespace-nowrap">{{
+              isCardListEditMode ? 'Update List' : 'Add List' }}</button>
           </div>
         </form>
       </div>
@@ -2193,51 +2341,52 @@
     </div>
   </div>
   <!-- Add/Edit Account Type Modal -->
-<div *ngIf="isAccountTypeVisible" id="add-type-modal"
-  class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-  <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
-    <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-      <h3 class="text-lg font-medium text-gray-900">{{ isAccountTypeEditMode ? 'Edit Account Type' : 'Add Account Type' }}</h3>
-      <button id="close-type-modal" (click)="closeForm('account-type')" class="text-gray-400 hover:text-gray-500">
-        <div class="w-6 h-6 flex items-center justify-center">
-          <i class="ri-close-line"></i>
-        </div>
-      </button>
-    </div>
-    <div class="p-6">
-      <form id="add-type-form" (ngSubmit)="saveAccountType()">
-        <div class="space-y-4">
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Type Identifier</label>
-            <input type="text" id="atyIden" name="atyIden" [(ngModel)]="newAccountType.atyIden"
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-              placeholder="Type Identifier" required>
+  <div *ngIf="isAccountTypeVisible" id="add-type-modal"
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
+      <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+        <h3 class="text-lg font-medium text-gray-900">{{ isAccountTypeEditMode ? 'Edit Account Type' : 'Add Account
+          Type' }}</h3>
+        <button id="close-type-modal" (click)="closeForm('account-type')" class="text-gray-400 hover:text-gray-500">
+          <div class="w-6 h-6 flex items-center justify-center">
+            <i class="ri-close-line"></i>
           </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Type Label</label>
-            <input type="text" id="atyLabe" name="atyLabe" [(ngModel)]="newAccountType.atyLabe"
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-              placeholder="Type Label" required>
+        </button>
+      </div>
+      <div class="p-6">
+        <form id="add-type-form" (ngSubmit)="saveAccountType()">
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Type Identifier</label>
+              <input type="text" id="atyIden" name="atyIden" [(ngModel)]="newAccountType.atyIden"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                placeholder="Type Identifier" required>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Type Label</label>
+              <input type="text" id="atyLabe" name="atyLabe" [(ngModel)]="newAccountType.atyLabe"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                placeholder="Type Label" required>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Financial Institution ID</label>
+              <input type="number" id="atyFinId" name="atyFinId" [(ngModel)]="newAccountType.atyFinId"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                placeholder="Financial Institution ID" required>
+            </div>
           </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Financial Institution ID</label>
-            <input type="number" id="atyFinId" name="atyFinId" [(ngModel)]="newAccountType.atyFinId"
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-              placeholder="Financial Institution ID" required>
+          <div class="mt-6 flex justify-end space-x-3">
+            <button type="button" (click)="closeForm('account-type')" id="cancel-add-type"
+              class="px-4 py-2 border border-gray-300 rounded-button text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+            <button type="submit"
+              class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 whitespace-nowrap">
+              {{ isAccountTypeEditMode ? 'Update Type' : 'Add Type' }}
+            </button>
           </div>
-        </div>
-        <div class="mt-6 flex justify-end space-x-3">
-          <button type="button" (click)="closeForm('account-type')" id="cancel-add-type"
-            class="px-4 py-2 border border-gray-300 rounded-button text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">Cancel</button>
-          <button type="submit"
-            class="px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 whitespace-nowrap">
-            {{ isAccountTypeEditMode ? 'Update Type' : 'Add Type' }}
-          </button>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   </div>
-</div>
   <!-- Add account list Modal -->
   <div *ngIf="isAccountListVisible" id="add-type-modal"
     class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -2279,6 +2428,3 @@
   </div>
 
 </div>
-
-
-

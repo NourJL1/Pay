@@ -24,6 +24,7 @@ import { DocTypeService } from '../../services/doc-type.service';
 import { DocType } from '../../entities/doc-type';
 import { CustomerDoc } from '../../entities/customer-doc';
 import { CustomerDocService } from '../../services/customer-doc.service';
+import { loadavg } from 'node:os';
 
 interface PhoneNumber {
   internationalNumber: string;
@@ -103,7 +104,7 @@ export class RegisterComponent {
       {
         next: (docTypes: DocType[]) => {
           this.docTypes = docTypes;
-          this.allowedDocTypes = docTypes.map(type => type.dtyLabe!)
+          this.allowedDocTypes = docTypes.map(type => type.dtyIden!)
         },
         error: (err) => { console.log(err) }
       }
@@ -119,6 +120,7 @@ export class RegisterComponent {
       }
     }
 
+    this.isLoading = true
     //this.customer.role = new Role(this.wallet.walletType?.wtyCode!, this.wallet.walletType?.wtyLabe!);
 
     //this.customer.identity!.customerDocListe!.cdlLabe = this.customer.username + '-' + this.customer.identity!.customerIdentityType!.citLabe
@@ -138,9 +140,10 @@ export class RegisterComponent {
           })
         }
 
+        this.isLoading = false
         this.successMessage = 'Registration successful!';
         this.errorMessage = '';
-        setTimeout(() => this.router.navigate(['/wallet-form']), 2000);
+        setTimeout(() => this.router.navigate(['/login']), 2000);
       },
       error: (error) => {
         console.error('Registration error:', error);
@@ -161,10 +164,7 @@ export class RegisterComponent {
           cdoLabe: file.name,
           docType: matchedDocType,
         }))
-
         this.files.push(file)
-
-        //this.customer.identity!.customerDocListe!.customerDocs?.push(customerDoc) 
       }))
     }
   }
@@ -187,7 +187,7 @@ export class RegisterComponent {
       }
     }
 
-    // Step 2: Validate Full Name and Username
+    // Step 2: location and phone number validation
     if (this.currentStep === 2) {
       if (!this.customer.cusAddress?.trim() || !this.customer.country || !this.customer.city) {
         this.errorMessage = 'Please provide you address.';
@@ -210,13 +210,17 @@ export class RegisterComponent {
       this.customer.cusPhoneNbr = phoneValue.e164Number;
     }
 
-    // Step 3: In the goToNextStep method, update the phone validation part:
+    // Step 3: email validation
     if (this.currentStep === 3) {
 
       if (!this.customer.cusMailAddress?.trim() || !this.otpVerified) {
         this.errorMessage = 'Please enter and verify your email.';
         return;
       }
+
+      
+      this.successMessage = ""
+      this.errorMessage = ""
     }
 
     // Step 4: Validate Email and Password
@@ -320,6 +324,13 @@ export class RegisterComponent {
       next: (verif: boolean) => {
         this.otpVerified = verif; // Direct assignment (no .valueOf needed)
         console.log('OTP Verification Result:', verif);
+
+        if (!verif)
+          this.errorMessage = 'OTP verification failed. Please try again.';
+        else {
+          this.errorMessage = '';
+          this.successMessage = 'OTP verified successfully!';
+        }
       },
       error: (err) => {
         console.error('OTP Verification Failed:', err);

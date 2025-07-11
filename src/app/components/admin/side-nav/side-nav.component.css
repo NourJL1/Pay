@@ -1,7 +1,4 @@
-:where([class^="ri-"])::before {
-    content: "\f3c2";
-}
-
+/* Essential sidebar and main content layout */
 .sidebar {
     width: 260px;
     transition: all 0.3s ease;
@@ -12,6 +9,7 @@
     transition: all 0.3s ease;
 }
 
+/* Collapsed sidebar states */
 .sidebar.collapsed {
     width: 80px;
 }
@@ -20,12 +18,13 @@
     width: calc(100% - 80px);
 }
 
+/* Sidebar content transitions */
 .nav-item span,
 .logo-text,
 .sidebar-footer .profile {
     transition: 
-        opacity 0.3s ease 0.2s, /* Delayed appearance */
-        display 0s ease 0.5s; /* Keeps element hidden until fully expanded */
+        opacity 0.3s ease 0.2s,
+        display 0s ease 0.5s;
 }
 
 .sidebar.collapsed .nav-item span,
@@ -34,29 +33,11 @@
     opacity: 0;
     display: none;
     transition: 
-        opacity 0.1s ease, /* Faster fade out */
-        display 0s ease 0.1s; /* Immediate hide after fade */
+        opacity 0.1s ease,
+        display 0s ease 0.1s;
 }
 
-.card-stats {
-    transition: all 0.3s ease;
-}
-
-.card-stats:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 15px -3px rgba(236, 234, 234, 0.1), 0 4px 6px -2px rgba(233, 231, 231, 0.05);
-}
-
-input[type="checkbox"] {
-    display: none;
-}
-
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
+/* Theme switch styles (keep if you're using it) */
 .custom-switch {
     position: relative;
     width: 44px;
@@ -86,4 +67,3 @@ input:checked+.custom-switch {
 input:checked+.custom-switch::after {
     transform: translateX(22px);
 }
-
