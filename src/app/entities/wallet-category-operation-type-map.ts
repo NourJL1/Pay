@@ -6,7 +6,7 @@ import { Periodicity } from './periodicity';
 
 export class WalletCategoryOperationTypeMap {
 
-     id?: number;
+  id?: number;
 
   operationType?: OperationType;
 
@@ -18,6 +18,7 @@ export class WalletCategoryOperationTypeMap {
 
   periodicity?: Periodicity;
 
+  financialInstitutionId?: number;
 
   constructor(init?: Partial<WalletCategoryOperationTypeMap>) {
     Object.assign(this, init);

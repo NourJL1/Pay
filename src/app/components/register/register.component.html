@@ -182,23 +182,24 @@
           <input type="file" class="form-input p-2" multiple (change)="onFileSelected($event)"
             [accept]="allowedDocTypes">
         </div> -->
-        <div>
-          <h3 class="text-md font-medium text-gray-900 mb-4">Upload ID Files</h3>
-          <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
-            <div class="w-16 h-16 mx-auto bg-gray-100 rounded-full flex items-center justify-center mb-4">
-              <i class="ri-upload-2-line text-gray-400 ri-2x"></i>
+        <div class="form-field md:col-span-2">
+          <label class="form-label flex items-center">
+            ID Documents
+            <span class="text-primary ml-1">*</span>
+          </label>
+          <div
+            class="border-2 border-dashed border-gray-200 rounded-xl p-6 text-center bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer"
+            (click)="documentInput.click()">
+            <div class="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
+              <i class="ri-upload-cloud-2-line text-primary text-2xl"></i>
             </div>
-            <!-- <h4 class="text-sm font-medium text-gray-900 mb-1">Drag and drop your files here</h4>
-            <p class="text-xs text-gray-500 mb-4">or</p> -->
-            <!-- Hidden file input triggered by the button -->
-            <input type="file" id="fileInput" class="hidden" multiple (change)="onFileSelected($event)"
+            <h4 class="text-sm font-medium text-gray-900 mb-1">Click to upload documents</h4>
+            <p class="text-xs text-gray-500">(Max 10MB each)</p>
+            <p *ngIf="files.length > 0" class="text-xs text-primary mt-2">
+              {{ files.length }} file{{ files.length !== 1 ? 's' : '' }} selected
+            </p>
+            <input #documentInput type="file" class="hidden" multiple (change)="onFileSelected($event)"
               [accept]="allowedDocTypes">
-
-            <label for="fileInput"
-              class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 text-sm font-medium !rounded-button whitespace-nowrap cursor-pointer inline-block">
-              Browse Files
-            </label>
-            <p class="text-xs text-gray-500 mt-4">(Max size: 10MB)</p>
           </div>
         </div>
       </div>

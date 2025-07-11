@@ -63,7 +63,7 @@ export class RegisterComponent {
   customer: Customer = new Customer();
   wallet: Wallet = new Wallet()
 
-  currentStep = 1;
+  currentStep = 5;
   isLoading: boolean = false;
   isOtpLoading: boolean = false;
 
@@ -125,9 +125,11 @@ export class RegisterComponent {
 
     //this.customer.identity!.customerDocListe!.cdlLabe = this.customer.username + '-' + this.customer.identity!.customerIdentityType!.citLabe
     this.customer.identity!.customerDocListe!.cdlLabe = this.customer.identity?.customerIdentityType?.citLabe + '-' + this.customer.username
-    this.customer.identity!.customerDocListe!.cdlIden = 'CDL' + Math.round(Math.random() * 10000)
+    //this.customer.identity!.customerDocListe!.cdlIden = 'CDL' + Math.round(Math.random() * 10000)
 
     this.customer.role = { id: 1, name: 'CUSTOMER' }
+
+    console.log("Customer before registration: ", this.customer)
 
     this.customerService.register(this.customer).subscribe({
       next: (customer: Customer) => {
@@ -139,8 +141,6 @@ export class RegisterComponent {
             error: (err) => { console.log(err) }
           })
         }
-
-        this.isLoading = false
         this.successMessage = 'Registration successful!';
         this.errorMessage = '';
         setTimeout(() => this.router.navigate(['/login']), 2000);
@@ -151,16 +151,18 @@ export class RegisterComponent {
         this.successMessage = '';
       },
     });
+    
+
+        this.isLoading = false
   }
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       Array.from(input.files).forEach((file => {
-        const matchedDocType = this.docTypes.find(dt => dt.dtyLabe === file.type)
+        const matchedDocType = this.docTypes.find(dt => dt.dtyIden === file.type)
 
         this.customerDocs.push(new CustomerDoc({
-          cdoIden: 'CDO' + Math.round(Math.random() * 10000),
           cdoLabe: file.name,
           docType: matchedDocType,
         }))
@@ -334,6 +336,7 @@ export class RegisterComponent {
       },
       error: (err) => {
         console.error('OTP Verification Failed:', err);
+        this.errorMessage = 'OTP verification failed. Please try again.\n'+err.message;
         // Handle errors (e.g., show error message)
       }
     });

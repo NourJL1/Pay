@@ -8,12 +8,12 @@ import { Fees } from './fees';
 
 export class WalletOperationTypeMap {
 
-    wotmCode?: number;
+  wotmCode?: number;
   operationType!: OperationType;
   wallet!: Wallet;
   wotmLimitMax?: number;
   wotmDispAmount?: number;
-
+  wotmFinId?: number;
   periodicity!: Periodicity;
   fees!: Fees;
 

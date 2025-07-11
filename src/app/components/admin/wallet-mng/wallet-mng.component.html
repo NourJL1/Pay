@@ -209,7 +209,7 @@
         <div class="relative">
           <select
             class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary rounded-lg sm:text-sm">
-            <option value="">All Statuses</option>
+            <option value="" disabled selected>All Statuses</option>
             <option *ngFor="let status of walletStatuses" [value]="status">
               {{ status.wstLabe }}
             </option>
@@ -220,7 +220,7 @@
         <div class="relative">
           <select
             class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary rounded-lg sm:text-sm">
-            <option value="">All Types</option>
+            <option value="" disabled selected>All Types</option>
             <option *ngFor="let type of walletTypesList" [value]="type">
               {{ type.wtyLabe }}
             </option>
@@ -231,7 +231,7 @@
         <div class="relative">
           <select
             class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary rounded-lg sm:text-sm">
-            <option value="">All Categories</option>
+            <option value="" disabled selected>All Categories</option>
             <option *ngFor="let category of walletCategories" [value]="category">
               {{ category.wcaLabe }}
             </option>
@@ -651,6 +651,7 @@
     </div>
   </div>
 </div>
+
 <!-- Cards Section -->
 <div id="tab-cards" class="tab-content hidden space-y-6">
   <!-- Cards Tabs -->
@@ -1294,7 +1295,8 @@
 <!-- Modals -->
 <div *ngIf="isAnyModalVisible" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 ">
   <!-- Create Wallet Modal -->
-  <div *ngIf="isWalletFormVisible" id="create-wallet-modal" class="bg-white rounded-lg shadow-xl w-full max-w-2xl">
+  <div *ngIf="isWalletFormVisible" id="create-wallet-modal"
+    class="bg-white rounded-lg shadow-xl w-full max-w-2xl h-[90vh] flex flex-col">
     <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
       <h3 class="text-lg font-semibold text-gray-800">Create New Wallet</h3>
       <button (click)="closeForm('create-wallet')" id="close-create-wallet" class="text-gray-400 hover:text-gray-500">
@@ -1303,94 +1305,173 @@
         </div>
       </button>
     </div>
-    <form id="create-wallet-form" class="p-6">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Label</label>
-          <input type="text" id="walLabe" name="walLabe"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-            placeholder="Label">
+    <!-- Form Content -->
+  <form #walletForm="ngForm" class="flex-1 overflow-y-auto p-6 space-y-8">
+    <!-- Basic Information Section -->
+    <div class="space-y-6">
+      <div class="flex items-center">
+        <div class="w-1.5 h-6 bg-primary rounded-full mr-3"></div>
+        <h4 class="text-lg font-semibold text-gray-900">Basic Information</h4>
+      </div>
+      
+      <div class="space-y-5">
+        <div class="form-field">
+          <label class="form-label flex items-center">
+            Wallet Label
+            <span class="text-primary ml-1">*</span>
+          </label>
+          <input class="form-input" [(ngModel)]="selectedWallet.walLabe" name="walLabe" type="text" required
+                 placeholder="e.g. My Primary Wallet">
         </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Identifier</label>
-          <input type="text" id="walLabe" name="walLabe"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-            placeholder="Identifier">
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Key</label>
-          <input type="number" id="walKey" name="walKey"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-            placeholder="Key">
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Financial Institution</label>
-          <div class="relative">
-            <select id="walFinId" name="walFinId"
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
-              <option value="">Select institution</option>
-              <option value="1">Institution 1</option>
-              <option value="2">Institution 2</option>
-              <option value="3">Institution 3</option>
-            </select>
+
+        <div class="form-field">
+          <label class="form-label flex items-center">
+            Wallet Category
+            <span class="text-primary ml-1">*</span>
+          </label>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div *ngFor="let category of walletCategories"
+                 [class]="'wallet-card ' + (selectedWallet.walletCategory === category ? 'selected' : '')"
+                 (click)="selectedWallet.walletCategory = category">
+              <input type="radio" name="selectedWalletType" [value]="category"
+                     [(ngModel)]="selectedWallet.walletCategory" hidden>
+              <div class="flex flex-col items-center p-3">
+                <h4 class="font-semibold text-center">{{ category.wcaLabe| titlecase }}</h4>
+              </div>
+            </div>
           </div>
         </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Associated Customer</label>
-          <div class="relative">
-            <select id="customer" name="customer"
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
-              <option value="">Select customer</option>
-              <option value="1">customer 1</option>
-              <option value="2">customer 2</option>
-              <option value="3">customer 3</option>
-            </select>
-          </div>
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
-          <div class="relative">
-            <select id="walletStatus" name="walletStatus"
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
-              <option value="">Select status</option>
-              <option *ngFor="let status of walletStatuses" [value]="status">{{status.wstLabe}}</option>
-            </select>
-          </div>
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Type</label>
-          <div class="relative">
-            <select id="walletType" name="walletType"
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
-              <option value="">Select type</option>
-              <option *ngFor="let type of walletTypesList" [value]="type">{{ type.wtyLabe }}</option>
-            </select>
-          </div>
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
-          <div class="relative">
-            <select id="walletCategory" name="walletCategory"
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
-              <option value="">Select category</option>
-              <option *ngFor="let category of walletCategories" [value]="category">{{category.wcaLabe}}</option>
-            </select>
-          </div>
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Associated Card</label>
-          <div class="relative">
-            <select id="cardList" name="cardList"
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
-              <option value="">Select card</option>
-              <option value="1">Card 1</option>
-              <option value="2">card 2</option>
-              <option value="3">Card 3</option>
-            </select>
+
+        <div class="form-field">
+          <label class="form-label flex items-center">
+            Wallet Type
+            <span class="text-primary ml-1">*</span>
+          </label>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div *ngFor="let type of walletTypesList"
+                 [class]="'wallet-card ' + (selectedWallet.walletType === type ? 'selected' : '')"
+                 (click)="selectedWallet.walletType = type">
+              <input type="radio" name="selectedWalletType" [value]="type" [(ngModel)]="selectedWallet.walletType" hidden>
+              <div class="flex flex-col items-center p-3">
+                <h4 class="font-semibold text-center">{{ type.wtyLabe| titlecase }}</h4>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </form>
+    </div>
+
+    <!-- Card Information Section -->
+    <div class="space-y-6">
+      <div class="flex items-center">
+        <div class="w-1.5 h-6 bg-primary rounded-full mr-3"></div>
+        <h4 class="text-lg font-semibold text-gray-900">Payment Card</h4>
+      </div>
+      
+      <div class="space-y-5">
+        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-200">
+          <div class="flex items-center">
+            <i class="ri-bank-card-line text-xl text-gray-600 mr-3"></i>
+            <span class="font-medium">Add payment card</span>
+          </div>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" [(ngModel)]="addCard" name="addCard" class="sr-only peer">
+            <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+          </label>
+        </div>
+
+        <div [class.opacity-50]="!addCard" [class.pointer-events-none]="!addCard"
+             class="space-y-4 p-4 bg-gray-50 rounded-lg border border-gray-200 transition-all duration-200">
+          <div class="form-field">
+            <label class="form-label">Card Type</label>
+            <select class="form-input" name="cardType" [required]="addCard">
+              <option value="">Select card type</option>
+              <!-- <option *ngFor="let type of cardTypes" [ngValue]="type">{{ type.ctyLabe }}</option> -->
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label class="form-label">Card Number</label>
+            <div class="relative">
+              <input class="form-input pl-10" name="carNumb" type="text" [required]="addCard" placeholder="1234 5678 9012 3456">
+              <i class="ri-credit-card-line absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div class="form-field">
+              <label class="form-label">Expiry Date</label>
+              <div class="relative">
+                <input class="form-input pl-10" name="carExpiryDate" type="month" [required]="addCard">
+                <i class="ri-calendar-line absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+              </div>
+            </div>
+            <div class="form-field">
+              <label class="form-label">Card Label (Optional)</label>
+              <input class="form-input" name="carLabe" type="text" placeholder="e.g. My Visa Card">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bank Account Section -->
+    <div class="space-y-6">
+      <div class="flex items-center">
+        <div class="w-1.5 h-6 bg-primary rounded-full mr-3"></div>
+        <h4 class="text-lg font-semibold text-gray-900">Bank Account</h4>
+      </div>
+      
+      <div class="space-y-5">
+        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-200">
+          <div class="flex items-center">
+            <i class="ri-bank-line text-xl text-gray-600 mr-3"></i>
+            <span class="font-medium">Link bank account</span>
+          </div>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" [(ngModel)]="addAccount" name="addAccount" class="sr-only peer">
+            <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+          </label>
+        </div>
+
+        <div [class.opacity-50]="!addAccount" [class.pointer-events-none]="!addAccount"
+             class="space-y-4 p-4 bg-gray-50 rounded-lg border border-gray-200 transition-all duration-200">
+          <div class="form-field">
+            <label class="form-label">Bank</label>
+            <div class="relative">
+              <select class="form-input" name="bank" [required]="addAccount">
+                <option value="">Select your bank</option>
+                <!-- <option *ngFor="let bank of banks" [ngValue]="bank">{{ bank.banLabe }}</option> -->
+              </select>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label class="form-label">Account Type</label>
+            <div class="relative">
+              <select class="form-input" name="accountType" [required]="addAccount">
+                <option value="">Select account type</option>
+                <!-- <option *ngFor="let type of accountTypes" [ngValue]="type">{{ type.atyLabe }}</option> -->
+              </select>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label class="form-label">Account Number</label>
+            <div class="relative">
+              <input class="form-input pl-10" name="accRib" type="text" [required]="addAccount" placeholder="Enter RIB/account number">
+              <i class="ri-numbers-line absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label class="form-label">Account Label (Optional)</label>
+            <input class="form-input" name="accKey" type="text" placeholder="e.g. My Primary Account">
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
     <div class="px-6 py-4 border-t border-gray-200 flex justify-end space-x-3">
       <button (click)="closeForm('create-wallet')" id="cancel-create-wallet"
         class="px-4 py-2 border border-gray-300 text-gray-700 rounded-button hover:bg-gray-50 transition text-sm whitespace-nowrap">Cancel</button>
@@ -2130,7 +2211,7 @@
             <label class="block text-sm font-medium text-gray-700 mb-1">List</label>
             <select [(ngModel)]="newCard.cardList!.cliCode" name="cliCode" required
               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
-              <option value="">Pick a List</option>
+              <option value="" disabled selected>Pick a List</option>
               <option *ngFor="let cardList of cardListsList" [value]="cardList.cliCode">{{ cardList.cliLabe ||
                 cardList.cliIden }}</option>
             </select>
@@ -2139,7 +2220,7 @@
             <label class="block text-sm font-medium text-gray-700 mb-1">Type</label>
             <select [(ngModel)]="newCard.cardType!.ctypCode" name="ctypCode" required
               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
-              <option value="">Pick a Type</option>
+              <option value="" disabled selected>Pick a Type</option>
               <option *ngFor="let cardType of cardTypesList" [value]="cardType.ctypCode">{{ cardType.ctypLabe ||
                 cardType.ctypIden }}</option>
             </select>
@@ -2154,7 +2235,7 @@
             <label class="block text-sm font-medium text-gray-700 mb-1">Wallet</label>
             <select [(ngModel)]="newCard.cardList!.wallet!.walIden" name="walIden" required
               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
-              <option value="">Pick a Wallet</option>
+              <option value="" disabled selected>Pick a Wallet</option>
               <option *ngFor="let wallet of walletsList" [value]="wallet.walIden">{{ wallet.walLabe || wallet.walIden }}
               </option>
             </select>
@@ -2243,7 +2324,7 @@
               <label class="block text-sm font-medium text-gray-700 mb-1">Wallet</label>
               <select [(ngModel)]="newCardList.wallet!.walIden" name="walIden" required
                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
-                <option value="">Pick a Wallet</option>
+                <option value="" disabled selected>Pick a Wallet</option>
                 <option *ngFor="let wallet of walletsList" [value]="wallet.walIden">{{ wallet.walLabe || wallet.walIden
                   }}</option>
               </select>
@@ -2289,7 +2370,7 @@
           <div class="relative">
             <select id="walFinId" name="walFinId"
               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
-              <option value="">Pick a List</option>
+              <option value="" disabled selected>Pick a List</option>
               <option value="1">CHECKING</option>
               <option value="2">SAVINGS</option>
             </select>
@@ -2300,7 +2381,7 @@
           <div class="relative">
             <select id="customer" name="customer"
               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
-              <option value="">pick a type</option>
+              <option value="" disabled selected>pick a type</option>
               <option value="1">BUSINESS</option>
               <option value="2">INDIVIDUAL</option>
             </select>
@@ -2311,7 +2392,7 @@
           <div class="relative">
             <select id="walletStatus" name="walletStatus"
               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
-              <option value="">pick a bank</option>
+              <option value="" disabled selected>pick a bank</option>
               <option value="active">BAN-001</option>
               <option value="inactive">BAN-002</option>
               <option value="suspended">BAN-003</option>
@@ -2323,7 +2404,7 @@
           <div class="relative">
             <select id="walletStatus" name="walletStatus"
               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
-              <option value="">pick a wallet</option>
+              <option value="" disabled selected>pick a wallet</option>
               <option value="active">WAL-001</option>
               <option value="inactive">WAL-002</option>
               <option value="suspended">WAL-003</option>
