@@ -18,21 +18,6 @@ export class WalletCategoryOperationTypeMap {
 
   periodicity?: Periodicity;
 
-  feeIden?: number;
-
-  feeLabel?: string;
-
-  feeMinLimit?: number;
-
-  feeAmount?: number;
-
-  feeMaxLimit?: number;
-
-  feePercentage?: string;
-
-  feeMaxAmount?: number;
-
-  financialInstitutionId?: number;
 
   constructor(init?: Partial<WalletCategoryOperationTypeMap>) {
     Object.assign(this, init);
