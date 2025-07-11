@@ -30,8 +30,7 @@ export class Wallet {
   cardList?: CardList;
   accountList?: AccountList[];
   walletOperationTypeMappings?: WalletOperationTypeMap[];
-wcaIden: any;
-wcaLabe: any;
+
 
   constructor(init?: Partial<Wallet>) {
     this.walEffBal = 0
