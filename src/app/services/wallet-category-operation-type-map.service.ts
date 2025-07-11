@@ -7,36 +7,63 @@ import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
+
 export class WalletCategoryOperationTypeMapService {
-
 private apiUrl = `${environment.apiUrl}/api/wallet-category-operation-type-map`;
-
-  private httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-  };
-
   constructor(private http: HttpClient) {}
 
-  getAll(): Observable<WalletCategoryOperationTypeMap[]> {
-    return this.http.get<WalletCategoryOperationTypeMap[]>(this.apiUrl);
+  private getHttpOptions(): { headers: HttpHeaders } {
+    const token = localStorage.getItem('authToken');
+    const role = localStorage.getItem('role') || 'CUSTOMER';
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'X-Roles': `ROLE_${role.toUpperCase()}`
+    });
+    if (token) {
+      headers = headers.set('Authorization', `Bearer ${token}`);
+    }
+    return { headers };
+  }
+
+  getAll(options?: { headers: HttpHeaders }): Observable<WalletCategoryOperationTypeMap[]> {
+    console.log('wcotmService.getAll: URL:', `${this.apiUrl}/wallet-category-operation-type-map`, 'Options:', options);
+    return this.http.get<WalletCategoryOperationTypeMap[]>(
+      `${this.apiUrl}/wallet-category-operation-type-map`,
+      options
+    );
   }
 
   getById(id: number): Observable<WalletCategoryOperationTypeMap> {
-    return this.http.get<WalletCategoryOperationTypeMap>(`${this.apiUrl}/${id}`);
+    return this.http.get<WalletCategoryOperationTypeMap>(`${this.apiUrl}/${id}`, this.getHttpOptions());
   }
 
-  create(mapping: WalletCategoryOperationTypeMap): Observable<WalletCategoryOperationTypeMap> {
-    return this.http.post<WalletCategoryOperationTypeMap>(this.apiUrl, mapping, this.httpOptions);
+create(wcotm: WalletCategoryOperationTypeMap, options?: { headers: HttpHeaders }): Observable<WalletCategoryOperationTypeMap> {
+  console.log('wcotmService.create: URL:', this.apiUrl, 'Payload:', wcotm, 'Options:', options);
+  return this.http.post<WalletCategoryOperationTypeMap>(
+    `${this.apiUrl}/wallet-category-operation-type-map`,
+    wcotm,
+    options
+  );
+}
+
+  update(id: number, wcotm: WalletCategoryOperationTypeMap, options?: { headers: HttpHeaders }): Observable<WalletCategoryOperationTypeMap> {
+    console.log('wcotmService.update: URL:', `${this.apiUrl}/wallet-category-operation-type-map/${id}`, 'Payload:', wcotm, 'Options:', options);
+    return this.http.put<WalletCategoryOperationTypeMap>(
+      `${this.apiUrl}/wallet-category-operation-type-map/${id}`,
+      wcotm,
+      options
+    );
   }
 
-  update(id: number, mapping: WalletCategoryOperationTypeMap): Observable<WalletCategoryOperationTypeMap> {
-    return this.http.put<WalletCategoryOperationTypeMap>(`${this.apiUrl}/${id}`, mapping, this.httpOptions);
-  }
-
-  delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`, this.httpOptions);
+  delete(id: number, options?: { headers: HttpHeaders }): Observable<void> {
+    console.log('wcotmService.delete: URL:', `${this.apiUrl}/wallet-category-operation-type-map/${id}`, 'Options:', options);
+    return this.http.delete<void>(
+      `${this.apiUrl}/wallet-category-operation-type-map/${id}`,
+      options
+    );
   }
 
   search(word: string): Observable<WalletCategoryOperationTypeMap[]> {
-    return this.http.get<WalletCategoryOperationTypeMap[]>(`${this.apiUrl}/search?word=${word}`);
-  }}
+    return this.http.get<WalletCategoryOperationTypeMap[]>(`${this.apiUrl}/search?word=${word}`, this.getHttpOptions());
+  }
+}

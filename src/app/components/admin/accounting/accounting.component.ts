@@ -197,7 +197,7 @@ export class AccountingComponent implements OnInit {
 
   loadWalletOperationTypeMap(): void {
     console.log('loadWalletOperationTypeMap: Fetching ...');
-    this.wotmService.getAll().subscribe({
+    this.wotmService.getAll(this.getHttpOptions()).subscribe({
       next: (data: WalletOperationTypeMap[]) => {
         console.log('loadOperationTypes: wallet operation type map received:', data);
         this.wotmList = data;
@@ -212,7 +212,7 @@ export class AccountingComponent implements OnInit {
 
   loadWalletCategoryOperationTypeMap(): void {
     console.log('loadWalletCategoryOperationTypeMap: Fetching ...');
-    this.wotmService.getAll().subscribe({
+    this.wotmService.getAll(this.getHttpOptions()).subscribe({
       next: (data: WalletCategoryOperationTypeMap[]) => {
         console.log('loadWalletOperationTypeMap: Wallet xategory operation type map received:', data);
         this.wcotmList = data;
@@ -647,7 +647,7 @@ export class AccountingComponent implements OnInit {
       this.showErrorMessage('Please fill in all required fields, including Fee Schema.');
       return;
     }
-    this.wotmService.create(this.newWotm).subscribe({
+    this.wotmService.create(this.newWotm,this.getHttpOptions()).subscribe({
       next: (createdWotm: WalletOperationTypeMap) => {
         console.log('addWotm: wotm added:', createdWotm);
         this.wotmList = [...this.wotmList, createdWotm];
@@ -678,7 +678,7 @@ export class AccountingComponent implements OnInit {
       return;
     }
     if (this.selectedWotm?.wotmCode) {
-      this.wotmService.update(this.selectedWotm.wotmCode, this.newWotm).subscribe({
+      this.wotmService.update(this.selectedWotm.wotmCode, this.newWotm,this.getHttpOptions()).subscribe({
         next: (updatedWotm: WalletOperationTypeMap) => {
           console.log('updateWotm: Mapping updated:', updatedWotm);
           const index = this.wotmList.findIndex(wotm => wotm.wotmCode === updatedWotm.wotmCode);
@@ -705,7 +705,7 @@ export class AccountingComponent implements OnInit {
   deleteWotm(wotmCode: number | undefined): void {
     console.log('deleteOperationType: wotm:', wotmCode);
     if (wotmCode && confirm('Are you sure you want to delete this mapping?')) {
-      this.wotmService.delete(wotmCode).subscribe({
+      this.wotmService.delete(wotmCode, this.getHttpOptions()).subscribe({
         next: () => {
           console.log('deleteOperationType: Success, wotmCode:', wotmCode);
           this.wotmList = this.wotmList.filter(wotm => wotm.wotmCode !== wotmCode);
