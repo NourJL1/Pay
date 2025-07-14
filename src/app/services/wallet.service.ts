@@ -6,7 +6,6 @@ import { interval, switchMap, distinctUntilChanged } from 'rxjs';
 import { Wallet } from '../entities/wallet';
 import { WalletStatus } from '../entities/wallet-status';
 import { environment } from '../../environments/environment';
-import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -16,8 +15,7 @@ export class WalletService {
 
   constructor(
     private http: HttpClient,
-    private authService: AuthService
-  ) {}
+  ) { }
 
   private getHeaders(): HttpHeaders {
     const token = localStorage.getItem('authToken');
@@ -48,6 +46,10 @@ export class WalletService {
         return throwError(() => new Error('Failed to fetch wallets'));
       })
     );
+  }
+
+  getWalletByCustomerCode(cusCode: number): Observable<Wallet> {
+    return this.http.get<Wallet>(`${this.apiUrl}/by-customer-code/${cusCode}`);
   }
 
   getWalletCount(): Observable<number> {

@@ -4,7 +4,7 @@ import { DocType } from './doc-type';
 
 export class CustomerDoc {
 
-    cdoCode?: number;
+  cdoCode?: number;
   cdoIden?: string;
   cdoLabe?: string;
   customerDocListe?: CustomerDocListe;

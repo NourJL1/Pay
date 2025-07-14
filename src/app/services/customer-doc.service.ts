@@ -25,6 +25,24 @@ export class CustomerDocService {
     return this.http.get<CustomerDoc>(`${this.apiUrl}/${id}`);
   }
 
+  getFileById(id: number) {
+    return this.http.get(`${this.apiUrl}/file/${id}`, { responseType: 'blob' }).subscribe(file => {
+      // Create object URL from the Blob
+      const url = URL.createObjectURL(file);
+
+      // Open in new tab
+      const newWindow = window.open(url, '_blank');
+
+      // Clean up later (after window loads)
+      setTimeout(() => URL.revokeObjectURL(url), 10000);
+    });
+  }
+
+  getByCustomerDocListe(cdlIden: number) {
+    //return this.http.get(`${this.apiUrl}/cdl/${cdlIden}`);
+    return this.http.get<CustomerDoc[]>(`${this.apiUrl}/cdl/${cdlIden}`);
+  }
+
   /* create(customerDoc: CustomerDoc): Observable<CustomerDoc> {
     return this.http.post<CustomerDoc>(this.apiUrl, customerDoc, this.httpOptions);
   } */

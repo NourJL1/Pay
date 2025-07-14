@@ -27,45 +27,49 @@ export class CustomerService {
     };
   }
 
+  login(username: string, password: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/login`, { username, password })
+  }
+
   // Register a new customer
   register(customer: Customer): Observable<Customer> {
     return this.http.post<Customer>(
       `${this.apiUrl}`,
-      customer,
-      this.getHttpOptions()
+      customer/* ,
+      this.getHttpOptions() */
     );
   }
 
   // Get customer details by username
   getCustomer(username: string): Observable<Customer> {
     return this.http.get<Customer>(
-      `${this.apiUrl}/${username}`,
-      this.getHttpOptions()
+      `${this.apiUrl}/${username}`/* ,
+      this.getHttpOptions() */
     );
   }
 
   // Get customer details by email
   getCustomerByEmail(email: string): Observable<Customer> {
     return this.http.get<Customer>(
-      `${this.apiUrl}/email/${email}`,
-      this.getHttpOptions()
+      `${this.apiUrl}/email/${email}`/* ,
+      this.getHttpOptions() */
     );
   }
 
   // Get customer details by ID
   getCustomerById(customerId: number): Observable<Customer> {
     return this.http.get<Customer>(
-      `${this.apiUrl}/id/${customerId}`,
-      this.getHttpOptions()
+      `${this.apiUrl}/id/${customerId}`/* ,
+      this.getHttpOptions() */
     );
   }
 
   // Update customer information
-  updateCustomer(username: string, customer: Customer): Observable<Customer> {
+  updateCustomer(cusCode: number, customer: Customer): Observable<Customer> {
     return this.http.put<Customer>(
-      `${this.apiUrl}/${username}`,
-      customer,
-      this.getHttpOptions()
+      `${this.apiUrl}/${cusCode}`,
+      customer/* ,
+      this.getHttpOptions() */
     );
   }
 
@@ -86,23 +90,10 @@ export class CustomerService {
     );
   }
 
-  setLoggedInUserId(customerId: number): void {
-    this.loggedInCustomerId = customerId;
-  }
-
-  getLoggedInUserId(): number | null {
-    return this.loggedInCustomerId;
-  }
-
-  clearLoggedInUserId(): void {
-    this.loggedInCustomerId = null;
-  }
-
   // Delete customer by username
-  deleteCustomer(username: string): Observable<void> {
+  deleteCustomer(cusCode: number): Observable<void> {
     return this.http.delete<any>(
-      `${this.apiUrl}/${username}`,
-      this.getHttpOptions()
+      `${this.apiUrl}/${cusCode}`
     );
   }
 
@@ -119,8 +110,7 @@ export class CustomerService {
   updateWalletStatus(walletId: number, status: WalletStatus): Observable<any> {
     return this.http.patch(
       `${environment.apiUrl}/wallet/${walletId}/status`,
-      { status },
-      this.getHttpOptions()
+      { status }
     );
   }
 

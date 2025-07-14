@@ -6,7 +6,7 @@ import { Bank } from './bank';
 
 export class Account {
 
-     accCode?: number;
+  accCode?: number;
   accRib?: string;
   accIden?: string;
   accKey?: string;

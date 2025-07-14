@@ -3,22 +3,15 @@ import { Router } from '@angular/router';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators, AbstractControl, } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NgxIntlTelInputModule, CountryISO, SearchCountryField } from 'ngx-intl-tel-input';
-import { HttpClient } from '@angular/common/http';
 import { CustomerService } from '../../services/customer.service';
 import { Customer } from '../../entities/customer';
-import { error } from 'node:console';
 import { CountryService } from '../../services/country.service';
 import { CityService } from '../../services/city.service';
 import { Country } from '../../entities/country';
 import { City } from '../../entities/city';
-import { WalletType } from '../../entities/wallet-type';
-import { WalletTypeService } from '../../services/wallet-type.service';
-import { Role } from '../../entities/role';
 import { WalletService } from '../../services/wallet.service';
 import { CustomerIdentityTypeService } from '../../services/customer-identity-type.service';
 import { CustomerIdentityType } from '../../entities/customer-identity-type';
-import { CustomerIdentityService } from '../../services/customer-identity.service';
-import { CustomerIdentity } from '../../entities/customer-identity';
 import { Wallet } from '../../entities/wallet';
 import { DocTypeService } from '../../services/doc-type.service';
 import { DocType } from '../../entities/doc-type';
@@ -61,9 +54,8 @@ export class RegisterComponent {
     private router: Router) { }
 
   customer: Customer = new Customer();
-  wallet: Wallet = new Wallet()
 
-  currentStep = 5;
+  currentStep = 1;
   isLoading: boolean = false;
   isOtpLoading: boolean = false;
 
@@ -74,7 +66,6 @@ export class RegisterComponent {
   identityTypes: CustomerIdentityType[] = []
   docTypes: DocType[] = []
   allowedDocTypes: string[] = []
-  walletTypes: WalletType[] = []
   phoneCode: string = ''
 
   selectedCountryCode: string | null = null;
@@ -121,15 +112,16 @@ export class RegisterComponent {
     }
 
     this.isLoading = true
-    //this.customer.role = new Role(this.wallet.walletType?.wtyCode!, this.wallet.walletType?.wtyLabe!);
 
-    //this.customer.identity!.customerDocListe!.cdlLabe = this.customer.username + '-' + this.customer.identity!.customerIdentityType!.citLabe
     this.customer.identity!.customerDocListe!.cdlLabe = this.customer.identity?.customerIdentityType?.citLabe + '-' + this.customer.username
-    //this.customer.identity!.customerDocListe!.cdlIden = 'CDL' + Math.round(Math.random() * 10000)
+
+    this.customer.wallet = new Wallet({
+      
+    })
 
     this.customer.role = { id: 1, name: 'CUSTOMER' }
 
-    console.log("Customer before registration: ", this.customer)
+    console.log('Customer data before registration:', this.customer);
 
     this.customerService.register(this.customer).subscribe({
       next: (customer: Customer) => {
@@ -173,14 +165,6 @@ export class RegisterComponent {
 
   goToNextStep() {
 
-    // Step 1: Choosing a wallet type
-    /* if (this.currentStep === 1) {
-      if (!this.wallet.walletType) {
-        this.errorMessage = 'Please choose a wallet type.';
-        return;
-      }
-    } */
-
     // Step 1: Validate Full Name and Username
     if (this.currentStep === 1) {
       if (!this.customer.cusFirstName?.trim() || !this.customer.cusLastName?.trim() || !this.customer.username?.trim()) {
@@ -219,21 +203,18 @@ export class RegisterComponent {
         this.errorMessage = 'Please enter and verify your email.';
         return;
       }
-
-      
-      this.successMessage = ""
-      this.errorMessage = ""
     }
 
     // Step 4: Validate Email and Password
     if (this.currentStep === 4) {
-      if (!this.customer.cusMotDePasse?.trim() || this.customer.cusMotDePasse != this.confirm) {
+      if (this.customer.cusMotDePasse!.length<6 || !this.customer.cusMotDePasse?.trim() || this.customer.cusMotDePasse != this.confirm) {
         this.errorMessage = 'Please enter your password.';
         return;
       }
     }
 
     // Clear any previous error and go to the next step
+    this.successMessage = ""
     this.errorMessage = '';
     this.currentStep++;
   }

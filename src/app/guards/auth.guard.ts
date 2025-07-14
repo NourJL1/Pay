@@ -10,24 +10,22 @@ import {
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): boolean {
+  canActivate( route: ActivatedRouteSnapshot, state: RouterStateSnapshot ): boolean {
     const rolesString = localStorage.getItem('roles') || '';
     // On considère que rolesString est une chaîne de rôles séparés par des virgules
     const roles = rolesString.split(',').map(r => r.trim());
 
     const requiredRole = route.data['role'] as string;
+    const requiredStatus = route.data['requiredStatus'] as string;
 
     // Check if user roles contain or are higher than required role
     const hasRole = roles.some(userRole => this.isRoleHierarchical(userRole, requiredRole));
+    const hasStatus = localStorage.getItem('status') === requiredStatus;
 
-    if (hasRole) {
+    if (requiredRole && hasRole || requiredStatus && hasStatus) 
       return true;
-    }
 
     this.router.navigate(['/login']);
     return false;
@@ -41,5 +39,5 @@ export class AuthGuard implements CanActivate {
 
     return userRoleIndex >= requiredRoleIndex;
   }
-  
+
 }

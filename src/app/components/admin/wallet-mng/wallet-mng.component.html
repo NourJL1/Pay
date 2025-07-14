@@ -275,8 +275,7 @@
           </tr>
         </thead>
         <tbody class="bg-white divide-y divide-gray-200">
-          <tr *ngFor="let wallet of walletsList" class="hover:bg-gray-50 transition duration-150 cursor-pointer"
-            (click)="toggleForm('wallet-details')">
+          <tr *ngFor="let wallet of walletsList" class="hover:bg-gray-50 transition duration-150 cursor-pointer">
             <td class="px-6 py-4 whitespace-nowrap">
               <div class="text-sm font-medium text-gray-900">{{ wallet.walCode }}</div>
             </td>

@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
 import { WalletService } from '../../services/wallet.service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
+import { Wallet } from '../../entities/wallet';
+import { CustomerService } from '../../services/customer.service';
 
 @Component({
   selector: 'app-login',
@@ -19,70 +20,70 @@ export class LoginComponent {
   isLoading: boolean = false;
 
   constructor(
-    private authService: AuthService,
+    private customerService: CustomerService,
     private walletService: WalletService,
     private router: Router
-  ) {}
+  ) { }
 
-    ngOnInit(): void {
+  ngOnInit(): void {
     localStorage.clear()
-    }
+  }
 
-  async onSubmit(): Promise<void> {
+  onSubmit() {
     this.isLoading = true;
     this.errorMessage = '';
 
-    try {
-      const response = await firstValueFrom(
-        this.authService.login(this.username, this.cusMotDePasse)
-      );
+    this.customerService.login(this.username, this.cusMotDePasse).subscribe({
+      next: (response) => {
 
-      console.log('Full login response:', response);
+        // Store user data in localStorage
+        localStorage.setItem('authToken', response.token);
+        localStorage.setItem('cusCode', response.cusCode);
+        localStorage.setItem('role', response.role?.name || 'CUSTOMER');
+        localStorage.setItem('roles', response.roles || ['ROLE_CUSTOMER']); // Fallback to ROLE_CUSTOMER
+        localStorage.setItem('username', response.username);
+        localStorage.setItem('fullname', response.fullname || '');
+        localStorage.setItem('status', response.status || 'PENDING');
 
-      // ✅ Stocker les infos dans le localStorage
-      localStorage.setItem('authToken', response.token);
-      localStorage.setItem('cusCode', response.cusCode);
-      localStorage.setItem('role', response.role?.name || 'CUSTOMER');
-      localStorage.setItem('username', response.username);
-      localStorage.setItem('fullname', response.fullname);
+        const role = (response.role?.name || 'CUSTOMER');
 
-      const role = (response.role?.name || 'CUSTOMER').toLowerCase();
+        if (role === 'ADMIN')
+          this.router.navigate(['/admin/dashboard']);
+        else {
 
-      if (role === 'admin') {
-        console.log('Redirecting to admin dashboard');
-        await this.router.navigate(['/admin/dashboard']);
-      } else {
-        console.log('Checking wallet status');
+          if (response.status === 'PENDING') 
+            this.router.navigate(['/pending']);
 
-        try {
-          const walletStatus = await firstValueFrom(this.walletService.getWalletStatus());
-          console.log('Wallet Status:', walletStatus);
+          else if (response.status === 'ACTIVE') {
+            this.walletService.getWalletByCustomerCode(response.cusCode).subscribe({
+              next: (walletData: Wallet) => {
+                const statusLabel = walletData.walletStatus?.wstLabe?.trim().toUpperCase();
 
-          const status = walletStatus.wstLabe?.trim().toUpperCase();
-          console.log('Wallet status label:', status);
-
-          if (status === 'PENDING') {
-            console.log('Redirecting to /pending');
-            await this.router.navigate(['/pending']);
-          } else if (status === 'ACTIVE') {
-            console.log('Redirecting to /welcome');
-            await this.router.navigate(['/welcome']);
+                if (statusLabel === 'ACTIVE') {
+                  this.router.navigate(['/wallet']);
+                } else {
+                  this.errorMessage = 'Unknown wallet status: ' + statusLabel;
+                }
+              },
+              error: (err) => {
+                console.error('Error fetching wallet data:', err);
+                this.errorMessage = 'Failed to fetch wallet data.';
+              }
+            });
           } else {
-            this.errorMessage = 'Unknown wallet status: ' + status;
-            console.warn('Unexpected wallet status:', status);
+            this.errorMessage = 'Unknown customer status: ' + response.status.ctsLabe;
+            console.warn('Unexpected customer status:', response.status.ctsLabe);
           }
-        } catch (walletError) {
-          console.error('Wallet status error:', walletError);
-          this.errorMessage = 'Unable to fetch wallet status.';
-          await this.router.navigate(['/pending']);
         }
+      },
+      error: (err) => {
+        console.error('Login error:', err);
+        this.errorMessage = 'Login failed. Please check your credentials.';
+      },
+      complete: () => {
+        this.isLoading = false;
       }
-    } catch (error) {
-      console.error('Login error:', error);
-      this.errorMessage = 'Login failed. Please check your credentials.';
-    } finally {
-      this.isLoading = false;
-    }
+    })
   }
 
   goHome(): void {

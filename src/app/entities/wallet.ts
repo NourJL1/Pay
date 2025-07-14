@@ -19,7 +19,6 @@ export class Wallet {
   walSpecificBalance?: number;
   lastUpdatedDate?: string;
   walFinId?: number;
-
   customer?: Customer;
   walletStatus?: WalletStatus;
   walletType?: WalletType;
@@ -28,10 +27,8 @@ export class Wallet {
   lastBalanceHistory?: WalletBalanceHistory;
   operationTypes?: OperationType[];
   cardList?: CardList;
-  accountList?: AccountList[];
+  accountList?: AccountList;
   walletOperationTypeMappings?: WalletOperationTypeMap[];
-wcaIden: any;
-wcaLabe: any;
 
   constructor(init?: Partial<Wallet>) {
     this.walEffBal = 0

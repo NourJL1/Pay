@@ -14,6 +14,8 @@ import { Country } from '../../../entities/country';
 import { WalletStatus } from '../../../entities/wallet-status';
 import { DocType } from '../../../entities/doc-type';
 import { DocTypeService } from '../../../services/doc-type.service';
+import { CustomerDoc } from '../../../entities/customer-doc';
+import { CustomerDocService } from '../../../services/customer-doc.service';
 
 @Component({
   selector: 'app-customer-mng',
@@ -22,17 +24,15 @@ import { DocTypeService } from '../../../services/doc-type.service';
   styleUrl: './customer-mng.component.css'
 })
 export class CustomerMngComponent {
-allowedDocTypes: any;
-onFileSelected($event: Event) {
-throw new Error('Method not implemented.');
-}
-confirm: any;
+  allowedDocTypes: any;
+  confirm: any;
 
   constructor(
     private http: HttpClient,
     private customerService: CustomerService,
     private customerStatusService: CustomerStatusService,
     private customerIdentityTypeService: CustomerIdentityTypeService,
+    private customerDocService: CustomerDocService,
     private docTypeService: DocTypeService,
     private countryService: CountryService,
     private cityService: CityService,
@@ -43,7 +43,7 @@ confirm: any;
       next: (customers: Customer[]) => { this.customers = customers },
       error: (err) => { console.log(err) }
     }) */
-   this.customerService.getAllCustomers().subscribe({
+    this.customerService.getAllCustomers().subscribe({
       next: (customers: Customer[]) => { this.customers = customers },
       error: (err) => { console.log(err) }
     })
@@ -65,6 +65,7 @@ confirm: any;
           .subscribe((response) => {
             const allDocTypes: DocType[] = response.documentTypes
             this.docTypeList = allDocTypes.filter((docType: DocType) => !this.docTypes.some(dty => dty.dtyIden === docType.dtyIden))
+            this.allowedDocTypes = this.docTypes.map(type => type.dtyIden!)
           });
       },
       error: (err) => { console.log(err) }
@@ -111,6 +112,7 @@ confirm: any;
   selectedCustomer?: Customer
   selectedStatus?: CustomerStatus
   selectedIdentityType?: CustomerIdentityType
+  selectedDoc?: CustomerDoc
   selectedDocType?: DocType;
   selectedCountry?: Country
   selectedCity?: City
@@ -129,18 +131,105 @@ confirm: any;
   successMessage: string | null = null;
   errorMessage: string | null = null;
 
+  files: File[] = []
+  customerDocs: CustomerDoc[] = [];
+
   // customer methods
+
+  editCustomer(customer: Customer) {
+    this.selectedCustomer = customer
+    this.customerForm = { ...customer, fullName: customer.fullName }
+    this.isAddCustomerVisible = true
+    this.cdr.detectChanges();
+  }
+
+  addCustomer() {
+    this.customerForm.identity!.customerDocListe!.cdlLabe = this.customerForm.identity?.customerIdentityType?.citLabe + '-' + this.customerForm.username
+    console.log('add customer:', this.customerForm);
+    this.customerService.register(this.customerForm).subscribe({
+      next: (customer: Customer) => {
+        console.log('add Customer: cus added:', customer);
+        for (let i = 0; i < this.customerDocs.length; i++) {
+          this.customerDocs[i].customerDocListe = customer.identity?.customerDocListe
+          this.customerDocService.create(this.customerDocs[i], this.files[i]).subscribe({
+            next: () => { console.log("docs succ") },
+            error: (err) => { console.log(err) }
+          })
+        }
+        this.customers.push(customer);
+        this.customerForm = new Customer();
+        this.isAddCustomerVisible = false;
+        this.showSuccessMessage('Customer added successfully');
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('add Customer: Error:', err);
+        this.showErrorMessage('Failed to add customer: ' + (err.error?.message || 'Please check the form.'));
+      }
+    })
+  }
+
+  updateCustomer() {
+    console.log('update customer:', this.customerForm);
+    this.customerService.updateCustomer(this.customerForm.cusCode!, this.customerForm).subscribe({
+      next: (customer: Customer) => {
+        console.log('update customer: updated:', this.customerForm);
+        const index = this.customers.findIndex(cus => cus.cusCode === this.customerForm.cusCode);
+        if (index !== -1) {
+          this.customers[index] = customer;
+          this.customers = [...this.customers];
+        }
+        this.customerForm = new Customer();
+        this.selectedCustomer = undefined;
+        this.isAddCustomerVisible = false;
+        this.showSuccessMessage('Customer updated successfully');
+        this.cdr.detectChanges();
+
+      },
+      error: (err) => {
+        console.error('update Customer: Error:', err);
+        this.showErrorMessage('Failed to update customer: ' + (err.error?.message || 'Please try again.'));
+      }
+    })
+  }
+
+  onFileSelected(event: Event): void {
+    const maxFileSize = 10 * 1024 * 1024;
+
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      Array.from(input.files).forEach((file => {
+        if (file.size > maxFileSize) {
+          alert(`File "${file.name}" exceeds the maximum size of 10MB.`);
+          return; // Skip this file
+        }
+        const matchedDocType = this.docTypes.find(dt => dt.dtyIden === file.type)
+
+        this.customerDocs.push(new CustomerDoc({
+          cdoLabe: file.name,
+          docType: matchedDocType,
+        }))
+        this.files.push(file)
+      }))
+    }
+  }
 
   deleteCustomer(customer: Customer) {
     if (confirm('Are you sure you want to delete this customer?')) {
-      this.customerService.deleteCustomer(customer.username!).subscribe({
-        next: () => { console.log("deleted succ") },
+      this.customerService.deleteCustomer(customer.cusCode!).subscribe({
+        next: () => {
+          console.log("deleted succ")
+          this.customers = this.customers.filter(cus => cus.cusCode !== customer?.cusCode);
+          this.showSuccessMessage('Customer deleted successfully');
+          this.cdr.detectChanges();
+        },
         error: (err) => { console.log(err) }
       })
     }
   }
 
   // status methods
+
   editStatus(status: CustomerStatus) {
     this.selectedStatus = status
     this.statusForm = { ...status }
@@ -365,8 +454,8 @@ confirm: any;
   //city methods
 
   addCity() {
-    this.cityForm.ctyIden = this.cityForm.country?.ctrIden + '-' + 
-    console.log(this.cityForm)
+    this.cityForm.ctyIden = this.cityForm.country?.ctrIden + '-' +
+      console.log(this.cityForm)
 
     this.cityService.create(this.cityForm).subscribe({
       next: (city: City) => {
@@ -415,9 +504,25 @@ confirm: any;
         this.customerForm = new Customer()
         this.isAddCustomerVisible = true;
         break;
-      case 'customer-details': 
-        this.isUserDetailsVisible = true; 
-        console.log(this.selectedCustomer); break;
+      case 'customer-details':
+        this.isUserDetailsVisible = true;
+        this.customerDocService.getByCustomerDocListe(this.selectedCustomer?.identity?.customerDocListe?.cdlCode!).subscribe({
+          next: (docs: CustomerDoc[]) => {
+            this.selectedCustomer!.identity!.customerDocListe!.customerDocs = docs
+            this.cdr.detectChanges();
+          }
+          /* next: (docs: any) => {
+            this.selectedCustomer!.identity!.customerDocListe!.customerDocs = [];
+            this.files = [];
+            docs.forEach((doc: any) => {
+              this.selectedCustomer?.identity?.customerDocListe?.customerDocs?.push(doc.customerDoc)
+              this.files.push(doc.file);
+            })
+            this.cdr.detectChanges();
+          } */,
+          error: (err) => { console.log(err) }
+        })
+        break;
       case 'customer-status':
         this.selectedStatus = undefined;
         this.statusForm = new CustomerStatus()
@@ -495,24 +600,37 @@ confirm: any;
     activeContent?.classList.remove('hidden');
   }
 
-  previewDocument(type: string) {
+  fileData: any
 
-    const activeDoc = document.getElementById('document-preview')
+  previewDocument(customerDoc: CustomerDoc, index: number) {
+    this.customerDocService.getFileById(customerDoc.cdoCode!)/* .subscribe({
+      next: (doc: any) => {
+        
+      }
+    }) */
+
+    this.selectedDoc = customerDoc
+    console.log(this.selectedDoc)
+
+    /* const activeDoc = document.getElementById('document-preview')
     activeDoc?.classList.remove('hidden');
 
     const frames = document.querySelectorAll('.doc-frame')
     frames.forEach(content => content.classList.add('hidden'))
 
     const typeFrame = document.getElementById(type)
-    typeFrame?.classList.remove('hidden')
+    typeFrame?.classList.remove('hidden') */
   }
 
   closePreview() {
-    const activeDoc = document.getElementById('document-preview')
-    activeDoc?.classList.add('hidden');
 
-    const frames = document.querySelectorAll('.doc-frame')
-    frames.forEach(content => content.classList.add('hidden'))
+    this.selectedDoc = undefined
+
+    //const activeDoc = document.getElementById('document-preview')
+    //activeDoc?.classList.add('hidden');
+
+    //const frames = document.querySelectorAll('.doc-frame')
+    //frames.forEach(content => content.classList.add('hidden'))
   }
 
   // Show success message

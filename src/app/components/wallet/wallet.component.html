@@ -1,115 +1,46 @@
-    <!-- Header -->
-    <header class="bg-white text-white px-6 py-4 flex justify-between items-center sticky top-0 z-50">
+<!-- Header -->
+<header class="bg-white shadow-sm">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between h-16">
+      <!-- Logo - Adjusted size to be more appropriate for a header -->
       <div class="flex items-center">
-          <!-- <h1 class="font-['Pacifico'] text-2xl text-primary">logo</h1> -->
-           <img id="logo" src="../../../../assets/logo.png" alt="">
+        <img src="../../../../assets/logo.png" alt="App Logo"
+             class="h-10 w-auto cursor-pointer hover:opacity-80 transition-opacity">
       </div>
-      <div class="flex items-center space-x-4">
-          <div class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-800 relative">
-              <i class="ri-notification-3-line text-white"></i>
-              <span class="absolute -top-1 -right-1 w-5 h-5 flex items-center justify-center bg-primary text-white text-xs rounded-full">3</span>
+
+      <!-- Navigation and User Menu -->
+      <div class="flex items-center gap-4 md:gap-6">
+        <!-- Main Navigation Links -->
+        <nav class="hidden md:flex items-center space-x-4">
+          <a href="/wallet/dashboard" class="text-primary px-3 py-2 text-sm font-medium border-b-2 border-primary">Dashboard</a>
+          <a href="wallet/overview" class="text-gray-600 hover:text-primary px-3 py-2 text-sm font-medium">Overview</a>
+          <a href="/wallet/transactions" class="text-gray-600 hover:text-primary px-3 py-2 text-sm font-medium">Transactions</a>
+          <a href="/wallet/settings" class="text-gray-600 hover:text-primary px-3 py-2 text-sm font-medium">Settings</a>
+        </nav>
+
+        <!-- User Profile -->
+        <div class="flex items-center gap-2 cursor-pointer">
+          <div class="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center bg-gray-100 rounded-full">
+            <i class="ri-user-3-line text-gray-600 text-sm md:text-base"></i>
           </div>
-          <!-- <div class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-800">
-              <i class="ri-user-line text-white"></i>
-          </div> -->
-          <div class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-800">
-            <i class="ri-logout-box-line" (click)="logout()" style="cursor: pointer;" title="Log out"></i>
-
+          <div class="hidden md:block">
+            <div class="text-sm font-medium text-gray-900">{{wallet?.customer?.fullName}}</div>
+            <div class="text-xs text-gray-500">{{wallet?.walletType?.wtyLabe}}</div>
+          </div>
+          <!-- Logout Button -->
+            <button (click)="logout()"
+                class="flex items-center p-2 text-gray-600 hover:text-gray-900 rounded-full transition-all hover:bg-gray-100">
+                <div class="w-6 h-6 flex items-center justify-center">
+                    <i class="ri-logout-box-line ri-lg"></i>
+                </div>
+            </button>
         </div>
       </div>
-  </header>
-
-    <router-outlet></router-outlet>
-
-  <!-- Bottom Navigation -->
-  <nav class="fixed bottom-0 left-0 right-0 bg-white shadow-lg border-t border-gray-200 px-6 py-3 z-50">
-    <div class="flex justify-between max-w-screen-lg mx-auto">
-      <!-- Home Link -->
-      <a 
-        routerLink="/wallet/welcome" 
-        routerLinkActive="text-primary" 
-        [routerLinkActiveOptions]="{ exact: true }"
-        class="nav-item flex flex-col items-center text-gray-500"
-      >
-        <div class="w-6 h-6 flex items-center justify-center">
-          <i class="ri-home-5-fill text-xl"></i>
-        </div>
-        <span class="text-xs mt-1">Home</span>
-      </a>
-  
-      <!-- Analytics Link -->
-      <a 
-        routerLink="/Analytics" 
-        routerLinkActive="text-primary" 
-        class="nav-item flex flex-col items-center text-gray-500"
-      >
-        <div class="w-6 h-6 flex items-center justify-center">
-          <i class="ri-line-chart-line text-xl"></i>
-        </div>
-        <span class="text-xs mt-1">Analytics</span>
-      </a>
-  
-      <!-- Center Button -->
-      <div class="relative">
-        <button class="w-14 h-14 bg-primary rounded-full flex items-center justify-center -mt-8 shadow-lg">
-          <i class="ri-add-line text-white text-2xl"></i>
-        </button>
-      </div>
-  
-      <!-- Cards Link -->
-      <a 
-        routerLink="/cards" 
-        routerLinkActive="text-primary" 
-        class="nav-item flex flex-col items-center text-gray-500"
-      >
-        <div class="w-6 h-6 flex items-center justify-center">
-          <i class="ri-bank-card-line text-xl"></i>
-        </div>
-        <span class="text-xs mt-1">Cards</span>
-      </a>
-  
-      <!-- Settings Link -->
-      <a 
-        routerLink="/wallet/settings" 
-        routerLinkActive="text-primary" 
-        class="nav-item flex flex-col items-center text-gray-500"
-      >
-        <div class="w-6 h-6 flex items-center justify-center">
-          <i class="ri-settings-3-line text-xl"></i>
-        </div>
-        <span class="text-xs mt-1">Settings</span>
-      </a>
     </div>
-  </nav>
+  </div>
+</header>
 
-  <script>
-      document.addEventListener('DOMContentLoaded', function() {
-          // Toggle switches
-          const switches = document.querySelectorAll('.custom-switch input');
-          switches.forEach(switchEl => {
-              switchEl.addEventListener('change', function() {
-                  // Here you would typically handle the switch state change
-              });
-          });
-      });
-
-      document.addEventListener('DOMContentLoaded', function() {
-          // Quick action hover effect
-          const quickActions = document.querySelectorAll('.quick-action');
-          quickActions.forEach(action => {
-              action.addEventListener('click', function() {
-                  // Handle quick action click
-              });
-          });
-      });
-
-      document.addEventListener('DOMContentLoaded', function() {
-          // Transaction items click
-          const transactionItems = document.querySelectorAll('.transaction-item');
-          transactionItems.forEach(item => {
-              item.addEventListener('click', function() {
-                  // Handle transaction item click - show details
-              });
-          });
-      });
-  </script>
+<!-- Main Content -->
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <router-outlet></router-outlet>
+</main>

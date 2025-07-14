@@ -3,8 +3,8 @@
 import { Wallet } from './wallet';
 import { Card } from './card';
 export class CardList {
-    
- cliCode?: number;
+
+  cliCode?: number;
   cliIden?: string;
   cliLabe?: string;
   wallet?: Wallet;
@@ -13,6 +13,6 @@ export class CardList {
   constructor(init?: Partial<CardList>) {
     Object.assign(this, init);
   }
-    
+
 
 }

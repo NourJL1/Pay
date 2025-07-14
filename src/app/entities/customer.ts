@@ -24,7 +24,7 @@ export class Customer {
   identity?: CustomerIdentity;
   city?: City;
   country?: Country;
-  wallets?: Wallet[];
+  wallet?: Wallet;
   walletOperations?: WalletOperations[];
   username?: string;
   role?: Role;
@@ -37,35 +37,8 @@ export class Customer {
 
   constructor(init?: Partial<Customer>) {
     this.identity = new CustomerIdentity()
-    //this.wallets = []
 
     Object.assign(this, init);
   }
-
-  /* constructor(
-    cusCode: number,
-    cusFirstName: string,
-    cusMidName: string,
-    cusLastName: string,
-    username: string,
-    cusMailAddress: string,
-    roles: Role[] = [],
-    cusMotDePasse: string,
-    cusPhoneNbr: string ,
-    cusAddress: string ,
-    cusIden: string ,
-  ){
-    this.cusCode = cusCode;
-    this.cusFirstName = cusFirstName;
-    this.cusMidName = cusMidName;
-    this.cusLastName = cusLastName;
-    this.username = username;
-    this.cusMailAddress = cusMailAddress;
-    this.roles = roles;
-    this.cusMotDePasse = cusMotDePasse;
-    this.cusPhoneNbr = cusPhoneNbr;
-    this.cusAddress = cusAddress;
-    this.cusIden = cusIden;
-  } */
 
 }

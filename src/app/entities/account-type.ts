@@ -3,7 +3,7 @@ import { Account } from './account';
 
 export class AccountType {
 
-     atyCode?: number;
+  atyCode?: number;
   atyIden?: string;
   atyLabe?: string;
   atyFinId?: number;

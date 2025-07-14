@@ -19,13 +19,13 @@
 </div>
 
 <!-- Notification Area for Success and Error Messages -->
-<div *ngIf="successMessage" class="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50">
+<div *ngIf="successMessage" class="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-1000">
     {{ successMessage }}
     <button (click)="clearMessage()" class="ml-2 text-white hover:text-gray-200">
         <i class="ri-close-line"></i>
     </button>
 </div>
-<div *ngIf="errorMessage" class="fixed top-4 right-4 bg-red-500 text-white px-4 py-2 rounded-lg shadow-lg z-50">
+<div *ngIf="errorMessage" class="fixed top-4 right-4 bg-red-500 text-white px-4 py-2 rounded-lg shadow-lg z-1000">
     {{ errorMessage }}
     <button (click)="clearMessage()" class="ml-2 text-white hover:text-gray-200">
         <i class="ri-close-line"></i>
@@ -158,13 +158,11 @@
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                             <div class="flex items-center justify-end space-x-3">
-                                <button (click)="
-                      selectedCustomer = customer;
-                      toggleForm('customer-details')
-                    " class="text-blue-600 hover:text-blue-800 transition duration-150 p-1 rounded hover:bg-blue-50">
+                                <button (click)="selectedCustomer = customer; toggleForm('customer-details')"
+                                    class="text-blue-600 hover:text-blue-800 transition duration-150 p-1 rounded hover:bg-blue-50">
                                     <i class="ri-eye-line text-lg"></i>
                                 </button>
-                                <button
+                                <button (click)="editCustomer(customer)"
                                     class="text-green-600 hover:text-green-800 transition duration-150 p-1 rounded hover:bg-green-50">
                                     <i class="ri-edit-line text-lg"></i>
                                 </button>
@@ -245,7 +243,7 @@
                             class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm" />
                     </div>
                     <button id="btn-add-status" (click)="toggleForm('customer-status');"
-                        class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+                        class="flex items-center px-4 py-2.5 bg-primary text-white rounded-lg text-sm font-medium hover:bg-opacity-90 whitespace-nowrap transition duration-200 hover:shadow-lg">
                         <i class="ri-add-line mr-1"></i> Add Status </button>
                 </div>
             </div>
@@ -744,7 +742,7 @@
     <div *ngIf="isAddCustomerVisible" id="create-customer-modal"
         class="bg-white rounded-lg shadow-lg w-full max-w-2xl h-[90vh] flex flex-col">
         <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
-            <h3 class="text-lg font-semibold text-gray-800">Add New Customer</h3>
+            <h3 class="text-lg font-semibold text-gray-800">{{ selectedCustomer ? "Edit Customer Details" : "Add Customer" }}</h3>
             <button (click)="closeForm('customer-add')" id="close-create-customer"
                 class="text-gray-400 hover:text-gray-500">
                 <div class="w-6 h-6 flex items-center justify-center">
@@ -752,7 +750,8 @@
                 </div>
             </button>
         </div>
-        <form id="create-customer-form" class="p-6 space-y-8 overflow-y-auto">
+        <form (ngSubmit)="selectedCustomer ? updateCustomer() : addCustomer()" #CustomerForm="ngForm"
+            id="create-customer-form" class="p-6 space-y-8 overflow-y-auto">
             <!-- Personal Information Section -->
             <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
                 <div class="flex items-center mb-5">
@@ -769,8 +768,6 @@
                         <div class="relative">
                             <input class="form-input pl-10" [(ngModel)]="customerForm.cusFirstName" name="cusFirstName"
                                 type="text" required>
-                            <i
-                                class="ri-user-line absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                         </div>
                     </div>
 
@@ -779,8 +776,6 @@
                         <div class="relative">
                             <input class="form-input pl-10" [(ngModel)]="customerForm.cusMidName" name="cusMidName"
                                 type="text">
-                            <i
-                                class="ri-user-2-line absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                         </div>
                     </div>
 
@@ -792,8 +787,6 @@
                         <div class="relative">
                             <input class="form-input pl-10" [(ngModel)]="customerForm.cusLastName" name="cusLastName"
                                 type="text" required>
-                            <i
-                                class="ri-user-3-line absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                         </div>
                     </div>
 
@@ -805,7 +798,6 @@
                         <div class="relative">
                             <input class="form-input pl-10" [(ngModel)]="customerForm.username" name="username"
                                 type="text" required>
-                            <i class="ri-at-line absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                         </div>
                     </div>
                 </div>
@@ -827,8 +819,6 @@
                         <div class="relative">
                             <input class="form-input pl-10" [(ngModel)]="customerForm.cusMailAddress"
                                 name="cusMailAddress" type="email" required>
-                            <i
-                                class="ri-mail-line absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                         </div>
                     </div>
 
@@ -841,8 +831,6 @@
                         <div class="relative">
                             <input class="form-input pl-10" type="tel" [(ngModel)]="customerForm.cusPhoneNbr"
                                 name="cusPhoneNumber" required>
-                            <i
-                                class="ri-phone-line absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                         </div>
                     </div>
                 </div>
@@ -868,7 +856,6 @@
                                 <option *ngFor="let country of countries" [ngValue]="country">{{ country.ctrLabe }}
                                 </option>
                             </select>
-                            <i class="ri-earth-line absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                         </div>
                     </div>
 
@@ -882,7 +869,6 @@
                                 <option value="" disabled selected>Select city</option>
                                 <option *ngFor="let city of cities" [ngValue]="city">{{ city.ctyLabe }}</option>
                             </select>
-                            <i class="ri-map-pin-line absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                         </div>
                     </div>
 
@@ -894,15 +880,13 @@
                         <div class="relative">
                             <input class="form-input pl-10" [(ngModel)]="customerForm.cusAddress" name="cusAddress"
                                 type="text" required>
-                            <i
-                                class="ri-home-4-line absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Security Section -->
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+            <div *ngIf="!selectedCustomer" class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
                 <div class="flex items-center mb-5">
                     <div class="w-1.5 h-6 bg-primary rounded-full mr-3"></div>
                     <h4 class="text-lg font-semibold text-gray-900">Security</h4>
@@ -917,7 +901,6 @@
                         <div class="relative">
                             <input class="form-input pl-10 pr-10" [(ngModel)]="customerForm.cusMotDePasse"
                                 name="cusMotDePasse" type="password" required minlength="6">
-                            <i class="ri-lock-line absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                         </div>
                         <p class="text-xs text-gray-500 mt-1">Minimum 6 characters</p>
                     </div>
@@ -930,14 +913,37 @@
                         <div class="relative">
                             <input class="form-input pl-10 pr-10" [(ngModel)]="confirm" name="confirm" type="password"
                                 required minlength="6">
-                            <i class="ri-lock-line absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Status Section -->
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                <div class="flex items-center mb-5">
+                    <div class="w-1.5 h-6 bg-primary rounded-full mr-3"></div>
+                    <h4 class="text-lg font-semibold text-gray-900">Status</h4>
+                </div>
+                <div class="grid grid-cols-1 gap-5">
+                    <div class="form-field">
+                        <label class="form-label flex items-center">
+                            Customer Status <span class="text-primary ml-1">*</span>
+                        </label>
+                        <div class="relative">
+                            <select class="form-input pl-10" [(ngModel)]="customerForm.status" name="status"
+                                required>
+                                <option value="" disabled>Select status</option>
+                                <option *ngFor="let status of statuses" [ngValue]="status">
+                                    {{ status.ctsLabe }}
+                                </option>
+                            </select>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- KYC Verification Section -->
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+            <div *ngIf="!selectedCustomer" class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
                 <div class="flex items-center mb-5">
                     <div class="w-1.5 h-6 bg-primary rounded-full mr-3"></div>
                     <h4 class="text-lg font-semibold text-gray-900">KYC Verification</h4>
@@ -955,7 +961,6 @@
                                 <option value="" disabled selected>Select ID type</option>
                                 <option *ngFor="let cit of identityTypes" [ngValue]="cit">{{cit.citLabe}}</option>
                             </select>
-                            <i class="ri-id-card-line absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                         </div>
                     </div>
 
@@ -967,7 +972,6 @@
                         <div class="relative">
                             <input class="form-input pl-10" [(ngModel)]="customerForm.identity!.cidNum" name="cidNum"
                                 type="text">
-                            <i class="ri-fingerprint-line absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                         </div>
                     </div>
 
@@ -977,41 +981,34 @@
                             <span class="text-primary ml-1">*</span>
                         </label>
                         <div class="border-2 border-dashed border-gray-200 rounded-xl p-6 text-center bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer"
-                            (click)="documentInput.click()">
+                            (click)="files = []; documentInput.click()">
                             <div
                                 class="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
                                 <i class="ri-upload-cloud-2-line text-primary text-2xl"></i>
                             </div>
                             <h4 class="text-sm font-medium text-gray-900 mb-1">Click to upload documents</h4>
-                            <p class="text-xs text-gray-500">PNG, JPG, PDF (Max 10MB each)</p>
+                            <p class="text-xs text-gray-500">(Max 10MB each)</p>
+                            <p *ngIf="files.length > 0" class="text-xs text-primary mt-2">
+                                {{ files.length }} file{{ files.length !== 1 ? 's' : '' }} selected
+                            </p>
                             <input #documentInput type="file" class="hidden" multiple (change)="onFileSelected($event)"
                                 [accept]="allowedDocTypes">
                         </div>
-                        <!-- <div *ngIf="uploadedFiles.length > 0" class="mt-3 space-y-2">
-          <div *ngFor="let file of uploadedFiles" class="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
-            <div class="flex items-center">
-              <i class="ri-file-text-line text-gray-500 mr-2"></i>
-              <span class="text-sm text-gray-700 truncate max-w-xs">{{ file.name }}</span>
-            </div>
-            <button class="text-gray-400 hover:text-red-500" (click)="removeFile(file)">
-              <i class="ri-close-line"></i>
-            </button>
-          </div>
-        </div> -->
                     </div>
                 </div>
             </div>
-        </form>
-        <div class="px-6 py-4 border-t border-gray-200 flex justify-end space-x-3">
+            <div class="px-6 py-4 border-t border-gray-200 flex justify-end space-x-3">
             <button (click)="closeForm('customer-add')" id="cancel-create-customer"
                 class="px-4 py-2 border border-gray-300 text-gray-700 rounded-button hover:bg-gray-50 transition text-sm whitespace-nowrap">
                 Cancel
             </button>
-            <button id="submit-create-customer"
+            <button type="submit" id="submit-create-customer"
                 class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
-                Create Customer
+                {{ selectedCustomer ? "Update Customer Details" : "Add Customer" }}
             </button>
         </div>
+        </form>
+        
     </div>
 
     <!-- customer Detail Modal -->
@@ -1041,12 +1038,6 @@
                             <p class="text-sm text-gray-500">
                                 {{ selectedCustomer?.username }}
                             </p>
-                        </div>
-                        <div class="mt-6 space-y-2">
-                            <button
-                                class="w-full px-4 py-2 bg-primary text-white rounded-button hover:bg-red-700 transition text-sm whitespace-nowrap">
-                                Change Status
-                            </button>
                         </div>
                     </div>
                     <!-- Wallet Information -->
@@ -1228,31 +1219,8 @@
 
                             <!-- Document List -->
                             <div class="space-y-3">
-                                <!-- Document Item 1 -->
-                                <div class="document-item group flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
-                                    (click)="previewDocument('pdf')">
-                                    <div class="flex items-center">
-                                        <div
-                                            class="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center text-blue-500 mr-3">
-                                            <i class="ri-id-card-line"></i>
-                                        </div>
-                                        <div>
-                                            <div class="font-medium text-gray-800">doc1</div>
-                                            <div class="text-xs text-gray-500">
-                                                PDF • 2.4 MB • Added 15 Jan 2023
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="flex items-center space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <button class="p-1 text-gray-500 hover:text-blue-500" title="Preview">
-                                            <i class="ri-eye-line"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <!-- <div *ngFor="let doc of selectedCustomer?.identity?.customerDocListe?.customerDocs"
-                                class="document-item group flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
-                                    (click)="previewDocument('pdf')">
+                                <div *ngFor="let doc of selectedCustomer?.identity?.customerDocListe?.customerDocs; let i = index"
+                                class="document-item group flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
                                     <div class="flex items-center">
                                         <div
                                             class="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center text-blue-500 mr-3">
@@ -1266,79 +1234,33 @@
                                     </div>
                                     <div
                                         class="flex items-center space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <button class="p-1 text-gray-500 hover:text-blue-500" title="Preview">
-                                            <i class="ri-eye-line"></i>
-                                        </button>
-                                    </div>
-                                </div> -->
-
-                                <!-- Document Item 2 -->
-                                <div class="document-item group flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
-                                    (click)="previewDocument('image')">
-                                    <div class="flex items-center">
-                                        <div
-                                            class="w-10 h-10 bg-purple-50 rounded-lg flex items-center justify-center text-purple-500 mr-3">
-                                            <i class="ri-passport-line"></i>
-                                        </div>
-                                        <div>
-                                            <div class="font-medium text-gray-800">doc2</div>
-                                            <div class="text-xs text-gray-500">
-                                                PDF • 1.1 MB • Added 10 Jan 2023
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="flex items-center space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <button class="p-1 text-gray-500 hover:text-blue-500" title="Preview">
-                                            <i class="ri-eye-line"></i>
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <!-- Document Item 3 -->
-                                <div class="document-item group flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
-                                    (click)="previewDocument('error')">
-                                    <div class="flex items-center">
-                                        <div
-                                            class="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center text-green-500 mr-3">
-                                            <i class="ri-file-text-line"></i>
-                                        </div>
-                                        <div>
-                                            <div class="font-medium text-gray-800">doc3</div>
-                                            <div class="text-xs text-gray-500">
-                                                PDF • 1.1 MB • Added 10 Jan 2023
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="flex items-center space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <button class="p-1 text-gray-500 hover:text-blue-500" title="Preview">
+                                        <button (click)="previewDocument(doc, i)" class="p-1 text-gray-500 hover:text-blue-500" title="Preview">
                                             <i class="ri-eye-line"></i>
                                         </button>
                                     </div>
                                 </div>
                             </div>
 
+                            
                             <!-- Document Preview Panel (hidden by default) -->
-                            <div id="document-preview"
-                                class="hidden mt-6 border border-gray-200 rounded-lg bg-white p-4">
+                            <!-- <div id="document-preview" *ngIf="selectedDoc!=undefined"
+                                class="mt-6 border border-gray-200 rounded-lg bg-white p-4">
                                 <div class="flex justify-between items-center mb-4">
                                     <h4 id="preview-title" class="font-medium text-gray-800">
-                                        Preview: File
+                                        Preview: {{selectedDoc.cdoLabe}}
                                     </h4>
                                     <button (click)="closePreview()" class="text-gray-500 hover:text-gray-700">
                                         <i class="ri-close-line"></i>
                                     </button>
                                 </div>
                                 <div class="bg-gray-50 rounded-lg p-4 min-h-[400px] flex items-center justify-center">
-                                    <!-- PDF viewer or image preview would go here -->
                                     <div class="w-full h-full">
-                                        <img id="image" class="hidden doc-frame top-0 left-0 w-full h-full"
+                                        <img  id="image" class="doc-frame top-0 left-0 w-full h-full"
                                             src="../../../../../assets/PASSPORT.jpg" />
-                                        <iframe id="pdf" class="hidden doc-frame top-0 left-0 w-full h-full"
+                                        <iframe id="pdf" class="doc-frame top-0 left-0 w-full h-full"
                                             style="min-height: 400px"
                                             src="../../../../../assets/Diagramme de classe G wallet.pdf"></iframe>
-                                        <div id="error" class="hidden doc-frame text-center">
+                                        <div id="error" class="doc-frame text-center">
                                             <i class="ri-file-text-line text-4xl text-gray-300 mb-2"></i>
                                             <p class="text-gray-500">Document preview</p>
                                             <p class="text-xs text-gray-400 mt-2">
@@ -1351,7 +1273,7 @@
                                 <div class="mt-4 text-right text-xs text-gray-500">
                                     <i class="ri-lock-line"></i> This document is confidential
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
 
                         <!-- relationships -->

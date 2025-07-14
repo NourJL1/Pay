@@ -3,7 +3,7 @@ import { Account } from './account';
 
 export class AccountList {
 
-     aliCode?: number;
+  aliCode?: number;
   aliIden?: string;
   aliLabe?: string;
   wallet?: Wallet | null;

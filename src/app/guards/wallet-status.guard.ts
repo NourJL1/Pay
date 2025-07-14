@@ -2,9 +2,8 @@ import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { map, catchError, of, tap } from 'rxjs';
 import { WalletService } from '../services/wallet.service';
-import { AuthService } from '../services/auth.service';
 
-export const walletStatusGuard: CanActivateFn = (route) => {
+/* export const walletStatusGuard: CanActivateFn = (route) => {
   const walletService = inject(WalletService);
   const authService = inject(AuthService);
   const router = inject(Router);
@@ -46,3 +45,4 @@ export const walletStatusGuard: CanActivateFn = (route) => {
     })
   );
 };
+ */

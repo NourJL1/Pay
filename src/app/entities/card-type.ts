@@ -4,7 +4,7 @@ import { Card } from './card';
 
 export class CardType {
 
-    ctypCode?: number;
+  ctypCode?: number;
   ctypIden?: string;
   ctypLabe?: string;
   cards?: Card[];

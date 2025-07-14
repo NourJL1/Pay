@@ -5,7 +5,7 @@ import { Account } from './account';
 export class Bank {
 
 
-     banCode?: number;
+  banCode?: number;
   banIden?: string;
   banCorpName?: string;
   banInit?: string;
