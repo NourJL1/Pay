@@ -83,9 +83,11 @@ export class LoginComponent {
         }
       },
       error: (err) => {
-        this.isLoading = false;
         console.error('Login error:', err);
         this.errorMessage = 'Login failed. Please check your credentials.';
+      },
+      complete: () => {
+        this.isLoading = false; // Hide loading indicator after completion
       }
     })
   }

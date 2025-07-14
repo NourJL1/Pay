@@ -50,10 +50,12 @@ export class ForgotPasswordComponent {
             this.errorMessage = 'An error occurred while checking your email';
             console.error('Email lookup failed:', err);
           }
+        },
+        complete: () => {
+          this.isLoading = false;  // Hide loading indicator
         }
       }
     )
-    this.isLoading = false;  // Hide loading indicator
   }
 
 }
