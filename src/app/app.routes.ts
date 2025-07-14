@@ -16,6 +16,7 @@ import { CustomerMngComponent } from './components/admin/customer-mng/customer-m
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { PendingComponent } from './components/wallet/pending/pending.component';
 import { OverviewComponent } from './components/wallet/overview/overview.component';
+import { SuspendedComponent } from './components/wallet/suspended/suspended.component';
 
 export const routes: Routes = [
 
@@ -33,7 +34,12 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
     data: { requiredStatus: 'PENDING' }
   },
-  { path: 'wallet', component: WalletComponent },
+  { 
+    path: 'suspended', 
+    component: SuspendedComponent,
+    canActivate: [AuthGuard],
+    data: { requiredStatus: 'SUSPENDED' }
+  },
   {
     path: 'wallet',
     component: WalletComponent,

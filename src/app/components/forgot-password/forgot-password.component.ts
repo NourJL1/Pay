@@ -12,15 +12,17 @@ import { CustomerService } from '../../services/customer.service';
   styleUrls: ['./forgot-password.component.css'],
 })
 export class ForgotPasswordComponent {
-  message: string = '';
-  loading: boolean = false;
+  isLoading: boolean = false;
   email: any;
-  errorMessage: string ='';
+  errorMessage?: string;
+  successMessage?: string;
 
   constructor(private customerService: CustomerService) { }
 
   onSubmit() {
-    this.loading = true;  // Show loading indicator
+    this.errorMessage = '';
+    this.successMessage = '';
+    this.isLoading = true;  // Show loading indicator
     console.log(this.email)
     this.customerService.getCustomerByEmail(this.email).subscribe(
       {
@@ -28,10 +30,13 @@ export class ForgotPasswordComponent {
           this.customerService.sendEmail(this.email, "Reset Password").subscribe(
             {
               next: (Result: any) => {
-                if (Result.message == 'success')
+                if (Result.message == 'success') {
+                  this.successMessage = 'An email has been sent to your address with instructions to reset your password.';
                   localStorage.setItem('cusCode', value.cusCode)
+                }
               },
               error: (err) => {
+                this.errorMessage = 'Failed to send email. Please try again.';
                 console.error('mailing Failed: ', err);
               }
             });
@@ -45,10 +50,10 @@ export class ForgotPasswordComponent {
             this.errorMessage = 'An error occurred while checking your email';
             console.error('Email lookup failed:', err);
           }
-        },
+        }
       }
     )
-
+    this.isLoading = false;  // Hide loading indicator
   }
 
 }

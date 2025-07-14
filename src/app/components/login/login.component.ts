@@ -51,16 +51,15 @@ export class LoginComponent {
           this.router.navigate(['/admin/dashboard']);
         else {
 
-          if (response.status === 'PENDING') 
-            this.router.navigate(['/pending']);
-
-          else if (response.status === 'ACTIVE') {
-            this.walletService.getWalletByCustomerCode(response.cusCode).subscribe({
+          switch(response.status)
+          {
+            case 'ACTIVE':
+              this.walletService.getWalletByCustomerCode(response.cusCode).subscribe({
               next: (walletData: Wallet) => {
                 const statusLabel = walletData.walletStatus?.wstLabe?.trim().toUpperCase();
 
                 if (statusLabel === 'ACTIVE') {
-                  this.router.navigate(['/wallet']);
+                  this.router.navigate(['/wallet/overview']);
                 } else {
                   this.errorMessage = 'Unknown wallet status: ' + statusLabel;
                 }
@@ -70,18 +69,23 @@ export class LoginComponent {
                 this.errorMessage = 'Failed to fetch wallet data.';
               }
             });
-          } else {
-            this.errorMessage = 'Unknown customer status: ' + response.status.ctsLabe;
-            console.warn('Unexpected customer status:', response.status.ctsLabe);
+              break;
+            case 'SUSPENDED':
+              this.router.navigate(['/suspended']);
+              break;
+            case 'PENDING':
+              this.router.navigate(['/pending']);
+              break;
+            default:
+              this.errorMessage = 'Unknown status: ' + response.status;
+              console.warn('Unexpected status:', response.status);
           }
         }
       },
       error: (err) => {
+        this.isLoading = false;
         console.error('Login error:', err);
         this.errorMessage = 'Login failed. Please check your credentials.';
-      },
-      complete: () => {
-        this.isLoading = false;
       }
     })
   }

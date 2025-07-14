@@ -285,13 +285,21 @@ export class RegisterComponent {
     this.isOtpLoading = true
 
     this.customerService.sendEmail(this.customer.cusMailAddress, "TOTP").subscribe({
-      next: (Result: any) => {
-        if (Result.message == 'success')
+      next: (result: any) => {
+        console.log('OTP sent result:', result.message  );
+        if (result.message != 'success') 
+          this.errorMessage = result.message || 'Failed to send OTP. Please try again.';
+        else{
+          this.successMessage = 'OTP sent successfully.';
           this.otpSent = true;
-        this.isOtpLoading = false
+        }
       },
       error: (err) => {
+        this.errorMessage = err.message || 'Failed to send OTP. Please try again.';
         console.error('OTP mailing Failed: ', err);
+      },
+      complete: () => {
+        this.isOtpLoading = false; // Hide loading indicator after completion
       }
     });
   }

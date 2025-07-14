@@ -5,17 +5,29 @@
       <!-- Logo - Adjusted size to be more appropriate for a header -->
       <div class="flex items-center">
         <img src="../../../../assets/logo.png" alt="App Logo"
-             class="h-10 w-auto cursor-pointer hover:opacity-80 transition-opacity">
+          class="h-10 w-auto cursor-pointer hover:opacity-80 transition-opacity">
       </div>
 
       <!-- Navigation and User Menu -->
       <div class="flex items-center gap-4 md:gap-6">
         <!-- Main Navigation Links -->
         <nav class="hidden md:flex items-center space-x-4">
-          <a href="/wallet/dashboard" class="text-primary px-3 py-2 text-sm font-medium border-b-2 border-primary">Dashboard</a>
-          <a href="wallet/overview" class="text-gray-600 hover:text-primary px-3 py-2 text-sm font-medium">Overview</a>
-          <a href="/wallet/transactions" class="text-gray-600 hover:text-primary px-3 py-2 text-sm font-medium">Transactions</a>
-          <a href="/wallet/settings" class="text-gray-600 hover:text-primary px-3 py-2 text-sm font-medium">Settings</a>
+          <a routerLink="/wallet/dashboard" routerLinkActive="text-primary border-b-2 border-primary"
+            class="px-3 py-2 text-sm font-medium text-gray-600 hover:text-primary">
+            Dashboard
+          </a>
+          <a routerLink="/wallet/overview" routerLinkActive="text-primary border-b-2 border-primary"
+            class="px-3 py-2 text-sm font-medium text-gray-600 hover:text-primary">
+            Overview
+          </a>
+          <a routerLink="/wallet/transactions" routerLinkActive="text-primary border-b-2 border-primary"
+            class="px-3 py-2 text-sm font-medium text-gray-600 hover:text-primary">
+            Transactions
+          </a>
+          <a routerLink="/wallet/settings" routerLinkActive="text-primary border-b-2 border-primary"
+            class="px-3 py-2 text-sm font-medium text-gray-600 hover:text-primary">
+            Settings
+          </a>
         </nav>
 
         <!-- User Profile -->
@@ -28,12 +40,12 @@
             <div class="text-xs text-gray-500">{{wallet?.walletType?.wtyLabe}}</div>
           </div>
           <!-- Logout Button -->
-            <button (click)="logout()"
-                class="flex items-center p-2 text-gray-600 hover:text-gray-900 rounded-full transition-all hover:bg-gray-100">
-                <div class="w-6 h-6 flex items-center justify-center">
-                    <i class="ri-logout-box-line ri-lg"></i>
-                </div>
-            </button>
+          <button (click)="logout()"
+            class="flex items-center p-2 text-gray-600 hover:text-gray-900 rounded-full transition-all hover:bg-gray-100">
+            <div class="w-6 h-6 flex items-center justify-center">
+              <i class="ri-logout-box-line ri-lg"></i>
+            </div>
+          </button>
         </div>
       </div>
     </div>
