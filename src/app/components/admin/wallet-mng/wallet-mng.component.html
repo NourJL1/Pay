@@ -1734,24 +1734,18 @@
               <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                 <div class="bg-white border border-gray-200 rounded-lg p-4">
                   <div class="text-sm text-gray-500 mb-1">Effective Balance</div>
-                  <div class="text-xl font-bold text-gray-800">$12,458.32</div>
-                  <div class="mt-2 text-xs text-green-500 flex items-center">
-                    <i class="ri-arrow-up-s-line"></i>
-                    <span class="ml-1">+$245.87 (2.1%)</span>
-                  </div>
+                  <div class="text-xl font-bold text-gray-800">{{ selectedWallet.walEffBal }}</div>
+                  
                 </div>
                 <div class="bg-white border border-gray-200 rounded-lg p-4">
                   <div class="text-sm text-gray-500 mb-1">Logical Balance</div>
-                  <div class="text-xl font-bold text-gray-800">$12,458.32</div>
-                  <div class="mt-2 text-xs text-green-500 flex items-center">
-                    <i class="ri-arrow-up-s-line"></i>
-                    <span class="ml-1">+$245.87 (2.1%)</span>
-                  </div>
+                  <div class="text-xl font-bold text-gray-800">{{ selectedWallet.walLogicBalance }}</div>
+                  
                 </div>
                 <div class="bg-white border border-gray-200 rounded-lg p-4">
                   <div class="text-sm text-gray-500 mb-1">Specific Balance</div>
-                  <div class="text-xl font-bold text-gray-800">$0.00</div>
-                  <div class="mt-2 text-xs text-gray-500">No change</div>
+                  <div class="text-xl font-bold text-gray-800">{{ selectedWallet.walSpecificBalance }}</div>
+                  
                 </div>
               </div>
               <div class="mb-6">
