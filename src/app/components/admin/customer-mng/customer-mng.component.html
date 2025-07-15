@@ -911,7 +911,7 @@
                             <span class="text-primary ml-1">*</span>
                         </label>
                         <div class="relative">
-                            <select class="form-input pl-10" [(ngModel)]="customerForm.city" name="city" required (change)="showSuccessMessage(customerForm.city?.ctyLabe!)">
+                            <select class="form-input pl-10" [(ngModel)]="customerForm.city" name="city" required>
                                 <option [ngValue]="undefined" disabled selected>Select city</option>
                                 <option *ngFor="let city of citiesByCountry" [ngValue]="city">{{ city.ctyLabe }}
                                 </option>

@@ -165,6 +165,7 @@ export class CustomerMngComponent {
 
   addCustomer() {
     this.customerForm.identity!.customerDocListe!.cdlLabe = this.customerForm.identity?.customerIdentityType?.citLabe + '-' + this.customerForm.username
+    console.log('add customer:', this.customerForm);
     this.customerService.register(this.customerForm).subscribe({
       next: (customer: Customer) => {
         console.log('add Customer: cus added:', customer);
