@@ -27,6 +27,7 @@ import { AccountType } from '../../../entities/account-type';
   standalone: true
 })
 export class WalletMngComponent implements OnInit {
+[x: string]: any;
 
   addCard: boolean = false;
   addAccount: boolean = false;
@@ -396,7 +397,7 @@ export class WalletMngComponent implements OnInit {
     console.log('loadWallets: Fetching wallets...');
     this.walletService.getAll().subscribe({
       next: (wallets: Wallet[]) => {
-        console.log('loadWallets: Wallets received:', wallets);
+       console.log('loadWallets: Wallets received:', JSON.stringify(wallets, null, 2));
         this.walletsList = wallets;
         this.cdr.detectChanges();
       },

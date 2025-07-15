@@ -39,7 +39,13 @@ export class WalletService {
       map(wallets => wallets.map(wallet => new Wallet({
         walCode: wallet.walCode,
         walIden: wallet.walIden,
-        walLabe: wallet.walLabe
+        walLabe: wallet.walLabe,
+        walletStatus: wallet.walletStatus,
+        walletType: wallet.walletType,
+        lastUpdatedDate: wallet.lastUpdatedDate,
+        createdAt: wallet.createdAt,
+        walletCategory: wallet.walletCategory,
+        walFinId: wallet.walFinId,
       }))),
       catchError(error => {
         console.error('Error fetching wallets:', error);
