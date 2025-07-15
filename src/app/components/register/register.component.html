@@ -93,14 +93,18 @@
           <input class="form-input" [(ngModel)]="customer.cusAddress" name="cusAddress" type="text" required>
         </div>
 
-        <div class="form-field">
-          <label class="form-label">Phone Number:</label>
-          <ngx-intl-tel-input [formControl]="phoneForm.controls.phone" name="cusPhoneNbr"
-            [preferredCountries]="['tn', 'us', 'gb']" [enablePlaceholder]="true" [separateDialCode]="true" required>
-          </ngx-intl-tel-input>
+        <div class="form-field" *ngIf="phoneForm && phoneForm.controls['phone']">
+  <label class="form-label">Phone Number:</label>
+  <ngx-intl-tel-input 
+    [formControl]="phoneForm.controls['phone']"
+    name="cusPhoneNbr"
+    [preferredCountries]="['tn', 'us', 'gb']"
+    [enablePlaceholder]="true"
+    [separateDialCode]="true"
+    required>
+  </ngx-intl-tel-input>
+</div>
 
-
-        </div>
       </div>
 
       <!-- Step 3 -  Email & OTP -->

@@ -252,16 +252,14 @@
         <thead>
           <tr class="border-b border-gray-200">
             <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
-              Wallet Code
-            </th>
-            <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
               Identifier
             </th>
+
             <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
               Name
             </th>
             <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
-              Effective Balance
+              Created at
             </th>
             <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
               Status
@@ -270,7 +268,10 @@
               Type
             </th>
             <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
-              Last Updated
+              Category
+            </th>
+            <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+              Fin Id
             </th>
             <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
               Actions
@@ -281,43 +282,47 @@
           <ng-container *ngIf="walletsList!.length > 0; else noData">
             <tr *ngFor="let wallet of walletsList" class="hover:bg-gray-50 transition duration-150 cursor-pointer">
               <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm font-medium text-gray-900">{{ wallet.walCode }}</div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
                 <div class="text-sm text-gray-900">{{ wallet.walIden }}</div>
               </td>
+
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="text-sm text-gray-900">{{ wallet.walLabe }}</div>
               </td>
+
               <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm text-gray-900">{{ wallet.walEffBal| currency }}</div>
+                <div class="text-sm text-gray-900">{{ wallet.createdAt | date:'dd-MM-yyyy HH:mm:ss' }}</div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
-                <span
-                  class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                  {{ wallet.walletStatus?.wstLabe }}
-                </span>
+  <span
+    class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full"
+    [ngClass]="{
+      'bg-green-100 text-green-800': wallet.walletStatus.wstLabe === 'ACTIVE',
+      'bg-yellow-100 text-yellow-800': wallet.walletStatus.wstLabe === 'PENDING',
+      'bg-red-100 text-red-800': wallet.walletStatus.wstLabe === 'INACTIVE'
+    }"
+  >
+    {{ wallet.walletStatus.wstLabe }}
+  </span>
+</td>
+
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900">{{ wallet.walletType.wtyLabe }}</div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm text-gray-900">{{ wallet.walletType?.wtyLabe }}</div>
+                <div class="text-sm text-gray-500">{{ wallet.walletCategory.wcaLabe}}</div>
               </td>
+
               <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm text-gray-500">{{ wallet.lastUpdatedDate | date:'short' }}</div>
+                <div class="text-sm text-gray-500">{{ wallet.walFinId}}</div>
               </td>
+
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                 <div class="flex items-center justify-end space-x-3">
                   <button (click)="selectedWallet = wallet; toggleForm('wallet-details')"
                     class="text-blue-600 hover:text-blue-800 transition duration-150 p-1 rounded hover:bg-blue-50">
                     <i class="ri-eye-line text-lg"></i>
                   </button>
-                  <!-- <button (click)="editWallet(wallet); "
-                                class="text-green-600 hover:text-green-800 transition duration-150 p-1 rounded hover:bg-green-50">
-                                <i class="ri-edit-line text-lg"></i>
-                            </button>
-                            <button (click)="deleteWallet(wallet.walCode); "
-                                class="text-red-600 hover:text-red-800 transition duration-150 p-1 rounded hover:bg-red-50">
-                                <i class="ri-delete-bin-line text-lg"></i>
-                            </button> -->
+                  
                 </div>
               </td>
             </tr>
@@ -1589,6 +1594,7 @@
         </div>
       </button>
     </div>
+    <!-- basic info-->
     <div class="p-6 custom-scrollbar" style="height: calc(90vh - 130px);">
       <div class="flex flex-col md:flex-row md:space-x-6">
         <div class="mb-6 md:mb-0">
@@ -1598,29 +1604,29 @@
                 class="w-20 h-20 mx-auto bg-primary bg-opacity-10 rounded-full flex items-center justify-center text-primary">
                 <i class="ri-wallet-3-line ri-2x"></i>
               </div>
-              <h4 class="text-lg font-semibold mt-2">W-10045</h4>
-              <p class="text-sm text-gray-500">PERS-WALLET-2845</p>
+              <h4 class="text-lg font-semibold mt-2">Wallet ID: {{selectedWallet.walIden}}</h4>
+              
             </div>
             <div class="space-y-3">
               <div class="flex justify-between">
                 <span class="text-sm text-gray-500">Status:</span>
-                <span class="text-sm font-medium px-2 rounded-full status-active">Active</span>
+                <span class="text-sm font-medium px-2 rounded-full status-active">{{ selectedWallet.walletStatus.wstLabe }}</span>
               </div>
               <div class="flex justify-between">
                 <span class="text-sm text-gray-500">Type:</span>
-                <span class="text-sm font-medium">Personal</span>
+                <span class="text-sm font-medium">{{ selectedWallet.walletType.wtyLabe }}</span>
               </div>
               <div class="flex justify-between">
                 <span class="text-sm text-gray-500">Category:</span>
-                <span class="text-sm font-medium">Standard</span>
+                <span class="text-sm font-medium">{{ selectedWallet.walletCategory.wcaLabe }}</span>
               </div>
               <div class="flex justify-between">
                 <span class="text-sm text-gray-500">Created:</span>
-                <span class="text-sm font-medium">2023-01-15</span>
+                <span class="text-sm font-medium">{{ selectedWallet.createdAt | date:'dd-MM-yyy HH:mm:ss' }}</span>
               </div>
               <div class="flex justify-between">
                 <span class="text-sm text-gray-500">Last Updated:</span>
-                <span class="text-sm font-medium">2023-05-21 14:32</span>
+                <span class="text-sm font-medium">{{ selectedWallet.lastUpdatedDate  | date:'dd-MM-yyyy HH:mm:ss' }}</span>
               </div>
             </div>
             <div class="mt-6 space-y-2">
@@ -1656,19 +1662,19 @@
                   <div class="space-y-4">
                     <div>
                       <label class="block text-xs text-gray-500 mb-1">Wallet Code</label>
-                      <div class="text-sm font-medium">W-10045</div>
+                      <div class="text-sm font-medium">{{ selectedWallet.walCode }}</div>
                     </div>
                     <div>
                       <label class="block text-xs text-gray-500 mb-1">Identifier</label>
-                      <div class="text-sm font-medium">PERS-WALLET-2845</div>
+                      <div class="text-sm font-medium">{{selectedWallet.walIden}}</div>
                     </div>
                     <div>
                       <label class="block text-xs text-gray-500 mb-1">Label</label>
-                      <div class="text-sm font-medium">Michael Johnson's Personal</div>
+                      <div class="text-sm font-medium">{{ selectedWallet.walLabe }}</div>
                     </div>
                     <div>
                       <label class="block text-xs text-gray-500 mb-1">Wallet Key</label>
-                      <div class="text-sm font-medium">45982</div>
+                      <div class="text-sm font-medium">{{ selectedWallet.walKey }}</div>
                     </div>
                   </div>
                 </div>
@@ -1677,22 +1683,21 @@
                   <div class="space-y-4">
                     <div>
                       <label class="block text-xs text-gray-500 mb-1">Financial ID</label>
-                      <div class="text-sm font-medium">FIN-78542</div>
+                      <div class="text-sm font-medium">{{ selectedWallet.walFinId }}</div>
                     </div>
                     <div>
                       <label class="block text-xs text-gray-500 mb-1">Creation Date</label>
-                      <div class="text-sm font-medium">2023-01-15 09:45:22</div>
+                      <div class="text-sm font-medium">{{ selectedWallet.createdAt | date:'dd-MM-yyy HH:mm:ss' }}</div>
                     </div>
                     <div>
                       <label class="block text-xs text-gray-500 mb-1">Last Updated</label>
-                      <div class="text-sm font-medium">2023-05-21 14:32:18</div>
+                      <div class="text-sm font-medium">{{ selectedWallet.lastUpdatedDate  | date:'dd-MM-yyyy HH:mm:ss' }}</div>
                     </div>
                     <div>
                       <label class="block text-xs text-gray-500 mb-1">Status</label>
                       <div class="flex items-center">
                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full status-active mr-2">
-                          Active </span>
-                        <span class="text-xs text-gray-500">Since 2023-02-10</span>
+                        {{ selectedWallet.walletStatus.wstLabe }} </span>
                       </div>
                     </div>
                   </div>
@@ -1706,45 +1711,40 @@
                       <i class="ri-user-3-line ri-lg"></i>
                     </div>
                     <div class="ml-4">
-                      <div class="text-sm font-medium">Michael Johnson</div>
-                      <div class="text-xs text-gray-500">Customer ID: CUS-45782</div>
+                      <div class="text-sm font-medium">{{ selectedWallet.customer?.fullName }}</div>
+                      <div class="text-xs text-gray-500">Customer ID: {{ selectedWallet.customer?.cusIden }}</div>
                       <div class="flex items-center mt-1">
                         <div class="w-4 h-4 flex items-center justify-center text-gray-500 mr-1">
                           <i class="ri-mail-line"></i>
                         </div>
-                        <span class="text-xs">michael.johnson&#64;example.com</span>
+                        <span class="text-xs">{{ selectedWallet.customer?.cusMailAddress }}</span>
                         <div class="w-4 h-4 flex items-center justify-center text-gray-500 ml-3 mr-1">
                           <i class="ri-phone-line"></i>
                         </div>
-                        <span class="text-xs">+1 (555) 123-4567</span>
+                        <span class="text-xs">{{ selectedWallet.customer?.cusPhoneNbr }}</span>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+            <!--balance-->
             <div id="details-tab-balance" class="details-tab-content hidden">
               <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                 <div class="bg-white border border-gray-200 rounded-lg p-4">
                   <div class="text-sm text-gray-500 mb-1">Effective Balance</div>
-                  <div class="text-xl font-bold text-gray-800">$12,458.32</div>
-                  <div class="mt-2 text-xs text-green-500 flex items-center">
-                    <i class="ri-arrow-up-s-line"></i>
-                    <span class="ml-1">+$245.87 (2.1%)</span>
-                  </div>
+                  <div class="text-xl font-bold text-gray-800">{{ selectedWallet.walEffBal }}</div>
+                  
                 </div>
                 <div class="bg-white border border-gray-200 rounded-lg p-4">
                   <div class="text-sm text-gray-500 mb-1">Logical Balance</div>
-                  <div class="text-xl font-bold text-gray-800">$12,458.32</div>
-                  <div class="mt-2 text-xs text-green-500 flex items-center">
-                    <i class="ri-arrow-up-s-line"></i>
-                    <span class="ml-1">+$245.87 (2.1%)</span>
-                  </div>
+                  <div class="text-xl font-bold text-gray-800">{{ selectedWallet.walLogicBalance }}</div>
+                  
                 </div>
                 <div class="bg-white border border-gray-200 rounded-lg p-4">
                   <div class="text-sm text-gray-500 mb-1">Specific Balance</div>
-                  <div class="text-xl font-bold text-gray-800">$0.00</div>
-                  <div class="mt-2 text-xs text-gray-500">No change</div>
+                  <div class="text-xl font-bold text-gray-800">{{ selectedWallet.walSpecificBalance }}</div>
+                  
                 </div>
               </div>
               <div class="mb-6">
@@ -1809,6 +1809,7 @@
                 </div>
               </div>
             </div>
+            <!-- relationships-->
             <div id="details-tab-relationships" class="details-tab-content hidden">
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
@@ -1949,6 +1950,7 @@
                 </div>
               </div>
             </div>
+            <!--operations-->
             <div id="details-tab-operations" class="details-tab-content hidden">
               <div class="mb-6">
                 <h5 class="text-sm font-semibold text-gray-700 mb-3">Recent Operations</h5>

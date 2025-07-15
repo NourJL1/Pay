@@ -17,12 +17,13 @@ export class Wallet {
   walEffBal?: number;
   walLogicBalance?: number;
   walSpecificBalance?: number;
-  lastUpdatedDate?: string;
+  createdAt!: string | Date; // ✅ Added this line  
+  lastUpdatedDate!: string | Date;
   walFinId?: number;
   customer?: Customer;
-  walletStatus?: WalletStatus;
-  walletType?: WalletType;
-  walletCategory?: WalletCategory;
+  walletStatus!: WalletStatus;
+  walletType!: WalletType;
+  walletCategory!: WalletCategory;
   walletOperations?: WalletOperations[];
   lastBalanceHistory?: WalletBalanceHistory;
   operationTypes?: OperationType[];

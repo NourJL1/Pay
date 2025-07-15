@@ -27,6 +27,7 @@ import { AccountType } from '../../../entities/account-type';
   standalone: true
 })
 export class WalletMngComponent implements OnInit {
+[x: string]: any;
 
   addCard: boolean = false;
   addAccount: boolean = false;
@@ -86,6 +87,7 @@ export class WalletMngComponent implements OnInit {
   lastUpdated: Date | null = null;
   activeWalletCount: number = 0;
 
+
   constructor(
     private walletStatusService: WalletStatusService,
     private walletCategoryService: WalletCategoryService,
@@ -109,6 +111,8 @@ export class WalletMngComponent implements OnInit {
     this.loadCardLists();
     this.loadAccountTypes();
     this.loadWalletStats();
+    this.loadActiveWalletCount();
+
   }
 
   private getHttpOptions(): { headers: HttpHeaders } {
@@ -407,6 +411,28 @@ export class WalletMngComponent implements OnInit {
       }
     });
   }
+  // Edit wallet
+  editWallet(): void {
+    this.errorMessage = null;
+    console.log('editWallet: Opening edit form for wallet:', this.selectedWallet);
+    // Placeholder: Implement edit wallet form logic
+    this.isWalletFormVisible = true;
+    this.isWalletDetailsVisible = false;
+    // TODO: Populate form with selectedWallet data and implement save logic
+    this.cdr.detectChanges();
+  }
+
+  // Change wallet status
+  changeWalletStatus(): void {
+    this.errorMessage = null;
+    console.log('changeWalletStatus: Opening status change form for wallet:', this.selectedWallet);
+    // Placeholder: Implement status change logic
+    this.isWalletStatusVisible = true;
+    this.isStatusEditMode = true;
+    this.selectedStatus = this.selectedWallet.walletStatus || new WalletStatus();
+    this.cdr.detectChanges();
+  }
+
 
   // Add or update card
   saveCard(): void {
