@@ -62,7 +62,6 @@ export class RegisterComponent {
   countries: Country[] = [];
   cities: City[] = [];
   files: File[] = []
-  customerDocs: CustomerDoc[] = [];
   identityTypes: CustomerIdentityType[] = []
   docTypes: DocType[] = []
   allowedDocTypes: string[] = []
@@ -105,7 +104,7 @@ export class RegisterComponent {
   onSubmit(): void {
     // First validate the current step (step 5)
     if (this.currentStep === 5) {
-      if (!this.customer.identity!.cidNum || !this.customer.identity!.customerIdentityType || this.customerDocs.length <= 0) {
+      if (!this.customer.identity!.cidNum || !this.customer.identity!.customerIdentityType || this.files.length <= 0) {
         this.errorMessage = 'Please select an identification type.';
         return;
       }
@@ -126,9 +125,10 @@ export class RegisterComponent {
     this.customerService.register(this.customer).subscribe({
       next: (customer: Customer) => {
 
-        for (let i = 0; i < this.customerDocs.length; i++) {
-          this.customerDocs[i].customerDocListe = customer.identity?.customerDocListe
-          this.customerDocService.create(this.customerDocs[i], this.files[i]).subscribe({
+        const customerDocs: CustomerDoc[] = this.customer.identity?.customerDocListe?.customerDocs || [];
+        for (let i = 0; i < customerDocs.length; i++) {
+          customerDocs[i].customerDocListe = customer.identity?.customerDocListe
+          this.customerDocService.create(customerDocs[i], this.files[i]).subscribe({
             next: () => { console.log("docs succ") },
             error: (err) => { console.log(err) }
           })
@@ -154,7 +154,7 @@ export class RegisterComponent {
       Array.from(input.files).forEach((file => {
         const matchedDocType = this.docTypes.find(dt => dt.dtyIden === file.type)
 
-        this.customerDocs.push(new CustomerDoc({
+        this.customer.identity?.customerDocListe?.customerDocs?.push(new CustomerDoc({
           cdoLabe: file.name,
           docType: matchedDocType,
         }))

@@ -19,15 +19,18 @@
   </div>
 </div>
 
-<!-- Success/Error Messages -->
-<div *ngIf="successMessage"
-  class="fixed top-4 right-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded shadow-lg"
-  role="alert">
-  <span class="block sm:inline">{{ successMessage }}</span>
+<!-- Notification Area for Success and Error Messages -->
+<div *ngIf="successMessage" class="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-[100]">
+  {{ successMessage }}
+  <button (click)="clearMessage()" class="ml-2 text-white hover:text-gray-200">
+    <i class="ri-close-line"></i>
+  </button>
 </div>
-<div *ngIf="errorMessage"
-  class="fixed top-4 right-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded shadow-lg" role="alert">
-  <span class="block sm:inline">{{ errorMessage }}</span>
+<div *ngIf="errorMessage" class="fixed top-4 right-4 bg-red-500 text-white px-4 py-2 rounded-lg shadow-lg z-[100]">
+  {{ errorMessage }}
+  <button (click)="clearMessage()" class="ml-2 text-white hover:text-gray-200">
+    <i class="ri-close-line"></i>
+  </button>
 </div>
 
 <!-- Dashboard Content -->
@@ -1382,7 +1385,7 @@
 </div>
 
 <!-- Modals -->
-<div *ngIf="isAnyModalVisible" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 ">
+<div *ngIf="isAnyModalVisible" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[50] ">
   <!-- Create Wallet Modal -->
   <div *ngIf="isWalletFormVisible" id="create-wallet-modal"
     class="bg-white rounded-lg shadow-xl w-full max-w-2xl h-[90vh] flex flex-col">
@@ -1395,7 +1398,7 @@
       </button>
     </div>
     <!-- Form Content -->
-    <form #walletForm="ngForm" class="flex-1 overflow-y-auto p-6 space-y-8">
+    <form ngNativeValidate #walletForm="ngForm" class="flex-1 overflow-y-auto p-6 space-y-8">
       <!-- Basic Information Section -->
       <div class="space-y-6">
         <div class="flex items-center">
@@ -2149,7 +2152,7 @@
         </button>
       </div>
       <div class="p-6">
-        <form id="add-status-form" (ngSubmit)="saveStatus()">
+        <form ngNativeValidate id="add-status-form" (ngSubmit)="saveStatus()">
           <div class="space-y-4">
             <!-- <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Status Identifier</label>
@@ -2190,7 +2193,7 @@
         </button>
       </div>
       <div class="p-6">
-        <form id="add-type-form" (ngSubmit)="saveWalletType()">
+        <form ngNativeValidate id="add-type-form" (ngSubmit)="saveWalletType()">
           <div class="space-y-4">
             <!-- <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Type Identifier</label>
@@ -2235,7 +2238,7 @@
         </button>
       </div>
       <div class="p-6">
-        <form id="add-category-form" (ngSubmit)="saveCategory()">
+        <form ngNativeValidate id="add-category-form" (ngSubmit)="saveCategory()">
           <div class="space-y-4">
             <!-- <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Category Identifier</label>
@@ -2280,7 +2283,7 @@
           </div>
         </button>
       </div>
-      <form id="create-card-form" class="p-6" (ngSubmit)="saveCard()">
+      <form ngNativeValidate id="create-card-form" class="p-6" (ngSubmit)="saveCard()">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <!-- <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Identifier</label>
@@ -2364,7 +2367,7 @@
         </button>
       </div>
       <div class="p-6">
-        <form id="add-type-form" (ngSubmit)="saveCardType()">
+        <form ngNativeValidate id="add-type-form" (ngSubmit)="saveCardType()">
           <div class="space-y-4">
             <!-- <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Identifier</label>
@@ -2406,7 +2409,7 @@
         </button>
       </div>
       <div class="p-6">
-        <form id="add-list-form" (ngSubmit)="saveCardList()">
+        <form ngNativeValidate id="add-list-form" (ngSubmit)="saveCardList()">
           <div class="space-y-4">
             <!-- <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Identifier</label>
@@ -2451,7 +2454,7 @@
         </div>
       </button>
     </div>
-    <form id="create-wallet-form" class="p-6">
+    <form ngNativeValidate id="create-wallet-form" class="p-6">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <!-- <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">Identifier</label>
@@ -2535,7 +2538,7 @@
         </button>
       </div>
       <div class="p-6">
-        <form id="add-type-form" (ngSubmit)="saveAccountType()">
+        <form ngNativeValidate id="add-type-form" (ngSubmit)="saveAccountType()">
           <div class="space-y-4">
             <!-- <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Type Identifier</label>
@@ -2581,7 +2584,7 @@
         </button>
       </div>
       <div class="p-6">
-        <form id="add-type-form">
+        <form ngNativeValidate id="add-type-form">
           <div class="space-y-4">
             <!-- <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Identifier</label>

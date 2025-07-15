@@ -19,13 +19,13 @@
 </div>
 
 <!-- Notification Area for Success and Error Messages -->
-<div *ngIf="successMessage" class="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50">
+<div *ngIf="successMessage" class="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-[100]">
     {{ successMessage }}
     <button (click)="clearMessage()" class="ml-2 text-white hover:text-gray-200">
         <i class="ri-close-line"></i>
     </button>
 </div>
-<div *ngIf="errorMessage" class="fixed top-4 right-4 bg-red-500 text-white px-4 py-2 rounded-lg shadow-lg z-50">
+<div *ngIf="errorMessage" class="fixed top-4 right-4 bg-red-500 text-white px-4 py-2 rounded-lg shadow-lg z-[100]">
     {{ errorMessage }}
     <button (click)="clearMessage()" class="ml-2 text-white hover:text-gray-200">
         <i class="ri-close-line"></i>
@@ -605,7 +605,7 @@
     </div>
 </div>
 
-<div *ngIf="isAnyModalVisible" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+<div *ngIf="isAnyModalVisible" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[50]">
     <!-- user details -->
     <div *ngIf="isUserDetailsVisible" id="user-details-modal" class="bg-white rounded-lg shadow-lg w-full max-w-2xl">
     </div>
@@ -621,7 +621,7 @@
                 </div>
             </button>
         </div>
-        <form id="UserForm" class="p-6 space-y-6 overflow-y-auto">
+        <form ngNativeValidate id="UserForm" class="p-6 space-y-6 overflow-y-auto">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label for="USE_CODE" class="block text-sm font-medium text-gray-700 mb-1">User

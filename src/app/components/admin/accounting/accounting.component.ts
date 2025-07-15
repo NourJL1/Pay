@@ -129,7 +129,7 @@ export class AccountingComponent implements OnInit {
       },
       error: (err: any) => {
         console.error('loadFees: Error:', err.status, err.message);
-        this.showErrorMessage('Failed to load fees.');
+        this.errorMessage = ('Failed to load fees.');
       }
     });
   }
@@ -145,7 +145,7 @@ export class AccountingComponent implements OnInit {
       error: (err: any) => {
         console.error('loadFeeSchemas: Error:', err.status, err.message);
         this.feeSchemasList = [];
-        this.showErrorMessage('Failed to load fee schemas.');
+        this.errorMessage = ('Failed to load fee schemas.');
       }
     });
   }
@@ -160,7 +160,7 @@ export class AccountingComponent implements OnInit {
       },
       error: (err: any) => {
         console.error('loadFeeRuleTypes: Error:', err.status, err.message);
-        this.showErrorMessage('Failed to load fee rule types.');
+        this.errorMessage = ('Failed to load fee rule types.');
       }
     });
   }
@@ -175,7 +175,7 @@ export class AccountingComponent implements OnInit {
       },
       error: (err: any) => {
         console.error('loadFeeRules: Error:', err.status, err.message);
-        this.showErrorMessage('Failed to load fee rules.');
+        this.errorMessage = ('Failed to load fee rules.');
       }
     });
   }
@@ -190,7 +190,7 @@ export class AccountingComponent implements OnInit {
       },
       error: (err: any) => {
         console.error('loadOperationTypes: Error:', err.status, err.message);
-        this.showErrorMessage('Failed to load operation types.');
+        this.errorMessage = ('Failed to load operation types.');
       }
     });
   }
@@ -205,7 +205,7 @@ export class AccountingComponent implements OnInit {
       },
       error: (err: any) => {
         console.error('loadWalletOperationTypeMap: Error:', err.status, err.message);
-        this.showErrorMessage('Failed to load wallet operation type map.');
+        this.errorMessage = ('Failed to load wallet operation type map.');
       }
     });
   }
@@ -220,7 +220,7 @@ export class AccountingComponent implements OnInit {
       },
       error: (err: any) => {
         console.error('loadWalletOperationTypeMap: Error:', err.status, err.message);
-        this.showErrorMessage('Failed to load wallet operation type map.');
+        this.errorMessage = ('Failed to load wallet operation type map.');
       }
     });
   }
@@ -235,7 +235,7 @@ export class AccountingComponent implements OnInit {
       },
       error: (err: any) => {
         console.error('loadPeriodicities: Error:', err.status, err.message);
-        this.showErrorMessage('Failed to load periodicities.');
+        this.errorMessage = ('Failed to load periodicities.');
       }
     });
   }
@@ -250,7 +250,7 @@ export class AccountingComponent implements OnInit {
       },
       error: (err: any) => {
         console.error('loadVatRates: Error:', err.status, err.message);
-        this.showErrorMessage('Failed to load VAT rates.');
+        this.errorMessage = ('Failed to load VAT rates.');
       }
     });
   }
@@ -265,7 +265,7 @@ export class AccountingComponent implements OnInit {
       },
       error: (err: any) => {
         console.error('loadWallets: Error:', err.status, err.message);
-        this.showErrorMessage('Failed to load wallets.');
+        this.errorMessage = ('Failed to load wallets.');
       }
     });
   }
@@ -278,12 +278,12 @@ export class AccountingComponent implements OnInit {
         this.feesList.push(createdFee);
         this.newFee = new Fees();
         this.isFeeVisible = false;
-        this.showSuccessMessage('Fee added successfully');
+        this.successMessage = ('Fee added successfully');
         this.cdr.detectChanges();
       },
       error: (err: any) => {
         console.error('addFee: Error:', err);
-        this.showErrorMessage('Failed to add fee: ' + (err.error?.message || 'Please check the form.'));
+        this.errorMessage = ('Failed to add fee: ' + (err.error?.message || 'Please check the form.'));
       }
     });
   }
@@ -310,16 +310,16 @@ export class AccountingComponent implements OnInit {
           this.newFee = new Fees();
           this.selectedFee = null;
           this.isFeeVisible = false;
-          this.showSuccessMessage('Fee updated successfully');
+          this.successMessage = ('Fee updated successfully');
           this.cdr.detectChanges();
         },
         error: (err: any) => {
           console.error('updateFee: Error:', err);
-          this.showErrorMessage('Failed to update fee: ' + (err.error?.message || 'Please try again.'));
+          this.errorMessage = ('Failed to update fee: ' + (err.error?.message || 'Please try again.'));
         }
       });
     } else {
-      this.showErrorMessage('No fee selected for update.');
+      this.errorMessage = ('No fee selected for update.');
     }
   }
 
@@ -330,12 +330,12 @@ export class AccountingComponent implements OnInit {
         next: () => {
           console.log('deleteFee: Success, feeCode:', feeCode);
           this.feesList = this.feesList.filter(f => f.feeCode !== feeCode);
-          this.showSuccessMessage('Fee deleted successfully');
+          this.successMessage = ('Fee deleted successfully');
           this.cdr.detectChanges();
         },
         error: (err: any) => {
           console.error('deleteFee: Error:', err);
-          this.showErrorMessage('Failed to delete fee: ' + (err.error?.message || 'Please try again.'));
+          this.errorMessage = ('Failed to delete fee: ' + (err.error?.message || 'Please try again.'));
         }
       });
     }
@@ -349,12 +349,12 @@ export class AccountingComponent implements OnInit {
         this.feeSchemasList.push(createdFeeSchema);
         this.newFeeSchema = new FeeSchema();
         this.isFeeSchemaVisible = false;
-        this.showSuccessMessage('Fee schema added successfully');
+        this.successMessage = ('Fee schema added successfully');
         this.cdr.detectChanges();
       },
       error: (err: any) => {
         console.error('addFeeSchema: Error:', err);
-        this.showErrorMessage('Failed to add fee schema: ' + (err.error?.message || 'Please check the form.'));
+        this.errorMessage = ('Failed to add fee schema: ' + (err.error?.message || 'Please check the form.'));
       }
     });
   }
@@ -381,16 +381,16 @@ export class AccountingComponent implements OnInit {
           this.newFeeSchema = new FeeSchema();
           this.selectedFeeSchema = null;
           this.isFeeSchemaVisible = false;
-          this.showSuccessMessage('Fee schema updated successfully');
+          this.successMessage = ('Fee schema updated successfully');
           this.cdr.detectChanges();
         },
         error: (err: any) => {
           console.error('updateFeeSchema: Error:', err);
-          this.showErrorMessage('Failed to update fee schema: ' + (err.error?.message || 'Please try again.'));
+          this.errorMessage = ('Failed to update fee schema: ' + (err.error?.message || 'Please try again.'));
         }
       });
     } else {
-      this.showErrorMessage('No fee schema selected for update.');
+      this.errorMessage = ('No fee schema selected for update.');
     }
   }
 
@@ -401,12 +401,12 @@ export class AccountingComponent implements OnInit {
         next: () => {
           console.log('deleteFeeSchema: Success, fscCode:', fscCode);
           this.feeSchemasList = this.feeSchemasList.filter(f => f.fscCode !== fscCode);
-          this.showSuccessMessage('Fee schema deleted successfully');
+          this.successMessage = ('Fee schema deleted successfully');
           this.cdr.detectChanges();
         },
         error: (err: any) => {
           console.error('deleteFeeSchema: Error:', err);
-          this.showErrorMessage('Failed to delete fee schema: ' + (err.error?.message || 'Please try again.'));
+          this.errorMessage = ('Failed to delete fee schema: ' + (err.error?.message || 'Please try again.'));
         }
       });
     }
@@ -420,12 +420,12 @@ export class AccountingComponent implements OnInit {
         this.feeRuleTypesList.push(createdFeeRuleType);
         this.newFeeRuleType = new FeeRuleType();
         this.isFeeRuleTypeVisible = false;
-        this.showSuccessMessage('Fee rule type added successfully');
+        this.successMessage = ('Fee rule type added successfully');
         this.cdr.detectChanges();
       },
       error: (err: any) => {
         console.error('addFeeRuleType: Error:', err);
-        this.showErrorMessage('Failed to add fee rule type: ' + (err.error?.message || 'Please check the form.'));
+        this.errorMessage = ('Failed to add fee rule type: ' + (err.error?.message || 'Please check the form.'));
       }
     });
   }
@@ -452,16 +452,16 @@ export class AccountingComponent implements OnInit {
           this.newFeeRuleType = new FeeRuleType();
           this.selectedFeeRuleType = null;
           this.isFeeRuleTypeVisible = false;
-          this.showSuccessMessage('Fee rule type updated successfully');
+          this.successMessage = ('Fee rule type updated successfully');
           this.cdr.detectChanges();
         },
         error: (err: any) => {
           console.error('updateFeeRuleType: Error:', err);
-          this.showErrorMessage('Failed to update fee rule type: ' + (err.error?.message || 'Please try again.'));
+          this.errorMessage = ('Failed to update fee rule type: ' + (err.error?.message || 'Please try again.'));
         }
       });
     } else {
-      this.showErrorMessage('No fee rule type selected for update.');
+      this.errorMessage = ('No fee rule type selected for update.');
     }
   }
 
@@ -472,12 +472,12 @@ export class AccountingComponent implements OnInit {
         next: () => {
           console.log('deleteFeeRuleType: Success, frtCode:', frtCode);
           this.feeRuleTypesList = this.feeRuleTypesList.filter(t => t.frtCode !== frtCode);
-          this.showSuccessMessage('Fee rule type deleted successfully');
+          this.successMessage = ('Fee rule type deleted successfully');
           this.cdr.detectChanges();
         },
         error: (err: any) => {
           console.error('deleteFeeRuleType: Error:', err);
-          this.showErrorMessage('Failed to delete fee rule type: ' + (err.error?.message || 'Please try again.'));
+          this.errorMessage = ('Failed to delete fee rule type: ' + (err.error?.message || 'Please try again.'));
         }
       });
     }
@@ -486,7 +486,7 @@ export class AccountingComponent implements OnInit {
   addFeeRule(): void {
     console.log('addFeeRule: Adding fee rule:', this.newFeeRule);
     if (/* !this.newFeeRule.fruIden ||  */!this.newFeeRule.fruLabe || !this.newFeeRule.feeRuleType?.frtCode || !this.newFeeRule.feeSchema?.fscCode || !this.newFeeRule.fruTva?.vatCode) {
-      this.showErrorMessage('Please fill in all required fields.');
+      this.errorMessage = ('Please fill in all required fields.');
       return;
     }
     this.feeRuleService.create(this.newFeeRule, this.getHttpOptions()).subscribe({
@@ -495,12 +495,12 @@ export class AccountingComponent implements OnInit {
         this.feeRulesList.push(createdFeeRule);
         this.newFeeRule = new FeeRule();
         this.isFeeRuleVisible = false;
-        this.showSuccessMessage('Fee rule added successfully');
+        this.successMessage = ('Fee rule added successfully');
         this.cdr.detectChanges();
       },
       error: (err: any) => {
         console.error('addFeeRule: Error:', err);
-        this.showErrorMessage('Failed to add fee rule: ' + (err.error?.message || 'Please check the form.'));
+        this.errorMessage = ('Failed to add fee rule: ' + (err.error?.message || 'Please check the form.'));
       }
     });
   }
@@ -516,7 +516,7 @@ export class AccountingComponent implements OnInit {
   updateFeeRule(): void {
     console.log('updateFeeRule: Updating fee rule:', this.newFeeRule);
     if (/* !this.newFeeRule.fruIden ||  */!this.newFeeRule.fruLabe || !this.newFeeRule.feeRuleType?.frtCode || !this.newFeeRule.feeSchema?.fscCode || !this.newFeeRule.fruTva?.vatCode) {
-      this.showErrorMessage('Please fill in all required fields.');
+      this.errorMessage = ('Please fill in all required fields.');
       return;
     }
     if (this.selectedFeeRule?.fruCode) {
@@ -531,16 +531,16 @@ export class AccountingComponent implements OnInit {
           this.newFeeRule = new FeeRule();
           this.selectedFeeRule = null;
           this.isFeeRuleVisible = false;
-          this.showSuccessMessage('Fee rule updated successfully');
+          this.successMessage = ('Fee rule updated successfully');
           this.cdr.detectChanges();
         },
         error: (err: any) => {
           console.error('updateFeeRule: Error:', err);
-          this.showErrorMessage('Failed to update fee rule: ' + (err.error?.message || 'Please try again.'));
+          this.errorMessage = ('Failed to update fee rule: ' + (err.error?.message || 'Please try again.'));
         }
       });
     } else {
-      this.showErrorMessage('No fee rule selected for update.');
+      this.errorMessage = ('No fee rule selected for update.');
     }
   }
 
@@ -551,12 +551,12 @@ export class AccountingComponent implements OnInit {
         next: () => {
           console.log('deleteFeeRule: Success, fruCode:', fruCode);
           this.feeRulesList = this.feeRulesList.filter(r => r.fruCode !== fruCode);
-          this.showSuccessMessage('Fee rule deleted successfully');
+          this.successMessage = ('Fee rule deleted successfully');
           this.cdr.detectChanges();
         },
         error: (err: any) => {
           console.error('deleteFeeRule: Error:', err);
-          this.showErrorMessage('Failed to delete fee rule: ' + (err.error?.message || 'Please try again.'));
+          this.errorMessage = ('Failed to delete fee rule: ' + (err.error?.message || 'Please try again.'));
         }
       });
     }
@@ -565,7 +565,7 @@ export class AccountingComponent implements OnInit {
   addOperationType(): void {
     console.log('addOperationType: Adding operation type:', this.newOperationType);
     if (/* !this.newOperationType.optIden ||  */!this.newOperationType.optLabe || !this.newOperationType.feeSchema?.fscCode) {
-      this.showErrorMessage('Please fill in all required fields, including Fee Schema.');
+      this.errorMessage = ('Please fill in all required fields, including Fee Schema.');
       return;
     }
     this.operationTypeService.create(this.newOperationType, this.getHttpOptions()).subscribe({
@@ -574,12 +574,12 @@ export class AccountingComponent implements OnInit {
         this.operationTypesList = [...this.operationTypesList, createdOperationType];
         this.newOperationType = new OperationType({ feeSchema: new FeeSchema() });
         this.isOperationTypeVisible = false;
-        this.showSuccessMessage('Operation type added successfully');
+        this.successMessage = ('Operation type added successfully');
         this.cdr.detectChanges();
       },
       error: (err: any) => {
         console.error('addOperationType: Error:', err.status, err.error);
-        this.showErrorMessage('Failed to add operation type: ' + (err.error?.message || 'Please check the form.'));
+        this.errorMessage = ('Failed to add operation type: ' + (err.error?.message || 'Please check the form.'));
       }
     });
   }
@@ -595,7 +595,7 @@ export class AccountingComponent implements OnInit {
   updateOperationType(): void {
     console.log('updateOperationType: Updating operation type:', this.newOperationType);
     if (/* !this.newOperationType.optIden ||  */!this.newOperationType.optLabe || !this.newOperationType.feeSchema?.fscCode) {
-      this.showErrorMessage('Please fill in all required fields, including Fee Schema.');
+      this.errorMessage = ('Please fill in all required fields, including Fee Schema.');
       return;
     }
     if (this.selectedOperationType?.optCode) {
@@ -610,16 +610,16 @@ export class AccountingComponent implements OnInit {
           this.newOperationType = new OperationType({ feeSchema: new FeeSchema() });
           this.selectedOperationType = null;
           this.isOperationTypeVisible = false;
-          this.showSuccessMessage('Operation type updated successfully');
+          this.successMessage = ('Operation type updated successfully');
           this.cdr.detectChanges();
         },
         error: (err: any) => {
           console.error('updateOperationType: Error:', err.status, err.error);
-          this.showErrorMessage('Failed to update operation type: ' + (err.error?.message || 'Please try again.'));
+          this.errorMessage = ('Failed to update operation type: ' + (err.error?.message || 'Please try again.'));
         }
       });
     } else {
-      this.showErrorMessage('No operation type selected for update.');
+      this.errorMessage = ('No operation type selected for update.');
     }
   }
 
@@ -630,12 +630,12 @@ export class AccountingComponent implements OnInit {
         next: () => {
           console.log('deleteOperationType: Success, typeCode:', typeCode);
           this.operationTypesList = this.operationTypesList.filter(t => t.optCode !== typeCode);
-          this.showSuccessMessage('Operation type deleted successfully');
+          this.successMessage = ('Operation type deleted successfully');
           this.cdr.detectChanges();
         },
         error: (err: any) => {
           console.error('deleteOperationType: Error:', err.status, err.message, err.error);
-          this.showErrorMessage('Failed to delete operation type: ' + (err.error?.message || 'Please try again.'));
+          this.errorMessage = ('Failed to delete operation type: ' + (err.error?.message || 'Please try again.'));
         }
       });
     }
@@ -644,7 +644,7 @@ export class AccountingComponent implements OnInit {
   addWotm(): void {
     console.log('addWotm: Adding wotm:', this.newWotm);
     if (!this.newWotm.wallet || !this.newWotm.operationType || !this.newWotm.wotmLimitMax || !this.newWotm.periodicity || !this.newWotm.fees) {
-      this.showErrorMessage('Please fill in all required fields, including Fee Schema.');
+      this.errorMessage = ('Please fill in all required fields, including Fee Schema.');
       return;
     }
     this.wotmService.create(this.newWotm,this.getHttpOptions()).subscribe({
@@ -653,12 +653,12 @@ export class AccountingComponent implements OnInit {
         this.wotmList = [...this.wotmList, createdWotm];
         this.newWotm = new WalletOperationTypeMap();
         this.isWotmVisible = false;
-        this.showSuccessMessage('Mapping added successfully');
+        this.successMessage = ('Mapping added successfully');
         this.cdr.detectChanges();
       },
       error: (err: any) => {
         console.error('addWotm: Error:', err.status, err.error);
-        this.showErrorMessage('Failed to add mapping: ' + (err.error?.message || 'Please check the form.'));
+        this.errorMessage = ('Failed to add mapping: ' + (err.error?.message || 'Please check the form.'));
       }
     });
   }
@@ -674,7 +674,7 @@ export class AccountingComponent implements OnInit {
   updateWotm(): void {
     console.log('addWotm: Adding wotm:', this.newWotm);
     if (!this.newWotm.wallet || !this.newWotm.operationType || !this.newWotm.wotmLimitMax || !this.newWotm.periodicity || !this.newWotm.fees) {
-      this.showErrorMessage('Please fill in all required fields, including Fee Schema.');
+      this.errorMessage = ('Please fill in all required fields, including Fee Schema.');
       return;
     }
     if (this.selectedWotm?.wotmCode) {
@@ -689,16 +689,16 @@ export class AccountingComponent implements OnInit {
           this.newWotm = new WalletOperationTypeMap();
           this.selectedWotm = null;
           this.isWotmVisible = false;
-          this.showSuccessMessage('Mapping type updated successfully');
+          this.successMessage = ('Mapping type updated successfully');
           this.cdr.detectChanges();
         },
         error: (err: any) => {
           console.error('updateWotm: Error:', err.status, err.error);
-          this.showErrorMessage('Failed to update Mapping: ' + (err.error?.message || 'Please try again.'));
+          this.errorMessage = ('Failed to update Mapping: ' + (err.error?.message || 'Please try again.'));
         }
       });
     } else {
-      this.showErrorMessage('No mapping selected for update.');
+      this.errorMessage = ('No mapping selected for update.');
     }
   }
 
@@ -709,12 +709,12 @@ export class AccountingComponent implements OnInit {
         next: () => {
           console.log('deleteOperationType: Success, wotmCode:', wotmCode);
           this.wotmList = this.wotmList.filter(wotm => wotm.wotmCode !== wotmCode);
-          this.showSuccessMessage('Mapping deleted successfully');
+          this.successMessage = ('Mapping deleted successfully');
           this.cdr.detectChanges();
         },
         error: (err: any) => {
           console.error('deleteMapping: Error:', err.status, err.message, err.error);
-          this.showErrorMessage('Failed to delete mapping: ' + (err.error?.message || 'Please try again.'));
+          this.errorMessage = ('Failed to delete mapping: ' + (err.error?.message || 'Please try again.'));
         }
       });
     }
@@ -723,7 +723,7 @@ export class AccountingComponent implements OnInit {
   addWcotm(): void {
     console.log('addWcotm: Adding wcotm:', this.newWcotm);
     if (!this.newWcotm.walletCategory || !this.newWcotm.operationType || !this.newWcotm.limitMax || !this.newWcotm.periodicity || !this.newWcotm.fees) {
-      this.showErrorMessage('Please fill in all required fields, including Fee Schema.');
+      this.errorMessage = ('Please fill in all required fields, including Fee Schema.');
       return;
     }
     this.wcotmService.create(this.newWcotm).subscribe({
@@ -732,12 +732,12 @@ export class AccountingComponent implements OnInit {
         this.wcotmList = [...this.wcotmList, createdWcotm];
         this.newWcotm = new WalletCategoryOperationTypeMap();
         this.isWcotmVisible = false;
-        this.showSuccessMessage('Mapping added successfully');
+        this.successMessage = ('Mapping added successfully');
         this.cdr.detectChanges();
       },
       error: (err: any) => {
         console.error('addWcotm: Error:', err.status, err.error);
-        this.showErrorMessage('Failed to add mapping: ' + (err.error?.message || 'Please check the form.'));
+        this.errorMessage = ('Failed to add mapping: ' + (err.error?.message || 'Please check the form.'));
       }
     });
   }
@@ -753,7 +753,7 @@ export class AccountingComponent implements OnInit {
   updateWcotm(): void {
     console.log('addWcotm: Adding wcotm:', this.newWcotm);
     if (!this.newWcotm.walletCategory || !this.newWcotm.operationType || !this.newWcotm.limitMax || !this.newWcotm.periodicity || !this.newWcotm.fees) {
-      this.showErrorMessage('Please fill in all required fields, including Fee Schema.');
+      this.errorMessage = ('Please fill in all required fields, including Fee Schema.');
       return;
     }
     if (this.selectedWcotm?.id) {
@@ -768,16 +768,16 @@ export class AccountingComponent implements OnInit {
           this.newWcotm = new WalletCategoryOperationTypeMap();
           this.selectedWcotm = null;
           this.isWcotmVisible = false;
-          this.showSuccessMessage('Mapping type updated successfully');
+          this.successMessage = ('Mapping type updated successfully');
           this.cdr.detectChanges();
         },
         error: (err: any) => {
           console.error('updateWcotm: Error:', err.status, err.error);
-          this.showErrorMessage('Failed to update Mapping: ' + (err.error?.message || 'Please try again.'));
+          this.errorMessage = ('Failed to update Mapping: ' + (err.error?.message || 'Please try again.'));
         }
       });
     } else {
-      this.showErrorMessage('No mapping selected for update.');
+      this.errorMessage = ('No mapping selected for update.');
     }
   }
 
@@ -788,12 +788,12 @@ export class AccountingComponent implements OnInit {
         next: () => {
           console.log('deleteOperationType: Success, wcotmCode:', wcotmCode);
           this.wcotmList = this.wcotmList.filter(wcotm => wcotm.id !== wcotmCode);
-          this.showSuccessMessage('Mapping deleted successfully');
+          this.successMessage = ('Mapping deleted successfully');
           this.cdr.detectChanges();
         },
         error: (err: any) => {
           console.error('deleteMapping: Error:', err.status, err.message, err.error);
-          this.showErrorMessage('Failed to delete mapping: ' + (err.error?.message || 'Please try again.'));
+          this.errorMessage = ('Failed to delete mapping: ' + (err.error?.message || 'Please try again.'));
         }
       });
     }
@@ -802,7 +802,7 @@ export class AccountingComponent implements OnInit {
   addPeriodicity(): void {
     console.log('addPeriodicity: Adding periodicity:', this.newPeriodicity);
     if (/* !this.newPeriodicity.perIden ||  */!this.newPeriodicity.perLabe) {
-      this.showErrorMessage('Please fill in all required fields.');
+      this.errorMessage = ('Please fill in all required fields.');
       return;
     }
     this.periodicityService.create(this.newPeriodicity, this.getHttpOptions()).subscribe({
@@ -811,12 +811,12 @@ export class AccountingComponent implements OnInit {
         this.periodicitiesList.push(createdPeriodicity);
         this.newPeriodicity = new Periodicity();
         this.isPeriodicityVisible = false;
-        this.showSuccessMessage('Periodicity added successfully');
+        this.successMessage = ('Periodicity added successfully');
         this.cdr.detectChanges();
       },
       error: (err: any) => {
         console.error('addPeriodicity: Error:', err);
-        this.showErrorMessage('Failed to add periodicity: ' + (err.error?.message || 'Please check the form.'));
+        this.errorMessage = ('Failed to add periodicity: ' + (err.error?.message || 'Please check the form.'));
       }
     });
   }
@@ -832,7 +832,7 @@ export class AccountingComponent implements OnInit {
   updatePeriodicity(): void {
     console.log('updatePeriodicity: Updating periodicity:', this.newPeriodicity);
     if (/* !this.newPeriodicity.perIden ||  */!this.newPeriodicity.perLabe) {
-      this.showErrorMessage('Please fill in all required fields.');
+      this.errorMessage = ('Please fill in all required fields.');
       return;
     }
     if (this.selectedPeriodicity?.perCode) {
@@ -847,16 +847,16 @@ export class AccountingComponent implements OnInit {
           this.newPeriodicity = new Periodicity();
           this.selectedPeriodicity = null;
           this.isPeriodicityVisible = false;
-          this.showSuccessMessage('Periodicity updated successfully');
+          this.successMessage = ('Periodicity updated successfully');
           this.cdr.detectChanges();
         },
         error: (err: any) => {
           console.error('updatePeriodicity: Error:', err);
-          this.showErrorMessage('Failed to update periodicity: ' + (err.error?.message || 'Please try again.'));
+          this.errorMessage = ('Failed to update periodicity: ' + (err.error?.message || 'Please try again.'));
         }
       });
     } else {
-      this.showErrorMessage('No periodicity selected for update.');
+      this.errorMessage = ('No periodicity selected for update.');
     }
   }
 
@@ -867,35 +867,15 @@ export class AccountingComponent implements OnInit {
         next: () => {
           console.log('deletePeriodicity: Success, perCode:', perCode);
           this.periodicitiesList = this.periodicitiesList.filter(p => p.perCode !== perCode);
-          this.showSuccessMessage('Periodicity deleted successfully');
+          this.successMessage = ('Periodicity deleted successfully');
           this.cdr.detectChanges();
         },
         error: (err: any) => {
           console.error('deletePeriodicity: Error:', err);
-          this.showErrorMessage('Failed to delete periodicity: ' + (err.error?.message || 'Please try again.'));
+          this.errorMessage = ('Failed to delete periodicity: ' + (err.error?.message || 'Please try again.'));
         }
       });
     }
-  }
-
-  showSuccessMessage(message: string): void {
-    console.log('showSuccessMessage:', message);
-    this.successMessage = message;
-    this.errorMessage = null;
-    setTimeout(() => {
-      this.successMessage = null;
-      this.cdr.detectChanges();
-    }, 3000);
-  }
-
-  showErrorMessage(message: string): void {
-    console.log('showErrorMessage:', message);
-    this.errorMessage = message;
-    this.successMessage = null;
-    setTimeout(() => {
-      this.errorMessage = null;
-      this.cdr.detectChanges();
-    }, 3000);
   }
 
   clearMessage(): void {

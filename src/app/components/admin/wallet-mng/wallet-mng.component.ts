@@ -124,6 +124,13 @@ export class WalletMngComponent implements OnInit {
     return { headers };
   }
 
+  clearMessage(): void {
+    console.log('clearMessage: Clearing messages');
+    this.successMessage = null;
+    this.errorMessage = null;
+    this.cdr.detectChanges();
+  }
+
   loadActiveWalletCount(): void {
     this.errorMessage = null;
     console.log('loadActiveWalletCount: Fetching active wallet count...');

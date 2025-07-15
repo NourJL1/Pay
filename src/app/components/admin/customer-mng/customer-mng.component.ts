@@ -24,8 +24,6 @@ import { CustomerDocService } from '../../../services/customer-doc.service';
   styleUrl: './customer-mng.component.css'
 })
 export class CustomerMngComponent {
-  allowedDocTypes: any;
-  confirm: any;
 
   constructor(
     private http: HttpClient,
@@ -38,11 +36,63 @@ export class CustomerMngComponent {
     private cityService: CityService,
     private cdr: ChangeDetectorRef) { }
 
+  isAddCustomerVisible: boolean = false;
+  isUserDetailsVisible: boolean = false;
+  isCustomerStatusVisible: boolean = false;
+  isCustomerIdentityTypeVisible: boolean = false;
+  isDocTypeVisible: boolean = false;
+  isCountryVisible: boolean = false;
+  isCityVisible: boolean = false;
+
+  countries: Country[] = [] // List of countries from db
+  cities: City[] = [] // List of all cities from db
+  citiesByCountry: City[] = [] // List of cities from db by countries
+  customers: Customer[] = [] // List of customers
+  statuses: CustomerStatus[] = [] // List of customer statuses
+  identityTypes: CustomerIdentityType[] = [] // List of customer identity types
+  docTypeList: DocType[] = [] // List of document types in db
+  
+
+  // Selected items for editing
+  selectedCustomer?: Customer
+  selectedStatus?: CustomerStatus
+  selectedIdentityType?: CustomerIdentityType
+  selectedDoc?: CustomerDoc
+  selectedDocType?: DocType;
+  selectedCountry?: Country
+  selectedCity?: City
+
+  // Forms for adding/editing
+  customerForm: Customer = new Customer()
+  statusForm: CustomerStatus = new CustomerStatus()
+  identityTypeForm: CustomerIdentityType = new CustomerIdentityType()
+  docTypeForm: DocType = new DocType;
+  countryForm: Country = new Country()
+  cityForm: City = new City()
+
+  docTypes: DocType[] = [] // List of document types not in db
+  countryList: Country[] = [] // List of countries not in db
+  cityList: String[] = [] // List of cities not in db
+
+  successMessage: string | null = null;
+  errorMessage: string | null = null;
+
+  files: File[] = []
+
+
+  allowedDocTypes: string[] = [] // List of allowed document types
+  confirm?: string;
+
+
   ngOnInit(): void {
-    /* this.customerService.getAllCustomersWithWallets().subscribe({
-      next: (customers: Customer[]) => { this.customers = customers },
-      error: (err) => { console.log(err) }
-    }) */
+    this.loadAllCustomers()
+    this.loadIdentityTypes()
+    this.loadDocTypes()
+    this.loadCountries()
+    this.loadCities()
+  }
+
+  loadAllCustomers() {
     this.customerService.getAllCustomers().subscribe({
       next: (customers: Customer[]) => { this.customers = customers },
       error: (err) => { console.log(err) }
@@ -52,12 +102,16 @@ export class CustomerMngComponent {
       next: (statuses: CustomerStatus[]) => { this.statuses = statuses },
       error: (err) => { console.log(err) }
     })
+  }
 
+  loadIdentityTypes() {
     this.customerIdentityTypeService.getAll().subscribe({
       next: (types: CustomerIdentityType[]) => { this.identityTypes = types },
       error: (err) => { console.log(err) }
     })
+  }
 
+  loadDocTypes() {
     this.docTypeService.getAll().subscribe({
       next: (types: DocType[]) => {
         this.docTypes = types
@@ -70,7 +124,9 @@ export class CustomerMngComponent {
       },
       error: (err) => { console.log(err) }
     })
+  }
 
+  loadCountries() {
     this.countryService.getAll().subscribe({
       next: (countries: Country[]) => {
         this.countries = countries
@@ -85,54 +141,14 @@ export class CustomerMngComponent {
       },
       error: (err) => { console.log(err) }
     })
+  }
 
+  loadCities() {
     this.cityService.getAll().subscribe({
       next: (cities: City[]) => { this.cities = cities },
       error: (err) => { console.log(err) }
     })
-
-
   }
-
-  isAddCustomerVisible: boolean = false;
-  isUserDetailsVisible: boolean = false;
-  isCustomerStatusVisible: boolean = false;
-  isCustomerIdentityTypeVisible: boolean = false;
-  isDocTypeVisible: boolean = false;
-  isCountryVisible: boolean = false;
-  isCityVisible: boolean = false;
-
-  countries: Country[] = []
-  cities: City[] = []
-  customers: Customer[] = []
-  statuses: CustomerStatus[] = []
-  identityTypes: CustomerIdentityType[] = []
-  docTypes: DocType[] = []
-
-  selectedCustomer?: Customer
-  selectedStatus?: CustomerStatus
-  selectedIdentityType?: CustomerIdentityType
-  selectedDoc?: CustomerDoc
-  selectedDocType?: DocType;
-  selectedCountry?: Country
-  selectedCity?: City
-
-  customerForm: Customer = new Customer()
-  statusForm: CustomerStatus = new CustomerStatus()
-  identityTypeForm: CustomerIdentityType = new CustomerIdentityType()
-  docTypeForm: DocType = new DocType;
-  countryForm: Country = new Country()
-  cityForm: City = new City()
-
-  docTypeList: DocType[] = []
-  countryList: Country[] = []
-  cityList: String[] = []
-
-  successMessage: string | null = null;
-  errorMessage: string | null = null;
-
-  files: File[] = []
-  customerDocs: CustomerDoc[] = [];
 
   // customer methods
 
@@ -145,19 +161,21 @@ export class CustomerMngComponent {
 
   addCustomer() {
     this.customerForm.identity!.customerDocListe!.cdlLabe = this.customerForm.identity?.customerIdentityType?.citLabe + '-' + this.customerForm.username
-    console.log('add customer:', this.customerForm);
     this.customerService.register(this.customerForm).subscribe({
       next: (customer: Customer) => {
         console.log('add Customer: cus added:', customer);
-        for (let i = 0; i < this.customerDocs.length; i++) {
-          this.customerDocs[i].customerDocListe = customer.identity?.customerDocListe
-          this.customerDocService.create(this.customerDocs[i], this.files[i]).subscribe({
+        const customerDocs: CustomerDoc[] = customer.identity?.customerDocListe?.customerDocs || [];
+        for (let i = 0; i < customerDocs.length; i++) {
+          customerDocs[i].customerDocListe = customer.identity?.customerDocListe
+          this.customerDocService.create(customerDocs[i], this.files[i]).subscribe({
             next: () => { console.log("docs succ") },
             error: (err) => { console.log(err) }
           })
         }
         this.customers.push(customer);
         this.customerForm = new Customer();
+        this.citiesByCountry = [];
+        this.files = [];
         this.isAddCustomerVisible = false;
         this.showSuccessMessage('Customer added successfully');
         this.cdr.detectChanges();
@@ -181,6 +199,8 @@ export class CustomerMngComponent {
         }
         this.customerForm = new Customer();
         this.selectedCustomer = undefined;
+        this.citiesByCountry = [];
+        this.files = [];
         this.isAddCustomerVisible = false;
         this.showSuccessMessage('Customer updated successfully');
         this.cdr.detectChanges();
@@ -205,7 +225,7 @@ export class CustomerMngComponent {
         }
         const matchedDocType = this.docTypes.find(dt => dt.dtyIden === file.type)
 
-        this.customerDocs.push(new CustomerDoc({
+        this.customerForm.identity?.customerDocListe?.customerDocs?.push(new CustomerDoc({
           cdoLabe: file.name,
           docType: matchedDocType,
         }))
@@ -369,6 +389,7 @@ export class CustomerMngComponent {
       next: (docType: DocType) => {
         console.log('add Doc Type: identity added:', docType);
         this.docTypes.push(docType);
+        this.allowedDocTypes.push(docType.dtyIden!);
         this.docTypeForm = new DocType();
         this.isDocTypeVisible = false;
         this.showSuccessMessage('Document type added successfully');
@@ -381,35 +402,15 @@ export class CustomerMngComponent {
     })
   }
 
-  updateDocType() {
-    this.docTypeService.update(this.docTypeForm.dtyCode!, this.docTypeForm).subscribe({
-      next: (docType: DocType) => {
-        console.log('update doc type: doc type updated:', this.docTypeForm);
-        const index = this.docTypes.findIndex(dty => dty.dtyCode === this.docTypeForm.dtyCode);
-        if (index !== -1) {
-          this.docTypes[index] = docType;
-          this.docTypes = [...this.docTypes];
-        }
-        this.docTypeForm = new DocType();
-        this.selectedDocType = undefined;
-        this.isDocTypeVisible = false;
-        this.showSuccessMessage('document type updated successfully');
-        this.cdr.detectChanges();
-
-      },
-      error: (err) => {
-        console.error('updateFee: Error:', err);
-        this.showErrorMessage('Failed to update document type: ' + (err.error?.message || 'Please try again.'));
-      }
-    })
-  }
-
   deleteDocType(docType: DocType) {
     if (confirm('Are you sure you want to delete this document type?')) {
       this.docTypeService.delete(docType.dtyCode!).subscribe({
         next: () => {
           console.log("deleted succ")
           this.docTypes = this.docTypes.filter(dty => dty.dtyCode !== docType?.dtyCode);
+          this.allowedDocTypes = this.docTypes
+            .filter(dty => dty.dtyIden !== docType?.dtyIden)
+            .map(dty => dty.dtyIden!);
           this.showSuccessMessage('Document Type deleted successfully');
           this.cdr.detectChanges();
         },
@@ -483,13 +484,23 @@ export class CustomerMngComponent {
   }
 
   onCountryChange(): void {
+    this.cityService.getByCountry(this.customerForm.country!).subscribe(
+      {
+        next: (cities: City[]) => {
+          this.citiesByCountry = cities;
+        },
+        error: (err) => {
+          console.log(err)
+        }
+      }
+    );
+  }
+
+  onAllCountryChange(): void {
     this.http.post("https://countriesnow.space/api/v0.1/countries/cities", { country: this.cityForm.country?.ctrLabe }).subscribe({
       next: (response: any) => {
         const allCities = response.data.filter((city: string) => !this.cities.some(cty => cty.ctyLabe === city))
         this.cityList = allCities.filter((city: City) => !this.cities.some(cty => cty.ctyLabe === city.ctyLabe))
-        //this.cityList = allCities.data
-
-        //this.cityList = allCities.filter((city: City) => !this.cities.some(cty => cty.ctyLabe === city.ctyLabe))
       },
       error: (err) => { console.log(err) }
     })
@@ -553,13 +564,19 @@ export class CustomerMngComponent {
 
   closeForm(modal: string) {
     switch (modal) {
-      case 'customer-add': this.isAddCustomerVisible = false; break;
+      case 'customer-add': 
+        this.citiesByCountry = [];
+        this.isAddCustomerVisible = false; 
+        break;
       case 'customer-details': this.isUserDetailsVisible = false; break;
       case 'customer-status': this.isCustomerStatusVisible = false; break;
       case 'customer-identityType': this.isCustomerIdentityTypeVisible = false; break;
       case 'docType': this.isDocTypeVisible = false; break;
       case 'country': this.isCountryVisible = false; break;
-      case 'city': this.isCityVisible = false; break;
+      case 'city': 
+        this.cityList = [];
+        this.isCityVisible = false; 
+        break;
     }
   }
 

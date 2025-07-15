@@ -26,15 +26,27 @@ export class CustomerDocService {
   }
 
   getFileById(id: number) {
-    return this.http.get(`${this.apiUrl}/file/${id}`, { responseType: 'blob' }).subscribe(file => {
-      // Create object URL from the Blob
-      const url = URL.createObjectURL(file);
+    return this.http.get(`${this.apiUrl}/file/${id}`, { responseType: 'blob', observe: 'response' }).subscribe(response => {
+      const file = response.body!;
+      var url = URL.createObjectURL(file);
+      const fileType = response.headers.get('Content-Type') || 'application/octet-stream';
 
-      // Open in new tab
-      const newWindow = window.open(url, '_blank');
+      if (fileType.includes('office') || fileType.includes('msword')) {
+        const officeViewerUrl = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(url)}`;
+        window.open(officeViewerUrl, '_blank');
+      }
 
-      // Clean up later (after window loads)
-      setTimeout(() => URL.revokeObjectURL(url), 10000);
+      else{const previewUrl = `/assets/preview.html?url=${encodeURIComponent(url)}&type=${encodeURIComponent(fileType)}`;
+      const viewer = window.open(previewUrl, '_blank', `
+      width=1000,height=700,
+      toolbar=no,
+      location=no,
+      status=no,
+      menubar=no
+    `);
+
+      // Clean up when window closes
+      viewer!.onbeforeunload = () => URL.revokeObjectURL(url);}
     });
   }
 
