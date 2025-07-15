@@ -46,6 +46,16 @@ export class WalletService {
         createdAt: wallet.createdAt,
         walletCategory: wallet.walletCategory,
         walFinId: wallet.walFinId,
+        customer: wallet.customer,
+        walEffBal: wallet.walEffBal || 0,
+        walLogicBalance: wallet.walLogicBalance || 0,
+        walSpecificBalance: wallet.walSpecificBalance || 0,
+        walletOperations: wallet.walletOperations,
+        lastBalanceHistory: wallet.lastBalanceHistory,  
+        operationTypes: wallet.operationTypes,
+        cardList: wallet.cardList,
+        accountList: wallet.accountList,
+        walKey: wallet.walKey,
       }))),
       catchError(error => {
         console.error('Error fetching wallets:', error);

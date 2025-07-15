@@ -1605,29 +1605,29 @@
                 class="w-20 h-20 mx-auto bg-primary bg-opacity-10 rounded-full flex items-center justify-center text-primary">
                 <i class="ri-wallet-3-line ri-2x"></i>
               </div>
-              <h4 class="text-lg font-semibold mt-2">Wallet ID:</h4>
+              <h4 class="text-lg font-semibold mt-2">Wallet ID: {{selectedWallet.walIden}}</h4>
               
             </div>
             <div class="space-y-3">
               <div class="flex justify-between">
                 <span class="text-sm text-gray-500">Status:</span>
-                <span class="text-sm font-medium px-2 rounded-full status-active">Active</span>
+                <span class="text-sm font-medium px-2 rounded-full status-active">{{ selectedWallet.walletStatus.wstLabe }}</span>
               </div>
               <div class="flex justify-between">
                 <span class="text-sm text-gray-500">Type:</span>
-                <span class="text-sm font-medium">Personal</span>
+                <span class="text-sm font-medium">{{ selectedWallet.walletType.wtyLabe }}</span>
               </div>
               <div class="flex justify-between">
                 <span class="text-sm text-gray-500">Category:</span>
-                <span class="text-sm font-medium">Standard</span>
+                <span class="text-sm font-medium">{{ selectedWallet.walletCategory.wcaLabe }}</span>
               </div>
               <div class="flex justify-between">
                 <span class="text-sm text-gray-500">Created:</span>
-                <span class="text-sm font-medium">2023-01-15</span>
+                <span class="text-sm font-medium">{{ selectedWallet.createdAt | date:'dd-MM-yyy HH:mm:ss' }}</span>
               </div>
               <div class="flex justify-between">
                 <span class="text-sm text-gray-500">Last Updated:</span>
-                <span class="text-sm font-medium">2023-05-21 14:32</span>
+                <span class="text-sm font-medium">{{ selectedWallet.lastUpdatedDate  | date:'dd-MM-yyyy HH:mm:ss' }}</span>
               </div>
             </div>
             <div class="mt-6 space-y-2">
@@ -1663,19 +1663,19 @@
                   <div class="space-y-4">
                     <div>
                       <label class="block text-xs text-gray-500 mb-1">Wallet Code</label>
-                      <div class="text-sm font-medium">W-10045</div>
+                      <div class="text-sm font-medium">{{ selectedWallet.walCode }}</div>
                     </div>
                     <div>
                       <label class="block text-xs text-gray-500 mb-1">Identifier</label>
-                      <div class="text-sm font-medium">PERS-WALLET-2845</div>
+                      <div class="text-sm font-medium">{{selectedWallet.walIden}}</div>
                     </div>
                     <div>
                       <label class="block text-xs text-gray-500 mb-1">Label</label>
-                      <div class="text-sm font-medium">Michael Johnson's Personal</div>
+                      <div class="text-sm font-medium">{{ selectedWallet.walLabe }}</div>
                     </div>
                     <div>
                       <label class="block text-xs text-gray-500 mb-1">Wallet Key</label>
-                      <div class="text-sm font-medium">45982</div>
+                      <div class="text-sm font-medium">{{ selectedWallet.walKey }}</div>
                     </div>
                   </div>
                 </div>
@@ -1684,22 +1684,21 @@
                   <div class="space-y-4">
                     <div>
                       <label class="block text-xs text-gray-500 mb-1">Financial ID</label>
-                      <div class="text-sm font-medium">FIN-78542</div>
+                      <div class="text-sm font-medium">{{ selectedWallet.walFinId }}</div>
                     </div>
                     <div>
                       <label class="block text-xs text-gray-500 mb-1">Creation Date</label>
-                      <div class="text-sm font-medium">2023-01-15 09:45:22</div>
+                      <div class="text-sm font-medium">{{ selectedWallet.createdAt | date:'dd-MM-yyy HH:mm:ss' }}</div>
                     </div>
                     <div>
                       <label class="block text-xs text-gray-500 mb-1">Last Updated</label>
-                      <div class="text-sm font-medium">2023-05-21 14:32:18</div>
+                      <div class="text-sm font-medium">{{ selectedWallet.lastUpdatedDate  | date:'dd-MM-yyyy HH:mm:ss' }}</div>
                     </div>
                     <div>
                       <label class="block text-xs text-gray-500 mb-1">Status</label>
                       <div class="flex items-center">
                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full status-active mr-2">
-                          Active </span>
-                        <span class="text-xs text-gray-500">Since 2023-02-10</span>
+                        {{ selectedWallet.walletStatus.wstLabe }} </span>
                       </div>
                     </div>
                   </div>
@@ -1713,17 +1712,17 @@
                       <i class="ri-user-3-line ri-lg"></i>
                     </div>
                     <div class="ml-4">
-                      <div class="text-sm font-medium">Michael Johnson</div>
-                      <div class="text-xs text-gray-500">Customer ID: CUS-45782</div>
+                      <div class="text-sm font-medium">{{ selectedWallet.customer?.fullName }}</div>
+                      <div class="text-xs text-gray-500">Customer ID: {{ selectedWallet.customer?.cusIden }}</div>
                       <div class="flex items-center mt-1">
                         <div class="w-4 h-4 flex items-center justify-center text-gray-500 mr-1">
                           <i class="ri-mail-line"></i>
                         </div>
-                        <span class="text-xs">michael.johnson&#64;example.com</span>
+                        <span class="text-xs">{{ selectedWallet.customer?.cusMailAddress }}</span>
                         <div class="w-4 h-4 flex items-center justify-center text-gray-500 ml-3 mr-1">
                           <i class="ri-phone-line"></i>
                         </div>
-                        <span class="text-xs">+1 (555) 123-4567</span>
+                        <span class="text-xs">{{ selectedWallet.customer?.cusPhoneNbr }}</span>
                       </div>
                     </div>
                   </div>
