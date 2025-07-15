@@ -81,7 +81,7 @@
                     <select
                         class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary rounded-lg sm:text-sm">
                         <option value="">select country</option>
-                        <option *ngFor="let country of countries" [value]="country" >
+                        <option *ngFor="let country of countries" [value]="country">
                             {{ country.ctrLabe }}
                         </option>
                     </select>
@@ -882,6 +882,56 @@
                 </div>
             </div>
 
+            <!-- Location Information Section -->
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                <div class="flex items-center mb-5">
+                    <div class="w-1.5 h-6 bg-primary rounded-full mr-3"></div>
+                    <h4 class="text-lg font-semibold text-gray-900">Location Information</h4>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div class="form-field">
+                        <label class="form-label flex items-center">
+                            Country
+                            <span class="text-primary ml-1">*</span>
+                        </label>
+                        <div class="relative">
+                            <select class="form-input pl-10" [(ngModel)]="customerForm.country" name="country" required
+                                (change)="onCountryChange()">
+                                <option [ngValue]="undefined" disabled selected>Select country</option>
+                                <option *ngFor="let country of countries" [ngValue]="country">{{ country.ctrLabe }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-field">
+                        <label class="form-label flex items-center">
+                            City
+                            <span class="text-primary ml-1">*</span>
+                        </label>
+                        <div class="relative">
+                            <select class="form-input pl-10" [(ngModel)]="customerForm.city" name="city" required (change)="showSuccessMessage(customerForm.city?.ctyLabe!)">
+                                <option [ngValue]="undefined" disabled selected>Select city</option>
+                                <option *ngFor="let city of citiesByCountry" [ngValue]="city">{{ city.ctyLabe }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-field md:col-span-2">
+                        <label class="form-label flex items-center">
+                            Address
+                            <span class="text-primary ml-1">*</span>
+                        </label>
+                        <div class="relative">
+                            <input class="form-input pl-10" [(ngModel)]="customerForm.cusAddress" name="cusAddress"
+                                type="text" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Contact Information Section -->
             <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
                 <div class="flex items-center mb-5">
@@ -915,55 +965,6 @@
                 </div>
             </div>
 
-            <!-- Location Information Section -->
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                <div class="flex items-center mb-5">
-                    <div class="w-1.5 h-6 bg-primary rounded-full mr-3"></div>
-                    <h4 class="text-lg font-semibold text-gray-900">Location Information</h4>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <div class="form-field">
-                        <label class="form-label flex items-center">
-                            Country
-                            <span class="text-primary ml-1">*</span>
-                        </label>
-                        <div class="relative">
-                            <select class="form-input pl-10" [(ngModel)]="customerForm.country" name="country"
-                                (change)="onCountryChange()">
-                                <option value="" disabled selected>Select country</option>
-                                <option *ngFor="let country of countries" [ngValue]="country">{{ country.ctrLabe }}
-                                </option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-field">
-                        <label class="form-label flex items-center">
-                            City
-                            <span class="text-primary ml-1">*</span>
-                        </label>
-                        <div class="relative">
-                            <select class="form-input pl-10" [(ngModel)]="customerForm.city" name="city">
-                                <option value="" disabled selected>Select city</option>
-                                <option *ngFor="let city of citiesByCountry" [ngValue]="city">{{ city.ctyLabe }}</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-field md:col-span-2">
-                        <label class="form-label flex items-center">
-                            Address
-                            <span class="text-primary ml-1">*</span>
-                        </label>
-                        <div class="relative">
-                            <input class="form-input pl-10" [(ngModel)]="customerForm.cusAddress" name="cusAddress"
-                                type="text" required>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <!-- Security Section -->
             <div *ngIf="!selectedCustomer" class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
                 <div class="flex items-center mb-5">
@@ -978,10 +979,13 @@
                             <span class="text-primary ml-1">*</span>
                         </label>
                         <div class="relative">
-                            <input class="form-input pl-10 pr-10" [(ngModel)]="customerForm.cusMotDePasse"
+                            <input class="form-input pl-10 pr-10" [(ngModel)]="customerForm.cusMotDePasse" #password="ngModel"
                                 name="cusMotDePasse" type="password" required minlength="6">
                         </div>
-                        <p class="text-xs text-gray-500 mt-1">Minimum 6 characters</p>
+                        <div *ngIf="password.invalid && password.touched" class="error-message">
+                            <div *ngIf="password.errors?.['required']">Password is required</div>
+                            <div *ngIf="password.errors?.['minlength']">Minimum 6 characters</div>
+                        </div>
                     </div>
 
                     <div class="form-field">
@@ -990,8 +994,15 @@
                             <span class="text-primary ml-1">*</span>
                         </label>
                         <div class="relative">
-                            <input class="form-input pl-10 pr-10" [(ngModel)]="confirm" name="confirm" type="password"
-                                required minlength="6">
+                            <input class="form-input pl-10 pr-10" name="confirm" type="password" required #confirm
+                                minlength="6">
+                        </div>
+                        <div *ngIf="password.invalid && password.touched" class="error-message">
+                            <div *ngIf="password.errors?.['required']">Password confirm is required</div>
+                            <div *ngIf="password.errors?.['minlength']">Minimum 6 characters</div>
+                            <div *ngIf="customerForm.cusMotDePasse && confirm.value !== customerForm.cusMotDePasse">
+                                Passwords don't match
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1010,7 +1021,7 @@
                         </label>
                         <div class="relative">
                             <select class="form-input pl-10" [(ngModel)]="customerForm.status" name="status" required>
-                                <option value="" disabled>Select status</option>
+                                <option [ngValue]="undefined" disabled selected>Select status</option>
                                 <option *ngFor="let status of statuses" [ngValue]="status">
                                     {{ status.ctsLabe }}
                                 </option>
@@ -1036,7 +1047,7 @@
                         <div class="relative">
                             <select class="form-input pl-10" [(ngModel)]="customerForm.identity!.customerIdentityType"
                                 name="customerIdentityType">
-                                <option value="" disabled selected>Select ID type</option>
+                                <option [ngValue]="undefined" disabled selected>Select ID type</option>
                                 <option *ngFor="let cit of identityTypes" [ngValue]="cit">{{cit.citLabe}}</option>
                             </select>
                         </div>
@@ -1059,7 +1070,7 @@
                             <span class="text-primary ml-1">*</span>
                         </label>
                         <div class="border-2 border-dashed border-gray-200 rounded-xl p-6 text-center bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer"
-                            (click)="files = []; documentInput.click()">
+                            (click)="files = []; customerDocs = []; documentInput.click()">
                             <div
                                 class="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
                                 <i class="ri-upload-cloud-2-line text-primary text-2xl"></i>
@@ -1070,7 +1081,13 @@
                                 {{ files.length }} file{{ files.length !== 1 ? 's' : '' }} selected
                             </p>
                             <input #documentInput type="file" class="hidden" multiple (change)="onFileSelected($event)"
-                                [accept]="allowedDocTypes">
+                                required [accept]="allowedDocTypes">
+
+                            <!-- Validation message -->
+                            <div *ngIf="documentInput.required && CustomerForm.submitted && !files.length"
+                                class="text-xs text-red-500 mt-2">
+                                Please upload at least one document
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1495,7 +1512,8 @@
                 </button>
             </div>
             <div class="p-6">
-                <form ngNativeValidate (ngSubmit)="selectedStatus ? updateStatus() : addStatus()" #StatusForm="ngForm" id="status-form">
+                <form ngNativeValidate (ngSubmit)="selectedStatus ? updateStatus() : addStatus()" #StatusForm="ngForm"
+                    id="status-form">
                     <div class="space-y-4">
                         <!-- <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Status Identifier</label>
@@ -1546,8 +1564,8 @@
                 </button>
             </div>
             <div class="p-6">
-                <form ngNativeValidate (ngSubmit)="selectedStatus ? updateIdentityType() : addIdentityType()" #IdentityTypeForm="ngForm"
-                    id="identityType-form">
+                <form ngNativeValidate (ngSubmit)="selectedStatus ? updateIdentityType() : addIdentityType()"
+                    #IdentityTypeForm="ngForm" id="identityType-form">
                     <div class="space-y-4">
                         <!-- <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Identity Type Identifier</label>

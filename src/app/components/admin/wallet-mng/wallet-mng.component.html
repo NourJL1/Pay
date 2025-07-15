@@ -299,7 +299,7 @@
                 </span>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm text-gray-900">{{ wallet.walletType }}</div>
+                <div class="text-sm text-gray-900">{{ wallet.walletType?.wtyLabe }}</div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="text-sm text-gray-500">{{ wallet.lastUpdatedDate | date:'short' }}</div>
@@ -321,7 +321,6 @@
                 </div>
               </td>
             </tr>
-
           </ng-container>
           <ng-template #noData>
             <tr>
