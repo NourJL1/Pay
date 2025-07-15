@@ -77,6 +77,10 @@ export class CustomerService {
   {
     return this.http.put<string>(`${this.apiUrl}/resetPassword/${cusCode}`, password)
   }
+  /* resetPassword(email: String, password: string)
+  {
+    return this.http.put<string>(`${this.apiUrl}/resetPassword`, { password, email })
+  } */
 
   // Assign roles to a customer
   assignRoles(username: string, roleIds: number[]): Observable<Customer> {

@@ -13,7 +13,6 @@ import { WalletMngComponent } from './components/admin/wallet-mng/wallet-mng.com
 import { ProductsComponent } from './components/admin/products/products.component';
 import { ProfilingComponent } from './components/admin/profiling/profiling.component';
 import { CustomerMngComponent } from './components/admin/customer-mng/customer-mng.component';
-import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { PendingComponent } from './components/wallet/pending/pending.component';
 import { OverviewComponent } from './components/wallet/overview/overview.component';
 import { SuspendedComponent } from './components/wallet/suspended/suspended.component';
@@ -28,7 +27,6 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
-  { path: 'reset-password', component: ResetPasswordComponent },
   { 
     path: 'pending', 
     component: PendingComponent,
