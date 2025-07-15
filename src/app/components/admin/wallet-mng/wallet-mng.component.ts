@@ -87,6 +87,7 @@ export class WalletMngComponent implements OnInit {
   lastUpdated: Date | null = null;
   activeWalletCount: number = 0;
 
+
   constructor(
     private walletStatusService: WalletStatusService,
     private walletCategoryService: WalletCategoryService,
@@ -110,6 +111,8 @@ export class WalletMngComponent implements OnInit {
     this.loadWallets();
     this.loadAccountTypes();
     this.loadWalletStats();
+    this.loadActiveWalletCount();
+
   }
 
   private getHttpOptions(): { headers: HttpHeaders } {
