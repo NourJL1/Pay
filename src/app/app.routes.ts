@@ -17,6 +17,7 @@ import { ResetPasswordComponent } from './components/reset-password/reset-passwo
 import { PendingComponent } from './components/wallet/pending/pending.component';
 import { OverviewComponent } from './components/wallet/overview/overview.component';
 import { SuspendedComponent } from './components/wallet/suspended/suspended.component';
+import { Role } from './entities/role';
 
 export const routes: Routes = [
 
@@ -32,21 +33,22 @@ export const routes: Routes = [
     path: 'pending', 
     component: PendingComponent,
     canActivate: [AuthGuard],
-    data: { requiredStatus: 'PENDING' }
+    data: { requiredRole: ['ROLE_CUSTOMER', 'ROLE_MERCHANT'], requiredStatus: 'PENDING' }
   },
   { 
     path: 'suspended', 
     component: SuspendedComponent,
     canActivate: [AuthGuard],
-    data: { requiredStatus: 'SUSPENDED' }
+    data: { requiredRole: ['ROLE_CUSTOMER', 'ROLE_MERCHANT'], requiredStatus: 'SUSPENDED' }
   },
   {
     path: 'wallet',
     component: WalletComponent,
     canActivate: [AuthGuard],
-    data: { requiredStatus: 'ACTIVE' },
+    data: { requiredRole: ['ROLE_CUSTOMER', 'ROLE_MERCHANT'], requiredStatus: 'ACTIVE' },
     children:
     [
+      { path: '', redirectTo: 'overview', pathMatch: 'full' },
       { path: 'overview', component: OverviewComponent}
     ]
   },
@@ -54,9 +56,10 @@ export const routes: Routes = [
     path: 'admin', 
     component: SideNavComponent, 
     canActivate: [AuthGuard],
-    data: { role: 'ROLE_ADMIN' },
+    data: { requiredRole: 'ROLE_ADMIN' },
     children:
     [
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       {path: 'dashboard', component: DashboardComponent},
       {path: 'accounting', component: AccountingComponent},
       {path: 'wallets', component: WalletMngComponent},

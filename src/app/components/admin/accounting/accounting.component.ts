@@ -485,7 +485,7 @@ export class AccountingComponent implements OnInit {
 
   addFeeRule(): void {
     console.log('addFeeRule: Adding fee rule:', this.newFeeRule);
-    if (!this.newFeeRule.fruIden || !this.newFeeRule.fruLabe || !this.newFeeRule.feeRuleType?.frtCode || !this.newFeeRule.feeSchema?.fscCode || !this.newFeeRule.fruTva?.vatCode) {
+    if (/* !this.newFeeRule.fruIden ||  */!this.newFeeRule.fruLabe || !this.newFeeRule.feeRuleType?.frtCode || !this.newFeeRule.feeSchema?.fscCode || !this.newFeeRule.fruTva?.vatCode) {
       this.showErrorMessage('Please fill in all required fields.');
       return;
     }
@@ -515,7 +515,7 @@ export class AccountingComponent implements OnInit {
 
   updateFeeRule(): void {
     console.log('updateFeeRule: Updating fee rule:', this.newFeeRule);
-    if (!this.newFeeRule.fruIden || !this.newFeeRule.fruLabe || !this.newFeeRule.feeRuleType?.frtCode || !this.newFeeRule.feeSchema?.fscCode || !this.newFeeRule.fruTva?.vatCode) {
+    if (/* !this.newFeeRule.fruIden ||  */!this.newFeeRule.fruLabe || !this.newFeeRule.feeRuleType?.frtCode || !this.newFeeRule.feeSchema?.fscCode || !this.newFeeRule.fruTva?.vatCode) {
       this.showErrorMessage('Please fill in all required fields.');
       return;
     }
@@ -564,7 +564,7 @@ export class AccountingComponent implements OnInit {
 
   addOperationType(): void {
     console.log('addOperationType: Adding operation type:', this.newOperationType);
-    if (!this.newOperationType.optIden || !this.newOperationType.optLabe || !this.newOperationType.feeSchema?.fscCode) {
+    if (/* !this.newOperationType.optIden ||  */!this.newOperationType.optLabe || !this.newOperationType.feeSchema?.fscCode) {
       this.showErrorMessage('Please fill in all required fields, including Fee Schema.');
       return;
     }
@@ -594,7 +594,7 @@ export class AccountingComponent implements OnInit {
 
   updateOperationType(): void {
     console.log('updateOperationType: Updating operation type:', this.newOperationType);
-    if (!this.newOperationType.optIden || !this.newOperationType.optLabe || !this.newOperationType.feeSchema?.fscCode) {
+    if (/* !this.newOperationType.optIden ||  */!this.newOperationType.optLabe || !this.newOperationType.feeSchema?.fscCode) {
       this.showErrorMessage('Please fill in all required fields, including Fee Schema.');
       return;
     }
@@ -801,7 +801,7 @@ export class AccountingComponent implements OnInit {
 
   addPeriodicity(): void {
     console.log('addPeriodicity: Adding periodicity:', this.newPeriodicity);
-    if (!this.newPeriodicity.perIden || !this.newPeriodicity.perLabe) {
+    if (/* !this.newPeriodicity.perIden ||  */!this.newPeriodicity.perLabe) {
       this.showErrorMessage('Please fill in all required fields.');
       return;
     }
@@ -831,7 +831,7 @@ export class AccountingComponent implements OnInit {
 
   updatePeriodicity(): void {
     console.log('updatePeriodicity: Updating periodicity:', this.newPeriodicity);
-    if (!this.newPeriodicity.perIden || !this.newPeriodicity.perLabe) {
+    if (/* !this.newPeriodicity.perIden ||  */!this.newPeriodicity.perLabe) {
       this.showErrorMessage('Please fill in all required fields.');
       return;
     }

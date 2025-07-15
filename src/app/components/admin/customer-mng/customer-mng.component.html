@@ -135,44 +135,56 @@
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
-                    <tr *ngFor="let customer of customers" class="hover:bg-gray-50 transition duration-150">
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm font-medium text-gray-900">
-                                {{ customer.cusCode }}
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-900">{{ customer.cusIden }}</div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-900">{{ customer.username }}</div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-900">{{ customer.fullName }}</div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span
-                                class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                {{ customer.status?.ctsLabe }}
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <div class="flex items-center justify-end space-x-3">
-                                <button (click)="selectedCustomer = customer; toggleForm('customer-details')"
-                                    class="text-blue-600 hover:text-blue-800 transition duration-150 p-1 rounded hover:bg-blue-50">
-                                    <i class="ri-eye-line text-lg"></i>
-                                </button>
-                                <button (click)="editCustomer(customer)"
-                                    class="text-green-600 hover:text-green-800 transition duration-150 p-1 rounded hover:bg-green-50">
-                                    <i class="ri-edit-line text-lg"></i>
-                                </button>
-                                <button (click)="deleteCustomer(customer)"
-                                    class="text-red-600 hover:text-red-800 transition duration-150 p-1 rounded hover:bg-red-50">
-                                    <i class="ri-delete-bin-line text-lg"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
+                    <ng-container *ngIf="customers!.length > 0; else noData">
+                        <tr *ngFor="let customer of customers" class="hover:bg-gray-50 transition duration-150">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm font-medium text-gray-900">
+                                    {{ customer.cusCode }}
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">{{ customer.cusIden }}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">{{ customer.username }}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">{{ customer.fullName }}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span
+                                    class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                    {{ customer.status?.ctsLabe }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <div class="flex items-center justify-end space-x-3">
+                                    <button (click)="selectedCustomer = customer; toggleForm('customer-details')"
+                                        class="text-blue-600 hover:text-blue-800 transition duration-150 p-1 rounded hover:bg-blue-50">
+                                        <i class="ri-eye-line text-lg"></i>
+                                    </button>
+                                    <button (click)="editCustomer(customer)"
+                                        class="text-green-600 hover:text-green-800 transition duration-150 p-1 rounded hover:bg-green-50">
+                                        <i class="ri-edit-line text-lg"></i>
+                                    </button>
+                                    <button (click)="deleteCustomer(customer)"
+                                        class="text-red-600 hover:text-red-800 transition duration-150 p-1 rounded hover:bg-red-50">
+                                        <i class="ri-delete-bin-line text-lg"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-container>
+                    <ng-template #noData>
+                        <tr>
+                            <td colspan="100%" class="py-8 text-center">
+                                <div class="flex flex-col items-center justify-center space-y-2">
+                                    <p class="text-sm text-gray-400">The table is currently empty</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-template>
+
                 </tbody>
             </table>
         </div>
@@ -274,31 +286,42 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            <tr *ngFor="let status of statuses" class="hover:bg-gray-50 transition duration-150">
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm font-medium text-gray-900">{{ status.ctsCode }}
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">{{ status.ctsIden }}</div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">{{ status.ctsLabe }}
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                    <div class="flex items-center justify-end space-x-3">
-                                        <button (click)="editStatus(status)"
-                                            class="text-green-600 hover:text-green-800 transition duration-150 p-1 rounded hover:bg-green-50">
-                                            <i class="ri-edit-line text-lg"></i>
-                                        </button>
-                                        <button (click)="deleteStatus(status)"
-                                            class="text-red-600 hover:text-red-800 transition duration-150 p-1 rounded hover:bg-red-50">
-                                            <i class="ri-delete-bin-line text-lg"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
+                            <ng-container *ngIf="statuses!.length > 0; else noData">
+                                <tr *ngFor="let status of statuses" class="hover:bg-gray-50 transition duration-150">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-medium text-gray-900">{{ status.ctsCode }}
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">{{ status.ctsIden }}</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">{{ status.ctsLabe }}
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <div class="flex items-center justify-end space-x-3">
+                                            <button (click)="editStatus(status)"
+                                                class="text-green-600 hover:text-green-800 transition duration-150 p-1 rounded hover:bg-green-50">
+                                                <i class="ri-edit-line text-lg"></i>
+                                            </button>
+                                            <button (click)="deleteStatus(status)"
+                                                class="text-red-600 hover:text-red-800 transition duration-150 p-1 rounded hover:bg-red-50">
+                                                <i class="ri-delete-bin-line text-lg"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                            <ng-template #noData>
+                                <tr>
+                                    <td colspan="100%" class="py-8 text-center">
+                                        <div class="flex flex-col items-center justify-center space-y-2">
+                                            <p class="text-sm text-gray-400">No statuses available</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </ng-template>
                         </tbody>
                     </table>
                 </div>
@@ -378,31 +401,42 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            <tr *ngFor="let type of identityTypes" class="hover:bg-gray-50 transition duration-150">
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm font-medium text-gray-900">{{ type.citCode }}
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">{{ type.citIden }}</div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">{{ type.citLabe }}
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                    <div class="flex items-center justify-end space-x-3">
-                                        <button (click)="editIdentityType(type)"
-                                            class="text-green-600 hover:text-green-800 transition duration-150 p-1 rounded hover:bg-green-50">
-                                            <i class="ri-edit-line text-lg"></i>
-                                        </button>
-                                        <button (click)="deleteIdentityType(type)"
-                                            class="text-red-600 hover:text-red-800 transition duration-150 p-1 rounded hover:bg-red-50">
-                                            <i class="ri-delete-bin-line text-lg"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
+                            <ng-container *ngIf="identityTypes!.length > 0; else noData">
+                                <tr *ngFor="let type of identityTypes" class="hover:bg-gray-50 transition duration-150">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-medium text-gray-900">{{ type.citCode }}
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">{{ type.citIden }}</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">{{ type.citLabe }}
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <div class="flex items-center justify-end space-x-3">
+                                            <button (click)="editIdentityType(type)"
+                                                class="text-green-600 hover:text-green-800 transition duration-150 p-1 rounded hover:bg-green-50">
+                                                <i class="ri-edit-line text-lg"></i>
+                                            </button>
+                                            <button (click)="deleteIdentityType(type)"
+                                                class="text-red-600 hover:text-red-800 transition duration-150 p-1 rounded hover:bg-red-50">
+                                                <i class="ri-delete-bin-line text-lg"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                            <ng-template #noData>
+                                <tr>
+                                    <td colspan="100%" class="py-8 text-center">
+                                        <div class="flex flex-col items-center justify-center space-y-2">
+                                            <p class="text-sm text-gray-400">No statuses available</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </ng-template>
                         </tbody>
                     </table>
                 </div>
@@ -482,27 +516,38 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            <tr *ngFor="let type of docTypes" class="hover:bg-gray-50 transition duration-150">
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm font-medium text-gray-900">{{ type.dtyCode }}
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">{{ type.dtyIden }}</div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">{{ type.dtyLabe }}
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                    <div class="flex items-center justify-end space-x-3">
-                                        <button (click)="deleteDocType(type)"
-                                            class="text-red-600 hover:text-red-800 transition duration-150 p-1 rounded hover:bg-red-50">
-                                            <i class="ri-delete-bin-line text-lg"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
+                            <ng-container *ngIf="docTypes!.length > 0; else noData">
+                                <tr *ngFor="let type of docTypes" class="hover:bg-gray-50 transition duration-150">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-medium text-gray-900">{{ type.dtyCode }}
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">{{ type.dtyIden }}</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">{{ type.dtyLabe }}
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <div class="flex items-center justify-end space-x-3">
+                                            <button (click)="deleteDocType(type)"
+                                                class="text-red-600 hover:text-red-800 transition duration-150 p-1 rounded hover:bg-red-50">
+                                                <i class="ri-delete-bin-line text-lg"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                            <ng-template #noData>
+                                <tr>
+                                    <td colspan="100%" class="py-8 text-center">
+                                        <div class="flex flex-col items-center justify-center space-y-2">
+                                            <p class="text-sm text-gray-400">No statuses available</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </ng-template>
                         </tbody>
                     </table>
                 </div>
@@ -582,27 +627,38 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            <tr *ngFor="let country of countries" class="hover:bg-gray-50 transition duration-150">
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm font-medium text-gray-900">{{ country.ctrCode }}
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">{{ country.ctrIden }}</div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">{{ country.ctrLabe }}
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                    <div class="flex items-center justify-end space-x-3">
-                                        <button (click)="deleteCountry(country)"
-                                            class="text-red-600 hover:text-red-800 transition duration-150 p-1 rounded hover:bg-red-50">
-                                            <i class="ri-delete-bin-line text-lg"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
+                            <ng-container *ngIf="countries!.length > 0; else noData">
+                                <tr *ngFor="let country of countries" class="hover:bg-gray-50 transition duration-150">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-medium text-gray-900">{{ country.ctrCode }}
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">{{ country.ctrIden }}</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">{{ country.ctrLabe }}
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <div class="flex items-center justify-end space-x-3">
+                                            <button (click)="deleteCountry(country)"
+                                                class="text-red-600 hover:text-red-800 transition duration-150 p-1 rounded hover:bg-red-50">
+                                                <i class="ri-delete-bin-line text-lg"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                            <ng-template #noData>
+                                <tr>
+                                    <td colspan="100%" class="py-8 text-center">
+                                        <div class="flex flex-col items-center justify-center space-y-2">
+                                            <p class="text-sm text-gray-400">No statuses available</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </ng-template>
                         </tbody>
                     </table>
                 </div>
@@ -681,29 +737,41 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            <tr *ngFor="let city of cities" class="hover:bg-gray-50 transition duration-150">
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm font-medium text-gray-900">
-                                        {{ city.ctyCode }}
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">{{ city.ctyIden }}</div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">
-                                        {{ city.ctyLabe }}
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                    <div class="flex items-center justify-end space-x-3">
-                                        <button (click)="deleteCity(city)"
-                                            class="text-red-600 hover:text-red-800 transition duration-150 p-1 rounded hover:bg-red-50">
-                                            <i class="ri-delete-bin-line text-lg"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
+                            <ng-container *ngIf="cities!.length > 0; else noData">
+                                <tr *ngFor="let city of cities" class="hover:bg-gray-50 transition duration-150">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-medium text-gray-900">
+                                            {{ city.ctyCode }}
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">{{ city.ctyIden }}</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">
+                                            {{ city.ctyLabe }}
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <div class="flex items-center justify-end space-x-3">
+                                            <button (click)="deleteCity(city)"
+                                                class="text-red-600 hover:text-red-800 transition duration-150 p-1 rounded hover:bg-red-50">
+                                                <i class="ri-delete-bin-line text-lg"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                            </ng-container>
+                            <ng-template #noData>
+                                <tr>
+                                    <td colspan="100%" class="py-8 text-center">
+                                        <div class="flex flex-col items-center justify-center space-y-2">
+                                            <p class="text-sm text-gray-400">No statuses available</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </ng-template>
                         </tbody>
                     </table>
                 </div>
@@ -930,8 +998,7 @@
                             Customer Status <span class="text-primary ml-1">*</span>
                         </label>
                         <div class="relative">
-                            <select class="form-input pl-10" [(ngModel)]="customerForm.status" name="status"
-                                required>
+                            <select class="form-input pl-10" [(ngModel)]="customerForm.status" name="status" required>
                                 <option value="" disabled>Select status</option>
                                 <option *ngFor="let status of statuses" [ngValue]="status">
                                     {{ status.ctsLabe }}
@@ -998,17 +1065,17 @@
                 </div>
             </div>
             <div class="px-6 py-4 border-t border-gray-200 flex justify-end space-x-3">
-            <button (click)="closeForm('customer-add')" id="cancel-create-customer"
-                class="px-4 py-2 border border-gray-300 text-gray-700 rounded-button hover:bg-gray-50 transition text-sm whitespace-nowrap">
-                Cancel
-            </button>
-            <button type="submit" id="submit-create-customer"
-                class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
-                {{ selectedCustomer ? "Update Customer Details" : "Add Customer" }}
-            </button>
-        </div>
+                <button (click)="closeForm('customer-add')" id="cancel-create-customer"
+                    class="px-4 py-2 border border-gray-300 text-gray-700 rounded-button hover:bg-gray-50 transition text-sm whitespace-nowrap">
+                    Cancel
+                </button>
+                <button type="submit" id="submit-create-customer"
+                    class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+                    {{ selectedCustomer ? "Update Customer Details" : "Add Customer" }}
+                </button>
+            </div>
         </form>
-        
+
     </div>
 
     <!-- customer Detail Modal -->
@@ -1220,7 +1287,7 @@
                             <!-- Document List -->
                             <div class="space-y-3">
                                 <div *ngFor="let doc of selectedCustomer?.identity?.customerDocListe?.customerDocs; let i = index"
-                                class="document-item group flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
+                                    class="document-item group flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
                                     <div class="flex items-center">
                                         <div
                                             class="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center text-blue-500 mr-3">
@@ -1234,14 +1301,15 @@
                                     </div>
                                     <div
                                         class="flex items-center space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <button (click)="previewDocument(doc, i)" class="p-1 text-gray-500 hover:text-blue-500" title="Preview">
+                                        <button (click)="previewDocument(doc, i)"
+                                            class="p-1 text-gray-500 hover:text-blue-500" title="Preview">
                                             <i class="ri-eye-line"></i>
                                         </button>
                                     </div>
                                 </div>
                             </div>
 
-                            
+
                             <!-- Document Preview Panel (hidden by default) -->
                             <!-- <div id="document-preview" *ngIf="selectedDoc!=undefined"
                                 class="mt-6 border border-gray-200 rounded-lg bg-white p-4">
@@ -1372,6 +1440,16 @@
                                                         Active
                                                     </span>
                                                 </td>
+
+                                                <ng-template #noData>
+                                            <tr>
+                                                <td colspan="100%" class="py-8 text-center">
+                                                    <div class="flex flex-col items-center justify-center space-y-2">
+                                                        <p class="text-sm text-gray-400">No statuses available</p>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            </ng-template>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -1408,15 +1486,16 @@
             <div class="p-6">
                 <form (ngSubmit)="selectedStatus ? updateStatus() : addStatus()" #StatusForm="ngForm" id="status-form">
                     <div class="space-y-4">
-                        <div>
+                        <!-- <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Status Identifier</label>
                             <input type="text" [(ngModel)]="statusForm.ctsIden" name="ctsIden"
                                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
                                 placeholder="Identifier" required />
-                        </div>
+                        </div> -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Status Label</label>
                             <input type="text" [(ngModel)]="statusForm.ctsLabe" name="ctsLabe"
+                                (ngModelChange)="statusForm.ctsLabe = $event.toUpperCase()"
                                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
                                 placeholder="Label" required />
                         </div>
@@ -1459,15 +1538,16 @@
                 <form (ngSubmit)="selectedStatus ? updateIdentityType() : addIdentityType()" #IdentityTypeForm="ngForm"
                     id="identityType-form">
                     <div class="space-y-4">
-                        <div>
+                        <!-- <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Identity Type Identifier</label>
                             <input type="text" [(ngModel)]="identityTypeForm.citIden" name="citIden"
                                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
                                 placeholder="Identifier" required />
-                        </div>
+                        </div> -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Identity Type Label</label>
                             <input type="text" [(ngModel)]="identityTypeForm.citLabe" name="citLabe"
+                                (ngModelChange)="identityTypeForm.citLabe = $event.toUpperCase()"
                                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
                                 placeholder="Label" required />
                         </div>
@@ -1506,7 +1586,7 @@
                 <form (ngSubmit)="selectedStatus ? updateDocType() : addDocType()" #DocTypeForm="ngForm"
                     id="docType-form">
                     <div class="space-y-4">
-                        <div>
+                        <!-- <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Document Type Identifier</label>
                             <select
                                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
@@ -1515,7 +1595,7 @@
                                     {{ docType.dtyIden }}
                                 </option>
                             </select>
-                        </div>
+                        </div> -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Document Type Label</label>
 
@@ -1559,7 +1639,7 @@
             <div class="p-6">
                 <form (ngSubmit)="addCountry()" id="add-status-form">
                     <div class="space-y-4">
-                        <div>
+                        <!-- <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Country Identifier</label>
                             <select
                                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
@@ -1568,7 +1648,7 @@
                                     {{ country.ctrIden }}
                                 </option>
                             </select>
-                        </div>
+                        </div> -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Country Label</label>
 
@@ -1611,12 +1691,12 @@
             <div class="p-6">
                 <form (ngSubmit)="addCity()" id="add-status-form">
                     <div class="space-y-4">
-                        <div>
+                        <!-- <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">City Identifier</label>
                             <input type="text" [(ngModel)]="cityForm.ctyIden" name="ctrIden"
                                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
                                 placeholder="Identifier" required />
-                        </div>
+                        </div> -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Country</label>
                             <select required (change)="onCountryChange()"

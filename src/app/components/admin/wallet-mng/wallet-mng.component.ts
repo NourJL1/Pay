@@ -198,8 +198,8 @@ export class WalletMngComponent implements OnInit {
   saveAccountType(): void {
     this.errorMessage = null;
     console.log('saveAccountType: Saving account type:', this.newAccountType);
-    if (!this.newAccountType.atyIden || !this.newAccountType.atyLabe || !this.newAccountType.atyFinId) {
-      this.showErrorMessage('Please fill in all required fields: Type Identifier, Type Label, and Financial Institution ID.');
+    if (/* !this.newAccountType.atyIden ||  */!this.newAccountType.atyLabe || !this.newAccountType.atyFinId) {
+      this.showErrorMessage('Please fill in all required fields: Type Label, and Financial Institution ID.');
       return;
     }
     if (this.isAccountTypeEditMode && this.selectedAccountType?.atyCode) {
@@ -405,8 +405,8 @@ export class WalletMngComponent implements OnInit {
   saveCard(): void {
     this.errorMessage = null;
     console.log('saveCard: Saving card:', this.newCard);
-    if (!this.newCard.carIden || !this.newCard.carLabe || !this.newCard.carNumb || !this.newCard.carExpiryDate || !this.newCard.cardType?.ctypCode || !this.newCard.cardList?.cliCode) {
-      this.showErrorMessage('Please fill in all required fields: Identifier, Label, Number, Expiry Date, Card Type, and Card List.');
+    if (/* !this.newCard.carIden ||  */!this.newCard.carLabe || !this.newCard.carNumb || !this.newCard.carExpiryDate || !this.newCard.cardType?.ctypCode || !this.newCard.cardList?.cliCode) {
+      this.showErrorMessage('Please fill in all required fields: Label, Number, Expiry Date, Card Type, and Card List.');
       return;
     }
     if (this.isCardEditMode && this.selectedCard?.carCode) {
@@ -490,8 +490,8 @@ export class WalletMngComponent implements OnInit {
   saveCardType(): void {
     this.errorMessage = null;
     console.log('saveCardType: Saving card type:', this.newCardType);
-    if (!this.newCardType.ctypIden || !this.newCardType.ctypLabe) {
-      this.showErrorMessage('Please fill in all required fields: Identifier and Label.');
+    if (/* !this.newCardType.ctypIden ||  */!this.newCardType.ctypLabe) {
+      this.showErrorMessage('Please fill in all required fields: Label.');
       return;
     }
     if (this.isCardTypeEditMode && this.selectedCardType?.ctypCode) {
@@ -571,8 +571,8 @@ export class WalletMngComponent implements OnInit {
   saveCardList(): void {
     this.errorMessage = null;
     console.log('saveCardList: Saving card list:', this.newCardList);
-    if (!this.newCardList.cliIden || !this.newCardList.cliLabe || !this.newCardList.wallet?.walIden) {
-      this.showErrorMessage('Please fill in all required fields: Identifier, Label, and Wallet.');
+    if (/* !this.newCardList.cliIden ||  */!this.newCardList.cliLabe || !this.newCardList.wallet?.walIden) {
+      this.showErrorMessage('Please fill in all required fields: Label, and Wallet.');
       return;
     }
     if (this.isCardListEditMode && this.selectedCardList?.cliCode) {
@@ -652,8 +652,8 @@ export class WalletMngComponent implements OnInit {
   saveStatus(): void {
     this.errorMessage = null;
     console.log('saveStatus: Saving wallet status:', this.selectedStatus);
-    if (!this.selectedStatus.wstIden || !this.selectedStatus.wstLabe) {
-      this.showErrorMessage('Please fill in all required fields: Status Identifier and Status Label.');
+    if (/* !this.selectedStatus.wstIden ||  */!this.selectedStatus.wstLabe) {
+      this.showErrorMessage('Please fill in all required fields: Status Label.');
       return;
     }
     if (this.isStatusEditMode) {
@@ -691,8 +691,8 @@ export class WalletMngComponent implements OnInit {
   saveCategory(): void {
     this.errorMessage = null;
     console.log('saveCategory: Saving wallet category:', this.selectedCategory);
-    if (!this.selectedCategory.wcaIden || !this.selectedCategory.wcaLabe || !this.selectedCategory.wcaFinId) {
-      this.showErrorMessage('Please fill in all required fields: Identifier, Label, and Financial Institution ID.');
+    if (/* !this.selectedCategory.wcaIden ||  */!this.selectedCategory.wcaLabe || !this.selectedCategory.wcaFinId) {
+      this.showErrorMessage('Please fill in all required fields: Label, and Financial Institution ID.');
       return;
     }
     if (this.isCategoryEditMode) {
@@ -729,8 +729,8 @@ export class WalletMngComponent implements OnInit {
   // Add wallet type
   addWalletType(): void {
     console.log('addWalletType: Adding wallet type:', this.newWalletType);
-    if (!this.newWalletType.wtyIden || !this.newWalletType.wtyLabe) {
-      this.showErrorMessage('Please fill in all required fields: Type Identifier and Type Label.');
+    if (/* !this.newWalletType.wtyIden ||  */!this.newWalletType.wtyLabe) {
+      this.showErrorMessage('Please fill in all required fields: Type Label.');
       return;
     }
     this.walletTypeService.create(this.newWalletType, this.getHttpOptions()).subscribe({
@@ -763,8 +763,8 @@ export class WalletMngComponent implements OnInit {
   // Update wallet type
   updateWalletType(): void {
     console.log('updateWalletType: Updating wallet type:', this.newWalletType);
-    if (!this.newWalletType.wtyIden || !this.newWalletType.wtyLabe) {
-      this.showErrorMessage('Please fill in all required fields: Type Identifier and Type Label.');
+    if (/* !this.newWalletType.wtyIden ||  */!this.newWalletType.wtyLabe) {
+      this.showErrorMessage('Please fill in all required fields: Type Label.');
       return;
     }
     if (this.selectedWalletType?.wtyCode) {
