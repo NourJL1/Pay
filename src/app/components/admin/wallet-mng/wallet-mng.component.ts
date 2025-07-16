@@ -27,24 +27,23 @@ import { AccountType } from '../../../entities/account-type';
   standalone: true
 })
 export class WalletMngComponent implements OnInit {
-[x: string]: any;
 
   addCard: boolean = false;
   addAccount: boolean = false;
 
   walletStatuses: WalletStatus[] = [];
   isWalletStatusVisible: boolean = false;
-  selectedStatus: WalletStatus = new WalletStatus();
+  selectedStatus?: WalletStatus// = new WalletStatus();
   isStatusEditMode: boolean = false;
 
   walletCategories: WalletCategory[] = [];
   isWalletCategoryVisible: boolean = false;
-  selectedCategory: WalletCategory = new WalletCategory();
+  selectedCategory?: WalletCategory// = new WalletCategory();
   isCategoryEditMode: boolean = false;
 
   walletTypesList: WalletType[] = [];
-  newWalletType: WalletType = new WalletType();
-  selectedWalletType: WalletType | null = null;
+  newWalletType?: WalletType// = new WalletType();
+  selectedWalletType?: WalletType;
   isWalletTypeEditMode: boolean = false;
   isWalletTypeVisible: boolean = false;
 
@@ -88,10 +87,8 @@ export class WalletMngComponent implements OnInit {
   activeWalletCount: number = 0;
 
   // Filter variables
-searchTerm: string = '';
-selectedType: any = null;
-wallets: Wallet[] = [];
-filteredWallets: Wallet[] = [];
+  searchTerm: string = '';
+  filteredWallets: Wallet[] = [];
 
 
 
@@ -105,21 +102,21 @@ filteredWallets: Wallet[] = [];
     private walletService: WalletService,
     private accountTypeService: AccountTypeService,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit(): void {
-  console.log('ngOnInit: Initializing component...');
-  this.loadWalletStatuses();
-  this.loadWalletCategories();
-  this.loadWalletTypes();
-  this.loadCards();
-  this.loadCardTypes();
-  this.loadCardLists();
-  this.loadAccountTypes();
-  this.loadWalletStats();
-  this.loadActiveWalletCount();
-  this.loadWallets(); // this should internally fetch and assign to `wallets` and `filteredWallets`
-}
+    console.log('ngOnInit: Initializing component...');
+    this.loadWalletStatuses();
+    this.loadWalletCategories();
+    this.loadWalletTypes();
+    this.loadCards();
+    this.loadCardTypes();
+    this.loadCardLists();
+    this.loadAccountTypes();
+    this.loadWalletStats();
+    this.loadActiveWalletCount();
+    this.loadWallets(); // this should internally fetch and assign to `wallets` and `filteredWallets`
+  }
 
 
   private getHttpOptions(): { headers: HttpHeaders } {
@@ -142,29 +139,40 @@ filteredWallets: Wallet[] = [];
     this.cdr.detectChanges();
   }
 
+  searchWallets(){}
+
   applyFilters(): void {
-  this.filteredWallets = this.wallets.filter(wallet => {
-    const matchesSearch = this.searchTerm
-      ? wallet.walLabe?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        wallet.walIden?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        wallet.walCode?.toString().includes(this.searchTerm)
-      : true;
-
-    const matchesStatus = this.selectedStatus
-      ? wallet.walletStatus?.wstCode === this.selectedStatus.wstCode
-      : true;
-
-    const matchesType = this.selectedType
-      ? wallet.walletType?.wtyCode === this.selectedType.wtyCode
-      : true;
-
-    const matchesCategory = this.selectedCategory
-      ? wallet.walletCategory?.wcaCode === this.selectedCategory.wcaCode
-      : true;
-
-    return matchesSearch && matchesStatus && matchesType && matchesCategory;
-  });
-}
+    if(!this.selectedStatus && !this.selectedWalletType && !this.selectedCategory!)
+      this.loadWallets();
+    else{
+      this.filteredWallets = this.walletsList!.filter(wallet => {
+        return (!this.selectedStatus || this.selectedStatus?.wstCode === wallet.walletStatus.wstCode) &&
+          (!this.selectedWalletType || this.selectedWalletType?.wtyCode === wallet.walletType.wtyCode) &&
+          (!this.selectedCategory! || this.selectedCategory?.wcaCode === wallet.walletCategory.wcaCode);
+      })
+    }
+    /* this.filteredWallets = this.wallets.filter(wallet => {
+      const matchesSearch = this.searchTerm
+        ? wallet.walLabe?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+          wallet.walIden?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+          wallet.walCode?.toString().includes(this.searchTerm)
+        : true;
+  
+      const matchesStatus = this.selectedStatus
+        ? wallet.walletStatus?.wstCode === this.selectedStatus.wstCode
+        : true;
+  
+      const matchesType = this.selectedType
+        ? wallet.walletType?.wtyCode === this.selectedType.wtyCode
+        : true;
+  
+      const matchesCategory = this.selectedCategory!
+        ? wallet.walletCategory?.wcaCode === this.selectedCategory!.wcaCode
+        : true;
+  
+      return matchesSearch && matchesStatus && matchesType && matchesCategory;
+    }); */
+  }
 
 
   loadActiveWalletCount(): void {
@@ -428,28 +436,29 @@ filteredWallets: Wallet[] = [];
 
   // Load wallets
   loadWallets(): void {
-  this.errorMessage = null;
-  // console.log('loadWallets: Fetching wallets...');
-  this.walletService.getAll().subscribe({
-    next: (wallets: Wallet[]) => {
-       // console.log('loadWallets: Wallets received:', wallets);
-      this.walletsList = wallets;
-      this.filteredWallets = [...this.walletsList]; // ✅ corrected here
-      this.cdr.detectChanges();
-    },
-    error: (error: HttpErrorResponse) => {
-      const message = error.status
-        ? `Failed to load wallets: ${error.status} ${error.statusText}`
-        : 'Failed to load wallets: Server error';
-      this.showErrorMessage(message);
-      console.error('Error loading wallets:', error);
-    }
-  });
-}
+    this.errorMessage = null;
+    // console.log('loadWallets: Fetching wallets...');
+    this.walletService.getAll().subscribe({
+      next: (wallets: Wallet[]) => {
+        // console.log('loadWallets: Wallets received:', wallets);
+        this.walletsList = wallets;
+        this.filteredWallets = [...this.walletsList]; // ✅ corrected here
+        this.cdr.detectChanges();
+      },
+      error: (error: HttpErrorResponse) => {
+        const message = error.status
+          ? `Failed to load wallets: ${error.status} ${error.statusText}`
+          : 'Failed to load wallets: Server error';
+        this.showErrorMessage(message);
+        console.error('Error loading wallets:', error);
+      }
+    });
+  }
 
   // Edit wallet
-  editWallet(): void {
+  editWallet(wallet: Wallet): void {
     this.errorMessage = null;
+    this.selectedWallet = wallet;
     console.log('editWallet: Opening edit form for wallet:', this.selectedWallet);
     // Placeholder: Implement edit wallet form logic
     this.isWalletFormVisible = true;
@@ -457,6 +466,26 @@ filteredWallets: Wallet[] = [];
     // TODO: Populate form with selectedWallet data and implement save logic
     this.cdr.detectChanges();
   }
+
+  deleteWallet(wallet: Wallet) {
+    this.errorMessage = null;
+    // console.log('deleteCard: carCode:', carCode);
+    if (wallet.walCode && confirm('Are you sure you want to delete this card?')) {
+      this.walletService.delete(wallet.walCode).subscribe({
+        next: () => {
+          // console.log('deleteCard: Success, carCode:', carCode);
+          this.walletsList = this.walletsList.filter(w => w.walCode !== wallet.walCode);
+          this.showSuccessMessage('Wallet deleted successfully');
+          this.cdr.detectChanges();
+        },
+        error: (error: HttpErrorResponse) => {
+          const message = error.status ? `Failed to delete wallet: ${error.status} ${error.statusText}` : 'Failed to delete wallet: Server error';
+          this.showErrorMessage(message);
+          console.error('Error deleting wallet:', error);
+        }
+      });
+    }
+}
 
   // Change wallet status
   changeWalletStatus(): void {
@@ -524,8 +553,8 @@ filteredWallets: Wallet[] = [];
     this.errorMessage = null;
     // console.log('editCard: Editing card:', card);
     this.selectedCard = card;
-    this.newCard = { 
-      ...card, 
+    this.newCard = {
+      ...card,
       cardType: card.cardType ? { ...card.cardType } : new CardType(),
       cardList: card.cardList ? { ...card.cardList, wallet: card.cardList.wallet ? { ...card.cardList.wallet } : new Wallet() } : new CardList({ wallet: new Wallet() })
     };
@@ -721,12 +750,12 @@ filteredWallets: Wallet[] = [];
   saveStatus(): void {
     this.errorMessage = null;
     // console.log('saveStatus: Saving wallet status:', this.selectedStatus);
-    if (/* !this.selectedStatus.wstIden ||  */!this.selectedStatus.wstLabe) {
+    if (/* !this.selectedStatus.wstIden ||  */!this.selectedStatus!.wstLabe) {
       this.showErrorMessage('Please fill in all required fields: Status Label.');
       return;
     }
     if (this.isStatusEditMode) {
-      this.walletStatusService.update(this.selectedStatus.wstCode!, this.selectedStatus, this.getHttpOptions()).subscribe({
+      this.walletStatusService.update(this.selectedStatus!.wstCode!, this.selectedStatus!, this.getHttpOptions()).subscribe({
         next: () => {
           // console.log('saveStatus: Wallet status updated');
           this.loadWalletStatuses();
@@ -740,7 +769,7 @@ filteredWallets: Wallet[] = [];
         }
       });
     } else {
-      this.walletStatusService.create(this.selectedStatus, this.getHttpOptions()).subscribe({
+      this.walletStatusService.create(this.selectedStatus!, this.getHttpOptions()).subscribe({
         next: () => {
           // console.log('saveStatus: Wallet status created');
           this.loadWalletStatuses();
@@ -759,13 +788,13 @@ filteredWallets: Wallet[] = [];
   // Save wallet category
   saveCategory(): void {
     this.errorMessage = null;
-    // console.log('saveCategory: Saving wallet category:', this.selectedCategory);
-    if (/* !this.selectedCategory.wcaIden ||  */!this.selectedCategory.wcaLabe || !this.selectedCategory.wcaFinId) {
+    // console.log('saveCategory: Saving wallet category:', this.selectedCategory!);
+    if (/* !this.selectedCategory!.wcaIden ||  */!this.selectedCategory!.wcaLabe || !this.selectedCategory!.wcaFinId) {
       this.showErrorMessage('Please fill in all required fields: Label, and Financial Institution ID.');
       return;
     }
     if (this.isCategoryEditMode) {
-      this.walletCategoryService.update(this.selectedCategory.wcaCode!, this.selectedCategory, this.getHttpOptions()).subscribe({
+      this.walletCategoryService.update(this.selectedCategory!.wcaCode!, this.selectedCategory!, this.getHttpOptions()).subscribe({
         next: () => {
           // console.log('saveCategory: Wallet category updated');
           this.loadWalletCategories();
@@ -779,7 +808,7 @@ filteredWallets: Wallet[] = [];
         }
       });
     } else {
-      this.walletCategoryService.create(this.selectedCategory, this.getHttpOptions()).subscribe({
+      this.walletCategoryService.create(this.selectedCategory!, this.getHttpOptions()).subscribe({
         next: () => {
           // console.log('saveCategory: Wallet category created');
           this.loadWalletCategories();
@@ -798,11 +827,11 @@ filteredWallets: Wallet[] = [];
   // Add wallet type
   addWalletType(): void {
     // console.log('addWalletType: Adding wallet type:', this.newWalletType);
-    if (/* !this.newWalletType.wtyIden ||  */!this.newWalletType.wtyLabe) {
+    if (/* !this.newWalletType.wtyIden ||  */!this.newWalletType!.wtyLabe) {
       this.showErrorMessage('Please fill in all required fields: Type Label.');
       return;
     }
-    this.walletTypeService.create(this.newWalletType, this.getHttpOptions()).subscribe({
+    this.walletTypeService.create(this.newWalletType!, this.getHttpOptions()).subscribe({
       next: (createdWalletType: WalletType) => {
         // console.log('addWalletType: Wallet type added:', createdWalletType);
         this.walletTypesList.push(createdWalletType);
@@ -832,12 +861,12 @@ filteredWallets: Wallet[] = [];
   // Update wallet type
   updateWalletType(): void {
     // console.log('updateWalletType: Updating wallet type:', this.newWalletType);
-    if (/* !this.newWalletType.wtyIden ||  */!this.newWalletType.wtyLabe) {
+    if (/* !this.newWalletType.wtyIden ||  */!this.newWalletType!.wtyLabe) {
       this.showErrorMessage('Please fill in all required fields: Type Label.');
       return;
     }
     if (this.selectedWalletType?.wtyCode) {
-      this.walletTypeService.update(this.selectedWalletType.wtyCode, this.newWalletType, this.getHttpOptions()).subscribe({
+      this.walletTypeService.update(this.selectedWalletType.wtyCode, this.newWalletType!, this.getHttpOptions()).subscribe({
         next: (updatedWalletType: WalletType) => {
           // console.log('updateWalletType: Wallet type updated:', updatedWalletType);
           const index = this.walletTypesList.findIndex(t => t.wtyCode === updatedWalletType.wtyCode);
@@ -846,7 +875,7 @@ filteredWallets: Wallet[] = [];
             this.walletTypesList = [...this.walletTypesList];
           }
           this.newWalletType = new WalletType();
-          this.selectedWalletType = null;
+          this.selectedWalletType = undefined;
           this.isWalletTypeEditMode = false;
           this.isWalletTypeVisible = false;
           this.showSuccessMessage('Wallet type updated successfully');
@@ -907,7 +936,7 @@ filteredWallets: Wallet[] = [];
   editCategory(category: WalletCategory): void {
     this.errorMessage = null;
     // console.log('editCategory: Editing wallet category:', category);
-    this.selectedCategory = { ...category };
+    this.selectedCategory! = { ...category };
     this.isCategoryEditMode = true;
     this.isWalletCategoryVisible = true;
     this.cdr.detectChanges();
@@ -995,12 +1024,12 @@ filteredWallets: Wallet[] = [];
         this.isWalletTypeVisible = true;
         this.isWalletTypeEditMode = false;
         this.newWalletType = new WalletType();
-        this.selectedWalletType = null;
+        this.selectedWalletType = undefined;
         break;
       case 'wallet-category':
         this.isWalletCategoryVisible = true;
         this.isCategoryEditMode = false;
-        this.selectedCategory = new WalletCategory();
+        this.selectedCategory! = new WalletCategory();
         break;
       case 'create-card':
         this.isCardFormVisible = true;
@@ -1055,12 +1084,12 @@ filteredWallets: Wallet[] = [];
       case 'wallet-type':
         this.isWalletTypeVisible = false;
         this.newWalletType = new WalletType();
-        this.selectedWalletType = null;
+        this.selectedWalletType = undefined;
         this.isWalletTypeEditMode = false;
         break;
       case 'wallet-category':
         this.isWalletCategoryVisible = false;
-        this.selectedCategory = new WalletCategory();
+        this.selectedCategory! = new WalletCategory();
         this.isCategoryEditMode = false;
         break;
       case 'create-card':

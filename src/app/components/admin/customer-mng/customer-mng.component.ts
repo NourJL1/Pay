@@ -264,7 +264,6 @@ export class CustomerMngComponent {
           (!this.selectedCountry || customer.country?.ctrCode === this.selectedCountry?.ctrCode) &&
           (!this.selectedCity || customer.city?.ctyCode === this.selectedCity?.ctyCode)
       })
-      
     }
   }
 
