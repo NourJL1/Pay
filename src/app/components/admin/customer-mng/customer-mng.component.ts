@@ -628,23 +628,7 @@ export class CustomerMngComponent {
   fileData: any
 
   previewDocument(customerDoc: CustomerDoc, index: number) {
-    this.customerDocService.getFileById(customerDoc.cdoCode!)/* .subscribe({
-      next: (doc: any) => {
-        
-      }
-    }) */
-
-    this.selectedDoc = customerDoc
-    console.log(this.selectedDoc)
-
-    /* const activeDoc = document.getElementById('document-preview')
-    activeDoc?.classList.remove('hidden');
-
-    const frames = document.querySelectorAll('.doc-frame')
-    frames.forEach(content => content.classList.add('hidden'))
-
-    const typeFrame = document.getElementById(type)
-    typeFrame?.classList.remove('hidden') */
+    this.customerDocService.getFileById(customerDoc.cdoCode!)
   }
 
   closePreview() {

@@ -26,33 +26,17 @@ export class CustomerDocService {
   }
 
   getFileById(id: number) {
-    return this.http.get(`${this.apiUrl}/file/${id}`, { responseType: 'blob', observe: 'response' }).subscribe(response => {
-      const file = response.body!;
-      var url = URL.createObjectURL(file);
-      const fileType = response.headers.get('Content-Type') || 'application/octet-stream';
-
-      if (fileType.includes('office') || fileType.includes('msword')) {
-        const officeViewerUrl = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(url)}`;
-        window.open(officeViewerUrl, '_blank');
-      }
-
-      else{const previewUrl = `/assets/preview.html?url=${encodeURIComponent(url)}&type=${encodeURIComponent(fileType)}`;
-      const viewer = window.open(previewUrl, '_blank', `
-      width=1000,height=700,
-      toolbar=no,
-      location=no,
-      status=no,
-      menubar=no
-    `);
-
-      // Clean up when window closes
-      viewer!.onbeforeunload = () => URL.revokeObjectURL(url);}
+    return this.http.get(`${this.apiUrl}/file/${id}`, { responseType: 'blob' }).subscribe(blob => {
+      const url = window.URL.createObjectURL(blob);
+      
+      window.open(url, '_blank',
+        'width=800,menubar=no,toolbar=no,location=no,status=no');
     });
   }
 
-  getByCustomerDocListe(cdlIden: number) {
+  getByCustomerDocListe(cdlCode: number) {
     //return this.http.get(`${this.apiUrl}/cdl/${cdlIden}`);
-    return this.http.get<CustomerDoc[]>(`${this.apiUrl}/cdl/${cdlIden}`);
+    return this.http.get<CustomerDoc[]>(`${this.apiUrl}/cdl/${cdlCode}`);
   }
 
   /* create(customerDoc: CustomerDoc): Observable<CustomerDoc> {

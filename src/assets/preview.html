@@ -1,99 +1,125 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Document Preview</title>
+  <title>Secure Document Viewer</title>
   <style>
-    body { 
+    body {
       margin: 0;
+      padding: 0;
       overflow: hidden;
-      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+    }
+    #viewer-container {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
     #toolbar {
       padding: 8px;
-      background: #f5f5f5;
-      border-bottom: 1px solid #ddd;
-      display: flex;
-      gap: 8px;
+      background: #333;
+      color: white;
+      text-align: center;
+    }
+    #close-btn {
+      position: absolute;
+      right: 10px;
+      background: #555;
+      color: white;
+      border: none;
+      padding: 2px 8px;
+      cursor: pointer;
     }
     #content {
-      width: 100vw;
-      height: calc(100vh - 40px);
-      overflow: auto;
+      flex: 1;
       display: flex;
       justify-content: center;
-      background: #eee;
+      align-items: center;
+      background: #444;
     }
-    #document-view {
-      background: white;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    object, img, video {
       max-width: 100%;
-    }
-    button {
-      padding: 4px 8px;
-      cursor: pointer;
+      max-height: 100%;
     }
   </style>
 </head>
-<body oncontextmenu="return false">
-  <div id="toolbar">
-    <button onclick="zoom(0.8)">-</button>
-    <span id="zoom-level">100%</span>
-    <button onclick="zoom(1.2)">+</button>
-    <button onclick="fitToWidth()" style="margin-left: auto">Fit Width</button>
-  </div>
-  <div id="content">
-    <div id="document-view"></div>
+<body>
+  <div id="viewer-container">
+    <div id="toolbar">
+      <span id="filename">Document Viewer</span>
+      <button id="close-btn">X</button>
+    </div>
+    <div id="content">
+      <!-- Content will be inserted here -->
+    </div>
   </div>
 
   <script>
-    let scale = 1;
-    const docView = document.getElementById('document-view');
-    const zoomLevel = document.getElementById('zoom-level');
-    const urlParams = new URLSearchParams(window.location.search);
-    const fileUrl = urlParams.get('url');
-    const fileType = urlParams.get('type');
-
-    // Block keyboard shortcuts
-    document.addEventListener('keydown', (e) => {
-      if (e.ctrlKey || e.metaKey || e.key === 'F12') e.preventDefault();
+    // Disable all right-click menus
+    document.addEventListener('contextmenu', event => event.preventDefault());
+    
+    // Disable keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+      // Only allow arrow keys, Tab, and Escape
+      const allowedKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Tab', 'Escape'];
+      if (!allowedKeys.includes(e.key) || e.ctrlKey || e.metaKey || e.altKey) {
+        e.preventDefault();
+      }
+      
+      // Close on Escape
+      if (e.key === 'Escape') {
+        window.close();
+      }
     });
 
-    function loadDocument() {
-      if (fileType.includes('pdf')) {
-        docView.innerHTML = `<embed src="${fileUrl}" type="${fileType}" width="100%" height="100%">`;
+    // Close button
+    document.getElementById('close-btn').addEventListener('click', () => window.close());
+
+    // Get URL parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const fileUrl = urlParams.get('url');
+    const fileName = urlParams.get('name');
+    const fileType = urlParams.get('type');
+
+    if (fileName) {
+      document.getElementById('filename').textContent = fileName;
+    }
+
+    // Display content based on type
+    const contentDiv = document.getElementById('content');
+    
+    if (fileUrl) {
+      if (fileType.startsWith('image/')) {
+        const img = document.createElement('img');
+        img.src = fileUrl;
+        contentDiv.appendChild(img);
       } 
-      else if (fileType.includes('image')) {
-        docView.innerHTML = `<img src="${fileUrl}" style="max-width: 100%">`;
-        fitToWidth();
+      else if (fileType === 'application/pdf') {
+        const object = document.createElement('object');
+        object.data = fileUrl;
+        object.type = 'application/pdf';
+        object.width = '100%';
+        object.height = '100%';
+        contentDiv.appendChild(object);
+      }
+      else if (fileType.startsWith('video/')) {
+        const video = document.createElement('video');
+        video.src = fileUrl;
+        video.controls = true;
+        video.autoplay = true;
+        contentDiv.appendChild(video);
       }
       else {
-        docView.innerHTML = `
-          <div style="padding: 20px; text-align: center">
-            <p>Preview not available for ${fileType} files</p>
-            <p>Please download to view</p>
-          </div>`;
+        // For other types (Word, Excel), show as embedded object
+        const iframe = document.createElement('iframe');
+        iframe.src = fileUrl;
+        iframe.width = '100%';
+        iframe.height = '100%';
+        contentDiv.appendChild(iframe);
       }
+    } else {
+      contentDiv.innerHTML = '<p>No document to display</p>';
     }
-
-    function zoom(factor) {
-      scale *= factor;
-      docView.style.transform = `scale(${scale})`;
-      docView.style.transformOrigin = 'top left';
-      zoomLevel.textContent = `${Math.round(scale * 100)}%`;
-    }
-
-    function fitToWidth() {
-      if (fileType.includes('image')) {
-        const img = docView.querySelector('img');
-        if (img) {
-          scale = (window.innerWidth - 40) / img.naturalWidth;
-          zoom(1); // Reset then apply new scale
-        }
-      }
-    }
-
-    window.addEventListener('load', loadDocument);
-    window.addEventListener('resize', fitToWidth);
   </script>
 </body>
 </html>
