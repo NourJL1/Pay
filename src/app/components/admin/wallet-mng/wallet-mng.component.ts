@@ -87,6 +87,13 @@ export class WalletMngComponent implements OnInit {
   lastUpdated: Date | null = null;
   activeWalletCount: number = 0;
 
+  // Filter variables
+searchTerm: string = '';
+selectedType: any = null;
+wallets: Wallet[] = [];
+filteredWallets: Wallet[] = [];
+
+
 
   constructor(
     private walletStatusService: WalletStatusService,
@@ -101,19 +108,19 @@ export class WalletMngComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // console.log('ngOnInit: Initializing component...');
-    this.loadWallets();
-    this.loadWalletStatuses();
-    this.loadWalletCategories();
-    this.loadWalletTypes();
-    this.loadCards();
-    this.loadCardTypes();
-    this.loadCardLists();
-    this.loadAccountTypes();
-    this.loadWalletStats();
-    this.loadActiveWalletCount();
+  console.log('ngOnInit: Initializing component...');
+  this.loadWalletStatuses();
+  this.loadWalletCategories();
+  this.loadWalletTypes();
+  this.loadCards();
+  this.loadCardTypes();
+  this.loadCardLists();
+  this.loadAccountTypes();
+  this.loadWalletStats();
+  this.loadActiveWalletCount();
+  this.loadWallets(); // this should internally fetch and assign to `wallets` and `filteredWallets`
+}
 
-  }
 
   private getHttpOptions(): { headers: HttpHeaders } {
     const token = localStorage.getItem('authToken');
@@ -134,6 +141,31 @@ export class WalletMngComponent implements OnInit {
     this.errorMessage = null;
     this.cdr.detectChanges();
   }
+
+  applyFilters(): void {
+  this.filteredWallets = this.wallets.filter(wallet => {
+    const matchesSearch = this.searchTerm
+      ? wallet.walLabe?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        wallet.walIden?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        wallet.walCode?.toString().includes(this.searchTerm)
+      : true;
+
+    const matchesStatus = this.selectedStatus
+      ? wallet.walletStatus?.wstCode === this.selectedStatus.wstCode
+      : true;
+
+    const matchesType = this.selectedType
+      ? wallet.walletType?.wtyCode === this.selectedType.wtyCode
+      : true;
+
+    const matchesCategory = this.selectedCategory
+      ? wallet.walletCategory?.wcaCode === this.selectedCategory.wcaCode
+      : true;
+
+    return matchesSearch && matchesStatus && matchesType && matchesCategory;
+  });
+}
+
 
   loadActiveWalletCount(): void {
     this.errorMessage = null;
@@ -396,21 +428,25 @@ export class WalletMngComponent implements OnInit {
 
   // Load wallets
   loadWallets(): void {
-    this.errorMessage = null;
-    // console.log('loadWallets: Fetching wallets...');
-    this.walletService.getAll().subscribe({
-      next: (wallets: Wallet[]) => {
-        // console.log('loadWallets: Wallets received:', wallets);
-        this.walletsList = wallets;
-        this.cdr.detectChanges();
-      },
-      error: (error: HttpErrorResponse) => {
-        const message = error.status ? `Failed to load wallets: ${error.status} ${error.statusText}` : 'Failed to load wallets: Server error';
-        this.showErrorMessage(message);
-        console.error('Error loading wallets:', error);
-      }
-    });
-  }
+  this.errorMessage = null;
+  // console.log('loadWallets: Fetching wallets...');
+  this.walletService.getAll().subscribe({
+    next: (wallets: Wallet[]) => {
+       // console.log('loadWallets: Wallets received:', wallets);
+      this.walletsList = wallets;
+      this.filteredWallets = [...this.walletsList]; // ✅ corrected here
+      this.cdr.detectChanges();
+    },
+    error: (error: HttpErrorResponse) => {
+      const message = error.status
+        ? `Failed to load wallets: ${error.status} ${error.statusText}`
+        : 'Failed to load wallets: Server error';
+      this.showErrorMessage(message);
+      console.error('Error loading wallets:', error);
+    }
+  });
+}
+
   // Edit wallet
   editWallet(): void {
     this.errorMessage = null;
