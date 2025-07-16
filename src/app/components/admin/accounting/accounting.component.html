@@ -746,6 +746,9 @@
                   <div class="text-sm text-gray-900">{{ wotm.wotmDispAmount }}</div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="text-sm text-gray-900">{{ wotm.periodicity.perLabe }}</div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
                   <div class="text-sm text-gray-900">{{ wotm.fees.feeLabel }}</div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -863,19 +866,19 @@
                   <div class="text-sm font-medium text-gray-900">{{ wcotm.id }}</div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="text-sm text-gray-900">{{ wcotm.walletCategory?.wcaLabe }}</div>
+                  <div class="text-sm text-gray-900">{{ wcotm.walletCategory!.wcaLabe }}</div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="text-sm text-gray-900">{{ wcotm.operationType?.optLabe }}</div>
+                  <div class="text-sm text-gray-900">{{ wcotm.operationType!.optLabe }}</div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
                   <div class="text-sm text-gray-900">{{ wcotm.limitMax }}</div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="text-sm text-gray-900">{{ wcotm.periodicity?.perLabe }}</div>
+                  <div class="text-sm text-gray-900">{{ wcotm.periodicity!.perLabe }}</div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="text-sm text-gray-900">{{ wcotm.fees?.feeLabel }}</div>
+                  <div class="text-sm text-gray-900">{{ wcotm.fees!.feeLabel }}</div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                   <div class="flex items-center justify-end space-x-3">
@@ -1069,19 +1072,19 @@
         </div>
         <div>
           <label for="feeMinLimit" class="block text-sm font-medium text-gray-700 mb-1">Min</label>
-          <input type="number" id="feeMinLimit" name="feeMinLimit" [(ngModel)]="newFee.feeMinLimit"
+          <input type="text" pattern="[0-9]+(\.[0-9]+)?" id="feeMinLimit" name="feeMinLimit" [(ngModel)]="newFee.feeMinLimit"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
             placeholder="Minimum amount" required min="0">
         </div>
         <div>
           <label for="feeMaxLimit" class="block text-sm font-medium text-gray-700 mb-1">Max</label>
-          <input type="number" id="feeMaxLimit" name="feeMaxLimit" [(ngModel)]="newFee.feeMaxLimit"
+          <input type="text" pattern="[0-9]+(\.[0-9]+)?"  id="feeMaxLimit" name="feeMaxLimit" [(ngModel)]="newFee.feeMaxLimit"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
             placeholder="Maximum Amount" required min="0">
         </div>
         <div>
           <label for="feeAmount" class="block text-sm font-medium text-gray-700 mb-1">Fee Amount</label>
-          <input type="number" id="feeAmount" name="feeAmount" [(ngModel)]="newFee.feeAmount"
+          <input type="text" pattern="[0-9]+(\.[0-9]+)?"  id="feeAmount" name="feeAmount" [(ngModel)]="newFee.feeAmount"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
             placeholder="Amount" required min="0">
         </div>
@@ -1093,14 +1096,14 @@
         </div>
         <div>
           <label for="feeMaxAmount" class="block text-sm font-medium text-gray-700 mb-1">Max Fee Amount</label>
-          <input type="number" id="feeMaxAmount" name="feeMaxAmount" [(ngModel)]="newFee.feeMaxAmount"
+          <input type="text" pattern="[0-9]+(\.[0-9]+)?"  id="feeMaxAmount" name="feeMaxAmount" [(ngModel)]="newFee.feeMaxAmount"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
             placeholder="Maximum fee amount" required min="0">
         </div>
         <div>
           <label for="financialInstitutionId" class="block text-sm font-medium text-gray-700 mb-1">Financial Institution
             ID</label>
-          <input type="number" id="financialInstitutionId" name="financialInstitutionId"
+          <input type="text" pattern="[0-9]+(\.[0-9]+)?"  id="financialInstitutionId" name="financialInstitutionId"
             [(ngModel)]="newFee.financialInstitutionId"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
             placeholder="Financial Institution ID" required min="1">
@@ -1165,8 +1168,7 @@
     class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
     <div class="bg-white rounded-lg shadow-lg w-full max-w-md">
       <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-        <h3 class="text-lg font-medium text-gray-900">{{ selectedFeeRuleType ? 'Edit Fee Rule Type' : 'Add Fee Rule
-          Type' }}</h3>
+        <h3 class="text-lg font-medium text-gray-900">{{ selectedFeeRuleType ? 'Edit Fee Rule Type' : 'Add Fee Rule Type' }}</h3>
         <button id="close-type-modal" (click)="closeForm('fee-rule-type')" class="text-gray-400 hover:text-gray-500">
           <div class="w-6 h-6 flex items-center justify-center">
             <i class="ri-close-line"></i>
@@ -1236,20 +1238,20 @@
               <select [(ngModel)]="newFeeRule.fruPrimaryWalletId" name="fruPrimaryWalletId"
                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
                 required>
-                <option value="">Select Wallet</option>
-                <option *ngFor="let wallet of walletsList" [value]="wallet.walIden">{{ wallet.walLabe || wallet.walIden
+                <option value="" disabled>Select Wallet</option>
+                <option *ngFor="let wallet of walletsList" [ngValue]="wallet">{{ wallet.walLabe || wallet.walIden
                   }}</option>
               </select>
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Primary Amount</label>
-              <input type="number" [(ngModel)]="newFeeRule.fruPrimaryAmount" name="fruPrimaryAmount"
+              <input type="text" pattern="[0-9]+(\.[0-9]+)?"  [(ngModel)]="newFeeRule.fruPrimaryAmount" name="fruPrimaryAmount"
                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
                 placeholder="Primary Amount" required step="0.01">
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Primary Fees ID</label>
-              <input type="number" [(ngModel)]="newFeeRule.fruPrimaryFeesId" name="fruPrimaryFeesId"
+              <input type="text" pattern="[0-9]+(\.[0-9]+)?"  [(ngModel)]="newFeeRule.fruPrimaryFeesId" name="fruPrimaryFeesId"
                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
                 placeholder="Primary Fees ID" required>
             </div>
@@ -1258,14 +1260,13 @@
               <select [(ngModel)]="newFeeRule.fruFeesWalletId" name="fruFeesWalletId"
                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
                 required>
-                <option value="">Select Wallet</option>
-                <option *ngFor="let wallet of walletsList" [value]="wallet.walIden">{{ wallet.walLabe || wallet.walIden
-                  }}</option>
+                <option value="" disabled>Select Wallet</option>
+                <option *ngFor="let wallet of walletsList" [ngValue]="wallet">{{ wallet.walLabe || wallet.walIden }}</option>
               </select>
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Fees Amount</label>
-              <input type="number" [(ngModel)]="newFeeRule.fruFeesAmount" name="fruFeesAmount"
+              <input type="text" pattern="[0-9]+(\.[0-9]+)?"  [(ngModel)]="newFeeRule.fruFeesAmount" name="fruFeesAmount"
                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
                 placeholder="Fees Amount" required step="0.01">
             </div>
@@ -1274,14 +1275,14 @@
               <select [(ngModel)]="newFeeRule.fruTvaWalletId" name="fruTvaWalletId"
                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
                 required>
-                <option value="">Select Wallet</option>
-                <option *ngFor="let wallet of walletsList" [value]="wallet.walIden">{{ wallet.walLabe || wallet.walIden
+                <option value="" disabled>Select Wallet</option>
+                <option *ngFor="let wallet of walletsList" [ngValue]="wallet">{{ wallet.walLabe || wallet.walIden
                   }}</option>
               </select>
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">TVA Amount</label>
-              <input type="number" [(ngModel)]="newFeeRule.fruTvaAmount" name="fruTvaAmount"
+              <input type="text" pattern="[0-9]+(\.[0-9]+)?"  [(ngModel)]="newFeeRule.fruTvaAmount" name="fruTvaAmount"
                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
                 placeholder="TVA Amount" required step="0.01">
             </div>
@@ -1290,7 +1291,7 @@
               <select [(ngModel)]="newFeeRule.fruSens" name="fruSens"
                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
                 required>
-                <option value="">Select Direction</option>
+                <option value="" disabled>Select Direction</option>
                 <option value="CREDIT">Credit</option>
                 <option value="DEBIT">Debit</option>
               </select>
@@ -1300,8 +1301,8 @@
               <select [(ngModel)]="newFeeRule.feeRuleType.frtCode" name="feeRuleType"
                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
                 required>
-                <option value="">Select Fee Rule Type</option>
-                <option *ngFor="let type of feeRuleTypesList" [value]="type.frtCode">{{ type.frtLabe }}</option>
+                <option value="" disabled>Select Fee Rule Type</option>
+                <option *ngFor="let type of feeRuleTypesList" [ngValue]="type">{{ type.frtLabe }}</option>
               </select>
             </div>
             <div>
@@ -1309,8 +1310,8 @@
               <select [(ngModel)]="newFeeRule.feeSchema.fscCode" name="feeSchema"
                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
                 required>
-                <option value="">Select Fee Schema</option>
-                <option *ngFor="let schema of feeSchemasList" [value]="schema.fscCode">{{ schema.fscLabe }}</option>
+                <option value="" disabled>Select Fee Schema</option>
+                <option *ngFor="let schema of feeSchemasList" [ngValue]="schema">{{ schema.fscLabe }}</option>
               </select>
             </div>
             <div>
@@ -1318,8 +1319,8 @@
               <select [(ngModel)]="newFeeRule.fruTva.vatCode" name="fruTva"
                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
                 required>
-                <option value="">Select VAT Rate</option>
-                <option *ngFor="let vat of vatRatesList" [value]="vat.vatCode">{{ vat.vatLabe }} ({{ vat.vatRate }}%)
+                <option value="" disabled>Select VAT Rate</option>
+                <option *ngFor="let vat of vatRatesList" [ngValue]="vat">{{ vat.vatLabe }} ({{ vat.vatRate }}%)
                 </option>
               </select>
             </div>
@@ -1344,8 +1345,7 @@
     class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
     <div class="bg-white rounded-lg shadow-lg w-full max-w-md">
       <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-        <h3 class="text-lg font-medium text-gray-900">{{ selectedOperationType ? 'Edit Operation Type' : 'Add Operation
-          Type' }}</h3>
+        <h3 class="text-lg font-medium text-gray-900">{{ selectedOperationType ? 'Edit Operation Type' : 'Add Operation Type' }}</h3>
         <button id="close-type-modal" (click)="closeForm('operation-type')" class="text-gray-400 hover:text-gray-500">
           <div class="w-6 h-6 flex items-center justify-center">
             <i class="ri-close-line"></i>
@@ -1369,7 +1369,7 @@
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Fee Schema Identifier</label>
-              <input type="number" id="optFscIden" name="optFscIden" [(ngModel)]="newOperationType.optFscIden"
+              <input type="text" pattern="[0-9]+(\.[0-9]+)?"  id="optFscIden" name="optFscIden" [(ngModel)]="newOperationType.optFscIden"
                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
                 placeholder="Fee Schema Identifier" required>
             </div>
@@ -1384,8 +1384,8 @@
               <select id="feeSchema" name="feeSchema" [(ngModel)]="newOperationType.feeSchema.fscCode"
                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
                 required>
-                <option value="" disabled selected>Select Fee Schema</option>
-                <option *ngFor="let schema of feeSchemasList" [value]="schema.fscCode">
+                <option value="" disabled disabled selected>Select Fee Schema</option>
+                <option *ngFor="let schema of feeSchemasList" [ngValue]="schema">
                   {{ schema.fscLabe }}
                 </option>
               </select>
@@ -1408,8 +1408,7 @@
 
   <div *ngIf="isWotmVisible" id="add-wotm-modal" class="bg-white rounded-lg shadow-lg w-full max-w-md">
     <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-      <h3 class="text-lg font-medium text-gray-900">{{ selectedWotm ? 'Edit Wallet Operation Type Map' : 'Add Wallet
-        Operation Type Map' }}</h3>
+      <h3 class="text-lg font-medium text-gray-900">{{ selectedWotm ? 'Edit Wallet Operation Type Map' : 'Add Wallet Operation Type Map' }}</h3>
       <button id="close-type-modal" (click)="closeForm('operation-wotm')" class="text-gray-400 hover:text-gray-500">
         <div class="w-6 h-6 flex items-center justify-center">
           <i class="ri-close-line"></i>
@@ -1422,8 +1421,8 @@
           <label for="wallet" class="block text-sm font-medium text-gray-700 mb-1">Wallet</label>
           <select [(ngModel)]="newWotm.wallet" name="wallet"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary" required>
-            <option value="">Select Wallet</option>
-            <option *ngFor="let wallet of walletsList" [value]="wallet.walIden">{{ wallet.walLabe || wallet.walIden }}
+            <option value="" disabled>Select Wallet</option>
+            <option *ngFor="let wallet of walletsList" [ngValue]="wallet">{{ wallet.walLabe || wallet.walIden }}
             </option>
           </select>
         </div>
@@ -1431,20 +1430,20 @@
           <label for="operationType" class="block text-sm font-medium text-gray-700 mb-1">Operation Type</label>
           <select [(ngModel)]="newWotm.operationType" name="operationType"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary" required>
-            <option value="">Select Type</option>
-            <option *ngFor="let type of operationTypesList" [value]="newWotm.operationType">{{ type.optLabe ||
+            <option value="" disabled>Select Type</option>
+            <option *ngFor="let type of operationTypesList" [ngValue]="type">{{ type.optLabe ||
               type.optIden }}</option>
           </select>
         </div>
         <div>
           <label for="wotmLimitMax" class="block text-sm font-medium text-gray-700 mb-1">Max Limit</label>
-          <input type="number" id="wotmLimitMax" name="wotmLimitMax" [(ngModel)]="newWotm.wotmLimitMax"
+          <input type="text" pattern="[0-9]+(\.[0-9]+)?"  id="wotmLimitMax" name="wotmLimitMax" [(ngModel)]="newWotm.wotmLimitMax"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
             placeholder="Minimum limit" required min="0">
         </div>
         <div>
           <label for="wotmDispAmount" class="block text-sm font-medium text-gray-700 mb-1">Disp Amount</label>
-          <input type="number" id="wotmDispAmount" name="wotmDispAmount" [(ngModel)]="newWotm.wotmDispAmount"
+          <input type="text" pattern="[0-9]+(\.[0-9]+)?"  id="wotmDispAmount" name="wotmDispAmount" [(ngModel)]="newWotm.wotmDispAmount"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
             placeholder="Disp Amount" required min="0">
         </div>
@@ -1452,17 +1451,16 @@
           <label for="periodicity" class="block text-sm font-medium text-gray-700 mb-1">Periodicity</label>
           <select [(ngModel)]="newWotm.periodicity" name="periodicity"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary" required>
-            <option value="">Select periodicity</option>
-            <option *ngFor="let periodicity of periodicitiesList" [value]="newWotm.periodicity">{{ periodicity.perLabe
-              }}</option>
+            <option value="" disabled>Select periodicity</option>
+            <option *ngFor="let periodicity of periodicitiesList" [ngValue]="periodicity">{{ periodicity.perLabe }}</option>
           </select>
         </div>
         <div>
           <label for="fees" class="block text-sm font-medium text-gray-700 mb-1">Fees</label>
           <select [(ngModel)]="newWotm.fees" name="fees"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary" required>
-            <option value="">Select fees</option>
-            <option *ngFor="let fee of feesList" [value]="newWotm.fees">{{ fee.feeLabel || fee.feeIden }}</option>
+            <option value="" disabled>Select fees</option>
+            <option *ngFor="let fee of feesList" [ngValue]="fee">{{ fee.feeLabel || fee.feeIden }}</option>
           </select>
         </div>
       </div>
@@ -1479,8 +1477,7 @@
 
   <div *ngIf="isWcotmVisible" id="add-wcotm-modal" class="bg-white rounded-lg shadow-lg w-full max-w-md">
     <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-      <h3 class="text-lg font-medium text-gray-900">{{ selectedWcotm ? 'Edit Wallet Category Operation Type Map' : 'Add
-        Wallet Category Operation Type Map' }}</h3>
+      <h3 class="text-lg font-medium text-gray-900">{{ selectedWcotm ? 'Edit Wallet Category Operation Type Map' : 'Add Wallet Category Operation Type Map' }}</h3>
       <button id="close-type-modal" (click)="closeForm('operation-wcotm')" class="text-gray-400 hover:text-gray-500">
         <div class="w-6 h-6 flex items-center justify-center">
           <i class="ri-close-line"></i>
@@ -1491,10 +1488,10 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label for="wallet" class="block text-sm font-medium text-gray-700 mb-1">Wallet Category</label>
-          <select [(ngModel)]="newWcotm.walletCategory" name="wallet"
+          <select [(ngModel)]="newWcotm.walletCategory" name="walletCategory"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary" required>
-            <option value="">Select Wallet</option>
-            <option *ngFor="let wallet of walletsList" [value]="wallet.walIden">{{ wallet.walLabe || wallet.walIden }}
+            <option value="" disabled>Select Wallet Category</option>
+            <option *ngFor="let category of walletCategories" [ngValue]="category">{{ category.wcaLabe || category.wcaIden }}
             </option>
           </select>
         </div>
@@ -1502,14 +1499,13 @@
           <label for="operationType" class="block text-sm font-medium text-gray-700 mb-1">Operation Type</label>
           <select [(ngModel)]="newWcotm.operationType" name="operationType"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary" required>
-            <option value="">Select Type</option>
-            <option *ngFor="let type of operationTypesList" [value]="newWcotm.operationType">{{ type.optLabe ||
-              type.optIden }}</option>
+            <option value="" disabled>Select Type</option>
+            <option *ngFor="let type of operationTypesList" [ngValue]="type">{{ type.optLabe || type.optIden }}</option>
           </select>
         </div>
         <div>
           <label for="limitMax" class="block text-sm font-medium text-gray-700 mb-1">Max Limit</label>
-          <input type="number" id="limitMax" name="limitMax" [(ngModel)]="newWcotm.limitMax"
+          <input type="text" pattern="[0-9]+(\.[0-9]+)?"  id="limitMax" name="limitMax" [(ngModel)]="newWcotm.limitMax"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
             placeholder="Minimum limit" required min="0">
         </div>
@@ -1517,17 +1513,16 @@
           <label for="periodicity" class="block text-sm font-medium text-gray-700 mb-1">Periodicity</label>
           <select [(ngModel)]="newWcotm.periodicity" name="periodicity"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary" required>
-            <option value="">Select periodicity</option>
-            <option *ngFor="let periodicity of periodicitiesList" [value]="newWcotm.periodicity">{{ periodicity.perLabe
-              }}</option>
+            <option value="" disabled>Select periodicity</option>
+            <option *ngFor="let periodicity of periodicitiesList" [ngValue]="periodicity">{{ periodicity.perLabe }}</option>
           </select>
         </div>
         <div>
           <label for="fees" class="block text-sm font-medium text-gray-700 mb-1">Fees</label>
           <select [(ngModel)]="newWcotm.fees" name="fees"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary" required>
-            <option value="">Select fees</option>
-            <option *ngFor="let fee of feesList" [value]="newWcotm.fees">{{ fee.feeLabel || fee.feeIden }}</option>
+            <option value="" disabled>Select fees</option>
+            <option *ngFor="let fee of feesList" [ngValue]="fee">{{ fee.feeLabel || fee.feeIden }}</option>
           </select>
         </div>
       </div>

@@ -22,6 +22,8 @@ import { WalletOperationTypeMap } from '../../../entities/wallet-operation-type-
 import { WalletCategoryOperationTypeMap } from '../../../entities/wallet-category-operation-type-map';
 import { WalletCategoryOperationTypeMapService } from '../../../services/wallet-category-operation-type-map.service';
 import { WalletOperationTypeMapService } from '../../../services/wallet-operation-type-map.service';
+import { WalletCategory } from '../../../entities/wallet-category';
+import { WalletCategoryService } from '../../../services/wallet-category.service';
 
 @Component({
   selector: 'app-accounting',
@@ -51,6 +53,7 @@ export class AccountingComponent implements OnInit {
   selectedPeriodicity: Periodicity | null = null;
   vatRatesList: VatRate[] = [];
   walletsList: Wallet[] = [];
+  walletCategories: WalletCategory[] = []
 
   
   wotmList: WalletOperationTypeMap[] = []
@@ -85,6 +88,7 @@ export class AccountingComponent implements OnInit {
     private periodicityService: PeriodicityService,
     private vatRateService: VatRateService,
     private walletService: WalletService,
+    private walletCategoryService: WalletCategoryService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -100,6 +104,7 @@ export class AccountingComponent implements OnInit {
     this.loadPeriodicities();
     this.loadVatRates();
     this.loadWallets();
+    this.loadWalletCategories();
   }
 
   private getHttpOptions(): { headers: HttpHeaders } {
@@ -212,9 +217,9 @@ export class AccountingComponent implements OnInit {
 
   loadWalletCategoryOperationTypeMap(): void {
     // console.log('loadWalletCategoryOperationTypeMap: Fetching ...');
-    this.wotmService.getAll(this.getHttpOptions()).subscribe({
+    this.wcotmService.getAll(this.getHttpOptions()).subscribe({
       next: (data: WalletCategoryOperationTypeMap[]) => {
-        // console.log('loadWalletOperationTypeMap: Wallet xategory operation type map received:', data);
+        console.log('loadWalletOperationTypeMap: Wallet xategory operation type map received:', data);
         this.wcotmList = data;
         this.cdr.detectChanges();
       },
@@ -268,6 +273,20 @@ export class AccountingComponent implements OnInit {
         this.showErrorMessage('Failed to load wallets.');
       }
     });
+  }
+
+  loadWalletCategories(){
+    this.walletCategoryService.getAll().subscribe({
+      next: (categories: WalletCategory[]) => {
+        // console.log('loadWalletCategories: Wallet categories received:', data);
+        this.walletCategories = categories;
+        this.cdr.detectChanges();
+      },
+      error: (err: any) => {
+        console.error('loadWalletCategories: Error:', err.status, err.message);
+        this.showErrorMessage('Failed to load wallet categories.');
+      }
+    })
   }
 
   addFee(): void {
