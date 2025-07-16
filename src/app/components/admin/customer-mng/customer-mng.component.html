@@ -67,10 +67,10 @@
             </div>
             <div class="w-full sm:w-auto">
                 <div class="relative">
-                    <select
+                    <select [(ngModel)]="selectedStatus" name="selectedStatus" (ngModelChange)="filterCustomers()"
                         class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary rounded-lg sm:text-sm">
-                        <option value="">All Statuses</option>
-                        <option *ngFor="let status of statuses" [value]="status">
+                        <option [ngValue]="undefined">All Statuses</option>
+                        <option *ngFor="let status of statuses" [ngValue]="status">
                             {{ status.ctsLabe }}
                         </option>
                     </select>
@@ -78,10 +78,10 @@
             </div>
             <div class="w-full sm:w-auto">
                 <div class="relative">
-                    <select
+                    <select [(ngModel)]="selectedCountry" name="selectedCountry" (ngModelChange)="onCountryChange(selectedCountry!); filterCustomers()"
                         class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary rounded-lg sm:text-sm">
-                        <option value="">select country</option>
-                        <option *ngFor="let country of countries" [value]="country">
+                        <option [ngValue]="undefined">All Countries</option>
+                        <option *ngFor="let country of countries" [ngValue]="country" >
                             {{ country.ctrLabe }}
                         </option>
                     </select>
@@ -89,10 +89,10 @@
             </div>
             <div class="w-full sm:w-auto">
                 <div class="relative">
-                    <select
+                    <select [(ngModel)]="selectedCity" name="selectedCity" (ngModelChange)="filterCustomers()"
                         class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary rounded-lg sm:text-sm">
-                        <option value="">select city</option>
-                        <option *ngFor="let city of citiesByCountry" [value]="city">
+                        <option [ngValue]="undefined">All Cities</option>
+                        <option *ngFor="let city of citiesByCountry" [ngValue]="city">
                             {{ city.ctyLabe }}
                         </option>
                     </select>
@@ -135,8 +135,8 @@
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
-                    <ng-container *ngIf="customers!.length > 0; else noData">
-                        <tr *ngFor="let customer of customers" class="hover:bg-gray-50 transition duration-150">
+                    <ng-container *ngIf="filteredCustomers!.length > 0; else noData">
+                        <tr *ngFor="let customer of filteredCustomers" class="hover:bg-gray-50 transition duration-150">
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm font-medium text-gray-900">
                                     {{ customer.cusCode }}
@@ -317,7 +317,7 @@
                                 <tr>
                                     <td colspan="100%" class="py-8 text-center">
                                         <div class="flex flex-col items-center justify-center space-y-2">
-                                            <p class="text-sm text-gray-400">No statuses available</p>
+                                            <p class="text-sm text-gray-400">The table is currently empty</p>
                                         </div>
                                     </td>
                                 </tr>
@@ -432,7 +432,7 @@
                                 <tr>
                                     <td colspan="100%" class="py-8 text-center">
                                         <div class="flex flex-col items-center justify-center space-y-2">
-                                            <p class="text-sm text-gray-400">No statuses available</p>
+                                            <p class="text-sm text-gray-400">The table is currently empty</p>
                                         </div>
                                     </td>
                                 </tr>
@@ -543,7 +543,7 @@
                                 <tr>
                                     <td colspan="100%" class="py-8 text-center">
                                         <div class="flex flex-col items-center justify-center space-y-2">
-                                            <p class="text-sm text-gray-400">No statuses available</p>
+                                            <p class="text-sm text-gray-400">The table is currently empty</p>
                                         </div>
                                     </td>
                                 </tr>
@@ -654,7 +654,7 @@
                                 <tr>
                                     <td colspan="100%" class="py-8 text-center">
                                         <div class="flex flex-col items-center justify-center space-y-2">
-                                            <p class="text-sm text-gray-400">No statuses available</p>
+                                            <p class="text-sm text-gray-400">The table is currently empty</p>
                                         </div>
                                     </td>
                                 </tr>
@@ -708,10 +708,10 @@
                     </div>
                     <div class="w-full sm:w-auto">
                         <div class="relative">
-                            <select
+                            <select [(ngModel)]="selectedCountry" (ngModelChange)="onCountryChange(selectedCountry!); filterCities()"
                                 class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary rounded-lg sm:text-sm">
-                                <option value="">select country</option>
-                                <option *ngFor="let country of countries" [value]="country">
+                                <option [ngValue]="undefined">select country</option>
+                                <option *ngFor="let country of countries" [ngValue]="country">
                                     {{ country.ctrLabe }}
                                 </option>
                             </select>
@@ -748,8 +748,8 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            <ng-container *ngIf="cities!.length > 0; else noData">
-                                <tr *ngFor="let city of cities" class="hover:bg-gray-50 transition duration-150">
+                            <ng-container *ngIf="filteredCities!.length > 0; else noData">
+                                <tr *ngFor="let city of filteredCities" class="hover:bg-gray-50 transition duration-150">
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="text-sm font-medium text-gray-900">
                                             {{ city.ctyCode }}
@@ -772,13 +772,12 @@
                                         </div>
                                     </td>
                                 </tr>
-
                             </ng-container>
                             <ng-template #noData>
                                 <tr>
                                     <td colspan="100%" class="py-8 text-center">
                                         <div class="flex flex-col items-center justify-center space-y-2">
-                                            <p class="text-sm text-gray-400">No statuses available</p>
+                                            <p class="text-sm text-gray-400">The table is currently empty</p>
                                         </div>
                                     </td>
                                 </tr>
@@ -897,7 +896,7 @@
                         </label>
                         <div class="relative">
                             <select class="form-input pl-10" [(ngModel)]="customerForm.country" name="country" required
-                                (change)="onCountryChange()">
+                                (ngModelChange)="onCountryChange(customerForm.country!)">
                                 <option [ngValue]="undefined" disabled selected>Select country</option>
                                 <option *ngFor="let country of countries" [ngValue]="country">{{ country.ctrLabe }}
                                 </option>
@@ -1473,7 +1472,7 @@
                                             <tr>
                                                 <td colspan="100%" class="py-8 text-center">
                                                     <div class="flex flex-col items-center justify-center space-y-2">
-                                                        <p class="text-sm text-gray-400">No statuses available</p>
+                                                        <p class="text-sm text-gray-400">The table is currently empty</p>
                                                     </div>
                                                 </td>
                                             </tr>

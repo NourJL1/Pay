@@ -63,6 +63,18 @@ export class CustomerService {
       this.getHttpOptions() */
     );
   }
+  
+    getByStatus(statusCode: number): Observable<Customer[]> {
+      return this.http.get<Customer[]>(`${this.apiUrl}/status/${statusCode}`);
+    }
+
+    getByCountry(coutryCode: number): Observable<Customer[]> {
+      return this.http.get<Customer[]>(`${this.apiUrl}/country/${coutryCode}`);
+    }
+
+    getByCity(cityCode: number): Observable<Customer[]> {
+      return this.http.get<Customer[]>(`${this.apiUrl}/city/${cityCode}`);
+    }
 
   // Update customer information
   updateCustomer(cusCode: number, customer: Customer): Observable<Customer> {

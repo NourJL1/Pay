@@ -46,12 +46,14 @@ export class CustomerMngComponent {
 
   countries: Country[] = [] // List of countries from db
   cities: City[] = [] // List of all cities from db
+  filteredCities: City[] = []
   citiesByCountry: City[] = [] // List of cities from db by countries
-  customers: Customer[] = [] // List of customers
+  allCustomers: Customer[] = [] // List of all customers
+  filteredCustomers: Customer[] = [] // Filtered list of customers
   statuses: CustomerStatus[] = [] // List of customer statuses
   identityTypes: CustomerIdentityType[] = [] // List of customer identity types
   docTypeList: DocType[] = [] // List of document types in db
-  
+
 
   // Selected items for editing
   selectedCustomer?: Customer
@@ -95,7 +97,7 @@ export class CustomerMngComponent {
 
   loadAllCustomers() {
     this.customerService.getAllCustomers().subscribe({
-      next: (customers: Customer[]) => { this.customers = customers },
+      next: (customers: Customer[]) => { this.allCustomers = customers; this.filteredCustomers = customers },
       error: (err) => { console.log(err) }
     })
 
@@ -146,7 +148,7 @@ export class CustomerMngComponent {
 
   loadCities() {
     this.cityService.getAll().subscribe({
-      next: (cities: City[]) => { this.cities = cities },
+      next: (cities: City[]) => { this.cities = cities; this.filteredCities = cities },
       error: (err) => { console.log(err) }
     })
   }
@@ -156,7 +158,6 @@ export class CustomerMngComponent {
   editCustomer(customer: Customer) {
     this.selectedCustomer = customer
     this.customerForm = { ...customer, fullName: customer.fullName }
-    console.log('edit customer:', this.customerForm);
     this.customerDocs = []
     this.files = []
     this.isAddCustomerVisible = true
@@ -176,7 +177,7 @@ export class CustomerMngComponent {
             error: (err) => { console.log(err) }
           })
         }
-        this.customers.push(customer);
+        this.allCustomers.push(customer);
         this.customerForm = new Customer();
         this.citiesByCountry = [];
         this.files = [];
@@ -192,14 +193,13 @@ export class CustomerMngComponent {
   }
 
   updateCustomer() {
-    console.log('update customer:', this.customerForm);
     this.customerService.updateCustomer(this.customerForm.cusCode!, this.customerForm).subscribe({
       next: (customer: Customer) => {
         console.log('update customer: updated:', this.customerForm);
-        const index = this.customers.findIndex(cus => cus.cusCode === this.customerForm.cusCode);
+        const index = this.allCustomers.findIndex(cus => cus.cusCode === this.customerForm.cusCode);
         if (index !== -1) {
-          this.customers[index] = customer;
-          this.customers = [...this.customers];
+          this.allCustomers[index] = customer;
+          this.allCustomers = [...this.allCustomers];
         }
         this.customerForm = new Customer();
         this.selectedCustomer = undefined;
@@ -245,7 +245,7 @@ export class CustomerMngComponent {
       this.customerService.deleteCustomer(customer.cusCode!).subscribe({
         next: () => {
           console.log("deleted succ")
-          this.customers = this.customers.filter(cus => cus.cusCode !== customer?.cusCode);
+          this.allCustomers = this.allCustomers.filter(cus => cus.cusCode !== customer?.cusCode);
           this.showSuccessMessage('Customer deleted successfully');
           this.cdr.detectChanges();
         },
@@ -253,8 +253,22 @@ export class CustomerMngComponent {
       })
     }
   }
-
   
+  filterCustomers()
+  {
+    if (!this.selectedStatus && !this.selectedCountry && !this.selectedCity)
+      this.loadAllCustomers()
+    else {
+      this.filteredCustomers = this.allCustomers.filter(customer => {
+        return (!this.selectedStatus || customer.status?.ctsCode === this.selectedStatus?.ctsCode) &&
+          (!this.selectedCountry || customer.country?.ctrCode === this.selectedCountry?.ctrCode) &&
+          (!this.selectedCity || customer.city?.ctyCode === this.selectedCity?.ctyCode)
+      })
+      
+    }
+  }
+
+
 
   // status methods
 
@@ -491,8 +505,12 @@ export class CustomerMngComponent {
     }
   }
 
-  onCountryChange(): void {
-    this.cityService.getByCountry(this.customerForm.country!).subscribe(
+  onCountryChange(country: Country): void {
+    if (!country) {
+      this.citiesByCountry = [];
+      return;
+    }
+    this.cityService.getByCountry(country).subscribe(
       {
         next: (cities: City[]) => {
           this.citiesByCountry = cities;
@@ -512,6 +530,18 @@ export class CustomerMngComponent {
       },
       error: (err) => { console.log(err) }
     })
+  }
+  
+  filterCities()
+  {
+    if (!this.selectedCountry)
+      this.loadCities()
+    else {
+      this.filteredCities = this.cities.filter(city => {
+        return (!this.selectedCountry || city.country?.ctrCode === this.selectedCountry?.ctrCode)
+      })
+      
+    }
   }
 
   // html methods
@@ -572,18 +602,18 @@ export class CustomerMngComponent {
 
   closeForm(modal: string) {
     switch (modal) {
-      case 'customer-add': 
+      case 'customer-add':
         this.citiesByCountry = [];
-        this.isAddCustomerVisible = false; 
+        this.isAddCustomerVisible = false;
         break;
       case 'customer-details': this.isUserDetailsVisible = false; break;
       case 'customer-status': this.isCustomerStatusVisible = false; break;
       case 'customer-identityType': this.isCustomerIdentityTypeVisible = false; break;
       case 'docType': this.isDocTypeVisible = false; break;
       case 'country': this.isCountryVisible = false; break;
-      case 'city': 
+      case 'city':
         this.cityList = [];
-        this.isCityVisible = false; 
+        this.isCityVisible = false;
         break;
     }
   }

@@ -206,56 +206,42 @@
           <i class="ri-search-line text-gray-400"></i>
         </div>
         <!-- Search Input -->
-<input
-  type="text"
-  placeholder="Search..."
-  [(ngModel)]="searchTerm"
-  (ngModelChange)="applyFilters()"
-  class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm"
-/>
+        <input type="text" placeholder="Search..." [(ngModel)]="searchTerm" (ngModelChange)="applyFilters()"
+          class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm" />
       </div>
       <div class="w-full sm:w-auto">
         <div class="relative">
           <!-- Status Filter -->
-<select
-  [(ngModel)]="selectedStatus"
-  (change)="applyFilters()"
-  class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary rounded-lg sm:text-sm"
->
-  <option value="" selected>All Statuses</option>
-  <option *ngFor="let status of walletStatuses" [ngValue]="status">
-    {{ status.wstLabe }}
-  </option>
-</select>
+          <select [(ngModel)]="selectedStatus" (change)="applyFilters()"
+            class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary rounded-lg sm:text-sm">
+            <option value="" selected>All Statuses</option>
+            <option *ngFor="let status of walletStatuses" [ngValue]="status">
+              {{ status.wstLabe }}
+            </option>
+          </select>
         </div>
       </div>
       <div class="w-full sm:w-auto">
         <div class="relative">
           <!-- Type Filter -->
-<select
-  [(ngModel)]="selectedType"
-  (change)="applyFilters()"
-  class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary rounded-lg sm:text-sm"
->
-  <option value="" selected>All Types</option>
-  <option *ngFor="let type of walletTypesList" [ngValue]="type">
-    {{ type.wtyLabe }}
-  </option>
-</select>
+          <select [(ngModel)]="selectedType" (change)="applyFilters()"
+            class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary rounded-lg sm:text-sm">
+            <option value="" selected>All Types</option>
+            <option *ngFor="let type of walletTypesList" [ngValue]="type">
+              {{ type.wtyLabe }}
+            </option>
+          </select>
         </div>
       </div>
       <div class="w-full sm:w-auto">
         <div class="relative">
-          <select
-  [(ngModel)]="selectedCategory"
-  (change)="applyFilters()"
-  class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary rounded-lg sm:text-sm"
->
-  <option value="" selected>All Categories</option>
-  <option *ngFor="let category of walletCategories" [ngValue]="category">
-    {{ category.wcaLabe }}
-  </option>
-</select>
+          <select [(ngModel)]="selectedCategory" (change)="applyFilters()"
+            class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary rounded-lg sm:text-sm">
+            <option value="" selected>All Categories</option>
+            <option *ngFor="let category of walletCategories" [ngValue]="category">
+              {{ category.wcaLabe }}
+            </option>
+          </select>
         </div>
       </div>
     </div>
@@ -267,7 +253,7 @@
     <div class="overflow-x-auto">
       <table class="min-w-full divide-y divide-gray-200">
         <thead>
-          <tr  class="border-b border-gray-200">
+          <tr class="border-b border-gray-200">
             <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
               Identifier
             </th>
@@ -310,17 +296,14 @@
                 <div class="text-sm text-gray-900">{{ wallet.createdAt | date:'dd-MM-yyyy HH:mm:ss' }}</div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
-  <span
-    class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full"
-    [ngClass]="{
-      'bg-green-100 text-green-800': wallet.walletStatus.wstLabe === 'ACTIVE',
-      'bg-yellow-100 text-yellow-800': wallet.walletStatus.wstLabe === 'PENDING',
-      'bg-red-100 text-red-800': wallet.walletStatus.wstLabe === 'INACTIVE'
-    }"
-  >
-    {{ wallet.walletStatus.wstLabe }}
-  </span>
-</td>
+                <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full" [ngClass]="{
+                  'bg-green-100 text-green-800': wallet.walletStatus.wstLabe === 'ACTIVE',
+                  'bg-yellow-100 text-yellow-800': wallet.walletStatus.wstLabe === 'PENDING',
+                  'bg-red-100 text-red-800': wallet.walletStatus.wstLabe === 'INACTIVE'
+                }">
+                  {{ wallet.walletStatus.wstLabe }}
+                </span>
+              </td>
 
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="text-sm text-gray-900">{{ wallet.walletType.wtyLabe }}</div>
@@ -339,7 +322,7 @@
                     class="text-blue-600 hover:text-blue-800 transition duration-150 p-1 rounded hover:bg-blue-50">
                     <i class="ri-eye-line text-lg"></i>
                   </button>
-                  
+
                 </div>
               </td>
             </tr>
@@ -1622,12 +1605,13 @@
                 <i class="ri-wallet-3-line ri-2x"></i>
               </div>
               <h4 class="text-lg font-semibold mt-2">Wallet ID: {{selectedWallet.walIden}}</h4>
-              
+
             </div>
             <div class="space-y-3">
               <div class="flex justify-between">
                 <span class="text-sm text-gray-500">Status:</span>
-                <span class="text-sm font-medium px-2 rounded-full status-active">{{ selectedWallet.walletStatus.wstLabe }}</span>
+                <span class="text-sm font-medium px-2 rounded-full status-active">{{ selectedWallet.walletStatus.wstLabe
+                  }}</span>
               </div>
               <div class="flex justify-between">
                 <span class="text-sm text-gray-500">Type:</span>
@@ -1643,7 +1627,8 @@
               </div>
               <div class="flex justify-between">
                 <span class="text-sm text-gray-500">Last Updated:</span>
-                <span class="text-sm font-medium">{{ selectedWallet.lastUpdatedDate  | date:'dd-MM-yyyy HH:mm:ss' }}</span>
+                <span class="text-sm font-medium">{{ selectedWallet.lastUpdatedDate | date:'dd-MM-yyyy HH:mm:ss'
+                  }}</span>
               </div>
             </div>
             <div class="mt-6 space-y-2">
@@ -1708,13 +1693,14 @@
                     </div>
                     <div>
                       <label class="block text-xs text-gray-500 mb-1">Last Updated</label>
-                      <div class="text-sm font-medium">{{ selectedWallet.lastUpdatedDate  | date:'dd-MM-yyyy HH:mm:ss' }}</div>
+                      <div class="text-sm font-medium">{{ selectedWallet.lastUpdatedDate | date:'dd-MM-yyyy HH:mm:ss' }}
+                      </div>
                     </div>
                     <div>
                       <label class="block text-xs text-gray-500 mb-1">Status</label>
                       <div class="flex items-center">
                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full status-active mr-2">
-                        {{ selectedWallet.walletStatus.wstLabe }} </span>
+                          {{ selectedWallet.walletStatus.wstLabe }} </span>
                       </div>
                     </div>
                   </div>
@@ -1751,17 +1737,17 @@
                 <div class="bg-white border border-gray-200 rounded-lg p-4">
                   <div class="text-sm text-gray-500 mb-1">Effective Balance</div>
                   <div class="text-xl font-bold text-gray-800">{{ selectedWallet.walEffBal }}</div>
-                  
+
                 </div>
                 <div class="bg-white border border-gray-200 rounded-lg p-4">
                   <div class="text-sm text-gray-500 mb-1">Logical Balance</div>
                   <div class="text-xl font-bold text-gray-800">{{ selectedWallet.walLogicBalance }}</div>
-                  
+
                 </div>
                 <div class="bg-white border border-gray-200 rounded-lg p-4">
                   <div class="text-sm text-gray-500 mb-1">Specific Balance</div>
                   <div class="text-xl font-bold text-gray-800">{{ selectedWallet.walSpecificBalance }}</div>
-                  
+
                 </div>
               </div>
               <div class="mb-6">
