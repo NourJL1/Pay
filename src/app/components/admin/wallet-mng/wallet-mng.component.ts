@@ -136,7 +136,7 @@ filteredWallets: Wallet[] = [];
   }
 
   clearMessage(): void {
-    console.log('clearMessage: Clearing messages');
+    // console.log('clearMessage: Clearing messages');
     this.successMessage = null;
     this.errorMessage = null;
     this.cdr.detectChanges();
@@ -169,10 +169,10 @@ filteredWallets: Wallet[] = [];
 
   loadActiveWalletCount(): void {
     this.errorMessage = null;
-    console.log('loadActiveWalletCount: Fetching active wallet count...');
+    // console.log('loadActiveWalletCount: Fetching active wallet count...');
     this.walletService.getActiveWalletCount().subscribe({
       next: (count: number) => {
-        console.log('loadActiveWalletCount: Active wallet count received:', count);
+        // console.log('loadActiveWalletCount: Active wallet count received:', count);
         this.activeWalletCount = count;
         this.cdr.detectChanges();
       },
@@ -186,10 +186,10 @@ filteredWallets: Wallet[] = [];
 
   loadWalletStats(): void {
     this.errorMessage = null;
-    console.log('loadWalletStats: Fetching wallet count and last updated date...');
+    // console.log('loadWalletStats: Fetching wallet count and last updated date...');
     this.walletService.getWalletCount().subscribe({
       next: (count: number) => {
-        console.log('loadWalletStats: Wallet count received:', count);
+        // console.log('loadWalletStats: Wallet count received:', count);
         this.walletCount = count;
         this.cdr.detectChanges();
       },
@@ -208,7 +208,7 @@ filteredWallets: Wallet[] = [];
           return walletDate > latest ? walletDate : latest;
         }, null as Date | null);
         this.lastUpdated = latestWallet;
-        console.log('loadWalletStats: Last updated date:', this.lastUpdated);
+        // console.log('loadWalletStats: Last updated date:', this.lastUpdated);
         this.cdr.detectChanges();
       },
       error: (error: HttpErrorResponse) => {
@@ -222,10 +222,10 @@ filteredWallets: Wallet[] = [];
   // Load account types
   loadAccountTypes(): void {
     this.errorMessage = null;
-    console.log('loadAccountTypes: Fetching account types...');
+    // console.log('loadAccountTypes: Fetching account types...');
     this.accountTypeService.getAll().subscribe({
       next: (accountTypes: AccountType[]) => {
-        console.log('loadAccountTypes: Account types received:', accountTypes);
+        // console.log('loadAccountTypes: Account types received:', accountTypes);
         this.accountTypesList = accountTypes;
         this.cdr.detectChanges();
       },
@@ -240,7 +240,7 @@ filteredWallets: Wallet[] = [];
   // Save account type
   saveAccountType(): void {
     this.errorMessage = null;
-    console.log('saveAccountType: Saving account type:', this.newAccountType);
+    // console.log('saveAccountType: Saving account type:', this.newAccountType);
     if (/* !this.newAccountType.atyIden ||  */!this.newAccountType.atyLabe || !this.newAccountType.atyFinId) {
       this.showErrorMessage('Please fill in all required fields: Type Label, and Financial Institution ID.');
       return;
@@ -248,7 +248,7 @@ filteredWallets: Wallet[] = [];
     if (this.isAccountTypeEditMode && this.selectedAccountType?.atyCode) {
       this.accountTypeService.update(this.selectedAccountType.atyCode, this.newAccountType).subscribe({
         next: (updatedAccountType: AccountType) => {
-          console.log('saveAccountType: Account type updated:', updatedAccountType);
+          // console.log('saveAccountType: Account type updated:', updatedAccountType);
           const index = this.accountTypesList.findIndex(t => t.atyCode === updatedAccountType.atyCode);
           if (index !== -1) {
             this.accountTypesList[index] = updatedAccountType;
@@ -270,7 +270,7 @@ filteredWallets: Wallet[] = [];
     } else {
       this.accountTypeService.create(this.newAccountType).subscribe({
         next: (createdAccountType: AccountType) => {
-          console.log('saveAccountType: Account type created:', createdAccountType);
+          // console.log('saveAccountType: Account type created:', createdAccountType);
           this.accountTypesList.push(createdAccountType);
           this.newAccountType = new AccountType();
           this.isAccountTypeVisible = false;
@@ -289,7 +289,7 @@ filteredWallets: Wallet[] = [];
   // Edit account type
   editAccountType(accountType: AccountType): void {
     this.errorMessage = null;
-    console.log('editAccountType: Editing account type:', accountType);
+    // console.log('editAccountType: Editing account type:', accountType);
     this.selectedAccountType = accountType;
     this.newAccountType = { ...accountType };
     this.isAccountTypeEditMode = true;
@@ -300,11 +300,11 @@ filteredWallets: Wallet[] = [];
   // Delete account type
   deleteAccountType(atyCode: number | undefined): void {
     this.errorMessage = null;
-    console.log('deleteAccountType: atyCode:', atyCode);
+    // console.log('deleteAccountType: atyCode:', atyCode);
     if (atyCode && confirm('Are you sure you want to delete this account type?')) {
       this.accountTypeService.delete(atyCode).subscribe({
         next: () => {
-          console.log('deleteAccountType: Success, atyCode:', atyCode);
+          // console.log('deleteAccountType: Success, atyCode:', atyCode);
           this.accountTypesList = this.accountTypesList.filter(t => t.atyCode !== atyCode);
           this.showSuccessMessage('Account type deleted successfully');
           this.cdr.detectChanges();
@@ -321,10 +321,10 @@ filteredWallets: Wallet[] = [];
   // Load wallet statuses
   loadWalletStatuses(): void {
     this.errorMessage = null;
-    console.log('loadWalletStatuses: Fetching wallet statuses...');
+    // console.log('loadWalletStatuses: Fetching wallet statuses...');
     this.walletStatusService.getAll(this.getHttpOptions()).subscribe({
       next: (statuses: WalletStatus[]) => {
-        console.log('loadWalletStatuses: Wallet statuses received:', statuses);
+        // console.log('loadWalletStatuses: Wallet statuses received:', statuses);
         this.walletStatuses = statuses;
         this.cdr.detectChanges();
       },
@@ -339,10 +339,10 @@ filteredWallets: Wallet[] = [];
   // Load wallet categories
   loadWalletCategories(): void {
     this.errorMessage = null;
-    console.log('loadWalletCategories: Fetching wallet categories...');
+    // console.log('loadWalletCategories: Fetching wallet categories...');
     this.walletCategoryService.getAll(this.getHttpOptions()).subscribe({
       next: (categories: WalletCategory[]) => {
-        console.log('loadWalletCategories: Wallet categories received:', categories);
+        // console.log('loadWalletCategories: Wallet categories received:', categories);
         this.walletCategories = categories;
         this.cdr.detectChanges();
       },
@@ -357,10 +357,10 @@ filteredWallets: Wallet[] = [];
   // Load wallet types
   loadWalletTypes(): void {
     this.errorMessage = null;
-    console.log('loadWalletTypes: Fetching wallet types...');
+    // console.log('loadWalletTypes: Fetching wallet types...');
     this.walletTypeService.getAll(this.getHttpOptions()).subscribe({
       next: (types: WalletType[]) => {
-        console.log('loadWalletTypes: Wallet types received:', types);
+        // console.log('loadWalletTypes: Wallet types received:', types);
         this.walletTypesList = types;
         this.cdr.detectChanges();
       },
@@ -375,10 +375,10 @@ filteredWallets: Wallet[] = [];
   // Load cards
   loadCards(): void {
     this.errorMessage = null;
-    console.log('loadCards: Fetching cards...');
+    // console.log('loadCards: Fetching cards...');
     this.cardService.getAll().subscribe({
       next: (cards: Card[]) => {
-        console.log('loadCards: Cards received:', cards);
+        // console.log('loadCards: Cards received:', cards);
         this.cardsList = cards;
         this.cdr.detectChanges();
       },
@@ -393,10 +393,10 @@ filteredWallets: Wallet[] = [];
   // Load card types
   loadCardTypes(): void {
     this.errorMessage = null;
-    console.log('loadCardTypes: Fetching card types...');
+    // console.log('loadCardTypes: Fetching card types...');
     this.cardTypeService.findAll().subscribe({
       next: (cardTypes: CardType[]) => {
-        console.log('loadCardTypes: Card types received:', cardTypes);
+        // console.log('loadCardTypes: Card types received:', cardTypes);
         this.cardTypesList = cardTypes;
         this.cdr.detectChanges();
       },
@@ -411,10 +411,10 @@ filteredWallets: Wallet[] = [];
   // Load card lists
   loadCardLists(): void {
     this.errorMessage = null;
-    console.log('loadCardLists: Fetching card lists...');
+    // console.log('loadCardLists: Fetching card lists...');
     this.cardListService.getAll().subscribe({
       next: (cardLists: CardList[]) => {
-        console.log('loadCardLists: Card lists received:', cardLists);
+        // console.log('loadCardLists: Card lists received:', cardLists);
         this.cardListsList = cardLists;
         this.cdr.detectChanges();
       },
@@ -429,10 +429,10 @@ filteredWallets: Wallet[] = [];
   // Load wallets
   loadWallets(): void {
   this.errorMessage = null;
-  console.log('loadWallets: Fetching wallets...');
+  // console.log('loadWallets: Fetching wallets...');
   this.walletService.getAll().subscribe({
     next: (wallets: Wallet[]) => {
-      console.log('loadWallets: Wallets received:', JSON.stringify(wallets, null, 2));
+       // console.log('loadWallets: Wallets received:', wallets);
       this.walletsList = wallets;
       this.filteredWallets = [...this.walletsList]; // ✅ corrected here
       this.cdr.detectChanges();
@@ -473,7 +473,7 @@ filteredWallets: Wallet[] = [];
   // Add or update card
   saveCard(): void {
     this.errorMessage = null;
-    console.log('saveCard: Saving card:', this.newCard);
+    // console.log('saveCard: Saving card:', this.newCard);
     if (/* !this.newCard.carIden ||  */!this.newCard.carLabe || !this.newCard.carNumb || !this.newCard.carExpiryDate || !this.newCard.cardType?.ctypCode || !this.newCard.cardList?.cliCode) {
       this.showErrorMessage('Please fill in all required fields: Label, Number, Expiry Date, Card Type, and Card List.');
       return;
@@ -481,7 +481,7 @@ filteredWallets: Wallet[] = [];
     if (this.isCardEditMode && this.selectedCard?.carCode) {
       this.cardService.update(this.selectedCard.carCode, this.newCard).subscribe({
         next: (updatedCard: Card) => {
-          console.log('saveCard: Card updated:', updatedCard);
+          // console.log('saveCard: Card updated:', updatedCard);
           const index = this.cardsList.findIndex(c => c.carCode === updatedCard.carCode);
           if (index !== -1) {
             this.cardsList[index] = updatedCard;
@@ -503,7 +503,7 @@ filteredWallets: Wallet[] = [];
     } else {
       this.cardService.create(this.newCard).subscribe({
         next: (createdCard: Card) => {
-          console.log('saveCard: Card created:', createdCard);
+          // console.log('saveCard: Card created:', createdCard);
           this.cardsList.push(createdCard);
           this.newCard = new Card({ cardList: new CardList({ wallet: new Wallet() }), cardType: new CardType() });
           this.isCardFormVisible = false;
@@ -522,7 +522,7 @@ filteredWallets: Wallet[] = [];
   // Edit card
   editCard(card: Card): void {
     this.errorMessage = null;
-    console.log('editCard: Editing card:', card);
+    // console.log('editCard: Editing card:', card);
     this.selectedCard = card;
     this.newCard = { 
       ...card, 
@@ -537,11 +537,11 @@ filteredWallets: Wallet[] = [];
   // Delete card
   deleteCard(carCode: number | undefined): void {
     this.errorMessage = null;
-    console.log('deleteCard: carCode:', carCode);
+    // console.log('deleteCard: carCode:', carCode);
     if (carCode && confirm('Are you sure you want to delete this card?')) {
       this.cardService.delete(carCode).subscribe({
         next: () => {
-          console.log('deleteCard: Success, carCode:', carCode);
+          // console.log('deleteCard: Success, carCode:', carCode);
           this.cardsList = this.cardsList.filter(c => c.carCode !== carCode);
           this.showSuccessMessage('Card deleted successfully');
           this.cdr.detectChanges();
@@ -558,7 +558,7 @@ filteredWallets: Wallet[] = [];
   // Add or update card type
   saveCardType(): void {
     this.errorMessage = null;
-    console.log('saveCardType: Saving card type:', this.newCardType);
+    // console.log('saveCardType: Saving card type:', this.newCardType);
     if (/* !this.newCardType.ctypIden ||  */!this.newCardType.ctypLabe) {
       this.showErrorMessage('Please fill in all required fields: Label.');
       return;
@@ -566,7 +566,7 @@ filteredWallets: Wallet[] = [];
     if (this.isCardTypeEditMode && this.selectedCardType?.ctypCode) {
       this.cardTypeService.save(this.newCardType).subscribe({
         next: (updatedCardType: CardType) => {
-          console.log('saveCardType: Card type updated:', updatedCardType);
+          // console.log('saveCardType: Card type updated:', updatedCardType);
           const index = this.cardTypesList.findIndex(t => t.ctypCode === updatedCardType.ctypCode);
           if (index !== -1) {
             this.cardTypesList[index] = updatedCardType;
@@ -588,7 +588,7 @@ filteredWallets: Wallet[] = [];
     } else {
       this.cardTypeService.save(this.newCardType).subscribe({
         next: (createdCardType: CardType) => {
-          console.log('saveCardType: Card type created:', createdCardType);
+          // console.log('saveCardType: Card type created:', createdCardType);
           this.cardTypesList.push(createdCardType);
           this.newCardType = new CardType();
           this.isCardTypeVisible = false;
@@ -607,7 +607,7 @@ filteredWallets: Wallet[] = [];
   // Edit card type
   editCardType(cardType: CardType): void {
     this.errorMessage = null;
-    console.log('editCardType: Editing card type:', cardType);
+    // console.log('editCardType: Editing card type:', cardType);
     this.selectedCardType = cardType;
     this.newCardType = { ...cardType };
     this.isCardTypeEditMode = true;
@@ -618,11 +618,11 @@ filteredWallets: Wallet[] = [];
   // Delete card type
   deleteCardType(ctypCode: number | undefined): void {
     this.errorMessage = null;
-    console.log('deleteCardType: ctypCode:', ctypCode);
+    // console.log('deleteCardType: ctypCode:', ctypCode);
     if (ctypCode && confirm('Are you sure you want to delete this card type?')) {
       this.cardTypeService.deleteById(ctypCode).subscribe({
         next: () => {
-          console.log('deleteCardType: Success, ctypCode:', ctypCode);
+          // console.log('deleteCardType: Success, ctypCode:', ctypCode);
           this.cardTypesList = this.cardTypesList.filter(t => t.ctypCode !== ctypCode);
           this.showSuccessMessage('Card type deleted successfully');
           this.cdr.detectChanges();
@@ -639,7 +639,7 @@ filteredWallets: Wallet[] = [];
   // Add or update card list
   saveCardList(): void {
     this.errorMessage = null;
-    console.log('saveCardList: Saving card list:', this.newCardList);
+    // console.log('saveCardList: Saving card list:', this.newCardList);
     if (/* !this.newCardList.cliIden ||  */!this.newCardList.cliLabe || !this.newCardList.wallet?.walIden) {
       this.showErrorMessage('Please fill in all required fields: Label, and Wallet.');
       return;
@@ -647,7 +647,7 @@ filteredWallets: Wallet[] = [];
     if (this.isCardListEditMode && this.selectedCardList?.cliCode) {
       this.cardListService.update(this.selectedCardList.cliCode, this.newCardList).subscribe({
         next: (updatedCardList: CardList) => {
-          console.log('saveCardList: Card list updated:', updatedCardList);
+          // console.log('saveCardList: Card list updated:', updatedCardList);
           const index = this.cardListsList.findIndex(l => l.cliCode === updatedCardList.cliCode);
           if (index !== -1) {
             this.cardListsList[index] = updatedCardList;
@@ -669,7 +669,7 @@ filteredWallets: Wallet[] = [];
     } else {
       this.cardListService.create(this.newCardList).subscribe({
         next: (createdCardList: CardList) => {
-          console.log('saveCardList: Card list created:', createdCardList);
+          // console.log('saveCardList: Card list created:', createdCardList);
           this.cardListsList.push(createdCardList);
           this.newCardList = new CardList({ wallet: new Wallet() });
           this.isCardListVisible = false;
@@ -688,7 +688,7 @@ filteredWallets: Wallet[] = [];
   // Edit card list
   editCardList(cardList: CardList): void {
     this.errorMessage = null;
-    console.log('editCardList: Editing card list:', cardList);
+    // console.log('editCardList: Editing card list:', cardList);
     this.selectedCardList = cardList;
     this.newCardList = { ...cardList, wallet: cardList.wallet ? { ...cardList.wallet } : new Wallet() };
     this.isCardListEditMode = true;
@@ -699,11 +699,11 @@ filteredWallets: Wallet[] = [];
   // Delete card list
   deleteCardList(cliCode: number | undefined): void {
     this.errorMessage = null;
-    console.log('deleteCardList: cliCode:', cliCode);
+    // console.log('deleteCardList: cliCode:', cliCode);
     if (cliCode && confirm('Are you sure you want to delete this card list?')) {
       this.cardListService.delete(cliCode).subscribe({
         next: () => {
-          console.log('deleteCardList: Success, cliCode:', cliCode);
+          // console.log('deleteCardList: Success, cliCode:', cliCode);
           this.cardListsList = this.cardListsList.filter(l => l.cliCode !== cliCode);
           this.showSuccessMessage('Card list deleted successfully');
           this.cdr.detectChanges();
@@ -720,7 +720,7 @@ filteredWallets: Wallet[] = [];
   // Save wallet status
   saveStatus(): void {
     this.errorMessage = null;
-    console.log('saveStatus: Saving wallet status:', this.selectedStatus);
+    // console.log('saveStatus: Saving wallet status:', this.selectedStatus);
     if (/* !this.selectedStatus.wstIden ||  */!this.selectedStatus.wstLabe) {
       this.showErrorMessage('Please fill in all required fields: Status Label.');
       return;
@@ -728,7 +728,7 @@ filteredWallets: Wallet[] = [];
     if (this.isStatusEditMode) {
       this.walletStatusService.update(this.selectedStatus.wstCode!, this.selectedStatus, this.getHttpOptions()).subscribe({
         next: () => {
-          console.log('saveStatus: Wallet status updated');
+          // console.log('saveStatus: Wallet status updated');
           this.loadWalletStatuses();
           this.closeForm('wallet-status');
           this.showSuccessMessage('Wallet status updated successfully');
@@ -742,7 +742,7 @@ filteredWallets: Wallet[] = [];
     } else {
       this.walletStatusService.create(this.selectedStatus, this.getHttpOptions()).subscribe({
         next: () => {
-          console.log('saveStatus: Wallet status created');
+          // console.log('saveStatus: Wallet status created');
           this.loadWalletStatuses();
           this.closeForm('wallet-status');
           this.showSuccessMessage('Wallet status added successfully');
@@ -759,7 +759,7 @@ filteredWallets: Wallet[] = [];
   // Save wallet category
   saveCategory(): void {
     this.errorMessage = null;
-    console.log('saveCategory: Saving wallet category:', this.selectedCategory);
+    // console.log('saveCategory: Saving wallet category:', this.selectedCategory);
     if (/* !this.selectedCategory.wcaIden ||  */!this.selectedCategory.wcaLabe || !this.selectedCategory.wcaFinId) {
       this.showErrorMessage('Please fill in all required fields: Label, and Financial Institution ID.');
       return;
@@ -767,7 +767,7 @@ filteredWallets: Wallet[] = [];
     if (this.isCategoryEditMode) {
       this.walletCategoryService.update(this.selectedCategory.wcaCode!, this.selectedCategory, this.getHttpOptions()).subscribe({
         next: () => {
-          console.log('saveCategory: Wallet category updated');
+          // console.log('saveCategory: Wallet category updated');
           this.loadWalletCategories();
           this.closeForm('wallet-category');
           this.showSuccessMessage('Wallet category updated successfully');
@@ -781,7 +781,7 @@ filteredWallets: Wallet[] = [];
     } else {
       this.walletCategoryService.create(this.selectedCategory, this.getHttpOptions()).subscribe({
         next: () => {
-          console.log('saveCategory: Wallet category created');
+          // console.log('saveCategory: Wallet category created');
           this.loadWalletCategories();
           this.closeForm('wallet-category');
           this.showSuccessMessage('Wallet category added successfully');
@@ -797,14 +797,14 @@ filteredWallets: Wallet[] = [];
 
   // Add wallet type
   addWalletType(): void {
-    console.log('addWalletType: Adding wallet type:', this.newWalletType);
+    // console.log('addWalletType: Adding wallet type:', this.newWalletType);
     if (/* !this.newWalletType.wtyIden ||  */!this.newWalletType.wtyLabe) {
       this.showErrorMessage('Please fill in all required fields: Type Label.');
       return;
     }
     this.walletTypeService.create(this.newWalletType, this.getHttpOptions()).subscribe({
       next: (createdWalletType: WalletType) => {
-        console.log('addWalletType: Wallet type added:', createdWalletType);
+        // console.log('addWalletType: Wallet type added:', createdWalletType);
         this.walletTypesList.push(createdWalletType);
         this.newWalletType = new WalletType();
         this.isWalletTypeVisible = false;
@@ -821,7 +821,7 @@ filteredWallets: Wallet[] = [];
 
   // Edit wallet type
   editWalletType(type: WalletType): void {
-    console.log('editWalletType: Wallet type object:', type);
+    // console.log('editWalletType: Wallet type object:', type);
     this.selectedWalletType = type;
     this.newWalletType = { ...type };
     this.isWalletTypeEditMode = true;
@@ -831,7 +831,7 @@ filteredWallets: Wallet[] = [];
 
   // Update wallet type
   updateWalletType(): void {
-    console.log('updateWalletType: Updating wallet type:', this.newWalletType);
+    // console.log('updateWalletType: Updating wallet type:', this.newWalletType);
     if (/* !this.newWalletType.wtyIden ||  */!this.newWalletType.wtyLabe) {
       this.showErrorMessage('Please fill in all required fields: Type Label.');
       return;
@@ -839,7 +839,7 @@ filteredWallets: Wallet[] = [];
     if (this.selectedWalletType?.wtyCode) {
       this.walletTypeService.update(this.selectedWalletType.wtyCode, this.newWalletType, this.getHttpOptions()).subscribe({
         next: (updatedWalletType: WalletType) => {
-          console.log('updateWalletType: Wallet type updated:', updatedWalletType);
+          // console.log('updateWalletType: Wallet type updated:', updatedWalletType);
           const index = this.walletTypesList.findIndex(t => t.wtyCode === updatedWalletType.wtyCode);
           if (index !== -1) {
             this.walletTypesList[index] = updatedWalletType;
@@ -875,11 +875,11 @@ filteredWallets: Wallet[] = [];
 
   // Delete wallet type
   deleteWalletType(wtyCode: number | undefined): void {
-    console.log('deleteWalletType: wtyCode:', wtyCode);
+    // console.log('deleteWalletType: wtyCode:', wtyCode);
     if (wtyCode && confirm('Are you sure you want to delete this wallet type?')) {
       this.walletTypeService.delete(wtyCode, this.getHttpOptions()).subscribe({
         next: () => {
-          console.log('deleteWalletType: Success, wtyCode:', wtyCode);
+          // console.log('deleteWalletType: Success, wtyCode:', wtyCode);
           this.walletTypesList = this.walletTypesList.filter(t => t.wtyCode !== wtyCode);
           this.showSuccessMessage('Wallet type deleted successfully');
           this.cdr.detectChanges();
@@ -896,7 +896,7 @@ filteredWallets: Wallet[] = [];
   // Edit wallet status
   editStatus(status: WalletStatus): void {
     this.errorMessage = null;
-    console.log('editStatus: Editing wallet status:', status);
+    // console.log('editStatus: Editing wallet status:', status);
     this.selectedStatus = { ...status };
     this.isStatusEditMode = true;
     this.isWalletStatusVisible = true;
@@ -906,7 +906,7 @@ filteredWallets: Wallet[] = [];
   // Edit wallet category
   editCategory(category: WalletCategory): void {
     this.errorMessage = null;
-    console.log('editCategory: Editing wallet category:', category);
+    // console.log('editCategory: Editing wallet category:', category);
     this.selectedCategory = { ...category };
     this.isCategoryEditMode = true;
     this.isWalletCategoryVisible = true;
@@ -916,11 +916,11 @@ filteredWallets: Wallet[] = [];
   // Delete wallet status
   deleteStatus(wstCode: number | undefined): void {
     this.errorMessage = null;
-    console.log('deleteStatus: wstCode:', wstCode);
+    // console.log('deleteStatus: wstCode:', wstCode);
     if (wstCode && confirm('Are you sure you want to delete this status?')) {
       this.walletStatusService.delete(wstCode, this.getHttpOptions()).subscribe({
         next: () => {
-          console.log('deleteStatus: Success, wstCode:', wstCode);
+          // console.log('deleteStatus: Success, wstCode:', wstCode);
           this.loadWalletStatuses();
           this.showSuccessMessage('Wallet status deleted successfully');
         },
@@ -936,11 +936,11 @@ filteredWallets: Wallet[] = [];
   // Delete wallet category
   deleteCategory(wcaCode: number | undefined): void {
     this.errorMessage = null;
-    console.log('deleteCategory: wcaCode:', wcaCode);
+    // console.log('deleteCategory: wcaCode:', wcaCode);
     if (wcaCode && confirm('Are you sure you want to delete this category?')) {
       this.walletCategoryService.delete(wcaCode, this.getHttpOptions()).subscribe({
         next: () => {
-          console.log('deleteCategory: Success, wcaCode:', wcaCode);
+          // console.log('deleteCategory: Success, wcaCode:', wcaCode);
           this.loadWalletCategories();
           this.showSuccessMessage('Wallet category deleted successfully');
         },
@@ -955,7 +955,7 @@ filteredWallets: Wallet[] = [];
 
   // Show success message
   showSuccessMessage(message: string): void {
-    console.log('showSuccessMessage:', message);
+    // console.log('showSuccessMessage:', message);
     this.successMessage = message;
     this.errorMessage = null;
     setTimeout(() => {
@@ -966,7 +966,7 @@ filteredWallets: Wallet[] = [];
 
   // Show error message
   showErrorMessage(message: string): void {
-    console.log('showErrorMessage:', message);
+    // console.log('showErrorMessage:', message);
     this.errorMessage = message;
     this.successMessage = null;
     setTimeout(() => {
@@ -978,7 +978,7 @@ filteredWallets: Wallet[] = [];
   // Toggle form visibility
   toggleForm(modal: string): void {
     this.errorMessage = null;
-    console.log('toggleForm: Opening modal:', modal);
+    // console.log('toggleForm: Opening modal:', modal);
     switch (modal) {
       case 'create-wallet':
         this.isWalletFormVisible = true;
@@ -1039,7 +1039,7 @@ filteredWallets: Wallet[] = [];
   // Close form
   closeForm(modal: string): void {
     this.errorMessage = null;
-    console.log('closeForm: Closing modal:', modal);
+    // console.log('closeForm: Closing modal:', modal);
     switch (modal) {
       case 'create-wallet':
         this.isWalletFormVisible = false;

@@ -78,6 +78,7 @@ export class CustomerMngComponent {
   errorMessage: string | null = null;
 
   files: File[] = []
+  customerDocs: CustomerDoc[] = [] // List of customer documents
 
 
   allowedDocTypes: string[] = [] // List of allowed document types
@@ -155,19 +156,22 @@ export class CustomerMngComponent {
   editCustomer(customer: Customer) {
     this.selectedCustomer = customer
     this.customerForm = { ...customer, fullName: customer.fullName }
+    console.log('edit customer:', this.customerForm);
+    this.customerDocs = []
+    this.files = []
     this.isAddCustomerVisible = true
     this.cdr.detectChanges();
   }
 
   addCustomer() {
     this.customerForm.identity!.customerDocListe!.cdlLabe = this.customerForm.identity?.customerIdentityType?.citLabe + '-' + this.customerForm.username
+    console.log('add customer:', this.customerForm);
     this.customerService.register(this.customerForm).subscribe({
       next: (customer: Customer) => {
         console.log('add Customer: cus added:', customer);
-        const customerDocs: CustomerDoc[] = customer.identity?.customerDocListe?.customerDocs || [];
-        for (let i = 0; i < customerDocs.length; i++) {
-          customerDocs[i].customerDocListe = customer.identity?.customerDocListe
-          this.customerDocService.create(customerDocs[i], this.files[i]).subscribe({
+        for (let i = 0; i < this.customerDocs.length; i++) {
+          this.customerDocs[i].customerDocListe = customer.identity?.customerDocListe
+          this.customerDocService.create(this.customerDocs[i], this.files[i]).subscribe({
             next: () => { console.log("docs succ") },
             error: (err) => { console.log(err) }
           })
@@ -225,12 +229,14 @@ export class CustomerMngComponent {
         }
         const matchedDocType = this.docTypes.find(dt => dt.dtyIden === file.type)
 
-        this.customerForm.identity?.customerDocListe?.customerDocs?.push(new CustomerDoc({
+        this.customerDocs.push(new CustomerDoc({
           cdoLabe: file.name,
           docType: matchedDocType,
+          //customerDocListe: this.customerForm.identity?.customerDocListe
         }))
         this.files.push(file)
       }))
+      console.log(this.customerDocs)
     }
   }
 
@@ -247,6 +253,8 @@ export class CustomerMngComponent {
       })
     }
   }
+
+  
 
   // status methods
 

@@ -35,7 +35,7 @@ export class WalletService {
   }
 
   getAll(): Observable<Wallet[]> {
-    return this.http.get<Wallet[]>(this.apiUrl, { headers: this.getHeaders() }).pipe(
+    return this.http.get<Wallet[]>(this.apiUrl, { headers: this.getHeaders() })/* .pipe(
       map(wallets => wallets.map(wallet => new Wallet({
         walCode: wallet.walCode,
         walIden: wallet.walIden,
@@ -61,7 +61,7 @@ export class WalletService {
         console.error('Error fetching wallets:', error);
         return throwError(() => new Error('Failed to fetch wallets'));
       })
-    );
+    ); */
   }
 
   getWalletByCustomerCode(cusCode: number): Observable<Wallet> {

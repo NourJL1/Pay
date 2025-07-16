@@ -62,6 +62,7 @@ export class RegisterComponent {
   countries: Country[] = [];
   cities: City[] = [];
   files: File[] = []
+  customerDocs: CustomerDoc[] = [] // List of customer documents
   identityTypes: CustomerIdentityType[] = []
   docTypes: DocType[] = []
   allowedDocTypes: string[] = []
@@ -154,7 +155,7 @@ export class RegisterComponent {
       Array.from(input.files).forEach((file => {
         const matchedDocType = this.docTypes.find(dt => dt.dtyIden === file.type)
 
-        this.customer.identity?.customerDocListe?.customerDocs?.push(new CustomerDoc({
+        this.customerDocs.push(new CustomerDoc({
           cdoLabe: file.name,
           docType: matchedDocType,
         }))
