@@ -205,40 +205,57 @@
         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
           <i class="ri-search-line text-gray-400"></i>
         </div>
-        <input type="text" placeholder="Search..."
-          class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm" />
+        <!-- Search Input -->
+<input
+  type="text"
+  placeholder="Search..."
+  [(ngModel)]="searchTerm"
+  (ngModelChange)="applyFilters()"
+  class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm"
+/>
       </div>
       <div class="w-full sm:w-auto">
         <div class="relative">
-          <select
-            class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary rounded-lg sm:text-sm">
-            <option value="" disabled selected>All Statuses</option>
-            <option *ngFor="let status of walletStatuses" [value]="status">
-              {{ status.wstLabe }}
-            </option>
-          </select>
+          <!-- Status Filter -->
+<select
+  [(ngModel)]="selectedStatus"
+  (change)="applyFilters()"
+  class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary rounded-lg sm:text-sm"
+>
+  <option value="" selected>All Statuses</option>
+  <option *ngFor="let status of walletStatuses" [ngValue]="status">
+    {{ status.wstLabe }}
+  </option>
+</select>
+        </div>
+      </div>
+      <div class="w-full sm:w-auto">
+        <div class="relative">
+          <!-- Type Filter -->
+<select
+  [(ngModel)]="selectedType"
+  (change)="applyFilters()"
+  class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary rounded-lg sm:text-sm"
+>
+  <option value="" selected>All Types</option>
+  <option *ngFor="let type of walletTypesList" [ngValue]="type">
+    {{ type.wtyLabe }}
+  </option>
+</select>
         </div>
       </div>
       <div class="w-full sm:w-auto">
         <div class="relative">
           <select
-            class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary rounded-lg sm:text-sm">
-            <option value="" disabled selected>All Types</option>
-            <option *ngFor="let type of walletTypesList" [value]="type">
-              {{ type.wtyLabe }}
-            </option>
-          </select>
-        </div>
-      </div>
-      <div class="w-full sm:w-auto">
-        <div class="relative">
-          <select
-            class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary rounded-lg sm:text-sm">
-            <option value="" disabled selected>All Categories</option>
-            <option *ngFor="let category of walletCategories" [value]="category">
-              {{ category.wcaLabe }}
-            </option>
-          </select>
+  [(ngModel)]="selectedCategory"
+  (change)="applyFilters()"
+  class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary rounded-lg sm:text-sm"
+>
+  <option value="" selected>All Categories</option>
+  <option *ngFor="let category of walletCategories" [ngValue]="category">
+    {{ category.wcaLabe }}
+  </option>
+</select>
         </div>
       </div>
     </div>
@@ -250,7 +267,7 @@
     <div class="overflow-x-auto">
       <table class="min-w-full divide-y divide-gray-200">
         <thead>
-          <tr class="border-b border-gray-200">
+          <tr  class="border-b border-gray-200">
             <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
               Identifier
             </th>
@@ -280,7 +297,7 @@
         </thead>
         <tbody class="bg-white divide-y divide-gray-200">
           <ng-container *ngIf="walletsList!.length > 0; else noData">
-            <tr *ngFor="let wallet of walletsList" class="hover:bg-gray-50 transition duration-150 cursor-pointer">
+            <tr *ngFor="let wallet of filteredWallets" class="hover:bg-gray-50 transition duration-150 cursor-pointer">
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="text-sm text-gray-900">{{ wallet.walIden }}</div>
               </td>
