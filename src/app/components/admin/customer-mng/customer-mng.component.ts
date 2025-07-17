@@ -94,7 +94,7 @@ export class CustomerMngComponent {
   allowedDocTypes: string[] = [] // List of allowed document types
   confirm?: string;
 
-  searchTerm?: string;
+  customerSearchTerm?: string;
   statusSearchTerm?: string;
   idTypeSearchTerm?: string
   docTypeSearchTerm?: string
@@ -170,493 +170,509 @@ export class CustomerMngComponent {
     })
   }
 
-  // customer methods
+// customer methods
 
-  editCustomer(customer: Customer) {
-    this.selectedCustomer = customer
-    this.customerForm = { ...customer, fullName: customer.fullName }
-    this.customerDocs = []
-    this.files = []
-    this.isAddCustomerVisible = true
-    this.cdr.detectChanges();
-  }
+editCustomer(customer: Customer) {
+  this.selectedCustomer = customer
+  this.customerForm = { ...customer, fullName: customer.fullName }
+  this.customerDocs = []
+  this.files = []
+  this.isAddCustomerVisible = true
+  this.cdr.detectChanges();
+}
 
-  addCustomer() {
-    this.customerForm.identity!.customerDocListe!.cdlLabe = this.customerForm.identity?.customerIdentityType?.citLabe + '-' + this.customerForm.username
-    console.log('add customer:', this.customerForm);
-    this.customerService.register(this.customerForm).subscribe({
-      next: (customer: Customer) => {
-        console.log('add Customer: cus added:', customer);
-        for (let i = 0; i < this.customerDocs.length; i++) {
-          this.customerDocs[i].customerDocListe = customer.identity?.customerDocListe
-          this.customerDocService.create(this.customerDocs[i], this.files[i]).subscribe({
-            next: () => { console.log("docs succ") },
-            error: (err) => { console.log(err) }
-          })
-        }
-        this.allCustomers.push(customer);
-        this.customerForm = new Customer();
-        this.citiesByCountry = [];
-        this.files = [];
-        this.isAddCustomerVisible = false;
-        this.showSuccessMessage('Customer added successfully');
-        this.cdr.detectChanges();
-      },
-      error: (err) => {
-        console.error('add Customer: Error:', err);
-        this.showErrorMessage('Failed to add customer: ' + (err.error?.message || 'Please check the form.'));
+addCustomer() {
+  this.customerForm.identity!.customerDocListe!.cdlLabe = this.customerForm.identity?.customerIdentityType?.citLabe + '-' + this.customerForm.username
+  console.log('add customer:', this.customerForm);
+  this.customerService.register(this.customerForm).subscribe({
+    next: (customer: Customer) => {
+      console.log('add Customer: cus added:', customer);
+      for (let i = 0; i < this.customerDocs.length; i++) {
+        this.customerDocs[i].customerDocListe = customer.identity?.customerDocListe
+        this.customerDocService.create(this.customerDocs[i], this.files[i]).subscribe({
+          next: () => { console.log("docs succ") },
+          error: (err) => { console.log(err) }
+        })
       }
-    })
-  }
-
-  updateCustomer() {
-    this.customerService.updateCustomer(this.customerForm.cusCode!, this.customerForm).subscribe({
-      next: (customer: Customer) => {
-        console.log('update customer: updated:', this.customerForm);
-        const index = this.allCustomers.findIndex(cus => cus.cusCode === this.customerForm.cusCode);
-        if (index !== -1) {
-          this.allCustomers[index] = customer;
-          this.allCustomers = [...this.allCustomers];
-        }
-        this.customerForm = new Customer();
-        this.selectedCustomer = undefined;
-        this.citiesByCountry = [];
-        this.files = [];
-        this.isAddCustomerVisible = false;
-        this.showSuccessMessage('Customer updated successfully');
-        this.cdr.detectChanges();
-
-      },
-      error: (err) => {
-        console.error('update Customer: Error:', err);
-        this.showErrorMessage('Failed to update customer: ' + (err.error?.message || 'Please try again.'));
-      }
-    })
-  }
-
-  onFileSelected(event: Event): void {
-    const maxFileSize = 10 * 1024 * 1024;
-
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      Array.from(input.files).forEach((file => {
-        if (file.size > maxFileSize) {
-          alert(`File "${file.name}" exceeds the maximum size of 10MB.`);
-          return; // Skip this file
-        }
-        const matchedDocType = this.docTypes.find(dt => dt.dtyIden === file.type)
-
-        this.customerDocs.push(new CustomerDoc({
-          cdoLabe: file.name,
-          docType: matchedDocType,
-          //customerDocListe: this.customerForm.identity?.customerDocListe
-        }))
-        this.files.push(file)
-      }))
-      console.log(this.customerDocs)
-    }
-  }
-
-  deleteCustomer(customer: Customer) {
-    if (confirm('Are you sure you want to delete this customer?')) {
-      this.customerService.deleteCustomer(customer.cusCode!).subscribe({
-        next: () => {
-          console.log("deleted succ")
-          this.allCustomers = this.allCustomers.filter(cus => cus.cusCode !== customer?.cusCode);
-          this.showSuccessMessage('Customer deleted successfully');
-          this.cdr.detectChanges();
-        },
-        error: (err) => { console.log(err) }
-      })
-    }
-  }
-  
-  filterCustomers()
-  {
-    if (!this.selectedStatus && !this.selectedCountry && !this.selectedCity)
-      this.loadAllCustomers()
-    else {
-      this.filteredCustomers = this.allCustomers.filter(customer => {
-        return (!this.selectedStatus || customer.status?.ctsCode === this.selectedStatus?.ctsCode) &&
-          (!this.selectedCountry || customer.country?.ctrCode === this.selectedCountry?.ctrCode) &&
-          (!this.selectedCity || customer.city?.ctyCode === this.selectedCity?.ctyCode)
-      })
-    }
-  }
-
-
-
-  // status methods
-
-  editStatus(status: CustomerStatus) {
-    this.selectedStatus = status
-    this.statusForm = { ...status }
-    this.isCustomerStatusVisible = true
-    this.cdr.detectChanges();
-  }
-
-  addStatus() {
-    this.customerStatusService.create(this.statusForm).subscribe({
-      next: (status: CustomerStatus) => {
-        console.log('add Customer Status: status added:', status);
-        this.statuses.push(status);
-        this.statusForm = new CustomerStatus();
-        this.isCustomerStatusVisible = false;
-        this.showSuccessMessage('Customer Status added successfully');
-        this.cdr.detectChanges();
-      },
-      error: (err) => {
-        console.error('add Customer Staus: Error:', err);
-        this.showErrorMessage('Failed to add customer status: ' + (err.error?.message || 'Please check the form.'));
-      }
-    })
-  }
-
-  updateStatus() {
-    this.customerStatusService.update(this.statusForm.ctsCode!, this.statusForm).subscribe({
-      next: (status: CustomerStatus) => {
-        console.log('update status: status updated:', this.statusForm);
-        const index = this.statuses.findIndex(cts => cts.ctsCode === this.statusForm.ctsCode);
-        if (index !== -1) {
-          this.statuses[index] = status;
-          this.statuses = [...this.statuses];
-        }
-        this.statusForm = new CustomerStatus();
-        this.selectedStatus = undefined;
-        this.isCustomerStatusVisible = false;
-        this.showSuccessMessage('status updated successfully');
-        this.cdr.detectChanges();
-
-      },
-      error: (err) => {
-        console.error('updateStatus: Error:', err);
-        this.showErrorMessage('Failed to update status: ' + (err.error?.message || 'Please try again.'));
-      }
-    })
-  }
-
-  deleteStatus(status: CustomerStatus) {
-    if (confirm('Are you sure you want to delete this customer status?')) {
-      this.customerStatusService.delete(status.ctsCode!).subscribe({
-        next: () => {
-          console.log("deleted succ")
-          this.statuses = this.statuses.filter(cts => cts.ctsCode !== status?.ctsCode);
-          this.showSuccessMessage('Customer Status deleted successfully');
-          this.cdr.detectChanges();
-        },
-        error: (err) => { console.log(err) }
-      })
-    }
-  }
-
-  statusSearch() {
-    if (!this.statusSearchTerm)
-      this.filteredStatuses = this.statuses
-    else {
-      this.customerStatusService.search(this.statusSearchTerm).subscribe({
-        next: (searchResults: CustomerStatus[]) => {
-          this.filteredStatuses = searchResults;
-          this.cdr.detectChanges();
-        },
-        error: (error: HttpErrorResponse) => {
-          this.showErrorMessage(`Failed to search wallet statuses: ${error.status} ${error.statusText}`);
-        }
-      })
-    }
-  }
-
-  // identity type methods
-
-  editIdentityType(identityType: CustomerIdentityType) {
-    this.selectedIdentityType = identityType
-    this.identityTypeForm = { ...identityType }
-    this.isCustomerIdentityTypeVisible = true
-    this.cdr.detectChanges();
-  }
-
-  addIdentityType() {
-    this.customerIdentityTypeService.create(this.identityTypeForm).subscribe({
-      next: (identityType: CustomerIdentityType) => {
-        console.log('add Customer Identity Type: identity added:', identityType);
-        this.identityTypes.push(identityType);
-        this.identityTypeForm = new CustomerIdentityType();
-        this.isCustomerIdentityTypeVisible = false;
-        this.showSuccessMessage('Customer identity type added successfully');
-        this.cdr.detectChanges();
-      },
-      error: (err) => {
-        console.error('add Customer identity type: Error:', err);
-        this.showErrorMessage('Failed to add customer identity type: ' + (err.error?.message || 'Please check the form.'));
-      }
-    })
-  }
-
-  updateIdentityType() {
-    this.customerIdentityTypeService.update(this.identityTypeForm.citCode!, this.identityTypeForm).subscribe({
-      next: (identityType: CustomerIdentityType) => {
-        console.log('update identity type: identity type updated:', this.identityTypeForm);
-        const index = this.identityTypes.findIndex(cit => cit.citCode === this.identityTypeForm.citCode);
-        if (index !== -1) {
-          this.identityTypes[index] = identityType;
-          this.identityTypes = [...this.identityTypes];
-        }
-        this.identityTypeForm = new CustomerIdentityType();
-        this.selectedIdentityType = undefined;
-        this.isCustomerIdentityTypeVisible = false;
-        this.showSuccessMessage('identity type updated successfully');
-        this.cdr.detectChanges();
-
-      },
-      error: (err) => {
-        console.error('updateIdentityType: Error:', err);
-        this.showErrorMessage('Failed to update identity type: ' + (err.error?.message || 'Please try again.'));
-      }
-    })
-  }
-
-  deleteIdentityType(identityType: CustomerIdentityType) {
-    if (confirm('Are you sure you want to delete this identity type?')) {
-      this.customerIdentityTypeService.delete(identityType.citCode!).subscribe({
-        next: () => {
-          console.log("deleted succ")
-          this.identityTypes = this.identityTypes.filter(cit => cit.citCode !== identityType?.citCode);
-          this.showSuccessMessage('Customer identity type deleted successfully');
-          this.cdr.detectChanges();
-        },
-        error: (err) => { console.log(err) }
-      })
-    }
-  }
-
-  idTypeSearch() {
-    if (!this.idTypeSearchTerm)
-      this.filteredIdentityTypes = this.identityTypes
-    else {
-      this.customerIdentityTypeService.search(this.idTypeSearchTerm).subscribe({
-        next: (searchResults: CustomerIdentityType[]) => {
-          this.filteredIdentityTypes = searchResults;
-          this.cdr.detectChanges();
-        },
-        error: (error: HttpErrorResponse) => {
-          this.showErrorMessage(`Failed to search wallet statuses: ${error.status} ${error.statusText}`);
-        }
-      })
-    }
-  }
-
-  // doc type methods
-
-  editDocType(docType: DocType) {
-    this.selectedDocType = docType
-    this.docTypeForm = { ...docType }
-    this.isDocTypeVisible = true
-    this.cdr.detectChanges();
-  }
-
-  addDocType() {
-    console.log(this.identityTypeForm)
-    this.docTypeService.create(this.docTypeForm).subscribe({
-      next: (docType: DocType) => {
-        console.log('add Doc Type: identity added:', docType);
-        this.docTypes.push(docType);
-        this.allowedDocTypes.push(docType.dtyIden!);
-        this.docTypeForm = new DocType();
-        this.isDocTypeVisible = false;
-        this.showSuccessMessage('Document type added successfully');
-        this.cdr.detectChanges();
-      },
-      error: (err) => {
-        console.error('add document type: Error:', err);
-        this.showErrorMessage('Failed to add document type: ' + (err.error?.message || 'Please check the form.'));
-      }
-    })
-  }
-
-  deleteDocType(docType: DocType) {
-    if (confirm('Are you sure you want to delete this document type?')) {
-      this.docTypeService.delete(docType.dtyCode!).subscribe({
-        next: () => {
-          console.log("deleted succ")
-          this.docTypes = this.docTypes.filter(dty => dty.dtyCode !== docType?.dtyCode);
-          this.allowedDocTypes = this.docTypes
-            .filter(dty => dty.dtyIden !== docType?.dtyIden)
-            .map(dty => dty.dtyIden!);
-          this.showSuccessMessage('Document Type deleted successfully');
-          this.cdr.detectChanges();
-        },
-        error: (err) => { console.log(err) }
-      })
-    }
-  }
-
-  docTypeSearch() {
-    if (!this.docTypeSearchTerm)
-      this.filteredDocTypes = this.docTypes
-    else {
-      this.docTypeService.search(this.docTypeSearchTerm).subscribe({
-        next: (searchResults: DocType[]) => {
-          this.filteredDocTypes = searchResults;
-          this.cdr.detectChanges();
-        },
-        error: (error: HttpErrorResponse) => {
-          this.showErrorMessage(`Failed to search document types: ${error.status} ${error.statusText}`);
-        }
-      })
-    }
-  }
-
-  // country methods
-
-  addCountry() {
-    this.countryService.create(this.countryForm).subscribe({
-      next: (country: Country) => {
-        console.log('add country: country added:', country);
-        this.countries.push(country);
-        this.countryForm = new Country();
-        this.isCountryVisible = false;
-        this.showSuccessMessage('Country added successfully');
-        this.cdr.detectChanges();
-      },
-      error: (err) => {
-        console.error('add country: Error:', err);
-        this.showErrorMessage('Failed to add country: ' + (err.error?.message || 'Please check the form.'));
-      }
-    })
-  }
-
-  deleteCountry(country: Country) {
-    if (confirm('Are you sure you want to delete this country?')) {
-      this.countryService.delete(country.ctrCode!).subscribe({
-        next: () => {
-          console.log("deleted succ")
-          this.countries = this.countries.filter(ctr => ctr.ctrCode !== country.ctrCode);
-          this.showSuccessMessage('Country deleted successfully');
-          this.cdr.detectChanges();
-        },
-        error: (err) => { console.log(err) }
-      })
-    }
-  }
-
-  countrySearch() {
-    if (!this.countrySearchTerm)
-      this.filteredCountries = this.countries
-    else {
-      this.countryService.search(this.countrySearchTerm).subscribe({
-        next: (searchResults: Country[]) => {
-          console.log('search results:', searchResults);
-          this.filteredCountries = searchResults;
-          console.log('filtered countries:', this.filteredCountries);
-          this.cdr.detectChanges();
-        },
-        error: (error: HttpErrorResponse) => {
-          this.showErrorMessage(`Failed to search countries: ${error.status} ${error.statusText}`);
-        }
-      })
-    }
-  }
-
-  //city methods
-
-  addCity() {
-    this.cityForm.ctyIden = this.cityForm.country?.ctrIden + '-' +
-      console.log(this.cityForm)
-
-    this.cityService.create(this.cityForm).subscribe({
-      next: (city: City) => {
-        console.log('add city: city added:', city);
-        this.cities.push(city);
-        this.cityForm = new City();
-        this.isCityVisible = false;
-        this.showSuccessMessage('City added successfully');
-        this.cdr.detectChanges();
-      },
-      error: (err) => {
-        console.error('add city: Error:', err);
-        this.showErrorMessage('Failed to add city: ' + (err.error?.message || 'Please check the form.'));
-      }
-    })
-  }
-
-  deleteCity(city: City) {
-    if (confirm('Are you sure you want to delete this city?')) {
-      this.cityService.delete(city.ctyCode!).subscribe({
-        next: () => { console.log("deleted succ") },
-        error: (err) => { console.log(err) }
-      })
-    }
-  }
-
-  onCountryChange(country: Country): void {
-    if (!country) {
+      this.allCustomers.push(customer);
+      this.customerForm = new Customer();
       this.citiesByCountry = [];
-      return;
+      this.files = [];
+      this.isAddCustomerVisible = false;
+      this.showSuccessMessage('Customer added successfully');
+      this.cdr.detectChanges();
+    },
+    error: (err) => {
+      console.error('add Customer: Error:', err);
+      this.showErrorMessage('Failed to add customer: ' + (err.error?.message || 'Please check the form.'));
     }
-    this.cityService.getByCountry(country).subscribe(
-      {
-        next: (cities: City[]) => {
-          this.citiesByCountry = cities;
-        },
-        error: (err) => {
-          console.log(err)
-        }
+  })
+}
+
+updateCustomer() {
+  this.customerService.updateCustomer(this.customerForm.cusCode!, this.customerForm).subscribe({
+    next: (customer: Customer) => {
+      console.log('update customer: updated:', this.customerForm);
+      const index = this.allCustomers.findIndex(cus => cus.cusCode === this.customerForm.cusCode);
+      if (index !== -1) {
+        this.allCustomers[index] = customer;
+        this.allCustomers = [...this.allCustomers];
       }
-    );
+      this.customerForm = new Customer();
+      this.selectedCustomer = undefined;
+      this.citiesByCountry = [];
+      this.files = [];
+      this.isAddCustomerVisible = false;
+      this.showSuccessMessage('Customer updated successfully');
+      this.cdr.detectChanges();
+
+    },
+    error: (err) => {
+      console.error('update Customer: Error:', err);
+      this.showErrorMessage('Failed to update customer: ' + (err.error?.message || 'Please try again.'));
+    }
+  })
+}
+
+onFileSelected(event: Event): void {
+  const maxFileSize = 10 * 1024 * 1024;
+
+  const input = event.target as HTMLInputElement;
+  if(input.files && input.files.length > 0) {
+  Array.from(input.files).forEach((file => {
+    if (file.size > maxFileSize) {
+      alert(`File "${file.name}" exceeds the maximum size of 10MB.`);
+      return; // Skip this file
+    }
+    const matchedDocType = this.docTypes.find(dt => dt.dtyIden === file.type)
+
+    this.customerDocs.push(new CustomerDoc({
+      cdoLabe: file.name,
+      docType: matchedDocType,
+      //customerDocListe: this.customerForm.identity?.customerDocListe
+    }))
+    this.files.push(file)
+  }))
+  console.log(this.customerDocs)
+}
   }
 
-  onAllCountryChange(): void {
-    this.http.post("https://countriesnow.space/api/v0.1/countries/cities", { country: this.cityForm.country?.ctrLabe }).subscribe({
-      next: (response: any) => {
-        const allCities = response.data.filter((city: string) => !this.cities.some(cty => cty.ctyLabe === city))
-        this.cityList = allCities.filter((city: City) => !this.cities.some(cty => cty.ctyLabe === city.ctyLabe))
+deleteCustomer(customer: Customer) {
+  if (confirm('Are you sure you want to delete this customer?')) {
+    this.customerService.deleteCustomer(customer.cusCode!).subscribe({
+      next: () => {
+        console.log("deleted succ")
+        this.allCustomers = this.allCustomers.filter(cus => cus.cusCode !== customer?.cusCode);
+        this.showSuccessMessage('Customer deleted successfully');
+        this.cdr.detectChanges();
       },
       error: (err) => { console.log(err) }
     })
   }
-  
-  filterCities()
-  {
-    if (!this.selectedCountry)
-      this.loadCities()
-    else {
-      this.filteredCities = this.cities.filter(city => {
-        return (!this.selectedCountry || city.country?.ctrCode === this.selectedCountry?.ctrCode)
-      })
-    }
-    if (this.citySearchTerm) {
-      this.cityService.search(this.citySearchTerm).subscribe({
-        next: (searchResults: City[]) => {
-          this.filteredCities = searchResults.filter(searchedCity =>
-            this.filteredCities.some(localCity => localCity.ctyCode === searchedCity.ctyCode)
-          );
-          //this.filteredWallets = this.filteredWallets.filter(wallet => {return searchResults.some(sr => sr.walCode === wallet.walCode)});
-          this.cdr.detectChanges();
-        },
-        error: (error: HttpErrorResponse) => {
-          const message = error.status ? `Failed to search wallets: ${error.status} ${error.statusText}` : 'Failed to search wallets: Server error';
-          this.showErrorMessage(message);
-          console.error('Error searching wallets:', error);
-        }
-      })
-    }
+}
+
+filterCustomers()
+{
+  if (!this.selectedStatus && !this.selectedCountry && !this.selectedCity && !this.customerSearchTerm)
+    this.loadAllCustomers()
+  else {
+    this.filteredCustomers = this.allCustomers.filter(customer => {
+      return (!this.selectedStatus || customer.status?.ctsCode === this.selectedStatus?.ctsCode) &&
+        (!this.selectedCountry || customer.country?.ctrCode === this.selectedCountry?.ctrCode) &&
+        (!this.selectedCity || customer.city?.ctyCode === this.selectedCity?.ctyCode)
+    })
   }
+  if (this.customerSearchTerm) {
+    this.customerService.search(this.customerSearchTerm).subscribe({
+      next: (searchResults: Customer[]) => {
+        this.filteredCustomers = searchResults.filter(searchedCustomer =>
+          this.filteredCustomers.some(localCustomer => localCustomer.cusCode === searchedCustomer.cusCode)
+        );
+        //this.filteredWallets = this.filteredWallets.filter(wallet => {return searchResults.some(sr => sr.walCode === wallet.walCode)});
+        this.cdr.detectChanges();
+      },
+      error: (error: HttpErrorResponse) => {
+        const message = error.status ? `Failed to search wallets: ${error.status} ${error.statusText}` : 'Failed to search wallets: Server error';
+        this.showErrorMessage(message);
+        console.error('Error searching wallets:', error);
+      }
+    })
+  }
+}
 
-  // html methods
 
-  toggleForm(modal: string) {
-    switch (modal) {
-      case 'customer-add':
-        this.selectedCustomer = undefined;
-        this.customerForm = new Customer()
-        this.isAddCustomerVisible = true;
-        break;
-      case 'customer-details':
-        this.isUserDetailsVisible = true;
-        this.customerDocService.getByCustomerDocListe(this.selectedCustomer?.identity?.customerDocListe?.cdlCode!).subscribe({
-          next: (docs: CustomerDoc[]) => {
-            this.selectedCustomer!.identity!.customerDocListe!.customerDocs = docs
-            this.cdr.detectChanges();
-          }
+
+// status methods
+
+editStatus(status: CustomerStatus) {
+  this.selectedStatus = status
+  this.statusForm = { ...status }
+  this.isCustomerStatusVisible = true
+  this.cdr.detectChanges();
+}
+
+addStatus() {
+  this.customerStatusService.create(this.statusForm).subscribe({
+    next: (status: CustomerStatus) => {
+      console.log('add Customer Status: status added:', status);
+      this.statuses.push(status);
+      this.statusForm = new CustomerStatus();
+      this.isCustomerStatusVisible = false;
+      this.showSuccessMessage('Customer Status added successfully');
+      this.cdr.detectChanges();
+    },
+    error: (err) => {
+      console.error('add Customer Staus: Error:', err);
+      this.showErrorMessage('Failed to add customer status: ' + (err.error?.message || 'Please check the form.'));
+    }
+  })
+}
+
+updateStatus() {
+  this.customerStatusService.update(this.statusForm.ctsCode!, this.statusForm).subscribe({
+    next: (status: CustomerStatus) => {
+      console.log('update status: status updated:', this.statusForm);
+      const index = this.statuses.findIndex(cts => cts.ctsCode === this.statusForm.ctsCode);
+      if (index !== -1) {
+        this.statuses[index] = status;
+        this.statuses = [...this.statuses];
+      }
+      this.statusForm = new CustomerStatus();
+      this.selectedStatus = undefined;
+      this.isCustomerStatusVisible = false;
+      this.showSuccessMessage('status updated successfully');
+      this.cdr.detectChanges();
+
+    },
+    error: (err) => {
+      console.error('updateStatus: Error:', err);
+      this.showErrorMessage('Failed to update status: ' + (err.error?.message || 'Please try again.'));
+    }
+  })
+}
+
+deleteStatus(status: CustomerStatus) {
+  if (confirm('Are you sure you want to delete this customer status?')) {
+    this.customerStatusService.delete(status.ctsCode!).subscribe({
+      next: () => {
+        console.log("deleted succ")
+        this.statuses = this.statuses.filter(cts => cts.ctsCode !== status?.ctsCode);
+        this.showSuccessMessage('Customer Status deleted successfully');
+        this.cdr.detectChanges();
+      },
+      error: (err) => { console.log(err) }
+    })
+  }
+}
+
+statusSearch() {
+  if (!this.statusSearchTerm)
+    this.filteredStatuses = this.statuses
+  else {
+    this.customerStatusService.search(this.statusSearchTerm).subscribe({
+      next: (searchResults: CustomerStatus[]) => {
+        this.filteredStatuses = searchResults;
+        this.cdr.detectChanges();
+      },
+      error: (error: HttpErrorResponse) => {
+        this.showErrorMessage(`Failed to search wallet statuses: ${error.status} ${error.statusText}`);
+      }
+    })
+  }
+}
+
+// identity type methods
+
+editIdentityType(identityType: CustomerIdentityType) {
+  this.selectedIdentityType = identityType
+  this.identityTypeForm = { ...identityType }
+  this.isCustomerIdentityTypeVisible = true
+  this.cdr.detectChanges();
+}
+
+addIdentityType() {
+  this.customerIdentityTypeService.create(this.identityTypeForm).subscribe({
+    next: (identityType: CustomerIdentityType) => {
+      console.log('add Customer Identity Type: identity added:', identityType);
+      this.identityTypes.push(identityType);
+      this.identityTypeForm = new CustomerIdentityType();
+      this.isCustomerIdentityTypeVisible = false;
+      this.showSuccessMessage('Customer identity type added successfully');
+      this.cdr.detectChanges();
+    },
+    error: (err) => {
+      console.error('add Customer identity type: Error:', err);
+      this.showErrorMessage('Failed to add customer identity type: ' + (err.error?.message || 'Please check the form.'));
+    }
+  })
+}
+
+updateIdentityType() {
+  this.customerIdentityTypeService.update(this.identityTypeForm.citCode!, this.identityTypeForm).subscribe({
+    next: (identityType: CustomerIdentityType) => {
+      console.log('update identity type: identity type updated:', this.identityTypeForm);
+      const index = this.identityTypes.findIndex(cit => cit.citCode === this.identityTypeForm.citCode);
+      if (index !== -1) {
+        this.identityTypes[index] = identityType;
+        this.identityTypes = [...this.identityTypes];
+      }
+      this.identityTypeForm = new CustomerIdentityType();
+      this.selectedIdentityType = undefined;
+      this.isCustomerIdentityTypeVisible = false;
+      this.showSuccessMessage('identity type updated successfully');
+      this.cdr.detectChanges();
+
+    },
+    error: (err) => {
+      console.error('updateIdentityType: Error:', err);
+      this.showErrorMessage('Failed to update identity type: ' + (err.error?.message || 'Please try again.'));
+    }
+  })
+}
+
+deleteIdentityType(identityType: CustomerIdentityType) {
+  if (confirm('Are you sure you want to delete this identity type?')) {
+    this.customerIdentityTypeService.delete(identityType.citCode!).subscribe({
+      next: () => {
+        console.log("deleted succ")
+        this.identityTypes = this.identityTypes.filter(cit => cit.citCode !== identityType?.citCode);
+        this.showSuccessMessage('Customer identity type deleted successfully');
+        this.cdr.detectChanges();
+      },
+      error: (err) => { console.log(err) }
+    })
+  }
+}
+
+idTypeSearch() {
+  if (!this.idTypeSearchTerm)
+    this.filteredIdentityTypes = this.identityTypes
+  else {
+    this.customerIdentityTypeService.search(this.idTypeSearchTerm).subscribe({
+      next: (searchResults: CustomerIdentityType[]) => {
+        this.filteredIdentityTypes = searchResults;
+        this.cdr.detectChanges();
+      },
+      error: (error: HttpErrorResponse) => {
+        this.showErrorMessage(`Failed to search wallet statuses: ${error.status} ${error.statusText}`);
+      }
+    })
+  }
+}
+
+// doc type methods
+
+editDocType(docType: DocType) {
+  this.selectedDocType = docType
+  this.docTypeForm = { ...docType }
+  this.isDocTypeVisible = true
+  this.cdr.detectChanges();
+}
+
+addDocType() {
+  console.log(this.identityTypeForm)
+  this.docTypeService.create(this.docTypeForm).subscribe({
+    next: (docType: DocType) => {
+      console.log('add Doc Type: identity added:', docType);
+      this.docTypes.push(docType);
+      this.allowedDocTypes.push(docType.dtyIden!);
+      this.docTypeForm = new DocType();
+      this.isDocTypeVisible = false;
+      this.showSuccessMessage('Document type added successfully');
+      this.cdr.detectChanges();
+    },
+    error: (err) => {
+      console.error('add document type: Error:', err);
+      this.showErrorMessage('Failed to add document type: ' + (err.error?.message || 'Please check the form.'));
+    }
+  })
+}
+
+deleteDocType(docType: DocType) {
+  if (confirm('Are you sure you want to delete this document type?')) {
+    this.docTypeService.delete(docType.dtyCode!).subscribe({
+      next: () => {
+        console.log("deleted succ")
+        this.docTypes = this.docTypes.filter(dty => dty.dtyCode !== docType?.dtyCode);
+        this.allowedDocTypes = this.docTypes
+          .filter(dty => dty.dtyIden !== docType?.dtyIden)
+          .map(dty => dty.dtyIden!);
+        this.showSuccessMessage('Document Type deleted successfully');
+        this.cdr.detectChanges();
+      },
+      error: (err) => { console.log(err) }
+    })
+  }
+}
+
+docTypeSearch() {
+  if (!this.docTypeSearchTerm)
+    this.filteredDocTypes = this.docTypes
+  else {
+    this.docTypeService.search(this.docTypeSearchTerm).subscribe({
+      next: (searchResults: DocType[]) => {
+        this.filteredDocTypes = searchResults;
+        this.cdr.detectChanges();
+      },
+      error: (error: HttpErrorResponse) => {
+        this.showErrorMessage(`Failed to search document types: ${error.status} ${error.statusText}`);
+      }
+    })
+  }
+}
+
+// country methods
+
+addCountry() {
+  this.countryService.create(this.countryForm).subscribe({
+    next: (country: Country) => {
+      console.log('add country: country added:', country);
+      this.countries.push(country);
+      this.countryForm = new Country();
+      this.isCountryVisible = false;
+      this.showSuccessMessage('Country added successfully');
+      this.cdr.detectChanges();
+    },
+    error: (err) => {
+      console.error('add country: Error:', err);
+      this.showErrorMessage('Failed to add country: ' + (err.error?.message || 'Please check the form.'));
+    }
+  })
+}
+
+deleteCountry(country: Country) {
+  if (confirm('Are you sure you want to delete this country?')) {
+    this.countryService.delete(country.ctrCode!).subscribe({
+      next: () => {
+        console.log("deleted succ")
+        this.countries = this.countries.filter(ctr => ctr.ctrCode !== country.ctrCode);
+        this.showSuccessMessage('Country deleted successfully');
+        this.cdr.detectChanges();
+      },
+      error: (err) => { console.log(err) }
+    })
+  }
+}
+
+countrySearch() {
+  if (!this.countrySearchTerm)
+    this.filteredCountries = this.countries
+  else {
+    this.countryService.search(this.countrySearchTerm).subscribe({
+      next: (searchResults: Country[]) => {
+        console.log('search results:', searchResults);
+        this.filteredCountries = searchResults;
+        console.log('filtered countries:', this.filteredCountries);
+        this.cdr.detectChanges();
+      },
+      error: (error: HttpErrorResponse) => {
+        this.showErrorMessage(`Failed to search countries: ${error.status} ${error.statusText}`);
+      }
+    })
+  }
+}
+
+//city methods
+
+addCity() {
+  this.cityForm.ctyIden = this.cityForm.country?.ctrIden + '-' +
+    console.log(this.cityForm)
+
+  this.cityService.create(this.cityForm).subscribe({
+    next: (city: City) => {
+      console.log('add city: city added:', city);
+      this.cities.push(city);
+      this.cityForm = new City();
+      this.isCityVisible = false;
+      this.showSuccessMessage('City added successfully');
+      this.cdr.detectChanges();
+    },
+    error: (err) => {
+      console.error('add city: Error:', err);
+      this.showErrorMessage('Failed to add city: ' + (err.error?.message || 'Please check the form.'));
+    }
+  })
+}
+
+deleteCity(city: City) {
+  if (confirm('Are you sure you want to delete this city?')) {
+    this.cityService.delete(city.ctyCode!).subscribe({
+      next: () => { console.log("deleted succ") },
+      error: (err) => { console.log(err) }
+    })
+  }
+}
+
+onCountryChange(country: Country): void {
+  if(!country) {
+    this.citiesByCountry = [];
+    return;
+  }
+    this.cityService.getByCountry(country).subscribe(
+    {
+      next: (cities: City[]) => {
+        this.citiesByCountry = cities;
+      },
+      error: (err) => {
+        console.log(err)
+      }
+    }
+  );
+}
+
+onAllCountryChange(): void {
+  this.http.post("https://countriesnow.space/api/v0.1/countries/cities", { country: this.cityForm.country?.ctrLabe }).subscribe({
+    next: (response: any) => {
+      const allCities = response.data.filter((city: string) => !this.cities.some(cty => cty.ctyLabe === city))
+      this.cityList = allCities.filter((city: City) => !this.cities.some(cty => cty.ctyLabe === city.ctyLabe))
+    },
+    error: (err) => { console.log(err) }
+  })
+}
+
+filterCities()
+{
+  if (!this.selectedCountry && !this.citySearchTerm)
+    this.loadCities()
+  else {
+    this.filteredCities = this.cities.filter(city => {
+      return (!this.selectedCountry || city.country?.ctrCode === this.selectedCountry?.ctrCode)
+    })
+  }
+  if (this.citySearchTerm) {
+    this.cityService.search(this.citySearchTerm).subscribe({
+      next: (searchResults: City[]) => {
+        this.filteredCities = searchResults.filter(searchedCity =>
+          this.filteredCities.some(localCity => localCity.ctyCode === searchedCity.ctyCode)
+        );
+        //this.filteredWallets = this.filteredWallets.filter(wallet => {return searchResults.some(sr => sr.walCode === wallet.walCode)});
+        this.cdr.detectChanges();
+      },
+      error: (error: HttpErrorResponse) => {
+        const message = error.status ? `Failed to search wallets: ${error.status} ${error.statusText}` : 'Failed to search wallets: Server error';
+        this.showErrorMessage(message);
+        console.error('Error searching wallets:', error);
+      }
+    })
+  }
+}
+
+// html methods
+
+toggleForm(modal: string) {
+  switch (modal) {
+    case 'customer-add':
+      this.selectedCustomer = undefined;
+      this.customerForm = new Customer()
+      this.isAddCustomerVisible = true;
+      break;
+    case 'customer-details':
+      this.isUserDetailsVisible = true;
+      this.customerDocService.getByCustomerDocListe(this.selectedCustomer?.identity?.customerDocListe?.cdlCode!).subscribe({
+        next: (docs: CustomerDoc[]) => {
+          this.selectedCustomer!.identity!.customerDocListe!.customerDocs = docs
+          this.cdr.detectChanges();
+        }
           /* next: (docs: any) => {
             this.selectedCustomer!.identity!.customerDocListe!.customerDocs = [];
             this.files = [];
@@ -666,136 +682,136 @@ export class CustomerMngComponent {
             })
             this.cdr.detectChanges();
           } */,
-          error: (err) => { console.log(err) }
-        })
-        break;
-      case 'customer-status':
-        this.selectedStatus = undefined;
-        this.statusForm = new CustomerStatus()
-        this.isCustomerStatusVisible = true;
-        break;
-      case 'customer-identityType':
-        this.selectedIdentityType = undefined
-        this.identityTypeForm = new CustomerIdentityType()
-        this.isCustomerIdentityTypeVisible = true;
-        break;
-      case 'docType':
-        this.selectedDocType = undefined
-        this.docTypeForm = new DocType()
-        this.isDocTypeVisible = true;
-        break;
-      case 'country':
-        this.selectedCountry = undefined
-        this.countryForm = new Country()
-        this.isCountryVisible = true;
-        break;
-      case 'city':
-        this.selectedCity = undefined
-        this.cityForm = new City()
-        this.isCityVisible = true;
-        break;
-    }
+        error: (err) => { console.log(err) }
+      })
+      break;
+    case 'customer-status':
+      this.selectedStatus = undefined;
+      this.statusForm = new CustomerStatus()
+      this.isCustomerStatusVisible = true;
+      break;
+    case 'customer-identityType':
+      this.selectedIdentityType = undefined
+      this.identityTypeForm = new CustomerIdentityType()
+      this.isCustomerIdentityTypeVisible = true;
+      break;
+    case 'docType':
+      this.selectedDocType = undefined
+      this.docTypeForm = new DocType()
+      this.isDocTypeVisible = true;
+      break;
+    case 'country':
+      this.selectedCountry = undefined
+      this.countryForm = new Country()
+      this.isCountryVisible = true;
+      break;
+    case 'city':
+      this.selectedCity = undefined
+      this.cityForm = new City()
+      this.isCityVisible = true;
+      break;
   }
+}
 
-  closeForm(modal: string) {
-    switch (modal) {
-      case 'customer-add':
-        this.citiesByCountry = [];
-        this.isAddCustomerVisible = false;
-        break;
-      case 'customer-details': this.isUserDetailsVisible = false; break;
-      case 'customer-status': this.isCustomerStatusVisible = false; break;
-      case 'customer-identityType': this.isCustomerIdentityTypeVisible = false; break;
-      case 'docType': this.isDocTypeVisible = false; break;
-      case 'country': this.isCountryVisible = false; break;
-      case 'city':
-        this.cityList = [];
-        this.isCityVisible = false;
-        break;
-    }
+closeForm(modal: string) {
+  switch (modal) {
+    case 'customer-add':
+      this.citiesByCountry = [];
+      this.isAddCustomerVisible = false;
+      break;
+    case 'customer-details': this.isUserDetailsVisible = false; break;
+    case 'customer-status': this.isCustomerStatusVisible = false; break;
+    case 'customer-identityType': this.isCustomerIdentityTypeVisible = false; break;
+    case 'docType': this.isDocTypeVisible = false; break;
+    case 'country': this.isCountryVisible = false; break;
+    case 'city':
+      this.cityList = [];
+      this.isCityVisible = false;
+      break;
   }
+}
 
   get isAnyModalVisible(): boolean {
-    return (
-      this.isAddCustomerVisible ||
-      this.isUserDetailsVisible ||
-      this.isCustomerStatusVisible ||
-      this.isCustomerIdentityTypeVisible ||
-      this.isDocTypeVisible ||
-      this.isCountryVisible ||
-      this.isCityVisible
-    );
+  return (
+    this.isAddCustomerVisible ||
+    this.isUserDetailsVisible ||
+    this.isCustomerStatusVisible ||
+    this.isCustomerIdentityTypeVisible ||
+    this.isDocTypeVisible ||
+    this.isCountryVisible ||
+    this.isCityVisible
+  );
+}
+
+showTab(tabId: string, tabType ?: string): void {
+
+  const buttonClass = tabType ? `${tabType}-tab-button` : 'tab-button';
+  const contentClass = tabType ? `${tabType}-tab-content` : 'tab-content';
+  const tabButtons = document.querySelectorAll(`.${buttonClass}`);
+  const tabContents = document.querySelectorAll(`.${contentClass}`);
+
+  // Reset all buttons and contents
+  tabButtons.forEach(btn => {
+    btn.classList.remove('active', 'text-primary', 'font-medium', 'border-b-2', 'border-primary', 'transition-colors');
+    btn.classList.add('text-gray-500');
+  });
+
+  tabContents.forEach(content => content.classList.add('hidden'));
+
+  // Activate the clicked button and show its tab content
+  const activeButton = tabType ? document.getElementById(tabType + '-' + tabId) : document.getElementById(tabId);
+  activeButton?.classList.add('active', 'text-primary', 'font-medium', 'border-b-2', 'border-primary', 'transition-colors');
+  activeButton?.classList.remove('text-gray-500');
+
+  const activeId = tabType ? `${tabType}-tab-${tabId}` : `tab-${tabId}`;
+  const activeContent = document.getElementById(activeId);
+  activeContent?.classList.remove('hidden');
+}
+
+fileData: any
+
+previewDocument(customerDoc: CustomerDoc, index: number) {
+  this.customerDocService.getFileById(customerDoc.cdoCode!)
+}
+
+closePreview() {
+
+  this.selectedDoc = undefined
+
+  //const activeDoc = document.getElementById('document-preview')
+  //activeDoc?.classList.add('hidden');
+
+  //const frames = document.querySelectorAll('.doc-frame')
+  //frames.forEach(content => content.classList.add('hidden'))
+}
+
+// Show success message
+showSuccessMessage(message: string): void {
+  console.log('showSuccessMessage:', message);
+  this.successMessage = message;
+  this.errorMessage = null;
+  setTimeout(() => {
+  this.successMessage = null;
+  this.cdr.detectChanges();
+}, 3000);
   }
 
-  showTab(tabId: string, tabType?: string): void {
-
-    const buttonClass = tabType ? `${tabType}-tab-button` : 'tab-button';
-    const contentClass = tabType ? `${tabType}-tab-content` : 'tab-content';
-    const tabButtons = document.querySelectorAll(`.${buttonClass}`);
-    const tabContents = document.querySelectorAll(`.${contentClass}`);
-
-    // Reset all buttons and contents
-    tabButtons.forEach(btn => {
-      btn.classList.remove('active', 'text-primary', 'font-medium', 'border-b-2', 'border-primary', 'transition-colors');
-      btn.classList.add('text-gray-500');
-    });
-
-    tabContents.forEach(content => content.classList.add('hidden'));
-
-    // Activate the clicked button and show its tab content
-    const activeButton = tabType ? document.getElementById(tabType + '-' + tabId) : document.getElementById(tabId);
-    activeButton?.classList.add('active', 'text-primary', 'font-medium', 'border-b-2', 'border-primary', 'transition-colors');
-    activeButton?.classList.remove('text-gray-500');
-
-    const activeId = tabType ? `${tabType}-tab-${tabId}` : `tab-${tabId}`;
-    const activeContent = document.getElementById(activeId);
-    activeContent?.classList.remove('hidden');
+// Show error message
+showErrorMessage(message: string): void {
+  console.log('showErrorMessage:', message);
+  this.errorMessage = message;
+  this.successMessage = null;
+  setTimeout(() => {
+  this.errorMessage = null;
+  this.cdr.detectChanges();
+}, 3000);
   }
 
-  fileData: any
-
-  previewDocument(customerDoc: CustomerDoc, index: number) {
-    this.customerDocService.getFileById(customerDoc.cdoCode!)
-  }
-
-  closePreview() {
-
-    this.selectedDoc = undefined
-
-    //const activeDoc = document.getElementById('document-preview')
-    //activeDoc?.classList.add('hidden');
-
-    //const frames = document.querySelectorAll('.doc-frame')
-    //frames.forEach(content => content.classList.add('hidden'))
-  }
-
-  // Show success message
-  showSuccessMessage(message: string): void {
-    console.log('showSuccessMessage:', message);
-    this.successMessage = message;
-    this.errorMessage = null;
-    setTimeout(() => {
-      this.successMessage = null;
-      this.cdr.detectChanges();
-    }, 3000);
-  }
-
-  // Show error message
-  showErrorMessage(message: string): void {
-    console.log('showErrorMessage:', message);
-    this.errorMessage = message;
-    this.successMessage = null;
-    setTimeout(() => {
-      this.errorMessage = null;
-      this.cdr.detectChanges();
-    }, 3000);
-  }
-
-  // Clear messages
-  clearMessage(): void {
-    console.log('clearMessage: Clearing messages');
-    this.successMessage = null;
-    this.errorMessage = null;
-    this.cdr.detectChanges();
-  }
+// Clear messages
+clearMessage(): void {
+  console.log('clearMessage: Clearing messages');
+  this.successMessage = null;
+  this.errorMessage = null;
+  this.cdr.detectChanges();
+}
 }

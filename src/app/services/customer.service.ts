@@ -146,7 +146,7 @@ export class CustomerService {
 
   search(criteria: any)
   {
-    return this.http.get<Customer[]>(`${this.apiUrl}/search`)
+    return this.http.get<Customer[]>(`${this.apiUrl}/search?word=${criteria}`);  
   }
 }
 

@@ -195,7 +195,7 @@ export class WalletMngComponent implements OnInit {
   }
 
   applyFilters(): void {
-    if (!this.selectedStatus && !this.selectedWalletType && !this.selectedCategory!)
+    if (!this.selectedStatus && !this.selectedWalletType && !this.selectedCategory && !this.searchTerm)
       this.filteredWallets = this.walletsList;
     else {
       this.filteredWallets = this.walletsList!.filter(wallet => {
