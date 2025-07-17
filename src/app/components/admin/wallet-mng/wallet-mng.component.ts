@@ -18,6 +18,8 @@ import { WalletService } from '../../../services/wallet.service';
 import { Wallet } from '../../../entities/wallet';
 import { AccountTypeService } from '../../../services/account-type.service';
 import { AccountType } from '../../../entities/account-type';
+import { error } from 'console';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-wallet-mng',
@@ -32,16 +34,19 @@ export class WalletMngComponent implements OnInit {
   addAccount: boolean = false;
 
   walletStatuses: WalletStatus[] = [];
+  filteredStatuses: WalletStatus[] = [];
   isWalletStatusVisible: boolean = false;
   selectedStatus?: WalletStatus// = new WalletStatus();
   isStatusEditMode: boolean = false;
 
   walletCategories: WalletCategory[] = [];
+  filteredWalletCategories: WalletCategory[] = [];
   isWalletCategoryVisible: boolean = false;
   selectedCategory?: WalletCategory// = new WalletCategory();
   isCategoryEditMode: boolean = false;
 
   walletTypesList: WalletType[] = [];
+  filteredWalletTypes: WalletType[] = [];
   newWalletType?: WalletType// = new WalletType();
   selectedWalletType?: WalletType;
   isWalletTypeEditMode: boolean = false;
@@ -87,7 +92,10 @@ export class WalletMngComponent implements OnInit {
   activeWalletCount: number = 0;
 
   // Filter variables
-  searchTerm: string = '';
+  searchTerm?: string;
+  statusSearchTerm?: string;
+  typeSearchTerm?: string;
+  categorySearchTerm?: string;
   filteredWallets: Wallet[] = [];
 
 
@@ -105,7 +113,6 @@ export class WalletMngComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log('ngOnInit: Initializing component...');
     this.loadWalletStatuses();
     this.loadWalletCategories();
     this.loadWalletTypes();
@@ -139,39 +146,80 @@ export class WalletMngComponent implements OnInit {
     this.cdr.detectChanges();
   }
 
-  searchWallets(){}
+  searchStatus() {
+    if (!this.statusSearchTerm)
+      this.filteredStatuses = this.walletStatuses
+    else {
+      this.walletStatusService.search(this.statusSearchTerm).subscribe({
+        next: (searchResults: WalletStatus[]) => {
+          this.filteredStatuses = searchResults;
+          this.cdr.detectChanges();
+        },
+        error: (error: HttpErrorResponse) => {
+          this.showErrorMessage(`Failed to search wallet statuses: ${error.status} ${error.statusText}`);
+        }
+      })
+    }
+  }
+
+  searchType() {
+    if (!this.typeSearchTerm)
+      this.filteredWalletTypes = this.walletTypesList
+    else {
+      this.walletTypeService.search(this.typeSearchTerm).subscribe({
+        next: (searchResults: WalletType[]) => {
+          this.filteredWalletTypes = searchResults;
+          this.cdr.detectChanges();
+        },
+        error: (error: HttpErrorResponse) => {
+          this.showErrorMessage(`Failed to search wallet statuses: ${error.status} ${error.statusText}`);
+        }
+      })
+    }
+  }
+
+  searchCategory() {
+    if (!this.categorySearchTerm)
+      this.filteredWalletCategories = this.walletCategories
+    else {
+      this.walletCategoryService.search(this.categorySearchTerm).subscribe({
+        next: (searchResults: WalletCategory[]) => {
+          this.filteredWalletCategories = searchResults;
+          this.cdr.detectChanges();
+        },
+        error: (error: HttpErrorResponse) => {
+          this.showErrorMessage(`Failed to search wallet statuses: ${error.status} ${error.statusText}`);
+        }
+      })
+    }
+  }
 
   applyFilters(): void {
-    if(!this.selectedStatus && !this.selectedWalletType && !this.selectedCategory!)
-      this.loadWallets();
-    else{
+    if (!this.selectedStatus && !this.selectedWalletType && !this.selectedCategory!)
+      this.filteredWallets = this.walletsList;
+    else {
       this.filteredWallets = this.walletsList!.filter(wallet => {
         return (!this.selectedStatus || this.selectedStatus?.wstCode === wallet.walletStatus.wstCode) &&
           (!this.selectedWalletType || this.selectedWalletType?.wtyCode === wallet.walletType.wtyCode) &&
           (!this.selectedCategory! || this.selectedCategory?.wcaCode === wallet.walletCategory.wcaCode);
       })
     }
-    /* this.filteredWallets = this.wallets.filter(wallet => {
-      const matchesSearch = this.searchTerm
-        ? wallet.walLabe?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-          wallet.walIden?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-          wallet.walCode?.toString().includes(this.searchTerm)
-        : true;
-  
-      const matchesStatus = this.selectedStatus
-        ? wallet.walletStatus?.wstCode === this.selectedStatus.wstCode
-        : true;
-  
-      const matchesType = this.selectedType
-        ? wallet.walletType?.wtyCode === this.selectedType.wtyCode
-        : true;
-  
-      const matchesCategory = this.selectedCategory!
-        ? wallet.walletCategory?.wcaCode === this.selectedCategory!.wcaCode
-        : true;
-  
-      return matchesSearch && matchesStatus && matchesType && matchesCategory;
-    }); */
+    if (this.searchTerm) {
+      this.walletService.search(this.searchTerm).subscribe({
+        next: (searchResults: Wallet[]) => {
+          this.filteredWallets = searchResults.filter(searchedWallet =>
+            this.filteredWallets.some(localWallet => localWallet.walCode === searchedWallet.walCode)
+          );
+          //this.filteredWallets = this.filteredWallets.filter(wallet => {return searchResults.some(sr => sr.walCode === wallet.walCode)});
+          this.cdr.detectChanges();
+        },
+        error: (error: HttpErrorResponse) => {
+          const message = error.status ? `Failed to search wallets: ${error.status} ${error.statusText}` : 'Failed to search wallets: Server error';
+          this.showErrorMessage(message);
+          console.error('Error searching wallets:', error);
+        }
+      })
+    }
   }
 
 
@@ -334,6 +382,7 @@ export class WalletMngComponent implements OnInit {
       next: (statuses: WalletStatus[]) => {
         // console.log('loadWalletStatuses: Wallet statuses received:', statuses);
         this.walletStatuses = statuses;
+        this.filteredStatuses = [...this.walletStatuses]; // ✅ corrected here
         this.cdr.detectChanges();
       },
       error: (error: HttpErrorResponse) => {
@@ -352,6 +401,7 @@ export class WalletMngComponent implements OnInit {
       next: (categories: WalletCategory[]) => {
         // console.log('loadWalletCategories: Wallet categories received:', categories);
         this.walletCategories = categories;
+        this.filteredWalletCategories = [...this.walletCategories]; // ✅ corrected here
         this.cdr.detectChanges();
       },
       error: (error: HttpErrorResponse) => {
@@ -370,6 +420,7 @@ export class WalletMngComponent implements OnInit {
       next: (types: WalletType[]) => {
         // console.log('loadWalletTypes: Wallet types received:', types);
         this.walletTypesList = types;
+        this.filteredWalletTypes = [...this.walletTypesList]; // ✅ corrected here
         this.cdr.detectChanges();
       },
       error: (error: HttpErrorResponse) => {
@@ -485,7 +536,7 @@ export class WalletMngComponent implements OnInit {
         }
       });
     }
-}
+  }
 
   // Change wallet status
   changeWalletStatus(): void {

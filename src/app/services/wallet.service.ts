@@ -177,4 +177,8 @@ export class WalletService {
       })
     );
   }
+
+  search(word: string){
+    return this.http.get<Wallet[]>(`${this.apiUrl}/search?word=${word}`, { headers: this.getHeaders() })
+  }
 }
