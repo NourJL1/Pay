@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { CountryService } from '../../../services/country.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Customer, CustomerService } from '../../../services/customer.service';
 import { CustomerStatusService } from '../../../services/customer-status.service';
 import { CustomerStatus } from '../../../entities/customer-status';
@@ -45,14 +45,23 @@ export class CustomerMngComponent {
   isCityVisible: boolean = false;
 
   countries: Country[] = [] // List of countries from db
+  filteredCountries: Country[] = [] // Filtered list of countries
+
   cities: City[] = [] // List of all cities from db
   filteredCities: City[] = []
   citiesByCountry: City[] = [] // List of cities from db by countries
+
   allCustomers: Customer[] = [] // List of all customers
   filteredCustomers: Customer[] = [] // Filtered list of customers
+
   statuses: CustomerStatus[] = [] // List of customer statuses
+  filteredStatuses: CustomerStatus[] = [] // Filtered list of customer statuses
+
   identityTypes: CustomerIdentityType[] = [] // List of customer identity types
+  filteredIdentityTypes: CustomerIdentityType[] = [] // Filtered list of customer identity types
+
   docTypeList: DocType[] = [] // List of document types in db
+  filteredDocTypes: DocType[] = [] // Filtered list of document types
 
 
   // Selected items for editing
@@ -82,9 +91,15 @@ export class CustomerMngComponent {
   files: File[] = []
   customerDocs: CustomerDoc[] = [] // List of customer documents
 
-
   allowedDocTypes: string[] = [] // List of allowed document types
   confirm?: string;
+
+  searchTerm?: string;
+  statusSearchTerm?: string;
+  idTypeSearchTerm?: string
+  docTypeSearchTerm?: string
+  countrySearchTerm?: string
+  citySearchTerm?: string
 
 
   ngOnInit(): void {
@@ -102,14 +117,14 @@ export class CustomerMngComponent {
     })
 
     this.customerStatusService.getAll().subscribe({
-      next: (statuses: CustomerStatus[]) => { this.statuses = statuses },
+      next: (statuses: CustomerStatus[]) => { this.statuses = statuses; this.filteredStatuses = statuses },
       error: (err) => { console.log(err) }
     })
   }
 
   loadIdentityTypes() {
     this.customerIdentityTypeService.getAll().subscribe({
-      next: (types: CustomerIdentityType[]) => { this.identityTypes = types },
+      next: (types: CustomerIdentityType[]) => { this.identityTypes = types; this.filteredIdentityTypes = types },
       error: (err) => { console.log(err) }
     })
   }
@@ -118,6 +133,7 @@ export class CustomerMngComponent {
     this.docTypeService.getAll().subscribe({
       next: (types: DocType[]) => {
         this.docTypes = types
+        this.filteredDocTypes = types
         this.http.get<any>('assets/documentTypes.json')
           .subscribe((response) => {
             const allDocTypes: DocType[] = response.documentTypes
@@ -133,6 +149,7 @@ export class CustomerMngComponent {
     this.countryService.getAll().subscribe({
       next: (countries: Country[]) => {
         this.countries = countries
+        this.filteredCountries = countries
         this.http.get<any>('https://countriesnow.space/api/v0.1/countries')
           .subscribe((response) => {
             const allCountries: Country[] = response.data.map((item: any) => ({
@@ -148,7 +165,7 @@ export class CustomerMngComponent {
 
   loadCities() {
     this.cityService.getAll().subscribe({
-      next: (cities: City[]) => { this.cities = cities; this.filteredCities = cities },
+      next: (cities: City[]) => { this.cities = cities; this.filteredCities = cities; this.filteredCities = cities },
       error: (err) => { console.log(err) }
     })
   }
@@ -332,6 +349,22 @@ export class CustomerMngComponent {
     }
   }
 
+  statusSearch() {
+    if (!this.statusSearchTerm)
+      this.filteredStatuses = this.statuses
+    else {
+      this.customerStatusService.search(this.statusSearchTerm).subscribe({
+        next: (searchResults: CustomerStatus[]) => {
+          this.filteredStatuses = searchResults;
+          this.cdr.detectChanges();
+        },
+        error: (error: HttpErrorResponse) => {
+          this.showErrorMessage(`Failed to search wallet statuses: ${error.status} ${error.statusText}`);
+        }
+      })
+    }
+  }
+
   // identity type methods
 
   editIdentityType(identityType: CustomerIdentityType) {
@@ -395,6 +428,22 @@ export class CustomerMngComponent {
     }
   }
 
+  idTypeSearch() {
+    if (!this.idTypeSearchTerm)
+      this.filteredIdentityTypes = this.identityTypes
+    else {
+      this.customerIdentityTypeService.search(this.idTypeSearchTerm).subscribe({
+        next: (searchResults: CustomerIdentityType[]) => {
+          this.filteredIdentityTypes = searchResults;
+          this.cdr.detectChanges();
+        },
+        error: (error: HttpErrorResponse) => {
+          this.showErrorMessage(`Failed to search wallet statuses: ${error.status} ${error.statusText}`);
+        }
+      })
+    }
+  }
+
   // doc type methods
 
   editDocType(docType: DocType) {
@@ -440,6 +489,22 @@ export class CustomerMngComponent {
     }
   }
 
+  docTypeSearch() {
+    if (!this.docTypeSearchTerm)
+      this.filteredDocTypes = this.docTypes
+    else {
+      this.docTypeService.search(this.docTypeSearchTerm).subscribe({
+        next: (searchResults: DocType[]) => {
+          this.filteredDocTypes = searchResults;
+          this.cdr.detectChanges();
+        },
+        error: (error: HttpErrorResponse) => {
+          this.showErrorMessage(`Failed to search document types: ${error.status} ${error.statusText}`);
+        }
+      })
+    }
+  }
+
   // country methods
 
   addCountry() {
@@ -469,6 +534,24 @@ export class CustomerMngComponent {
           this.cdr.detectChanges();
         },
         error: (err) => { console.log(err) }
+      })
+    }
+  }
+
+  countrySearch() {
+    if (!this.countrySearchTerm)
+      this.filteredCountries = this.countries
+    else {
+      this.countryService.search(this.countrySearchTerm).subscribe({
+        next: (searchResults: Country[]) => {
+          console.log('search results:', searchResults);
+          this.filteredCountries = searchResults;
+          console.log('filtered countries:', this.filteredCountries);
+          this.cdr.detectChanges();
+        },
+        error: (error: HttpErrorResponse) => {
+          this.showErrorMessage(`Failed to search countries: ${error.status} ${error.statusText}`);
+        }
       })
     }
   }
@@ -539,7 +622,22 @@ export class CustomerMngComponent {
       this.filteredCities = this.cities.filter(city => {
         return (!this.selectedCountry || city.country?.ctrCode === this.selectedCountry?.ctrCode)
       })
-      
+    }
+    if (this.citySearchTerm) {
+      this.cityService.search(this.citySearchTerm).subscribe({
+        next: (searchResults: City[]) => {
+          this.filteredCities = searchResults.filter(searchedCity =>
+            this.filteredCities.some(localCity => localCity.ctyCode === searchedCity.ctyCode)
+          );
+          //this.filteredWallets = this.filteredWallets.filter(wallet => {return searchResults.some(sr => sr.walCode === wallet.walCode)});
+          this.cdr.detectChanges();
+        },
+        error: (error: HttpErrorResponse) => {
+          const message = error.status ? `Failed to search wallets: ${error.status} ${error.statusText}` : 'Failed to search wallets: Server error';
+          this.showErrorMessage(message);
+          console.error('Error searching wallets:', error);
+        }
+      })
     }
   }
 

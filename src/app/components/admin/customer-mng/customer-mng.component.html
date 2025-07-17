@@ -251,7 +251,7 @@
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <i class="ri-search-line text-gray-400"></i>
                         </div>
-                        <input type="text" placeholder="Search..."
+                        <input type="text" placeholder="Search..." [(ngModel)]="statusSearchTerm" name="statusSearchTerm" (input)="statusSearch()"
                             class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm" />
                     </div>
                     <button id="btn-add-status" (click)="toggleForm('customer-status');"
@@ -286,8 +286,8 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            <ng-container *ngIf="statuses!.length > 0; else noData">
-                                <tr *ngFor="let status of statuses" class="hover:bg-gray-50 transition duration-150">
+                            <ng-container *ngIf="filteredStatuses!.length > 0; else noData">
+                                <tr *ngFor="let status of filteredStatuses" class="hover:bg-gray-50 transition duration-150">
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="text-sm font-medium text-gray-900">{{ status.ctsCode }}
                                         </div>
@@ -366,7 +366,7 @@
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <i class="ri-search-line text-gray-400"></i>
                         </div>
-                        <input type="text" placeholder="Search..."
+                        <input type="text" placeholder="Search..." [(ngModel)]="idTypeSearchTerm" name="idTypeSearchTerm" (input)="idTypeSearch()"
                             class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm" />
                     </div>
                     <button id="btn-add-identityType" (click)="toggleForm('customer-identityType')"
@@ -401,8 +401,8 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            <ng-container *ngIf="identityTypes!.length > 0; else noData">
-                                <tr *ngFor="let type of identityTypes" class="hover:bg-gray-50 transition duration-150">
+                            <ng-container *ngIf="filteredIdentityTypes!.length > 0; else noData">
+                                <tr *ngFor="let type of filteredIdentityTypes" class="hover:bg-gray-50 transition duration-150">
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="text-sm font-medium text-gray-900">{{ type.citCode }}
                                         </div>
@@ -481,7 +481,7 @@
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <i class="ri-search-line text-gray-400"></i>
                         </div>
-                        <input type="text" placeholder="Search..."
+                        <input type="text" placeholder="Search..."[(ngModel)]="docTypeSearchTerm" name="docTypeSearchTerm" (input)="docTypeSearch()"
                             class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm" />
                     </div>
                     <button id="btn-add-docType" (click)="toggleForm('docType');"
@@ -516,8 +516,8 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            <ng-container *ngIf="docTypes!.length > 0; else noData">
-                                <tr *ngFor="let type of docTypes" class="hover:bg-gray-50 transition duration-150">
+                            <ng-container *ngIf="filteredDocTypes!.length > 0; else noData">
+                                <tr *ngFor="let type of filteredDocTypes" class="hover:bg-gray-50 transition duration-150">
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="text-sm font-medium text-gray-900">{{ type.dtyCode }}
                                         </div>
@@ -592,7 +592,7 @@
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <i class="ri-search-line text-gray-400"></i>
                         </div>
-                        <input type="text" placeholder="Search..."
+                        <input type="text" placeholder="Search..." [(ngModel)]="countrySearchTerm" name="countrySearchTerm" (input)="countrySearch()"
                             class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm" />
                     </div>
                     <button id="btn-add-country" (click)="toggleForm('country');"
@@ -627,8 +627,8 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            <ng-container *ngIf="countries!.length > 0; else noData">
-                                <tr *ngFor="let country of countries" class="hover:bg-gray-50 transition duration-150">
+                            <ng-container *ngIf="filteredCountries!.length > 0; else noData">
+                                <tr *ngFor="let country of filteredCountries" class="hover:bg-gray-50 transition duration-150">
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="text-sm font-medium text-gray-900">{{ country.ctrCode }}
                                         </div>
@@ -703,7 +703,7 @@
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <i class="ri-search-line text-gray-400"></i>
                         </div>
-                        <input type="text" placeholder="Search..."
+                        <input type="text" placeholder="Search..." [(ngModel)]="citySearchTerm" name="citySearchTerm" (input)="filterCities()"
                             class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm" />
                     </div>
                     <div class="w-full sm:w-auto">
