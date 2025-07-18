@@ -112,15 +112,15 @@
                     <tr class="border-b border-gray-200">
                         <th scope="col"
                             class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
-                            Customer Code
-                        </th>
-                        <th scope="col"
-                            class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
                             Identifier
                         </th>
                         <th scope="col"
                             class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
                             Username
+                        </th>
+                        <th scope="col"
+                            class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                            Email
                         </th>
                         <th scope="col"
                             class="px-6 py-4 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
@@ -140,15 +140,13 @@
                     <ng-container *ngIf="filteredCustomers!.length > 0; else noData">
                         <tr *ngFor="let customer of filteredCustomers" class="hover:bg-gray-50 transition duration-150">
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm font-medium text-gray-900">
-                                    {{ customer.cusCode }}
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm text-gray-900">{{ customer.cusIden }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm text-gray-900">{{ customer.username }}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm font-medium text-gray-900">{{ customer.cusMailAddress }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm text-gray-900">{{ customer.fullName }}</div>
@@ -833,7 +831,8 @@
     <div *ngIf="isAddCustomerVisible" id="create-customer-modal"
         class="bg-white rounded-lg shadow-lg w-full max-w-2xl h-[90vh] flex flex-col">
         <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
-            <h3 class="text-lg font-semibold text-gray-800">{{ selectedCustomer ? "Edit Customer Details" : "Add Customer" }}</h3>
+            <h3 class="text-lg font-semibold text-gray-800">
+                {{ selectedCustomer ? "Edit Customer Details" : "Add Customer" }}</h3>
             <button (click)="closeForm('customer-add')" id="close-create-customer"
                 class="text-gray-400 hover:text-gray-500">
                 <div class="w-6 h-6 flex items-center justify-center">
@@ -888,8 +887,9 @@
                         </label>
                         <div class="relative">
                             <input class="form-input pl-10" [(ngModel)]="customerForm.username" name="username"
-                                type="text" required>
+                                (blur)="usernameExists()" type="text" required>
                         </div>
+                        <div class="error-message" id="usernameRef"></div>
                     </div>
                 </div>
             </div>
@@ -909,8 +909,9 @@
                         </label>
                         <div class="relative">
                             <select class="form-input pl-10" [(ngModel)]="customerForm.country" name="country" required
+                                [compareWith]="compareBy('ctrCode')"
                                 (ngModelChange)="onCountryChange(customerForm.country!)">
-                                <option [ngValue]="undefined" disabled selected>Select country</option>
+                                <option [ngValue]="undefined" disabled>Select country</option>
                                 <option *ngFor="let country of countries" [ngValue]="country">{{ country.ctrLabe }}
                                 </option>
                             </select>
@@ -923,7 +924,8 @@
                             <span class="text-primary ml-1">*</span>
                         </label>
                         <div class="relative">
-                            <select class="form-input pl-10" [(ngModel)]="customerForm.city" name="city" required>
+                            <select class="form-input pl-10" [(ngModel)]="customerForm.city" name="city" required
+                                [compareWith]="compareBy('ctyCode')">
                                 <option [ngValue]="undefined" disabled selected>Select city</option>
                                 <option *ngFor="let city of citiesByCountry" [ngValue]="city">{{ city.ctyLabe }}
                                 </option>
@@ -959,8 +961,9 @@
                         </label>
                         <div class="relative">
                             <input class="form-input pl-10" [(ngModel)]="customerForm.cusMailAddress"
-                                name="cusMailAddress" type="email" required>
+                                name="cusMailAddress" (blur)="emailExists()" type="email" required>
                         </div>
+                        <div class="error-message" id="emailRef"></div>
                     </div>
 
                     <div class="form-field">
@@ -971,8 +974,9 @@
                         <!-- Phone input would go here -->
                         <div class="relative">
                             <input class="form-input pl-10" type="tel" [(ngModel)]="customerForm.cusPhoneNbr"
-                                name="cusPhoneNumber" required>
+                                (blur)="phoneExists()" name="cusPhoneNumber" required>
                         </div>
+                        <div class="error-message" id="phoneRef"></div>
                     </div>
                 </div>
             </div>
@@ -1006,15 +1010,11 @@
                             <span class="text-primary ml-1">*</span>
                         </label>
                         <div class="relative">
-                            <input class="form-input pl-10 pr-10" name="confirm" type="password" required #confirm
-                                minlength="6">
+                            <input class="form-input pl-10 pr-10" #confirm="ngModel" [(ngModel)]="confirmPassword" name="confirmPassword" type="password"
+                                [disabled]="!customerForm.cusMotDePasse" [required]="customerForm.cusMotDePasse != confirm.value" minlength="6">
                         </div>
-                        <div *ngIf="password.invalid && password.touched" class="error-message">
-                            <div *ngIf="password.errors?.['required']">Password confirm is required</div>
-                            <div *ngIf="password.errors?.['minlength']">Minimum 6 characters</div>
-                            <div *ngIf="customerForm.cusMotDePasse && confirm.value !== customerForm.cusMotDePasse">
-                                Passwords don't match
-                            </div>
+                        <div *ngIf="CustomerForm.submitted && customerForm.cusMotDePasse !== confirm.value" class="error">
+                            Passwords don't match
                         </div>
                     </div>
                 </div>
@@ -1032,7 +1032,8 @@
                             Customer Status <span class="text-primary ml-1">*</span>
                         </label>
                         <div class="relative">
-                            <select class="form-input pl-10" [(ngModel)]="customerForm.status" name="status" required>
+                            <select class="form-input pl-10" [(ngModel)]="customerForm.status" name="status" required
+                                [compareWith]="compareBy('ctsCode')">
                                 <option [ngValue]="undefined" disabled selected>Select status</option>
                                 <option *ngFor="let status of statuses" [ngValue]="status">
                                     {{ status.ctsLabe }}
@@ -1058,7 +1059,7 @@
                         </label>
                         <div class="relative">
                             <select class="form-input pl-10" [(ngModel)]="customerForm.identity!.customerIdentityType"
-                                name="customerIdentityType">
+                                [compareWith]="compareBy('citCode')" name="customerIdentityType">
                                 <option [ngValue]="undefined" disabled selected>Select ID type</option>
                                 <option *ngFor="let cit of identityTypes" [ngValue]="cit">{{cit.citLabe}}</option>
                             </select>
@@ -1072,8 +1073,9 @@
                         </label>
                         <div class="relative">
                             <input class="form-input pl-10" [(ngModel)]="customerForm.identity!.cidNum" name="cidNum"
-                                type="text">
+                                (blur)="idNumExists()" type="text">
                         </div>
+                        <div class="error-message" id="idNumRef"></div>
                     </div>
 
                     <div class="form-field md:col-span-2">
@@ -1564,11 +1566,7 @@
         <div class="bg-white rounded-lg shadow-lg w-full max-w-md">
             <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
                 <h3 class="text-lg font-medium text-gray-900">
-                    {{
-                    selectedIdentityType
-                    ? "Edit Customer Identity Type"
-                    : "Add Customer Identity Type"
-                    }}
+                    {{ selectedIdentityType ? "Edit Customer Identity Type" : "Add Customer Identity Type" }}
                 </h3>
                 <button id="close-status-modal" (click)="closeForm('customer-identityType')"
                     class="text-gray-400 hover:text-gray-500">

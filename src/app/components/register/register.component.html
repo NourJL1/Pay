@@ -24,28 +24,6 @@
     </div>
 
     <form #registerForm="ngForm" class="space-y-6">
-      <!-- Step 1 - Wallet Type -->
-      <!-- <div *ngIf="currentStep === 1" class="step">
-        <h3 class="text-lg font-medium mb-4">Choose Wallet Type:</h3>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div *ngFor="let type of walletTypes"
-            [class]="'wallet-card ' + (wallet.walletType === type ? 'selected' : '')"
-            (click)="wallet.walletType = type">
-            <input type="radio" name="selectedWalletType" [value]="type" [(ngModel)]="wallet.walletType" hidden>
-            <h4 class="font-semibold">
-              <span *ngIf="type.wtyCode === 1">👤</span>
-              <span *ngIf="type.wtyCode === 2">🧑‍💼</span>
-              <span *ngIf="type.wtyCode === 3">🏬</span>
-              {{ type.wtyLabe| titlecase }}
-            </h4>
-            <p class="text-sm text-gray-600 mt-1">
-              {{ type.wtyCode === 1 ? 'Use your wallet to buy, pay and manage your funds.' :
-              type.wtyCode === 2 ? 'Internal use wallet. Track, test, and operate securely.' :
-              'Receive payments, manage sales and grow your business.' }}
-            </p>
-          </div>
-        </div>
-      </div> -->
 
       <!-- Step 1 - Personal Info -->
       <div *ngIf="currentStep === 1" class="step space-y-4">
@@ -66,8 +44,7 @@
 
         <div class="form-field">
           <label class="form-label">Username:</label>
-          <input class="form-input" [(ngModel)]="customer.username" name="username" type="text"
-            (blur)="usernameExists()" required>
+          <input class="form-input" [(ngModel)]="customer.username" name="username" type="text" required>
         </div>
       </div>
 

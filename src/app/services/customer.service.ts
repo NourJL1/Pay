@@ -54,7 +54,10 @@ export class CustomerService {
   }
 
   getCustomerByEmail(email: string): Observable<Customer> {
-    return this.http.get<Customer>(`${this.apiUrl}/email/${email}`);
+    return this.http.get<Customer>(
+      `${this.apiUrl}/email/${email}`/* ,
+      this.getHttpOptions() */
+    );
   }
 
   existsByUsername(username: string) {

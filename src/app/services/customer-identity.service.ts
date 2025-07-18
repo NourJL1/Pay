@@ -25,6 +25,10 @@ export class CustomerIdentityService {
     return this.http.get<CustomerIdentity>(`${this.apiUrl}/${id}`);
   }
 
+  existsByCidNum(num:  string){
+    return this.http.get<boolean>(`${this.apiUrl}/existsByCidNum/${num}`)
+  }
+
   create(customerIdentity: CustomerIdentity): Observable<CustomerIdentity> {
     return this.http.post<CustomerIdentity>(this.apiUrl, customerIdentity, this.httpOptions);
   }

@@ -17,6 +17,7 @@ import { DocType } from '../../entities/doc-type';
 import { CustomerDoc } from '../../entities/customer-doc';
 import { CustomerDocService } from '../../services/customer-doc.service';
 import { catchError, Observable, of, tap } from 'rxjs';
+import { CustomerIdentityService } from '../../services/customer-identity.service';
 
 interface PhoneNumber {
   internationalNumber: string;
@@ -47,6 +48,7 @@ export class RegisterComponent {
     private countryService: CountryService,
     private cityService: CityService,
     private customerIdentityTypeService: CustomerIdentityTypeService,
+    private customerIdenityService: CustomerIdentityService,
     private customerDocService: CustomerDocService,
     private docTypeService: DocTypeService,
     private router: Router) { }
@@ -95,7 +97,13 @@ export class RegisterComponent {
     });
   }
 
-  onSubmit(): void {
+  async onSubmit(): Promise<void> {
+
+    const idNumTaken = await this.idNumExists().toPromise();
+      if (idNumTaken) {
+        return; // Stop if username exists
+      }
+
     // First validate the current step (step 5)
     if (this.currentStep === 5) {
       if (!this.customer.identity!.cidNum || !this.customer.identity!.customerIdentityType || this.files.length <= 0) {
@@ -170,6 +178,19 @@ export class RegisterComponent {
       tap(response => {
         if (response)
           this.errorMessage = 'phone number already in use.'
+        else this.errorMessage = ''
+      }),
+      catchError(err => { console.log(err.message); return of(false) })
+    );
+  }
+
+  idNumExists(): Observable<boolean> {
+    if (!this.customer.identity?.cidNum)
+      return of(false)
+    return this.customerIdenityService.existsByCidNum(this.customer.identity?.cidNum).pipe(
+      tap(response => {
+        if (response)
+          this.errorMessage = 'ID Num already in use.'
         else this.errorMessage = ''
       }),
       catchError(err => { console.log(err.message); return of(false) })
