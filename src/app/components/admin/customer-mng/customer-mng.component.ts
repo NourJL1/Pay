@@ -20,6 +20,7 @@ import { WalletCategoryService } from '../../../services/wallet-category.service
 import { WalletTypeService } from '../../../services/wallet-type.service';
 import { WalletType } from '../../../entities/wallet-type';
 import { catchError, Observable, of, tap } from 'rxjs';
+import { CustomerIdentityService } from '../../../services/customer-identity.service';
 
 @Component({
   selector: 'app-customer-mng',
@@ -34,6 +35,7 @@ export class CustomerMngComponent {
     private customerService: CustomerService,
     private customerStatusService: CustomerStatusService,
     private customerIdentityTypeService: CustomerIdentityTypeService,
+    private customerIdentityService: CustomerIdentityService, 
     private customerDocService: CustomerDocService,
     private docTypeService: DocTypeService,
     private countryService: CountryService,
@@ -235,7 +237,8 @@ export class CustomerMngComponent {
     const emailRef = document.getElementById("emailRef") as HTMLDivElement
     const phoneRef = document.getElementById("phoneRef") as HTMLDivElement
     const usernameRef = document.getElementById("usernameRef") as HTMLDivElement
-    if (usernameRef.innerHTML || phoneRef.innerHTML || emailRef.innerHTML) {
+    const idNumRef = document.getElementById("idNumRef") as HTMLDivElement
+    if (usernameRef.innerHTML || phoneRef.innerHTML || emailRef.innerHTML || idNumRef.innerHTML) {
       this.showErrorMessage("Some fields are already in use!")
       return
     }
@@ -398,6 +401,18 @@ export class CustomerMngComponent {
       next: (response) => {
         const fieldRef = document.getElementById("emailRef") as HTMLDivElement
         fieldRef.innerHTML = response ? 'Email already in use' : '';
+      },
+      error: (err) => { console.log(err.message); return of(false) }
+    });
+  }
+
+  idNumExists(){
+    if (!this.customerForm.identity?.cidNum)
+      return
+    return this.customerIdentityService.existsByCidNum(this.customerForm.identity.cidNum).subscribe({
+      next: (response) => {
+        const fieldRef = document.getElementById("idNumRef") as HTMLDivElement
+        fieldRef.innerHTML = response ? 'ID Num already in use' : '';
       },
       error: (err) => { console.log(err.message); return of(false) }
     });

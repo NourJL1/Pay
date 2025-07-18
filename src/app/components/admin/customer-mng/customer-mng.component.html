@@ -1073,8 +1073,9 @@
                         </label>
                         <div class="relative">
                             <input class="form-input pl-10" [(ngModel)]="customerForm.identity!.cidNum" name="cidNum"
-                                type="text">
+                                (blur)="idNumExists()" type="text">
                         </div>
+                        <div class="error-message" id="idNumRef"></div>
                     </div>
 
                     <div class="form-field md:col-span-2">
