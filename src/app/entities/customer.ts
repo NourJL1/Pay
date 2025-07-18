@@ -7,7 +7,6 @@ import { Country } from './country';
 import { Wallet } from './wallet';
 import { WalletOperations } from './wallet-operations';
 
-
 export class Customer {
   cusCode?: number;
   cusFirstName?: string;
@@ -28,18 +27,16 @@ export class Customer {
   walletOperations?: WalletOperations[];
   username?: string;
   role?: Role;
-  roles?: Role[]
+  roles?: Role[];
+  createdAt?: string;
 
-  get fullName(): string
-  {
-    return this.cusMidName ? this.cusFirstName + ' ' + this.cusMidName + ' ' + this.cusLastName : this.cusFirstName + ' ' + this.cusLastName 
+  get fullName(): string {
+    return this.cusMidName ? this.cusFirstName + ' ' + this.cusMidName + ' ' + this.cusLastName : this.cusFirstName + ' ' + this.cusLastName;
   }
 
   constructor(init?: Partial<Customer>) {
-    this.identity = new CustomerIdentity()
-    this.wallet = new Wallet()
-
+    this.identity = new CustomerIdentity();
+    this.wallet = new Wallet();
     Object.assign(this, init);
   }
-
 }
