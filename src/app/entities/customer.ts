@@ -37,6 +37,7 @@ export class Customer {
 
   constructor(init?: Partial<Customer>) {
     this.identity = new CustomerIdentity()
+    this.wallet = new Wallet()
 
     Object.assign(this, init);
   }

@@ -66,7 +66,8 @@
 
         <div class="form-field">
           <label class="form-label">Username:</label>
-          <input class="form-input" [(ngModel)]="customer.username" name="username" type="text" required>
+          <input class="form-input" [(ngModel)]="customer.username" name="username" type="text"
+            (blur)="usernameExists()" required>
         </div>
       </div>
 
@@ -94,16 +95,12 @@
         </div>
 
         <div class="form-field" *ngIf="phoneForm && phoneForm.controls['phone']">
-  <label class="form-label">Phone Number:</label>
-  <ngx-intl-tel-input 
-    [formControl]="phoneForm.controls['phone']"
-    name="cusPhoneNbr"
-    [preferredCountries]="['tn', 'us', 'gb']"
-    [enablePlaceholder]="true"
-    [separateDialCode]="true"
-    required>
-  </ngx-intl-tel-input>
-</div>
+          <label class="form-label">Phone Number:</label>
+          <ngx-intl-tel-input [formControl]="phoneForm.controls['phone']" name="cusPhoneNbr"
+            [preferredCountries]="customer.country ? [customer.country.ctrIden!.substring(4,6).toLocaleLowerCase()] : ['us']"
+            [enablePlaceholder]="true" [separateDialCode]="true" required>
+          </ngx-intl-tel-input>
+        </div>
 
       </div>
 

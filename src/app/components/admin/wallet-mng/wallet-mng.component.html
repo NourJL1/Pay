@@ -297,19 +297,19 @@
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full" [ngClass]="{
-                  'bg-green-100 text-green-800': wallet.walletStatus.wstLabe === 'ACTIVE',
-                  'bg-yellow-100 text-yellow-800': wallet.walletStatus.wstLabe === 'PENDING',
-                  'bg-red-100 text-red-800': wallet.walletStatus.wstLabe === 'INACTIVE'
+                  'bg-green-100 text-green-800': wallet.walletStatus!.wstLabe === 'ACTIVE',
+                  'bg-yellow-100 text-yellow-800': wallet.walletStatus!.wstLabe === 'PENDING',
+                  'bg-red-100 text-red-800': wallet.walletStatus!.wstLabe === 'INACTIVE'
                 }">
-                  {{ wallet.walletStatus.wstLabe }}
+                  {{ wallet.walletStatus!.wstLabe }}
                 </span>
               </td>
 
               <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm text-gray-900">{{ wallet.walletType.wtyLabe }}</div>
+                <div class="text-sm text-gray-900">{{ wallet.walletType!.wtyLabe }}</div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm text-gray-500">{{ wallet.walletCategory.wcaLabe}}</div>
+                <div class="text-sm text-gray-500">{{ wallet.walletCategory!.wcaLabe}}</div>
               </td>
 
               <td class="px-6 py-4 whitespace-nowrap">
@@ -1617,16 +1617,16 @@
             <div class="space-y-3">
               <div class="flex justify-between">
                 <span class="text-sm text-gray-500">Status:</span>
-                <span class="text-sm font-medium px-2 rounded-full status-active">{{ selectedWallet.walletStatus.wstLabe
+                <span class="text-sm font-medium px-2 rounded-full status-active">{{ selectedWallet.walletStatus!.wstLabe
                   }}</span>
               </div>
               <div class="flex justify-between">
                 <span class="text-sm text-gray-500">Type:</span>
-                <span class="text-sm font-medium">{{ selectedWallet.walletType.wtyLabe }}</span>
+                <span class="text-sm font-medium">{{ selectedWallet.walletType!.wtyLabe }}</span>
               </div>
               <div class="flex justify-between">
                 <span class="text-sm text-gray-500">Category:</span>
-                <span class="text-sm font-medium">{{ selectedWallet.walletCategory.wcaLabe }}</span>
+                <span class="text-sm font-medium">{{ selectedWallet.walletCategory!.wcaLabe }}</span>
               </div>
               <div class="flex justify-between">
                 <span class="text-sm text-gray-500">Created:</span>
@@ -1707,7 +1707,7 @@
                       <label class="block text-xs text-gray-500 mb-1">Status</label>
                       <div class="flex items-center">
                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full status-active mr-2">
-                          {{ selectedWallet.walletStatus.wstLabe }} </span>
+                          {{ selectedWallet.walletStatus!.wstLabe }} </span>
                       </div>
                     </div>
                   </div>

@@ -10,7 +10,7 @@ import { Customer } from '../entities/customer';
   providedIn: 'root',
 })
 export class CustomerService {
-  
+
   private apiUrl = `${environment.apiUrl}/api/customers`;
   private loggedInCustomerId: number | null = null;
 
@@ -56,25 +56,33 @@ export class CustomerService {
     );
   }
 
+  existsByUsername(username: string){
+    return this.http.get<boolean>(`${this.apiUrl}/existsByUsername/${username}`)
+  }
+
+  existsByPhone(phone: string){
+    return this.http.get<boolean>(`${this.apiUrl}/existsByCusPhoneNbr/${phone}`)
+  }
+
   // Get customer details by ID
   getCustomerById(customerId: number): Observable<Customer> {
     return this.http.get<Customer>(
       `${this.apiUrl}/id/${customerId}`/* ,
       this.getHttpOptions() */
     );
+  }/* 
+
+  getByStatus(statusCode: number): Observable<Customer[]> {
+    return this.http.get<Customer[]>(`${this.apiUrl}/status/${statusCode}`);
   }
-  
-    getByStatus(statusCode: number): Observable<Customer[]> {
-      return this.http.get<Customer[]>(`${this.apiUrl}/status/${statusCode}`);
-    }
 
-    getByCountry(coutryCode: number): Observable<Customer[]> {
-      return this.http.get<Customer[]>(`${this.apiUrl}/country/${coutryCode}`);
-    }
+  getByCountry(coutryCode: number): Observable<Customer[]> {
+    return this.http.get<Customer[]>(`${this.apiUrl}/country/${coutryCode}`);
+  }
 
-    getByCity(cityCode: number): Observable<Customer[]> {
-      return this.http.get<Customer[]>(`${this.apiUrl}/city/${cityCode}`);
-    }
+  getByCity(cityCode: number): Observable<Customer[]> {
+    return this.http.get<Customer[]>(`${this.apiUrl}/city/${cityCode}`);
+  } */
 
   // Update customer information
   updateCustomer(cusCode: number, customer: Customer): Observable<Customer> {
@@ -85,8 +93,7 @@ export class CustomerService {
     );
   }
 
-  resetPassword(cusCode: number, password: string)
-  {
+  resetPassword(cusCode: number, password: string) {
     return this.http.put<string>(`${this.apiUrl}/resetPassword/${cusCode}`, password)
   }
   /* resetPassword(email: String, password: string)
@@ -118,17 +125,17 @@ export class CustomerService {
     return this.http.get<Customer[]>(`${this.apiUrl}`);
   }
 
-    getAllCustomersWithWallets() {
+  getAllCustomersWithWallets() {
     return this.http.get<Customer[]>(`${this.apiUrl}/with-wallets`);
   }
 
   // Update wallet status
-  updateWalletStatus(walletId: number, status: WalletStatus): Observable<any> {
+  /* updateWalletStatus(walletId: number, status: WalletStatus): Observable<any> {
     return this.http.patch(
       `${environment.apiUrl}/wallet/${walletId}/status`,
       { status }
     );
-  }
+  } */
 
   sendEmail(email: string, subject: string) {
     return this.http.post<string>(`${this.apiUrl}/sendEmail`, {
@@ -144,9 +151,8 @@ export class CustomerService {
     })
   }
 
-  search(criteria: any)
-  {
-    return this.http.get<Customer[]>(`${this.apiUrl}/search?word=${criteria}`);  
+  search(criteria: any) {
+    return this.http.get<Customer[]>(`${this.apiUrl}/search?word=${criteria}`);
   }
 }
 

@@ -12,12 +12,11 @@ import { City } from '../../entities/city';
 import { WalletService } from '../../services/wallet.service';
 import { CustomerIdentityTypeService } from '../../services/customer-identity-type.service';
 import { CustomerIdentityType } from '../../entities/customer-identity-type';
-import { Wallet } from '../../entities/wallet';
 import { DocTypeService } from '../../services/doc-type.service';
 import { DocType } from '../../entities/doc-type';
 import { CustomerDoc } from '../../entities/customer-doc';
 import { CustomerDocService } from '../../services/customer-doc.service';
-import { loadavg } from 'node:os';
+import { catchError, Observable, of, tap } from 'rxjs';
 
 interface PhoneNumber {
   internationalNumber: string;
@@ -47,7 +46,6 @@ export class RegisterComponent {
     private customerService: CustomerService,
     private countryService: CountryService,
     private cityService: CityService,
-    private walletService: WalletService,
     private customerIdentityTypeService: CustomerIdentityTypeService,
     private customerDocService: CustomerDocService,
     private docTypeService: DocTypeService,
@@ -66,40 +64,35 @@ export class RegisterComponent {
   identityTypes: CustomerIdentityType[] = []
   docTypes: DocType[] = []
   allowedDocTypes: string[] = []
-  phoneCode: string = ''
+
+  errorMessage: string = '';
+  successMessage: string = '';
+  otpSent: boolean = false;
+  otpVerified: boolean = false;
+  otpCode: any;
+  confirm: string = '';
 
   selectedCountryCode: string | null = null;
 
   ngOnInit(): void {
-
     localStorage.clear()
+    this.countryService.getAll().subscribe({
+      next: (countries: Country[]) => { this.countries = countries; },
+      error: (err) => { console.log(err) }
+    });
 
-    //this.customer.identity = new CustomerIdentity()
+    this.customerIdentityTypeService.getAll().subscribe({
+      next: (identityTypes: CustomerIdentityType[]) => { this.identityTypes = identityTypes; },
+      error: (err) => { console.log(err) }
+    });
 
-
-    this.countryService.getAll().subscribe(
-      {
-        next: (countries: Country[]) => { this.countries = countries; },
-        error: (err) => { console.log(err) }
-      }
-    );
-
-    this.customerIdentityTypeService.getAll().subscribe(
-      {
-        next: (identityTypes: CustomerIdentityType[]) => { this.identityTypes = identityTypes; },
-        error: (err) => { console.log(err) }
-      }
-    );
-
-    this.docTypeService.getAll().subscribe(
-      {
-        next: (docTypes: DocType[]) => {
-          this.docTypes = docTypes;
-          this.allowedDocTypes = docTypes.map(type => type.dtyIden!)
-        },
-        error: (err) => { console.log(err) }
-      }
-    );
+    this.docTypeService.getAll().subscribe({
+      next: (docTypes: DocType[]) => {
+        this.docTypes = docTypes;
+        this.allowedDocTypes = docTypes.map(type => type.dtyIden!)
+      },
+      error: (err) => { console.log(err) }
+    });
   }
 
   onSubmit(): void {
@@ -112,12 +105,6 @@ export class RegisterComponent {
     }
 
     this.isLoading = true
-
-    this.customer.identity!.customerDocListe!.cdlLabe = this.customer.identity?.customerIdentityType?.citLabe + '-' + this.customer.username
-
-    this.customer.wallet = new Wallet({
-      
-    })
 
     this.customer.role = { id: 1, name: 'CUSTOMER' }
 
@@ -144,9 +131,7 @@ export class RegisterComponent {
         this.successMessage = '';
       },
     });
-    
-
-        this.isLoading = false
+    this.isLoading = false
   }
 
   onFileSelected(event: Event): void {
@@ -164,13 +149,46 @@ export class RegisterComponent {
     }
   }
 
-  goToNextStep() {
+
+  usernameExists(): Observable<boolean> {
+    if (!this.customer.username)
+      return of(false)
+    return this.customerService.existsByUsername(this.customer.username).pipe(
+      tap(response => {
+        if (response)
+          this.errorMessage = 'username already in use.'
+        else this.errorMessage = ''
+      }),
+      catchError(err => { console.log(err.message); return of(false) })
+    );
+  }
+
+  phoneExists(): Observable<boolean> {
+    if (!this.customer.cusPhoneNbr)
+      return of(false)
+    return this.customerService.existsByPhone(this.customer.cusPhoneNbr).pipe(
+      tap(response => {
+        if (response)
+          this.errorMessage = 'phone number already in use.'
+        else this.errorMessage = ''
+      }),
+      catchError(err => { console.log(err.message); return of(false) })
+    );
+  }
+
+  async goToNextStep() {
 
     // Step 1: Validate Full Name and Username
     if (this.currentStep === 1) {
       if (!this.customer.cusFirstName?.trim() || !this.customer.cusLastName?.trim() || !this.customer.username?.trim()) {
         this.errorMessage = 'Please fill in both Full Name and Username.';
         return;
+      }
+
+      // Async username check
+      const usernameTaken = await this.usernameExists().toPromise();
+      if (usernameTaken) {
+        return; // Stop if username exists
       }
     }
 
@@ -195,6 +213,12 @@ export class RegisterComponent {
 
       const phoneValue = phoneControl.value as PhoneNumber;
       this.customer.cusPhoneNbr = phoneValue.e164Number;
+
+      // Async phone check
+      //const phoneTaken = await this.phoneExists().toPromise();
+      if (await this.phoneExists().toPromise()) {
+        return; // Stop if username exists
+      }
     }
 
     // Step 3: email validation
@@ -208,7 +232,7 @@ export class RegisterComponent {
 
     // Step 4: Validate Email and Password
     if (this.currentStep === 4) {
-      if (this.customer.cusMotDePasse!.length<6 || !this.customer.cusMotDePasse?.trim() || this.customer.cusMotDePasse != this.confirm) {
+      if (this.customer.cusMotDePasse!.length < 6 || !this.customer.cusMotDePasse?.trim() || this.customer.cusMotDePasse != this.confirm) {
         this.errorMessage = 'Please enter your password.';
         return;
       }
@@ -228,18 +252,14 @@ export class RegisterComponent {
 
 
   onCountryChange(): void {
-    this.selectedCountryCode = this.customer.country?.ctrIden!
-
-    this.cityService.getByCountry(this.customer.country!).subscribe(
-      {
-        next: (cities: City[]) => {
-          this.cities = cities;
-        },
-        error: (err) => {
-          console.log(err)
-        }
+    this.cityService.getByCountry(this.customer.country!).subscribe({
+      next: (cities: City[]) => {
+        this.cities = cities;
+      },
+      error: (err) => {
+        console.log(err)
       }
-    );
+    });
   }
 
   phoneForm = new FormGroup({
@@ -248,14 +268,6 @@ export class RegisterComponent {
       this.validatePhoneNumber
     ])
   });
-
-
-  errorMessage: string = '';
-  successMessage: string = '';
-  otpSent: boolean = false;
-  otpVerified: boolean = false;
-  otpCode: any;
-  confirm: string = '';
 
 
   // Custom phone number validator
@@ -287,10 +299,10 @@ export class RegisterComponent {
 
     this.customerService.sendEmail(this.customer.cusMailAddress, "TOTP").subscribe({
       next: (result: any) => {
-        console.log('OTP sent result:', result.message  );
-        if (result.message != 'success') 
+        console.log('OTP sent result:', result.message);
+        if (result.message != 'success')
           this.errorMessage = result.message || 'Failed to send OTP. Please try again.';
-        else{
+        else {
           this.successMessage = 'OTP sent successfully.';
           this.otpSent = true;
         }
@@ -326,7 +338,7 @@ export class RegisterComponent {
       },
       error: (err) => {
         console.error('OTP Verification Failed:', err);
-        this.errorMessage = 'OTP verification failed. Please try again.\n'+err.message;
+        this.errorMessage = 'OTP verification failed. Please try again.\n' + err.message;
         // Handle errors (e.g., show error message)
       }
     });

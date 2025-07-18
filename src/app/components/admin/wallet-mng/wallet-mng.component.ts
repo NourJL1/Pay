@@ -199,9 +199,9 @@ export class WalletMngComponent implements OnInit {
       this.filteredWallets = this.walletsList;
     else {
       this.filteredWallets = this.walletsList!.filter(wallet => {
-        return (!this.selectedStatus || this.selectedStatus?.wstCode === wallet.walletStatus.wstCode) &&
-          (!this.selectedWalletType || this.selectedWalletType?.wtyCode === wallet.walletType.wtyCode) &&
-          (!this.selectedCategory! || this.selectedCategory?.wcaCode === wallet.walletCategory.wcaCode);
+        return (!this.selectedStatus || this.selectedStatus?.wstCode === wallet.walletStatus!.wstCode) &&
+          (!this.selectedWalletType || this.selectedWalletType?.wtyCode === wallet.walletType!.wtyCode) &&
+          (!this.selectedCategory! || this.selectedCategory?.wcaCode === wallet.walletCategory!.wcaCode);
       })
     }
     if (this.searchTerm) {

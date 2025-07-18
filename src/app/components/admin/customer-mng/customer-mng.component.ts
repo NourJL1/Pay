@@ -16,6 +16,12 @@ import { DocType } from '../../../entities/doc-type';
 import { DocTypeService } from '../../../services/doc-type.service';
 import { CustomerDoc } from '../../../entities/customer-doc';
 import { CustomerDocService } from '../../../services/customer-doc.service';
+import { WalletCategory } from '../../../entities/wallet-category';
+import { WalletCategoryService } from '../../../services/wallet-category.service';
+import { WalletStatusService } from '../../../services/wallet-status.service';
+import { WalletTypeService } from '../../../services/wallet-type.service';
+import { WalletType } from '../../../entities/wallet-type';
+import { CountryISO } from 'ngx-intl-tel-input';
 
 @Component({
   selector: 'app-customer-mng',
@@ -34,6 +40,9 @@ export class CustomerMngComponent {
     private docTypeService: DocTypeService,
     private countryService: CountryService,
     private cityService: CityService,
+    private walletStatusService: WalletStatusService,
+    private walletCategoryService: WalletCategoryService,
+    private walletTypeService: WalletTypeService,
     private cdr: ChangeDetectorRef) { }
 
   isAddCustomerVisible: boolean = false;
@@ -101,6 +110,9 @@ export class CustomerMngComponent {
   countrySearchTerm?: string
   citySearchTerm?: string
 
+  walletCategories?: WalletCategory[]
+  walletTypes?: WalletType[]
+
 
   ngOnInit(): void {
     this.loadAllCustomers()
@@ -108,6 +120,9 @@ export class CustomerMngComponent {
     this.loadDocTypes()
     this.loadCountries()
     this.loadCities()
+    //this.loadWalletStatuses();
+    this.loadWalletCategories();
+    this.loadWalletTypes();
   }
 
   loadAllCustomers() {
@@ -169,6 +184,61 @@ export class CustomerMngComponent {
       error: (err) => { console.log(err) }
     })
   }
+  
+  
+    // Load wallet statuses
+    /* loadWalletStatuses(): void {
+      this.errorMessage = null;
+      // console.log('loadWalletStatuses: Fetching wallet statuses...');
+      this.walletStatusService.getAll().subscribe({
+        next: (statuses: WalletStatus[]) => {
+          // console.log('loadWalletStatuses: Wallet statuses received:', statuses);
+          this.walletStatuses = statuses;
+          this.cdr.detectChanges();
+        },
+        error: (error: HttpErrorResponse) => {
+          const message = error.status ? `Failed to load wallet statuses: ${error.status} ${error.statusText}` : 'Failed to load wallet statuses: Server error';
+          this.showErrorMessage(message);
+          console.error('Error loading wallet statuses:', error);
+        }
+      });
+    } */
+  
+    // Load wallet categories
+    loadWalletCategories(): void {
+      this.errorMessage = null;
+      // console.log('loadWalletCategories: Fetching wallet categories...');
+      this.walletCategoryService.getAll().subscribe({
+        next: (categories: WalletCategory[]) => {
+          // console.log('loadWalletCategories: Wallet categories received:', categories);
+          this.walletCategories = categories;
+          this.cdr.detectChanges();
+        },
+        error: (error: HttpErrorResponse) => {
+          const message = error.status ? `Failed to load wallet categories: ${error.status} ${error.statusText}` : 'Failed to load wallet categories: Server error';
+          this.showErrorMessage(message);
+          console.error('Error loading wallet categories:', error);
+        }
+      });
+    }
+  
+    // Load wallet types
+    loadWalletTypes(): void {
+      this.errorMessage = null;
+      // console.log('loadWalletTypes: Fetching wallet types...');
+      this.walletTypeService.getAll().subscribe({
+        next: (types: WalletType[]) => {
+          // console.log('loadWalletTypes: Wallet types received:', types);
+          this.walletTypes = types;
+          this.cdr.detectChanges();
+        },
+        error: (error: HttpErrorResponse) => {
+          const message = error.status ? `Failed to load wallet types: ${error.status} ${error.statusText}` : 'Failed to load wallet types: Server error';
+          this.showErrorMessage(message);
+          console.error('Error loading wallet types:', error);
+        }
+      });
+    }
 
 // customer methods
 
@@ -216,7 +286,7 @@ updateCustomer() {
       const index = this.allCustomers.findIndex(cus => cus.cusCode === this.customerForm.cusCode);
       if (index !== -1) {
         this.allCustomers[index] = customer;
-        this.allCustomers = [...this.allCustomers];
+        this.allCustomers = this.allCustomers;
       }
       this.customerForm = new Customer();
       this.selectedCustomer = undefined;
