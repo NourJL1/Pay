@@ -56,6 +56,11 @@ export class CustomerService {
     );
   }
 
+  existsByEmail(email: string){
+    console.log(`${this.apiUrl}/existsByEmail/${email}`)
+    return this.http.get<boolean>(`${this.apiUrl}/existsByEmail/${email}`)
+  }
+
   existsByUsername(username: string){
     return this.http.get<boolean>(`${this.apiUrl}/existsByUsername/${username}`)
   }

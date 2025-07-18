@@ -104,39 +104,6 @@ export class ForgotPasswordComponent {
       })
     }
   }
-
-  /* this.customerService.getCustomerByEmail(this.email).subscribe(
-    {
-      next: (value: any) => {
-        this.customerService.sendEmail(this.email, "Reset Password").subscribe(
-          {
-            next: (Result: any) => {
-              if (Result.message == 'success') {
-                this.successMessage = 'An email has been sent to your address with instructions to reset your password.';
-                localStorage.setItem('cusCode', value.cusCode)
-              }
-            },
-            error: (err) => {
-              this.errorMessage = 'Failed to send email. Please try again.';
-              console.error('mailing Failed: ', err);
-            }
-          });
-
-      },
-      error: (err) => {
-        console.log(err)
-        if (err.status === 404) {
-          this.errorMessage = 'Email not found in our system';
-        } else {
-          this.errorMessage = 'An error occurred while checking your email';
-          console.error('Email lookup failed:', err);
-        }
-      },
-      complete: () => {
-        this.isLoading = false;  // Hide loading indicator
-      }
-    }
-  ) */
 }
 
 

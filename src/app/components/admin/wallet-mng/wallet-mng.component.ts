@@ -526,6 +526,7 @@ export class WalletMngComponent implements OnInit {
         next: () => {
           // console.log('deleteCard: Success, carCode:', carCode);
           this.walletsList = this.walletsList.filter(w => w.walCode !== wallet.walCode);
+          this.filteredWallets = this.filteredWallets.filter(w => w.walCode !== wallet.walCode);
           this.showSuccessMessage('Wallet deleted successfully');
           this.cdr.detectChanges();
         },
@@ -961,6 +962,7 @@ export class WalletMngComponent implements OnInit {
         next: () => {
           // console.log('deleteWalletType: Success, wtyCode:', wtyCode);
           this.walletTypesList = this.walletTypesList.filter(t => t.wtyCode !== wtyCode);
+          this.filteredWalletTypes = this.filteredWalletTypes.filter(t => t.wtyCode !== wtyCode);
           this.showSuccessMessage('Wallet type deleted successfully');
           this.cdr.detectChanges();
         },
@@ -1001,7 +1003,8 @@ export class WalletMngComponent implements OnInit {
       this.walletStatusService.delete(wstCode, this.getHttpOptions()).subscribe({
         next: () => {
           // console.log('deleteStatus: Success, wstCode:', wstCode);
-          this.loadWalletStatuses();
+          this.walletStatuses = this.walletStatuses.filter(s => s.wstCode !== wstCode);
+          this.filteredStatuses = this.filteredStatuses.filter(s => s.wstCode !== wstCode);
           this.showSuccessMessage('Wallet status deleted successfully');
         },
         error: (error: HttpErrorResponse) => {
@@ -1021,7 +1024,8 @@ export class WalletMngComponent implements OnInit {
       this.walletCategoryService.delete(wcaCode, this.getHttpOptions()).subscribe({
         next: () => {
           // console.log('deleteCategory: Success, wcaCode:', wcaCode);
-          this.loadWalletCategories();
+          this.walletCategories = this.walletCategories.filter(c => c.wcaCode !== wcaCode);
+          this.filteredWalletCategories = this.filteredWalletCategories.filter(c => c.wcaCode !== wcaCode);
           this.showSuccessMessage('Wallet category deleted successfully');
         },
         error: (error: HttpErrorResponse) => {

@@ -1399,197 +1399,209 @@
 <div *ngIf="isAnyModalVisible" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[50] ">
   <!-- Create Wallet Modal -->
   <div *ngIf="isWalletFormVisible" id="create-wallet-modal"
-    class="bg-white rounded-lg shadow-xl w-full max-w-2xl h-[90vh] flex flex-col">
+    class="bg-white rounded-lg shadow-lg w-full max-w-2xl h-[90vh] flex flex-col">
     <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
-      <h3 class="text-lg font-semibold text-gray-800">Create New Wallet</h3>
-      <button (click)="closeForm('create-wallet')" id="close-create-wallet" class="text-gray-400 hover:text-gray-500">
-        <div class="w-6 h-6 flex items-center justify-center">
-          <i class="ri-close-line ri-lg"></i>
-        </div>
-      </button>
+        <h3 class="text-lg font-semibold text-gray-800">Create New Wallet</h3>
+        <button (click)="closeForm('create-wallet')" id="close-create-wallet" class="text-gray-400 hover:text-gray-500">
+            <div class="w-6 h-6 flex items-center justify-center">
+                <i class="ri-close-line ri-lg"></i>
+            </div>
+        </button>
     </div>
-    <!-- Form Content -->
-    <form ngNativeValidate #walletForm="ngForm" class="flex-1 overflow-y-auto p-6 space-y-8">
-      <!-- Basic Information Section -->
-      <div class="space-y-6">
-        <div class="flex items-center">
-          <div class="w-1.5 h-6 bg-primary rounded-full mr-3"></div>
-          <h4 class="text-lg font-semibold text-gray-900">Basic Information</h4>
-        </div>
+    
+    <form ngNativeValidate #walletForm="ngForm" class="p-6 space-y-8 overflow-y-auto">
+        <!-- Basic Information Section -->
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+            <div class="flex items-center mb-5">
+                <div class="w-1.5 h-6 bg-primary rounded-full mr-3"></div>
+                <h4 class="text-lg font-semibold text-gray-900">Basic Information</h4>
+            </div>
 
-        <div class="space-y-5">
-          <div class="form-field">
-            <label class="form-label flex items-center">
-              Wallet Label
-              <span class="text-primary ml-1">*</span>
-            </label>
-            <input class="form-input" [(ngModel)]="selectedWallet.walLabe" name="walLabe" type="text" required
-              placeholder="e.g. My Primary Wallet">
-          </div>
-
-          <div class="form-field">
-            <label class="form-label flex items-center">
-              Wallet Category
-              <span class="text-primary ml-1">*</span>
-            </label>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-              <div *ngFor="let category of walletCategories"
-                [class]="'wallet-card ' + (selectedWallet.walletCategory === category ? 'selected' : '')"
-                (click)="selectedWallet.walletCategory = category">
-                <input type="radio" name="selectedWalletType" [value]="category"
-                  [(ngModel)]="selectedWallet.walletCategory" hidden>
-                <div class="flex flex-col items-center p-3">
-                  <h4 class="font-semibold text-center">{{ category.wcaLabe| titlecase }}</h4>
+            <div class="grid grid-cols-1 gap-5">
+                <div class="form-field">
+                    <label class="form-label flex items-center">
+                        Wallet Label
+                        <span class="text-primary ml-1">*</span>
+                    </label>
+                    <div class="relative">
+                        <input class="form-input pl-10" [(ngModel)]="selectedWallet.walLabe" name="walLabe" type="text" required
+                            placeholder="e.g. My Primary Wallet">
+                    </div>
                 </div>
-              </div>
-            </div>
-          </div>
 
-          <div class="form-field">
-            <label class="form-label flex items-center">
-              Wallet Type
-              <span class="text-primary ml-1">*</span>
-            </label>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-              <div *ngFor="let type of walletTypesList"
-                [class]="'wallet-card ' + (selectedWallet.walletType === type ? 'selected' : '')"
-                (click)="selectedWallet.walletType = type">
-                <input type="radio" name="selectedWalletType" [value]="type" [(ngModel)]="selectedWallet.walletType"
-                  hidden>
-                <div class="flex flex-col items-center p-3">
-                  <h4 class="font-semibold text-center">{{ type.wtyLabe| titlecase }}</h4>
+                <div class="form-field">
+                    <label class="form-label flex items-center">
+                        Wallet Category
+                        <span class="text-primary ml-1">*</span>
+                    </label>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <div *ngFor="let category of walletCategories"
+                            [class]="'wallet-card ' + (selectedWallet.walletCategory === category ? 'selected' : '')"
+                            (click)="selectedWallet.walletCategory = category">
+                            <input type="radio" name="walletCategory" [value]="category"
+                                [(ngModel)]="selectedWallet.walletCategory" hidden required>
+                            <div class="flex flex-col items-center p-3">
+                                <h4 class="font-semibold text-center">{{ category.wcaLabe| titlecase }}</h4>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <!-- Card Information Section -->
-      <div class="space-y-6">
-        <div class="flex items-center">
-          <div class="w-1.5 h-6 bg-primary rounded-full mr-3"></div>
-          <h4 class="text-lg font-semibold text-gray-900">Payment Card</h4>
-        </div>
-
-        <div class="space-y-5">
-          <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-200">
-            <div class="flex items-center">
-              <i class="ri-bank-card-line text-xl text-gray-600 mr-3"></i>
-              <span class="font-medium">Add payment card</span>
-            </div>
-            <label class="relative inline-flex items-center cursor-pointer">
-              <input type="checkbox" [(ngModel)]="addCard" name="addCard" class="sr-only peer">
-              <div
-                class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary">
-              </div>
-            </label>
-          </div>
-
-          <div [class.opacity-50]="!addCard" [class.pointer-events-none]="!addCard"
-            class="space-y-4 p-4 bg-gray-50 rounded-lg border border-gray-200 transition-all duration-200">
-            <div class="form-field">
-              <label class="form-label">Card Type</label>
-              <select class="form-input" name="cardType" [required]="addCard">
-                <option value="">Select card type</option>
-                <!-- <option *ngFor="let type of cardTypes" [ngValue]="type">{{ type.ctyLabe }}</option> -->
-              </select>
-            </div>
-
-            <div class="form-field">
-              <label class="form-label">Card Number</label>
-              <div class="relative">
-                <input class="form-input pl-10" name="carNumb" type="text" [required]="addCard"
-                  placeholder="1234 5678 9012 3456">
-                <i class="ri-credit-card-line absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-              </div>
-            </div>
-
-            <div class="grid grid-cols-2 gap-4">
-              <div class="form-field">
-                <label class="form-label">Expiry Date</label>
-                <div class="relative">
-                  <input class="form-input pl-10" name="carExpiryDate" type="month" [required]="addCard">
-                  <i class="ri-calendar-line absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                <div class="form-field">
+                    <label class="form-label flex items-center">
+                        Wallet Type
+                        <span class="text-primary ml-1">*</span>
+                    </label>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <div *ngFor="let type of walletTypesList"
+                            [class]="'wallet-card ' + (selectedWallet.walletType === type ? 'selected' : '')"
+                            (click)="selectedWallet.walletType = type">
+                            <input type="radio" name="walletType" [value]="type" [(ngModel)]="selectedWallet.walletType"
+                                hidden required>
+                            <div class="flex flex-col items-center p-3">
+                                <h4 class="font-semibold text-center">{{ type.wtyLabe| titlecase }}</h4>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-              <div class="form-field">
-                <label class="form-label">Card Label (Optional)</label>
-                <input class="form-input" name="carLabe" type="text" placeholder="e.g. My Visa Card">
-              </div>
             </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Bank Account Section -->
-      <div class="space-y-6">
-        <div class="flex items-center">
-          <div class="w-1.5 h-6 bg-primary rounded-full mr-3"></div>
-          <h4 class="text-lg font-semibold text-gray-900">Bank Account</h4>
         </div>
 
-        <div class="space-y-5">
-          <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-200">
-            <div class="flex items-center">
-              <i class="ri-bank-line text-xl text-gray-600 mr-3"></i>
-              <span class="font-medium">Link bank account</span>
-            </div>
-            <label class="relative inline-flex items-center cursor-pointer">
-              <input type="checkbox" [(ngModel)]="addAccount" name="addAccount" class="sr-only peer">
-              <div
-                class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary">
-              </div>
-            </label>
-          </div>
-
-          <div [class.opacity-50]="!addAccount" [class.pointer-events-none]="!addAccount"
-            class="space-y-4 p-4 bg-gray-50 rounded-lg border border-gray-200 transition-all duration-200">
-            <div class="form-field">
-              <label class="form-label">Bank</label>
-              <div class="relative">
-                <select class="form-input" name="bank" [required]="addAccount">
-                  <option value="">Select your bank</option>
-                  <!-- <option *ngFor="let bank of banks" [ngValue]="bank">{{ bank.banLabe }}</option> -->
-                </select>
-              </div>
+        <!-- Payment Card Section -->
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+            <div class="flex items-center mb-5">
+                <div class="w-1.5 h-6 bg-primary rounded-full mr-3"></div>
+                <h4 class="text-lg font-semibold text-gray-900">Payment Card</h4>
             </div>
 
-            <div class="form-field">
-              <label class="form-label">Account Type</label>
-              <div class="relative">
-                <select class="form-input" name="accountType" [required]="addAccount">
-                  <option value="">Select account type</option>
-                  <!-- <option *ngFor="let type of accountTypes" [ngValue]="type">{{ type.atyLabe }}</option> -->
-                </select>
-              </div>
-            </div>
+            <div class="space-y-5">
+                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <div class="flex items-center">
+                        <i class="ri-bank-card-line text-xl text-gray-600 mr-3"></i>
+                        <span class="font-medium">Add payment card</span>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" #addCard name="addCard" class="sr-only peer">
+                        <div
+                            class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary">
+                        </div>
+                    </label>
+                </div>
 
-            <div class="form-field">
-              <label class="form-label">Account Number</label>
-              <div class="relative">
-                <input class="form-input pl-10" name="accRib" type="text" [required]="addAccount"
-                  placeholder="Enter RIB/account number">
-                <i class="ri-numbers-line absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-              </div>
-            </div>
+                <div [class.opacity-50]="!addCard.checked" [class.pointer-events-none]="!addCard.checked"
+                    class="space-y-4 p-4 bg-gray-50 rounded-lg border border-gray-200 transition-all duration-200">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div class="form-field">
+                            <label class="form-label">Card Type</label>
+                            <div class="relative">
+                                <select class="form-input pl-10" name="cardType" [required]="addCard.checked">
+                                    <option value="">Select card type</option>
+                                    <!-- <option *ngFor="let type of cardTypes" [ngValue]="type">{{ type.ctyLabe }}</option> -->
+                                </select>
+                            </div>
+                        </div>
 
-            <div class="form-field">
-              <label class="form-label">Account Label (Optional)</label>
-              <input class="form-input" name="accKey" type="text" placeholder="e.g. My Primary Account">
+                        <div class="form-field">
+                            <label class="form-label">Card Number</label>
+                            <div class="relative">
+                                <input class="form-input pl-10" name="carNumb" type="text" [required]="addCard.checked"
+                                    placeholder="1234 5678 9012 3456">
+                            </div>
+                        </div>
+
+                        <div class="form-field">
+                            <label class="form-label">Expiry Date</label>
+                            <div class="relative">
+                                <input class="form-input pl-10" name="carExpiryDate" type="month" [required]="addCard.checked">
+                            </div>
+                        </div>
+
+                        <div class="form-field">
+                            <label class="form-label">Card Label (Optional)</label>
+                            <div class="relative">
+                                <input class="form-input pl-10" name="carLabe" type="text" placeholder="e.g. My Visa Card">
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
+
+        <!-- Bank Account Section -->
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+            <div class="flex items-center mb-5">
+                <div class="w-1.5 h-6 bg-primary rounded-full mr-3"></div>
+                <h4 class="text-lg font-semibold text-gray-900">Bank Account</h4>
+            </div>
+
+            <div class="space-y-5">
+                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <div class="flex items-center">
+                        <i class="ri-bank-line text-xl text-gray-600 mr-3"></i>
+                        <span class="font-medium">Link bank account</span>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" #addAccount name="addAccount" class="sr-only peer">
+                        <div
+                            class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary">
+                        </div>
+                    </label>
+                </div>
+
+                <div [class.opacity-50]="!addAccount.checked" [class.pointer-events-none]="!addAccount.checked"
+                    class="space-y-4 p-4 bg-gray-50 rounded-lg border border-gray-200 transition-all duration-200">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div class="form-field">
+                            <label class="form-label">Bank</label>
+                            <div class="relative">
+                                <select class="form-input pl-10" name="bank" [required]="addAccount.checked">
+                                    <option value="">Select your bank</option>
+                                    <!-- <option *ngFor="let bank of banks" [ngValue]="bank">{{ bank.banLabe }}</option> -->
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-field">
+                            <label class="form-label">Account Type</label>
+                            <div class="relative">
+                                <select class="form-input pl-10" name="accountType" [required]="addAccount.checked">
+                                    <option value="">Select account type</option>
+                                    <!-- <option *ngFor="let type of accountTypes" [ngValue]="type">{{ type.atyLabe }}</option> -->
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-field md:col-span-2">
+                            <label class="form-label">Account Number</label>
+                            <div class="relative">
+                                <input class="form-input pl-10" name="accRib" type="text" [required]="addAccount.checked"
+                                    placeholder="Enter RIB/account number">
+                            </div>
+                        </div>
+
+                        <div class="form-field md:col-span-2">
+                            <label class="form-label">Account Label (Optional)</label>
+                            <div class="relative">
+                                <input class="form-input pl-10" name="accKey" type="text" placeholder="e.g. My Primary Account">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="px-6 py-4 border-t border-gray-200 flex justify-end space-x-3">
+            <button (click)="closeForm('create-wallet')" id="cancel-create-wallet"
+                class="px-4 py-2 border border-gray-300 text-gray-700 rounded-button hover:bg-gray-50 transition text-sm whitespace-nowrap">
+                Cancel
+            </button>
+            <button type="submit" id="submit-create-wallet"
+                class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">
+                Create Wallet
+            </button>
+        </div>
     </form>
-    <div class="px-6 py-4 border-t border-gray-200 flex justify-end space-x-3">
-      <button (click)="closeForm('create-wallet')" id="cancel-create-wallet"
-        class="px-4 py-2 border border-gray-300 text-gray-700 rounded-button hover:bg-gray-50 transition text-sm whitespace-nowrap">Cancel</button>
-      <button id="submit-create-wallet"
-        class="flex items-center px-3 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-opacity-90 whitespace-nowrap">Create
-        Wallet</button>
-    </div>
-  </div>
+</div>
   <!-- Wallet Detail Modal -->
   <div *ngIf="isWalletDetailsVisible" id="wallet-detail-modal"
     class="bg-white rounded-lg shadow-xl w-full max-w-4xl h-[90vh] overflow-hidden">
