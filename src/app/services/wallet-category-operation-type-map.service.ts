@@ -26,9 +26,9 @@ private apiUrl = `${environment.apiUrl}/api/wallet-category-operation-type-map`;
   }
 
   getAll(options?: { headers: HttpHeaders }): Observable<WalletCategoryOperationTypeMap[]> {
-    console.log('wcotmService.getAll: URL:', `${this.apiUrl}/wallet-category-operation-type-map`, 'Options:', options);
+    // console.log('wcotmService.getAll: URL:', `${this.apiUrl}`, 'Options:', options);
     return this.http.get<WalletCategoryOperationTypeMap[]>(
-      `${this.apiUrl}/wallet-category-operation-type-map`,
+      `${this.apiUrl}`,
       options
     );
   }
@@ -38,27 +38,27 @@ private apiUrl = `${environment.apiUrl}/api/wallet-category-operation-type-map`;
   }
 
 create(wcotm: WalletCategoryOperationTypeMap, options?: { headers: HttpHeaders }): Observable<WalletCategoryOperationTypeMap> {
-  console.log('wcotmService.create: URL:', this.apiUrl, 'Payload:', wcotm, 'Options:', options);
+  // console.log('wcotmService.create: URL:', this.apiUrl, 'Payload:', wcotm, 'Options:', options);
   return this.http.post<WalletCategoryOperationTypeMap>(
-    `${this.apiUrl}/wallet-category-operation-type-map`,
+    `${this.apiUrl}`,
     wcotm,
     options
   );
 }
 
   update(id: number, wcotm: WalletCategoryOperationTypeMap, options?: { headers: HttpHeaders }): Observable<WalletCategoryOperationTypeMap> {
-    console.log('wcotmService.update: URL:', `${this.apiUrl}/wallet-category-operation-type-map/${id}`, 'Payload:', wcotm, 'Options:', options);
+    // console.log('wcotmService.update: URL:', `${this.apiUrl}/${id}`, 'Payload:', wcotm, 'Options:', options);
     return this.http.put<WalletCategoryOperationTypeMap>(
-      `${this.apiUrl}/wallet-category-operation-type-map/${id}`,
+      `${this.apiUrl}/${id}`,
       wcotm,
       options
     );
   }
 
   delete(id: number, options?: { headers: HttpHeaders }): Observable<void> {
-    console.log('wcotmService.delete: URL:', `${this.apiUrl}/wallet-category-operation-type-map/${id}`, 'Options:', options);
+    // console.log('wcotmService.delete: URL:', `${this.apiUrl}/${id}`, 'Options:', options);
     return this.http.delete<void>(
-      `${this.apiUrl}/wallet-category-operation-type-map/${id}`,
+      `${this.apiUrl}/${id}`,
       options
     );
   }

@@ -62,15 +62,16 @@
                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <i class="ri-search-line text-gray-400"></i>
                 </div>
-                <input type="text" placeholder="Search..."
+                <input type="text" placeholder="Search..." [(ngModel)]="customerSearchTerm" name="customerSearchTerm"
+                    (input)="filterCustomers()"
                     class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm" />
             </div>
             <div class="w-full sm:w-auto">
                 <div class="relative">
-                    <select
+                    <select [(ngModel)]="selectedStatus" name="selectedStatus" (ngModelChange)="filterCustomers()"
                         class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary rounded-lg sm:text-sm">
-                        <option value="">All Statuses</option>
-                        <option *ngFor="let status of statuses" [value]="status">
+                        <option [ngValue]="undefined">All Statuses</option>
+                        <option *ngFor="let status of statuses" [ngValue]="status">
                             {{ status.ctsLabe }}
                         </option>
                     </select>
@@ -78,10 +79,11 @@
             </div>
             <div class="w-full sm:w-auto">
                 <div class="relative">
-                    <select
+                    <select [(ngModel)]="selectedCountry" name="selectedCountry"
+                        (ngModelChange)="onCountryChange(selectedCountry!); filterCustomers()"
                         class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary rounded-lg sm:text-sm">
-                        <option value="">select country</option>
-                        <option *ngFor="let country of countries" [value]="country">
+                        <option [ngValue]="undefined">All Countries</option>
+                        <option *ngFor="let country of countries" [ngValue]="country">
                             {{ country.ctrLabe }}
                         </option>
                     </select>
@@ -89,10 +91,10 @@
             </div>
             <div class="w-full sm:w-auto">
                 <div class="relative">
-                    <select
+                    <select [(ngModel)]="selectedCity" name="selectedCity" (ngModelChange)="filterCustomers()"
                         class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary rounded-lg sm:text-sm">
-                        <option value="">select city</option>
-                        <option *ngFor="let city of citiesByCountry" [value]="city">
+                        <option [ngValue]="undefined">All Cities</option>
+                        <option *ngFor="let city of citiesByCountry" [ngValue]="city">
                             {{ city.ctyLabe }}
                         </option>
                     </select>
@@ -135,8 +137,8 @@
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
-                    <ng-container *ngIf="customers!.length > 0; else noData">
-                        <tr *ngFor="let customer of customers" class="hover:bg-gray-50 transition duration-150">
+                    <ng-container *ngIf="filteredCustomers!.length > 0; else noData">
+                        <tr *ngFor="let customer of filteredCustomers" class="hover:bg-gray-50 transition duration-150">
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm font-medium text-gray-900">
                                     {{ customer.cusCode }}
@@ -251,7 +253,8 @@
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <i class="ri-search-line text-gray-400"></i>
                         </div>
-                        <input type="text" placeholder="Search..."
+                        <input type="text" placeholder="Search..." [(ngModel)]="statusSearchTerm"
+                            name="statusSearchTerm" (input)="statusSearch()"
                             class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm" />
                     </div>
                     <button id="btn-add-status" (click)="toggleForm('customer-status');"
@@ -286,8 +289,9 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            <ng-container *ngIf="statuses!.length > 0; else noData">
-                                <tr *ngFor="let status of statuses" class="hover:bg-gray-50 transition duration-150">
+                            <ng-container *ngIf="filteredStatuses!.length > 0; else noData">
+                                <tr *ngFor="let status of filteredStatuses"
+                                    class="hover:bg-gray-50 transition duration-150">
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="text-sm font-medium text-gray-900">{{ status.ctsCode }}
                                         </div>
@@ -317,7 +321,7 @@
                                 <tr>
                                     <td colspan="100%" class="py-8 text-center">
                                         <div class="flex flex-col items-center justify-center space-y-2">
-                                            <p class="text-sm text-gray-400">No statuses available</p>
+                                            <p class="text-sm text-gray-400">The table is currently empty</p>
                                         </div>
                                     </td>
                                 </tr>
@@ -366,7 +370,8 @@
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <i class="ri-search-line text-gray-400"></i>
                         </div>
-                        <input type="text" placeholder="Search..."
+                        <input type="text" placeholder="Search..." [(ngModel)]="idTypeSearchTerm"
+                            name="idTypeSearchTerm" (input)="idTypeSearch()"
                             class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm" />
                     </div>
                     <button id="btn-add-identityType" (click)="toggleForm('customer-identityType')"
@@ -401,8 +406,9 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            <ng-container *ngIf="identityTypes!.length > 0; else noData">
-                                <tr *ngFor="let type of identityTypes" class="hover:bg-gray-50 transition duration-150">
+                            <ng-container *ngIf="filteredIdentityTypes!.length > 0; else noData">
+                                <tr *ngFor="let type of filteredIdentityTypes"
+                                    class="hover:bg-gray-50 transition duration-150">
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="text-sm font-medium text-gray-900">{{ type.citCode }}
                                         </div>
@@ -432,7 +438,7 @@
                                 <tr>
                                     <td colspan="100%" class="py-8 text-center">
                                         <div class="flex flex-col items-center justify-center space-y-2">
-                                            <p class="text-sm text-gray-400">No statuses available</p>
+                                            <p class="text-sm text-gray-400">The table is currently empty</p>
                                         </div>
                                     </td>
                                 </tr>
@@ -481,7 +487,8 @@
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <i class="ri-search-line text-gray-400"></i>
                         </div>
-                        <input type="text" placeholder="Search..."
+                        <input type="text" placeholder="Search..." [(ngModel)]="docTypeSearchTerm"
+                            name="docTypeSearchTerm" (input)="docTypeSearch()"
                             class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm" />
                     </div>
                     <button id="btn-add-docType" (click)="toggleForm('docType');"
@@ -516,8 +523,9 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            <ng-container *ngIf="docTypes!.length > 0; else noData">
-                                <tr *ngFor="let type of docTypes" class="hover:bg-gray-50 transition duration-150">
+                            <ng-container *ngIf="filteredDocTypes!.length > 0; else noData">
+                                <tr *ngFor="let type of filteredDocTypes"
+                                    class="hover:bg-gray-50 transition duration-150">
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="text-sm font-medium text-gray-900">{{ type.dtyCode }}
                                         </div>
@@ -543,7 +551,7 @@
                                 <tr>
                                     <td colspan="100%" class="py-8 text-center">
                                         <div class="flex flex-col items-center justify-center space-y-2">
-                                            <p class="text-sm text-gray-400">No statuses available</p>
+                                            <p class="text-sm text-gray-400">The table is currently empty</p>
                                         </div>
                                     </td>
                                 </tr>
@@ -592,7 +600,8 @@
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <i class="ri-search-line text-gray-400"></i>
                         </div>
-                        <input type="text" placeholder="Search..."
+                        <input type="text" placeholder="Search..." [(ngModel)]="countrySearchTerm"
+                            name="countrySearchTerm" (input)="countrySearch()"
                             class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm" />
                     </div>
                     <button id="btn-add-country" (click)="toggleForm('country');"
@@ -627,8 +636,9 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            <ng-container *ngIf="countries!.length > 0; else noData">
-                                <tr *ngFor="let country of countries" class="hover:bg-gray-50 transition duration-150">
+                            <ng-container *ngIf="filteredCountries!.length > 0; else noData">
+                                <tr *ngFor="let country of filteredCountries"
+                                    class="hover:bg-gray-50 transition duration-150">
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="text-sm font-medium text-gray-900">{{ country.ctrCode }}
                                         </div>
@@ -654,7 +664,7 @@
                                 <tr>
                                     <td colspan="100%" class="py-8 text-center">
                                         <div class="flex flex-col items-center justify-center space-y-2">
-                                            <p class="text-sm text-gray-400">No statuses available</p>
+                                            <p class="text-sm text-gray-400">The table is currently empty</p>
                                         </div>
                                     </td>
                                 </tr>
@@ -703,15 +713,17 @@
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <i class="ri-search-line text-gray-400"></i>
                         </div>
-                        <input type="text" placeholder="Search..."
+                        <input type="text" placeholder="Search..." [(ngModel)]="citySearchTerm" name="citySearchTerm"
+                            (input)="filterCities()"
                             class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm" />
                     </div>
                     <div class="w-full sm:w-auto">
                         <div class="relative">
-                            <select
+                            <select [(ngModel)]="selectedCountry"
+                                (ngModelChange)="onCountryChange(selectedCountry!); filterCities()"
                                 class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary rounded-lg sm:text-sm">
-                                <option value="">select country</option>
-                                <option *ngFor="let country of countries" [value]="country">
+                                <option [ngValue]="undefined">select country</option>
+                                <option *ngFor="let country of countries" [ngValue]="country">
                                     {{ country.ctrLabe }}
                                 </option>
                             </select>
@@ -748,8 +760,9 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            <ng-container *ngIf="cities!.length > 0; else noData">
-                                <tr *ngFor="let city of cities" class="hover:bg-gray-50 transition duration-150">
+                            <ng-container *ngIf="filteredCities!.length > 0; else noData">
+                                <tr *ngFor="let city of filteredCities"
+                                    class="hover:bg-gray-50 transition duration-150">
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="text-sm font-medium text-gray-900">
                                             {{ city.ctyCode }}
@@ -772,13 +785,12 @@
                                         </div>
                                     </td>
                                 </tr>
-
                             </ng-container>
                             <ng-template #noData>
                                 <tr>
                                     <td colspan="100%" class="py-8 text-center">
                                         <div class="flex flex-col items-center justify-center space-y-2">
-                                            <p class="text-sm text-gray-400">No statuses available</p>
+                                            <p class="text-sm text-gray-400">The table is currently empty</p>
                                         </div>
                                     </td>
                                 </tr>
@@ -897,7 +909,7 @@
                         </label>
                         <div class="relative">
                             <select class="form-input pl-10" [(ngModel)]="customerForm.country" name="country" required
-                                (change)="onCountryChange()">
+                                (ngModelChange)="onCountryChange(customerForm.country!)">
                                 <option [ngValue]="undefined" disabled selected>Select country</option>
                                 <option *ngFor="let country of countries" [ngValue]="country">{{ country.ctrLabe }}
                                 </option>
@@ -979,8 +991,8 @@
                             <span class="text-primary ml-1">*</span>
                         </label>
                         <div class="relative">
-                            <input class="form-input pl-10 pr-10" [(ngModel)]="customerForm.cusMotDePasse" #password="ngModel"
-                                name="cusMotDePasse" type="password" required minlength="6">
+                            <input class="form-input pl-10 pr-10" [(ngModel)]="customerForm.cusMotDePasse"
+                                #password="ngModel" name="cusMotDePasse" type="password" required minlength="6">
                         </div>
                         <div *ngIf="password.invalid && password.touched" class="error-message">
                             <div *ngIf="password.errors?.['required']">Password is required</div>
@@ -1092,6 +1104,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="px-6 py-4 border-t border-gray-200 flex justify-end space-x-3">
                 <button (click)="closeForm('customer-add')" id="cancel-create-customer"
                     class="px-4 py-2 border border-gray-300 text-gray-700 rounded-button hover:bg-gray-50 transition text-sm whitespace-nowrap">
@@ -1473,7 +1486,8 @@
                                             <tr>
                                                 <td colspan="100%" class="py-8 text-center">
                                                     <div class="flex flex-col items-center justify-center space-y-2">
-                                                        <p class="text-sm text-gray-400">No statuses available</p>
+                                                        <p class="text-sm text-gray-400">The table is currently empty
+                                                        </p>
                                                     </div>
                                                 </td>
                                             </tr>

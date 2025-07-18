@@ -5,7 +5,7 @@ import { WalletCategoryOperationTypeMap } from './wallet-category-operation-type
 
 export class WalletCategory {
 
-    wcaCode?: number;
+  wcaCode?: number;
   wcaIden!: string;
   wcaLabe!: string;
   wcaFinId!: number;

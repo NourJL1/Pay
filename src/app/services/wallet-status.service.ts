@@ -15,7 +15,6 @@ export class WalletStatusService {
 
   private getHttpOptions(includeAuth: boolean = false): { headers: HttpHeaders } {
     const role = localStorage.getItem('role') || 'ROLE_ADMIN';
-    console.log('WalletStatusService: getHttpOptions - Role:', role, 'Include Auth:', includeAuth);
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       ...(includeAuth ? { 'X-Roles': role } : {})
@@ -24,7 +23,6 @@ export class WalletStatusService {
   }
 
   getAll(httpOptions: { headers: HttpHeaders } = this.getHttpOptions()): Observable<WalletStatus[]> {
-    console.log('WalletStatusService: getAll - URL:', this.apiUrl, 'Headers:', httpOptions.headers.keys());
     return this.http.get<WalletStatus[]>(this.apiUrl, httpOptions).pipe(
       catchError(error => {
         console.error('WalletStatusService: getAll - Error:', error, 'Response:', error.error, 'Status:', error.status);
@@ -35,7 +33,6 @@ export class WalletStatusService {
 
   getById(id: number, httpOptions: { headers: HttpHeaders } = this.getHttpOptions()): Observable<WalletStatus> {
     const url = `${this.apiUrl}/${id}`;
-    console.log('WalletStatusService: getById - URL:', url, 'Headers:', httpOptions.headers.keys());
     return this.http.get<WalletStatus>(url, httpOptions).pipe(
       catchError(error => {
         console.error('WalletStatusService: getById - Error:', error, 'Response:', error.error, 'Status:', error.status);
@@ -45,7 +42,6 @@ export class WalletStatusService {
   }
 
   create(walletStatus: WalletStatus, httpOptions: { headers: HttpHeaders } = this.getHttpOptions()): Observable<WalletStatus> {
-    console.log('WalletStatusService: create - URL:', this.apiUrl, 'Payload:', walletStatus, 'Headers:', httpOptions.headers.keys());
     return this.http.post<WalletStatus>(this.apiUrl, walletStatus, httpOptions).pipe(
       catchError(error => {
         console.error('WalletStatusService: create - Error:', error, 'Response:', error.error, 'Status:', error.status);
@@ -56,7 +52,6 @@ export class WalletStatusService {
 
   update(id: number, walletStatus: WalletStatus, httpOptions: { headers: HttpHeaders } = this.getHttpOptions()): Observable<WalletStatus> {
     const url = `${this.apiUrl}/${id}`;
-    console.log('WalletStatusService: update - URL:', url, 'Payload:', walletStatus, 'Headers:', httpOptions.headers.keys());
     return this.http.put<WalletStatus>(url, walletStatus, httpOptions).pipe(
       catchError(error => {
         console.error('WalletStatusService: update - Error:', error, 'Response:', error.error, 'Status:', error.status);
@@ -67,7 +62,6 @@ export class WalletStatusService {
 
   delete(id: number, httpOptions: { headers: HttpHeaders } = this.getHttpOptions()): Observable<void> {
     const url = `${this.apiUrl}/${id}`;
-    console.log('WalletStatusService: delete - URL:', url, 'Headers:', httpOptions.headers.keys());
     return this.http.delete<void>(url, httpOptions).pipe(
       catchError(error => {
         console.error('WalletStatusService: delete - Error:', error, 'Response:', error.error, 'Status:', error.status);
@@ -78,7 +72,6 @@ export class WalletStatusService {
 
   search(word: string, httpOptions: { headers: HttpHeaders } = this.getHttpOptions()): Observable<WalletStatus[]> {
     const url = `${this.apiUrl}/search?word=${word}`;
-    console.log('WalletStatusService: search - URL:', url, 'Headers:', httpOptions.headers.keys());
     return this.http.get<WalletStatus[]>(url, httpOptions).pipe(
       catchError(error => {
         console.error('WalletStatusService: search - Error:', error, 'Response:', error.error, 'Status:', error.status);
