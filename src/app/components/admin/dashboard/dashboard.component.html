@@ -1,6 +1,6 @@
 <!-- Date Display -->
 <div class="mb-8">
-    <p class="text-gray-500">Today: <span class="font-medium">Tuesday, April 29, 2025</span></p>
+  <p class="text-gray-500">Today: <span class="font-medium">{{ currentDate }}</span></p>
 </div>
 
 <!-- Stats Cards -->
@@ -10,7 +10,7 @@
         <div class="flex justify-between items-start">
             <div>
                 <p class="text-gray-500 text-sm mb-1">Total Users</p>
-                <h3 class="text-3xl font-bold text-gray-900">24,521</h3>
+                <h3 class="text-3xl font-bold text-gray-900">{{ totalCustomers}}</h3>
                 <p class="flex items-center text-green-500 text-sm mt-2"> </p>
                 <div class="w-4 h-4 flex items-center justify-center mr-1">
                     <i class="ri-arrow-up-line"></i>
@@ -29,7 +29,7 @@
         <div class="flex justify-between items-start">
             <div>
                 <p class="text-gray-500 text-sm mb-1">Active Users</p>
-                <h3 class="text-3xl font-bold text-gray-900">18,432</h3>
+                <h3 class="text-3xl font-bold text-gray-900">{{ activeCustomers }}</h3>
                 <p class="flex items-center text-green-500 text-sm mt-2"></p>
                 <div class="w-4 h-4 flex items-center justify-center mr-1">
                     <i class="ri-arrow-up-line"></i>
@@ -48,7 +48,7 @@
         <div class="flex justify-between items-start">
             <div>
                 <p class="text-gray-500 text-sm mb-1">New Users Today</p>
-                <h3 class="text-3xl font-bold text-gray-900">156</h3>
+                 <h3 class="text-3xl font-bold text-gray-900">{{ newCustomersToday }}</h3>
                 <p class="flex items-center text-red-500 text-sm mt-2"></p>
                 <div class="w-4 h-4 flex items-center justify-center mr-1">
                     <i class="ri-arrow-down-line"></i>
@@ -67,7 +67,7 @@
         <div class="flex justify-between items-start">
             <div>
                 <p class="text-gray-500 text-sm mb-1">Growth Rate</p>
-                <h3 class="text-3xl font-bold text-gray-900">8.7%</h3>
+                <h3 class="text-3xl font-bold text-gray-900">{{ growthRate }}%</h3>
                 <p class="flex items-center text-green-500 text-sm mt-2"></p>
                 <div class="w-4 h-4 flex items-center justify-center mr-1">
                     <i class="ri-arrow-up-line"></i>
@@ -114,251 +114,6 @@
             </button>
         </div>
         <div id="userDemographicsChart" class="w-full h-[300px]"></div>
-    </div>
-</div>
-
-<!-- Recent Users Section -->
-<div class="bg-white p-6 shadow-lg rounded-lg shadow-sm border border-gray-100 mb-8">
-    <div class="flex justify-between items-center mb-6">
-        <h3 class="text-lg font-semibold text-gray-900">Recent Users</h3>
-        <div class="flex items-center space-x-2">
-            <div class="relative">
-                <input type="text" placeholder="Search users..."
-                    class="py-2 pl-10 pr-4 border border-gray-300 shadow-lg rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
-                <div
-                    class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 flex items-center justify-center text-gray-400">
-                    <i class="ri-search-line"></i>
-                </div>
-            </div>
-            <button class="px-4 py-2 bg-primary text-white shadow-lg rounded !shadow-lg rounded-button whitespace-nowrap">Add User</button>
-        </div>
-    </div>
-
-    <div class="overflow-x-auto">
-        <table class="w-full min-w-[1024px]">
-            <thead>
-                <tr class="bg-gray-50">
-                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
-                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email
-                    </th>
-                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
-                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status
-                    </th>
-                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Joined
-                        Date</th>
-                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions
-                    </th>
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-200">
-                <tr>
-                    <td class="px-4 py-4 whitespace-nowrap">
-                        <div class="flex items-center">
-                            <div class="w-8 h-8 shadow-lg rounded-full bg-gray-200 overflow-hidden">
-                                <img src="https://readdy.ai/api/search-image?query=professional%20portrait%20of%20a%20young%20woman%20with%20business%20attire%2C%20high%20quality%2C%20studio%20lighting&width=100&height=100&seq=user1&orientation=squarish"
-                                    alt="User" class="w-full h-full object-cover">
-                            </div>
-                            <div class="ml-3">
-                                <p class="text-sm font-medium text-gray-900">Olivia Martinez</p>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">olivia.martinez&#64;example.com</td>
-                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">Customer</td>
-                    <td class="px-4 py-4 whitespace-nowrap">
-                        <span class="px-2 py-1 text-xs shadow-lg rounded-full bg-green-100 text-green-800">Active</span>
-                    </td>
-                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">Apr 15, 2025</td>
-                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
-                        <div class="flex space-x-2">
-                            <button class="p-1 text-gray-500 hover:text-primary">
-                                <div class="w-5 h-5 flex items-center justify-center">
-                                    <i class="ri-eye-line"></i>
-                                </div>
-                            </button>
-                            <button class="p-1 text-gray-500 hover:text-blue-600">
-                                <div class="w-5 h-5 flex items-center justify-center">
-                                    <i class="ri-edit-line"></i>
-                                </div>
-                            </button>
-                            <button class="p-1 text-gray-500 hover:text-red-600">
-                                <div class="w-5 h-5 flex items-center justify-center">
-                                    <i class="ri-delete-bin-line"></i>
-                                </div>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="px-4 py-4 whitespace-nowrap">
-                        <div class="flex items-center">
-                            <div class="w-8 h-8 shadow-lg rounded-full bg-gray-200 overflow-hidden">
-                                <img src="https://readdy.ai/api/search-image?query=professional%20portrait%20of%20a%20middle-aged%20man%20with%20business%20attire%2C%20high%20quality%2C%20studio%20lighting&width=100&height=100&seq=user2&orientation=squarish"
-                                    alt="User" class="w-full h-full object-cover">
-                            </div>
-                            <div class="ml-3">
-                                <p class="text-sm font-medium text-gray-900">James Wilson</p>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">james.wilson&#64;example.com</td>
-                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">Admin</td>
-                    <td class="px-4 py-4 whitespace-nowrap">
-                        <span class="px-2 py-1 text-xs shadow-lg rounded-full bg-green-100 text-green-800">Active</span>
-                    </td>
-                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">Mar 28, 2025</td>
-                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
-                        <div class="flex space-x-2">
-                            <button class="p-1 text-gray-500 hover:text-primary">
-                                <div class="w-5 h-5 flex items-center justify-center">
-                                    <i class="ri-eye-line"></i>
-                                </div>
-                            </button>
-                            <button class="p-1 text-gray-500 hover:text-blue-600">
-                                <div class="w-5 h-5 flex items-center justify-center">
-                                    <i class="ri-edit-line"></i>
-                                </div>
-                            </button>
-                            <button class="p-1 text-gray-500 hover:text-red-600">
-                                <div class="w-5 h-5 flex items-center justify-center">
-                                    <i class="ri-delete-bin-line"></i>
-                                </div>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="px-4 py-4 whitespace-nowrap">
-                        <div class="flex items-center">
-                            <div class="w-8 h-8 shadow-lg rounded-full bg-gray-200 overflow-hidden">
-                                <img src="https://readdy.ai/api/search-image?query=professional%20portrait%20of%20an%20asian%20woman%20with%20business%20attire%2C%20high%20quality%2C%20studio%20lighting&width=100&height=100&seq=user3&orientation=squarish"
-                                    alt="User" class="w-full h-full object-cover">
-                            </div>
-                            <div class="ml-3">
-                                <p class="text-sm font-medium text-gray-900">Emily Chen</p>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">emily.chen&#64;example.com</td>
-                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">Editor</td>
-                    <td class="px-4 py-4 whitespace-nowrap">
-                        <span class="px-2 py-1 text-xs shadow-lg rounded-full bg-yellow-100 text-yellow-800">Pending</span>
-                    </td>
-                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">Apr 10, 2025</td>
-                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
-                        <div class="flex space-x-2">
-                            <button class="p-1 text-gray-500 hover:text-primary">
-                                <div class="w-5 h-5 flex items-center justify-center">
-                                    <i class="ri-eye-line"></i>
-                                </div>
-                            </button>
-                            <button class="p-1 text-gray-500 hover:text-blue-600">
-                                <div class="w-5 h-5 flex items-center justify-center">
-                                    <i class="ri-edit-line"></i>
-                                </div>
-                            </button>
-                            <button class="p-1 text-gray-500 hover:text-red-600">
-                                <div class="w-5 h-5 flex items-center justify-center">
-                                    <i class="ri-delete-bin-line"></i>
-                                </div>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="px-4 py-4 whitespace-nowrap">
-                        <div class="flex items-center">
-                            <div class="w-8 h-8 shadow-lg rounded-full bg-gray-200 overflow-hidden">
-                                <img src="https://readdy.ai/api/search-image?query=professional%20portrait%20of%20a%20black%20man%20with%20business%20attire%2C%20high%20quality%2C%20studio%20lighting&width=100&height=100&seq=user4&orientation=squarish"
-                                    alt="User" class="w-full h-full object-cover">
-                            </div>
-                            <div class="ml-3">
-                                <p class="text-sm font-medium text-gray-900">Marcus Johnson</p>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">marcus.johnson&#64;example.com</td>
-                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">Customer</td>
-                    <td class="px-4 py-4 whitespace-nowrap">
-                        <span class="px-2 py-1 text-xs shadow-lg rounded-full bg-red-100 text-red-800">Inactive</span>
-                    </td>
-                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">Feb 22, 2025</td>
-                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
-                        <div class="flex space-x-2">
-                            <button class="p-1 text-gray-500 hover:text-primary">
-                                <div class="w-5 h-5 flex items-center justify-center">
-                                    <i class="ri-eye-line"></i>
-                                </div>
-                            </button>
-                            <button class="p-1 text-gray-500 hover:text-blue-600">
-                                <div class="w-5 h-5 flex items-center justify-center">
-                                    <i class="ri-edit-line"></i>
-                                </div>
-                            </button>
-                            <button class="p-1 text-gray-500 hover:text-red-600">
-                                <div class="w-5 h-5 flex items-center justify-center">
-                                    <i class="ri-delete-bin-line"></i>
-                                </div>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="px-4 py-4 whitespace-nowrap">
-                        <div class="flex items-center">
-                            <div class="w-8 h-8 shadow-lg rounded-full bg-gray-200 overflow-hidden">
-                                <img src="https://readdy.ai/api/search-image?query=professional%20portrait%20of%20a%20latina%20woman%20with%20business%20attire%2C%20high%20quality%2C%20studio%20lighting&width=100&height=100&seq=user5&orientation=squarish"
-                                    alt="User" class="w-full h-full object-cover">
-                            </div>
-                            <div class="ml-3">
-                                <p class="text-sm font-medium text-gray-900">Sophia Rodriguez</p>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">sophia.rodriguez&#64;example.com</td>
-                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">Customer</td>
-                    <td class="px-4 py-4 whitespace-nowrap">
-                        <span class="px-2 py-1 text-xs shadow-lg rounded-full bg-green-100 text-green-800">Active</span>
-                    </td>
-                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">Apr 22, 2025</td>
-                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
-                        <div class="flex space-x-2">
-                            <button class="p-1 text-gray-500 hover:text-primary">
-                                <div class="w-5 h-5 flex items-center justify-center">
-                                    <i class="ri-eye-line"></i>
-                                </div>
-                            </button>
-                            <button class="p-1 text-gray-500 hover:text-blue-600">
-                                <div class="w-5 h-5 flex items-center justify-center">
-                                    <i class="ri-edit-line"></i>
-                                </div>
-                            </button>
-                            <button class="p-1 text-gray-500 hover:text-red-600">
-                                <div class="w-5 h-5 flex items-center justify-center">
-                                    <i class="ri-delete-bin-line"></i>
-                                </div>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div class="flex justify-between items-center mt-6">
-        <p class="text-sm text-gray-500">Showing 1 to 5 of 24,521 users</p>
-        <div class="flex space-x-1">
-            <button
-                class="px-3 py-1 border border-gray-300 shadow-lg rounded text-gray-500 hover:bg-gray-50 !shadow-lg rounded-button whitespace-nowrap">Previous</button>
-            <button
-                class="px-3 py-1 border border-gray-300 shadow-lg rounded bg-primary text-white !shadow-lg rounded-button whitespace-nowrap">1</button>
-            <button
-                class="px-3 py-1 border border-gray-300 shadow-lg rounded text-gray-500 hover:bg-gray-50 !shadow-lg rounded-button whitespace-nowrap">2</button>
-            <button
-                class="px-3 py-1 border border-gray-300 shadow-lg rounded text-gray-500 hover:bg-gray-50 !shadow-lg rounded-button whitespace-nowrap">3</button>
-            <button
-                class="px-3 py-1 border border-gray-300 shadow-lg rounded text-gray-500 hover:bg-gray-50 !shadow-lg rounded-button whitespace-nowrap">Next</button>
-        </div>
     </div>
 </div>
 

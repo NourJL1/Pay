@@ -80,6 +80,10 @@ export class WalletService {
     return this.http.get<number>(`${this.apiUrl}/count/active`, { headers: this.getHeaders() });
   }
 
+  getPendingWalletCount(): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}/count/pending`, { headers: this.getHeaders() });
+  }
+
   getWalletStatus(): Observable<WalletStatus> {
     const cusCode = localStorage.getItem('cusCode');
     if (!cusCode) {
